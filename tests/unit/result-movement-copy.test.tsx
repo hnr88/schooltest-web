@@ -83,7 +83,7 @@ describe('report attribute rows say the movement in words', () => {
   });
 
   const cases: { entry: ResultViewAttribute; sentence: string }[] = [
-    { entry: decoding, sentence: 'Developing → Secure since the previous sitting' },
+    { entry: decoding, sentence: 'Developing → Consolidating since the previous sitting' },
     { entry: { ...decoding, delta_display: 'steady' }, sentence: 'Steady since the previous sitting' },
     { entry: { ...decoding, delta_display: '+15' }, sentence: '+15 since the previous sitting' },
     { entry: unbanded, sentence: 'Band movement since the previous sitting' },

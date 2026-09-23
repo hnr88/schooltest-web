@@ -17,12 +17,12 @@ function deltaTone(delta: AttributeDeltaView): 'positive' | 'negative' | 'neutra
   return 'neutral';
 }
 
-// One attribute. The ASSESSED arm shows the domain score, the wire status band,
-// the evidence count and the delta; the NOT-ASSESSED arm shows a hatched empty
-// track and a sentence, with no score, no delta and no evidence meter. The
-// score comes from `domain_score` only — posterior fields are audit-only and
-// never rendered — and the delta is the server's claim in words: a signed step
-// verbatim, `steady` and band pairs through the catalogue, never a raw token.
+// One attribute. The ASSESSED arm shows the wire status band as its step on the
+// four-step ACARA phase ladder (no score, no percentage), the evidence count and
+// the delta; the NOT-ASSESSED arm shows a hatched empty track and a sentence,
+// with no step, no delta and no evidence meter. Posterior fields are audit-only
+// and never rendered, and the delta is the server's claim in words: a signed
+// step verbatim, `steady` and band pairs through the catalogue, never a raw token.
 export function AttributeMasteryRow({
   row,
   scaleMax,
@@ -38,7 +38,6 @@ export function AttributeMasteryRow({
   const tResults = useTranslations('Results');
   const name = t(`attributes.${row.name}`);
   const statusKey = row.state === 'assessed' ? row.status : 'not_assessed';
-  const score = row.state === 'assessed' ? String(row.domainScore) : null;
   const deltaWords = (delta: AttributeDeltaView): string => {
     if (delta.kind === 'points') return delta.display;
     if (delta.kind === 'steady') return tResults('steady');
@@ -63,17 +62,9 @@ export function AttributeMasteryRow({
         <StatusPill tone={row.state === 'assessed' ? ATTRIBUTE_STATUS_TONE[row.status] : 'neutral'}>
           {t(`attributeStatus.${statusKey}`)}
         </StatusPill>
-        {score !== null ? (
-          <span
-            data-slot="report-attribute-score"
-            className="ml-auto text-body-md font-bold text-foreground tabular-nums"
-          >
-            {score}
-          </span>
-        ) : null}
       </div>
 
-      <AttributeTrack row={row} revealed={revealed} index={index} scoreLabel={score} />
+      <AttributeTrack row={row} revealed={revealed} index={index} />
 
       {row.state === 'assessed' ? (
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1">

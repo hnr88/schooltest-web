@@ -6,13 +6,17 @@ import { cat, loadMessages } from './helpers/i18n';
 // TASK 36 — F-WEB-ATTRIBUTE-BARS re-pointed at ResultView v2, driven against the
 // REAL portal, the REAL Strapi and the REAL Postgres. Every expectation below is
 // read out of `public.results.attributes` with psql first and then compared to
-// what the page rendered: nothing is fixtured and no shape is assumed. Bars are
-// domain scores (0–100); prob / prob_se are audit fields and must never render.
+// what the page rendered: nothing is fixtured and no shape is assumed. Each row is
+// its stored band on the four-step ACARA phase ladder (Phase Model, spec 3) — no
+// domain score renders; prob / prob_se are audit fields and must never render.
 const en = loadMessages('en');
 
 // Row order is the measurement-model order from the shared contract
 // (mvp/contracts/scoring/src/enums.ts attributeNameSchema), not locale order.
 const MEMO_ORDER = ['Decoding', 'Vocab_A2', 'Grammar', 'Vocab_B1', 'Gist', 'Detail', 'Inference'];
+
+// The four-step ACARA phase ladder, lowest first (Beginning → Consolidating).
+const LADDER = ['not_yet', 'emerging', 'developing', 'secure'];
 
 interface WireEntry {
   status?: string;
@@ -60,8 +64,8 @@ async function signInAsTeacher(page: Page): Promise<void> {
   await page.waitForURL('**/dashboard');
 }
 
-test.describe('teacher report — attribute scores, evidence counts and not_assessed', () => {
-  test('every stored attribute renders one row whose score is its Postgres domain score', async ({
+test.describe('teacher report — attribute phase ladder, evidence counts and not_assessed', () => {
+  test('every stored attribute renders one row whose ladder step is its Postgres band', async ({
     page,
   }) => {
     const documentId = teacherOwned(`and r.attributes::text like '%domain_score%'`);
@@ -88,15 +92,13 @@ test.describe('teacher report — attribute scores, evidence counts and not_asse
       await expect(row, name).toHaveAttribute('data-state', assessed ? 'assessed' : 'not_assessed');
 
       if (assessed) {
-        // The honesty guardrail: a bare domain score, never a percentage.
-        await expect(row.locator('[data-slot="report-attribute-score"]'), name).toHaveText(
-          String(entry.domain_score),
+        // Phase Model (spec 3): no score and no percentage — the stored band is
+        // the row's step on the four-step ACARA phase ladder.
+        await expect(row.locator('[data-slot="report-attribute-score"]'), name).toHaveCount(0);
+        await expect(row.locator('[data-slot="report-attribute-track"]'), name).toHaveAttribute(
+          'data-step',
+          String(LADDER.indexOf(entry.status ?? '') + 1),
         );
-        // useBarReveal flips to revealed on mount, so the transform is the score.
-        const style = await row
-          .locator('[data-slot="report-attribute-track"] span')
-          .getAttribute('style');
-        expect(style, name).toContain(`scaleX(${entry.domain_score! / 100})`);
         await expect(row.locator('[data-slot="report-evidence-count"]'), name).toHaveAttribute(
           'data-items-seen',
           String(entry.items_seen),
@@ -142,13 +144,16 @@ test.describe('teacher report — attribute scores, evidence counts and not_asse
     );
     await expect(page.locator('[data-slot="report-attribute-probability"]')).toHaveCount(0);
 
-    // A prob of 0.85 with domain_score 80 must render 80, not 85 — re-prove per row.
+    // Neither a posterior nor a domain score renders: each row carries only its
+    // stored band as a ladder step (Phase Model, spec 3) — re-prove per row.
     for (const name of MEMO_ORDER.filter((n) => n in stored)) {
       const entry = stored[name];
       if (entry === 'not_assessed' || typeof entry.domain_score !== 'number') continue;
       const row = page.locator(`li[data-slot="report-attribute-row"][data-attribute="${name}"]`);
-      await expect(row.locator('[data-slot="report-attribute-score"]'), name).toHaveText(
-        String(entry.domain_score),
+      await expect(row.locator('[data-slot="report-attribute-score"]'), name).toHaveCount(0);
+      await expect(row.locator('[data-slot="report-attribute-track"]'), name).toHaveAttribute(
+        'data-step',
+        String(LADDER.indexOf(entry.status ?? '') + 1),
       );
     }
   });

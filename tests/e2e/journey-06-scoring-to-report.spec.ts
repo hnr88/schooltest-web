@@ -112,11 +112,13 @@ test.describe('journey 06 — scoring to teacher report', () => {
       for (const [name, attribute] of Object.entries(view.attributes)) {
         const row = page.locator(`[data-slot="report-attribute-row"][data-attribute="${name}"]`);
         await expect(row).toHaveCount(1);
-        if (attribute.status === 'not_assessed') {
-          await expect(row.locator('[data-slot="report-attribute-score"]')).toHaveCount(0);
-        } else {
-          await expect(row.locator('[data-slot="report-attribute-score"]')).toHaveText(
-            String(attribute.domain_score),
+        // Phase Model (spec 3): no row renders a score; an assessed row is its
+        // band's step on the four-step ACARA phase ladder.
+        await expect(row.locator('[data-slot="report-attribute-score"]')).toHaveCount(0);
+        if (attribute.status !== 'not_assessed') {
+          await expect(row.locator('[data-slot="report-attribute-track"]')).toHaveAttribute(
+            'data-step',
+            String(['not_yet', 'emerging', 'developing', 'secure'].indexOf(attribute.status) + 1),
           );
         }
       }

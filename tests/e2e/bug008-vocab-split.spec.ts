@@ -55,8 +55,10 @@ test.describe(`BUG-008 vocabulary split (${MODE})`, () => {
     const classroom = panel.locator('[data-slot="report-attribute-row"][data-attribute="Vocab_B1"]');
     await expect(everyday).toContainText(EVERYDAY);
     await expect(classroom).toContainText(CLASSROOM);
-    await expect(everyday.locator('[data-slot="report-attribute-score"]')).toHaveText(String(target.a2));
-    await expect(classroom.locator('[data-slot="report-attribute-score"]')).toHaveText(String(target.b1));
+    // Phase Model (spec 3): each strand is its own ladder row with its own band step, no score.
+    await expect(everyday.locator('[data-slot="report-attribute-track"]')).toHaveAttribute('data-state', 'assessed');
+    await expect(classroom.locator('[data-slot="report-attribute-track"]')).toHaveAttribute('data-state', 'assessed');
+    await expect(panel.locator('[data-slot="report-attribute-score"]')).toHaveCount(0);
     await expect(panel.locator('[data-slot="report-attribute-row"][data-attribute="Vocabulary"]')).toHaveCount(0);
     await expectNoBlendedLabel(panel);
     await expect(page.locator('[data-observation^="vocabulary"]')).toHaveCount(0);

@@ -12,13 +12,18 @@ export const ATTRIBUTE_STATUS_TONE: Record<AssessedBand, StatusPillTone> = {
   not_yet: 'danger',
 };
 
-// Soft fills mirror the subskill card idiom so a report row and Screen C read
-// as one system.
-export const ATTRIBUTE_STATUS_FILL: Record<AssessedBand, string> = {
-  secure: 'bg-success-soft text-success-ink',
-  developing: 'bg-info-soft text-info-ink',
-  emerging: 'bg-warning-soft text-warning-ink',
-  not_yet: 'bg-danger-soft text-danger-ink',
+// The four-step ACARA phase ladder, lowest step first: Beginning (not_yet),
+// Emerging, Developing, Consolidating (secure). An ORDER over the wire bands,
+// never a cut — the band itself still arrives from the server.
+export const PHASE_LADDER_STEPS: readonly AssessedBand[] = ['not_yet', 'emerging', 'developing', 'secure'];
+
+// Solid theme tokens for the reached steps, so a lit step reads clearly against
+// the unlit `bg-divider` track.
+export const PHASE_LADDER_FILL: Record<AssessedBand, string> = {
+  secure: 'bg-success',
+  developing: 'bg-blue-500',
+  emerging: 'bg-warning',
+  not_yet: 'bg-destructive',
 };
 
 // The narrowest the per-attribute evidence meter may draw a non-zero count, so

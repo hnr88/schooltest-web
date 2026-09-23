@@ -58,7 +58,6 @@ export function ParentReportView({ view }: { view: FamilyPreviewView }) {
                 >
                   {t('familyStrengthLine', {
                     skill: t(`attributes.${strength.skill}`),
-                    score: strength.score,
                     phrase: t(`parentStatePhrase.${strength.state}`),
                   })}
                 </li>
@@ -83,7 +82,6 @@ export function ParentReportView({ view }: { view: FamilyPreviewView }) {
                     ? t('familyPracticeLine')
                     : t('familyFocusLine', {
                         skill: t(`attributes.${step.skill}`),
-                        score: step.score,
                         phrase: t(`parentStatePhrase.${step.state}`),
                       })}
                 </li>
