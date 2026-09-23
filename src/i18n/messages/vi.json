@@ -5155,7 +5155,9 @@
         "popupBlocked": "Hãy cho phép cửa sổ bật lên để tải báo cáo dưới dạng PDF.",
         "noScores": "Chưa có kết quả đã chấm cho {name}.",
         "failed": "Không thể chuẩn bị báo cáo cho {name}. Hãy thử lại.",
-        "llmFailed": "Không thể tải bản tóm tắt cho {name}. Hãy thử lại."
+        "llmFailed": "Không thể tải bản tóm tắt cho {name}. Hãy thử lại.",
+        "llmWithheld": "Bản tóm tắt cho {name} đã bị giữ lại vì không thể ẩn danh hoàn toàn, nên không có tệp nào được tải xuống.",
+        "llmRefused": "Máy chủ đã từ chối tạo bản tóm tắt cho {name}, nên không có tệp nào được tải xuống."
       },
       "print": {
         "title": "Báo cáo đọc của lớp — {name}",

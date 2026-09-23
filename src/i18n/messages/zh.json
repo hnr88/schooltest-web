@@ -5136,7 +5136,9 @@
         "popupBlocked": "请允许弹出窗口，以将报告下载为 PDF。",
         "noScores": "{name} 尚无已评分的结果。",
         "failed": "无法准备 {name} 的报告，请重试。",
-        "llmFailed": "无法下载 {name} 的摘要，请重试。"
+        "llmFailed": "无法下载 {name} 的摘要，请重试。",
+        "llmWithheld": "{name} 的摘要无法完全去标识化，已被扣留，未下载任何文件。",
+        "llmRefused": "服务器拒绝生成 {name} 的摘要，未下载任何文件。"
       },
       "print": {
         "title": "班级阅读报告 — {name}",

@@ -5136,7 +5136,9 @@
         "popupBlocked": "Allow pop-ups to download the report as a PDF.",
         "noScores": "No scored results for {name} yet.",
         "failed": "Could not prepare the report for {name}. Try again.",
-        "llmFailed": "Could not download the summary for {name}. Try again."
+        "llmFailed": "Could not download the summary for {name}. Try again.",
+        "llmWithheld": "The summary for {name} was withheld: it could not be fully de-identified, so nothing was downloaded.",
+        "llmRefused": "The server declined to build the summary for {name}, so nothing was downloaded."
       },
       "print": {
         "title": "Class reading report — {name}",

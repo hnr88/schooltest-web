@@ -29,6 +29,19 @@ export interface TeacherExportFile {
   body: string;
 }
 
+/**
+ * Why an export produced no file: `withheld` — the server refused to release a
+ * body it could not fully de-identify; `refused` — any other 4xx it answered
+ * (foreign or unknown class, nothing to export, reference data it cannot rank);
+ * `failed` — no answer, a 401/429/5xx, or a response that broke the contract.
+ */
+export type TeacherExportFailure = 'withheld' | 'refused' | 'failed';
+
+/** What the export Server Function returns. It never throws for an API refusal. */
+export type TeacherExportOutcome =
+  | { ok: true; file: TeacherExportFile }
+  | { ok: false; failure: TeacherExportFailure };
+
 export type TeacherExportActionError = 'copy' | 'download';
 export type TeacherExportActionResult = 'success' | `${TeacherExportActionError}_failed`;
 

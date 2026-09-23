@@ -6,12 +6,14 @@ import { useLocale, useTranslations } from 'next-intl';
 
 import { showOpsToast } from '@/modules/ops/actions';
 import { classResultsQueryOptions, resultsSkillLabelKey } from '@/modules/results';
+import { LLM_EXPORT_FAILURE_KEY } from '@/modules/teacher/constants/classes-screen.constants';
 import { useYearLabel } from '@/modules/teacher/hooks/useClassesDirectory';
 import { summariseClassResults } from '@/modules/teacher/lib/print/class-summary';
 import {
   buildClassSummaryHtml,
   writeClassSummaryWindow,
 } from '@/modules/teacher/lib/print/class-summary-print';
+import { teacherExportFailureOf } from '@/modules/teacher/lib/teacher-export';
 import { saveTeacherExportFile } from '@/modules/teacher/lib/teacher-export-download';
 import { useTeacherExportMutation } from '@/modules/teacher/queries/use-teacher-export.mutation';
 import type { ClassSummaryLabels } from '@/modules/teacher/types/class-summary-print.types';
@@ -100,7 +102,10 @@ export function useClassExports(): ClassExportsApi {
     llm
       .mutateAsync({ kind: 'insights', classDocumentId: row.id })
       .then(saveTeacherExportFile)
-      .catch(() => showOpsToast({ tone: 'error', message: t('export.llmFailed', { name: row.name }) }))
+      .catch((error: unknown) => {
+        const key = LLM_EXPORT_FAILURE_KEY[teacherExportFailureOf(error)];
+        showOpsToast({ tone: 'error', message: t(key, { name: row.name }) });
+      })
       .finally(() => setPending(null));
   };
 

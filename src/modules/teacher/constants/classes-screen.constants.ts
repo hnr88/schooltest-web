@@ -36,3 +36,10 @@ export const CLASSES_TD = 'border-b border-[#F3F4F6] py-[13px] pl-3 align-middle
 
 export const CLASSES_STATE_BOX =
   'flex flex-col items-center gap-2 border-t border-[#ECEEF2] px-8 py-14 text-center';
+
+/** The Classes list's LLM-export failure toast, by reason (`TeacherPortal.classes`). */
+export const LLM_EXPORT_FAILURE_KEY = {
+  withheld: 'export.llmWithheld',
+  refused: 'export.llmRefused',
+  failed: 'export.llmFailed',
+} as const;

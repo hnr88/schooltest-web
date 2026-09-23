@@ -5146,7 +5146,9 @@
         "popupBlocked": "Benarkan tetingkap timbul untuk memuat turun laporan sebagai PDF.",
         "noScores": "Belum ada keputusan bergred untuk {name}.",
         "failed": "Laporan untuk {name} tidak dapat disediakan. Cuba lagi.",
-        "llmFailed": "Ringkasan untuk {name} tidak dapat dimuat turun. Cuba lagi."
+        "llmFailed": "Ringkasan untuk {name} tidak dapat dimuat turun. Cuba lagi.",
+        "llmWithheld": "Ringkasan untuk {name} ditahan kerana ia tidak dapat dijadikan sepenuhnya tanpa pengenalan diri, jadi tiada apa-apa dimuat turun.",
+        "llmRefused": "Pelayan enggan menyediakan ringkasan untuk {name}, jadi tiada apa-apa dimuat turun."
       },
       "print": {
         "title": "Laporan membaca kelas — {name}",
