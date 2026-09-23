@@ -2772,6 +2772,7 @@
       "namePlaceholder": "e.g. Year 10 EAL/D",
       "teacher": "Assign teacher",
       "teacherPlaceholder": "Select a teacher",
+      "teacherRequiredHint": "请先邀请一位教师——邀请发出后即可将其分配到班级。",
       "teacherLoadError": "We could not load your teachers",
       "teacherLoadErrorDescription": "无法核实教师信息，因此暂时无法创建班级。请检查网络连接后重试。",
       "importTitle": "Import students",
@@ -2845,8 +2846,7 @@
       "cancel": "取消",
       "submit": "分配",
       "noClasses": "还没有可分配的班级。"
-    },
-    "noEligibleTeachersHint": "还没有可用的教师——请先邀请教师，才能创建班级。"
+    }
   },
   "SchoolStudents": {
     "meta": {

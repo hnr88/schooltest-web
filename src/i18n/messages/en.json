@@ -2772,6 +2772,7 @@
       "namePlaceholder": "e.g. Year 10 EAL/D",
       "teacher": "Assign teacher",
       "teacherPlaceholder": "Select a teacher",
+      "teacherRequiredHint": "Invite a teacher first — you can assign them to a class as soon as the invitation is sent.",
       "teacherLoadError": "We could not load your teachers",
       "teacherLoadErrorDescription": "We could not verify the teachers, so the class cannot be created yet. Check your connection and try again.",
       "importTitle": "Import students",
@@ -2845,8 +2846,7 @@
       "cancel": "Cancel",
       "submit": "Assign",
       "noClasses": "No classes to assign yet."
-    },
-    "noEligibleTeachersHint": "No eligible teachers yet — invite a teacher to create a class."
+    }
   },
   "SchoolStudents": {
     "meta": {

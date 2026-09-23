@@ -2782,6 +2782,7 @@
       "namePlaceholder": "e.g. Year 10 EAL/D",
       "teacher": "Assign teacher",
       "teacherPlaceholder": "Select a teacher",
+      "teacherRequiredHint": "เชิญครูก่อน — คุณสามารถมอบหมายครูให้ชั้นเรียนได้ทันทีที่ส่งคำเชิญ",
       "teacherLoadError": "We could not load your teachers",
       "teacherLoadErrorDescription": "ไม่สามารถตรวจสอบรายชื่อครูได้ จึงยังสร้างชั้นเรียนไม่ได้ กรุณาตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง",
       "importTitle": "Import students",
@@ -2855,8 +2856,7 @@
         "inference": "การอนุมาน",
         "critical": "การอ่านเชิงวิพากษ์"
       }
-    },
-    "noEligibleTeachersHint": "ยังไม่มีครูที่พร้อมใช้งาน — เชิญครูก่อนจึงจะสร้างชั้นเรียนได้"
+    }
   },
   "SchoolStudents": {
     "meta": {

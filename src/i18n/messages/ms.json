@@ -2782,6 +2782,7 @@
       "namePlaceholder": "e.g. Year 10 EAL/D",
       "teacher": "Assign teacher",
       "teacherPlaceholder": "Select a teacher",
+      "teacherRequiredHint": "Jemput guru dahulu — anda boleh menugaskan mereka ke kelas sebaik sahaja jemputan dihantar.",
       "teacherLoadError": "We could not load your teachers",
       "teacherLoadErrorDescription": "Guru tidak dapat disahkan, jadi kelas tidak boleh dicipta lagi. Semak sambungan anda dan cuba lagi.",
       "importTitle": "Import students",
@@ -2855,8 +2856,7 @@
         "inference": "Inferens",
         "critical": "Bacaan kritis"
       }
-    },
-    "noEligibleTeachersHint": "Tiada guru layak lagi — jemput guru untuk mencipta kelas."
+    }
   },
   "SchoolStudents": {
     "meta": {

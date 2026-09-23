@@ -23,6 +23,7 @@ import { useTeachersQuery } from '@/modules/teachers';
 // roster still renders and the completion column falls back to the empty value.
 export function ClassesScreen() {
   const t = useTranslations('Classes');
+  const tAdd = useTranslations('Classes.addForm');
   const token = useAuthStore((state) => state.token);
   const hydrated = useAuthStore((state) => state.hydrated);
   const enabled = hydrated && Boolean(token);
@@ -35,6 +36,7 @@ export function ClassesScreen() {
   const teachersQuery = useTeachersQuery(enabled);
   const eligibleTeacherCount = (teachersQuery.data ?? []).filter(isEligibleClassTeacher).length;
   const canAddClass = !teachersQuery.isPending && !teachersQuery.isError && eligibleTeacherCount > 0;
+  const showTeacherRequiredHint = teachersQuery.isSuccess && eligibleTeacherCount === 0;
   const [addOpen, setAddOpen] = useState(false);
   const [assignOpen, setAssignOpen] = useState(false);
   const [editTarget, setEditTarget] = useState<SchoolClass | null>(null);
@@ -67,6 +69,7 @@ export function ClassesScreen() {
             className="h-11 rounded-tile px-5 text-sm font-semibold"
             onClick={() => setAddOpen(true)}
             disabled={!canAddClass}
+            aria-describedby={showTeacherRequiredHint ? 'add-class-teacher-required-hint' : undefined}
           >
             <Plus className="size-[15px]" strokeWidth={2.2} aria-hidden />
             {t('addButton')}
@@ -74,9 +77,13 @@ export function ClassesScreen() {
         </div>
       </div>
       {/* The why under the blocked trigger — never a silent dead button. */}
-      {teachersQuery.isSuccess && eligibleTeacherCount === 0 ? (
-        <p className="-mt-3 text-sm text-[#7C8698]" data-slot="add-class-blocked-hint">
-          {t('noEligibleTeachersHint')}
+      {showTeacherRequiredHint ? (
+        <p
+          id="add-class-teacher-required-hint"
+          className="-mt-3 text-sm text-[#7C8698] sm:self-end"
+          data-slot="add-class-blocked-hint"
+        >
+          {tAdd('teacherRequiredHint')}
         </p>
       ) : null}
       {isPending ? (

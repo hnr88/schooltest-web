@@ -2782,6 +2782,7 @@
       "namePlaceholder": "e.g. Year 10 EAL/D",
       "teacher": "Assign teacher",
       "teacherPlaceholder": "Select a teacher",
+      "teacherRequiredHint": "먼저 교사를 초대하세요. 초대를 보내는 즉시 학급에 배정할 수 있습니다.",
       "teacherLoadError": "We could not load your teachers",
       "teacherLoadErrorDescription": "교사를 확인할 수 없어 학급을 만들 수 없습니다. 연결을 확인하고 다시 시도해 주세요.",
       "importTitle": "Import students",
@@ -2855,8 +2856,7 @@
         "inference": "추론",
         "critical": "비판적 읽기"
       }
-    },
-    "noEligibleTeachersHint": "아직 이용 가능한 교사가 없습니다 — 학급을 만들려면 먼저 교사를 초대해 주세요."
+    }
   },
   "SchoolStudents": {
     "meta": {

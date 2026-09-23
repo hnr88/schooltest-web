@@ -2791,6 +2791,7 @@
       "namePlaceholder": "e.g. Year 10 EAL/D",
       "teacher": "Assign teacher",
       "teacherPlaceholder": "Select a teacher",
+      "teacherRequiredHint": "Hãy mời giáo viên trước — bạn có thể phân công họ vào lớp ngay khi lời mời được gửi.",
       "teacherLoadError": "We could not load your teachers",
       "teacherLoadErrorDescription": "Không thể xác minh danh sách giáo viên nên chưa thể tạo lớp. Vui lòng kiểm tra kết nối và thử lại.",
       "importTitle": "Import students",
@@ -2864,8 +2865,7 @@
         "inference": "Suy luận",
         "critical": "Đọc phản biện"
       }
-    },
-    "noEligibleTeachersHint": "Chưa có giáo viên đủ điều kiện — hãy mời giáo viên để tạo lớp."
+    }
   },
   "SchoolStudents": {
     "meta": {
