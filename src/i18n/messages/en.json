@@ -1825,6 +1825,12 @@
       "not_yet": "is still building this skill",
       "not_assessed": "was not assessed this sitting"
     },
+    "academicVocabBand": {
+      "not_yet": "You're building the everyday words you read most often.",
+      "emerging": "You know many classroom words and are starting on the more formal words in school texts.",
+      "developing": "You understand a lot of the academic words used across your subjects.",
+      "secure": "You handle the formal, academic words in challenging texts across subjects."
+    },
     "parentStrengthsLabel": "Strengths",
     "parentNextStepsLabel": "Next steps",
     "parentPhaseLabel": "ACARA phase: {phase}",
@@ -1839,7 +1845,8 @@
       "Vocab_B1": "Classroom Vocabulary",
       "Gist": "Gist",
       "Detail": "Detail",
-      "Inference": "Inference"
+      "Inference": "Inference",
+      "Vocab_B2": "Academic Vocabulary"
     },
     "parentSubskillStateNote": {
       "secure": "Your child answered these consistently well throughout this sitting.",
@@ -4775,6 +4782,7 @@
     "trendBestGain": "Best gain: {skill} +{delta} pts",
     "attrDecoding": "Decoding",
     "attrVocabularyB1": "Classroom Vocabulary",
+    "attrVocabularyB2": "Academic Vocabulary",
     "attrGist": "Gist",
     "attrDetail": "Detail",
     "attrInference": "Inference",
@@ -4958,12 +4966,14 @@
         "gist": "Grasping the main idea and purpose of a text",
         "detail": "Locating specific facts and stated information",
         "inference": "Reading between the lines to work out meaning",
+        "vocabB2": "Knowing the formal academic words used across subjects",
         "critical": "Weighing a writer’s intent, tone and point of view"
       },
       "attribute": {
         "decoding": "Decoding",
         "vocabA2": "Everyday Vocabulary",
         "vocabB1": "Classroom Vocabulary",
+        "vocabB2": "Academic Vocabulary",
         "grammar": "Grammar",
         "gist": "Gist",
         "detail": "Detail",
@@ -6178,7 +6188,7 @@
         "sittingsSince": "{count} since {month}"
       },
       "subskillsTitle": "Reading subskills",
-      "subskillsDescription": "How {first} performed across the eight components of reading on the latest form",
+      "subskillsDescription": "How {first} performed across the nine components of reading on the latest form",
       "subskills": {
         "deltaUp": "↑ +{points}",
         "deltaDown": "↓ −{points}",

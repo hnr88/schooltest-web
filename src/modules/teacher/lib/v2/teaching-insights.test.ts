@@ -24,7 +24,9 @@ describe('teachingInsights — recorded t2 roster and recorded class diagnostic'
     expect(withoutDiagnostic.groups).toEqual([]);
   });
 
-  test('reading mastery: fewest secure, then lowest class mean; Critical (a gate, no band) after the ranked skills', () => {
+  test('reading mastery: fewest secure, then lowest class mean; the unmeasured and Critical (a gate, no band) after the ranked skills', () => {
+    // The recorded sittings predate the Academic Vocabulary strand: nobody sat it, so it
+    // is unranked with no mean — never a zero — in display order before Critical.
     expect(view.mastery.map((row) => [row.skill, row.mean, row.assessed])).toEqual([
       ['Vocab_A2', 25, 11],
       ['Grammar', 25, 11],
@@ -33,6 +35,7 @@ describe('teachingInsights — recorded t2 roster and recorded class diagnostic'
       ['Decoding', 25, 11],
       ['Gist', 28, 12],
       ['Inference', 36, 9],
+      ['Vocab_B2', null, 0],
       ['Critical', 50, 5],
     ]);
   });
@@ -50,7 +53,8 @@ describe('teachingInsights — recorded t2 roster and recorded class diagnostic'
       skill: 'Inference',
       flag: { kind: 'strength', labelKey: 'flag.classStrength', tone: { fg: '#1F7A4D', bg: '#E9F6EF' } },
     });
-    expect(view.mastery[7]).toMatchObject({ skill: 'Critical', secure: null, gatePassed: 0, flag: null, tone: { fg: '#92610B' } });
+    expect(view.mastery[7]).toMatchObject({ skill: 'Vocab_B2', labelKey: 'attribute.vocabB2', secure: null, gatePassed: null, flag: null });
+    expect(view.mastery[8]).toMatchObject({ skill: 'Critical', secure: null, gatePassed: 0, flag: null, tone: { fg: '#92610B' } });
     expect(view.mastery.slice(1, 6).every((row) => row.flag === null)).toBe(true);
   });
 
@@ -111,7 +115,7 @@ describe('teachingInsights — empty roster (every recorded row removed): nothin
     });
   });
 
-  test('mastery keeps the eight skills in display order with no mean and no flag', () => {
+  test('mastery keeps the nine skills in display order with no mean and no flag', () => {
     expect(empty.mastery.map((row) => [row.skill, row.mean, row.secure, row.gatePassed, row.flag])).toEqual([
       ['Decoding', null, null, null, null],
       ['Vocab_A2', null, null, null, null],
@@ -120,6 +124,7 @@ describe('teachingInsights — empty roster (every recorded row removed): nothin
       ['Gist', null, null, null, null],
       ['Detail', null, null, null, null],
       ['Inference', null, null, null, null],
+      ['Vocab_B2', null, null, null, null],
       ['Critical', null, null, null, null],
     ]);
   });

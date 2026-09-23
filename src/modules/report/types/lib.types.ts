@@ -8,4 +8,4 @@ export interface ObservationFormatters {
 
 export type ObservationValues = Record<string, string | number>;
 
-export type AssessedRow = Extract<AttributeRowView, { state: 'assessed' }>;
+export type AssessedRow = Extract<AttributeRowView, { state: 'assessed' }> & { name: AttributeName };

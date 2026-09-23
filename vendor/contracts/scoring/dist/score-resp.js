@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.scoreResponseSchema = exports.scoringWarningSchema = exports.gateSchema = exports.scaleScoreSchema = exports.attributeScoreSchema = exports.attributePosteriorSchema = exports.matrix2BlockSchema = exports.matrix1BlockSchema = exports.SCORE_RESPONSE_SCHEMA_VERSION = void 0;
+exports.scoreResponseSchema = exports.scoringWarningSchema = exports.academicVocabScoreSchema = exports.gateSchema = exports.scaleScoreSchema = exports.attributeScoreSchema = exports.attributePosteriorSchema = exports.matrix2BlockSchema = exports.matrix1BlockSchema = exports.SCORE_RESPONSE_SCHEMA_VERSION = void 0;
 /**
  * `score-resp/1` — the ONLY response shape the R sidecar returns (spec v2 §2).
  *
@@ -86,6 +86,21 @@ exports.gateSchema = zod_1.z.union([
         provisional_cut: zod_1.z.boolean(),
     }),
 ]);
+/**
+ * spec 4 §4 — the Academic Vocabulary (2G) Rasch strand: its OWN theta and SE
+ * over the reached `academic_vocab` rows, the 0-100 domain score through the
+ * Academic pool's transform, and `items_scored`, which the worker checks against
+ * the rows it sent. OMITTED when no academic row was sent — like a matrix block
+ * that received no rows, a zero-evidence strand is never reported (so a theta
+ * with nothing behind it cannot exist). No band here: bands are Strapi's.
+ */
+exports.academicVocabScoreSchema = zod_1.z.strictObject({
+    theta: core_1.thetaSchema,
+    se: core_1.standardErrorSchema,
+    domain_score: core_1.domainScoreSchema,
+    items_scored: core_1.itemCountSchema.min(1),
+    provisional_transform: zod_1.z.boolean(),
+});
 /** spec v2 §2.6 — informative, never blocking; persisted for audit. */
 exports.scoringWarningSchema = zod_1.z.strictObject({
     code: core_1.nonEmptyString,
@@ -98,7 +113,7 @@ exports.scoringWarningSchema = zod_1.z.strictObject({
  *
  * `matrix_1` / `matrix_2` / `scale_score` are optional because a matrix that
  * received zero reached items is OMITTED (spec v2 §2.3) — never reported as a
- * zero-evidence block.
+ * zero-evidence block. `academic_vocab` follows the same rule (spec 4 §4).
  */
 exports.scoreResponseSchema = zod_1.z
     .strictObject({
@@ -113,6 +128,7 @@ exports.scoreResponseSchema = zod_1.z
     attribute_scores: zod_1.z.partialRecord(enums_1.attributeNameSchema, exports.attributeScoreSchema),
     scale_score: exports.scaleScoreSchema.optional(),
     gate: exports.gateSchema,
+    academic_vocab: exports.academicVocabScoreSchema.optional(),
     warnings: zod_1.z.array(exports.scoringWarningSchema),
 })
     .superRefine((body, ctx) => {

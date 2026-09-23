@@ -87,6 +87,7 @@ describe('classProgress — recorded t2 roster', () => {
       ['Gist', 28],
       ['Inference', 36],
       ['Critical', 50],
+      ['Vocab_B2', null], // the recorded sittings predate the Academic strand: no class mean, last
     ]);
     expect(trend('Critical')).toMatchObject({
       labelKey: 'skill.critical',

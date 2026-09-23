@@ -60,6 +60,14 @@
     "domain_score": 70,
     "provisional_cut": true
   },
+  "academic_vocab": {
+    "theta": 0.9,
+    "se": 0.61,
+    "domain_score": 61,
+    "items_seen": 12,
+    "band": "developing",
+    "provisional_cut": true
+  },
   "vocab": {
     "a2": { "domain_score": 90, "se": 3.8, "items_seen": 14, "status": "secure" },
     "b1": { "domain_score": 54, "se": 6.2, "items_seen": 9, "status": "emerging" }

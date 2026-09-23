@@ -8,7 +8,7 @@ import type { DisplaySkillReading } from '@/modules/results/lib/display-skills';
 import { SubskillCard } from './SubskillCard';
 
 /**
- * The eight-card grid (dashboard §4.4), in the canonical order the data layer
+ * The nine-card grid (dashboard §4.4), in the canonical order the data layer
  * owns. Strength/Focus tags apply only when ≥ 4 skills are ASSESSED (a score —
  * the gate card's graded score included); a not-assessed skill can never carry
  * a tag because it has no score to compare.
@@ -46,15 +46,16 @@ export function SubskillCardGrid({ view }: { view: ResultView }) {
   );
 }
 
-/** The per-skill `delta_display`, verbatim: attribute-owned, absent on the gate. */
+/** The per-skill `delta_display`, verbatim: attribute-owned, absent on the gate and the Academic strand. */
 function deltaDisplayOf(view: ResultView, tile: DisplaySkillReading): string | null {
   if (tile.skill === 'Critical') return null; // the gate block carries no growth fields (spec v2 §6.3)
+  if (tile.skill === 'Vocab_B2') return null; // nor does the Academic Vocabulary strand (spec 4 §4)
   const attribute = view.attributes[tile.skill];
   return attribute !== undefined && attribute.status !== 'not_assessed' ? attribute.delta_display : null;
 }
 
 function bandOf(view: ResultView, tile: DisplaySkillReading, key: 'band_before' | 'band_after'): string | undefined {
-  if (tile.skill === 'Critical') return undefined;
+  if (tile.skill === 'Critical' || tile.skill === 'Vocab_B2') return undefined;
   const attribute = view.attributes[tile.skill];
   if (attribute === undefined || attribute.status === 'not_assessed') return undefined;
   return attribute[key];

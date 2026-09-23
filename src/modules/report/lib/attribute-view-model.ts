@@ -12,6 +12,7 @@ import type {
 import type {
   AttributeName,
   ResultView,
+  ResultViewAcademicVocab,
   ResultViewAttribute,
 } from '@/modules/report/schemas/result-view.schema';
 
@@ -66,6 +67,25 @@ export function resolveAttributeRow(
   };
 }
 
+// Spec 4 §7 — Academic Vocabulary is a Rasch strand, never a key of
+// `attributes`, so it is added explicitly: one banded row through the same row
+// machinery, with NO delta (the strand carries no growth). A null band or score
+// is the not-assessed arm — never a zero.
+export function resolveAcademicVocabRow(strand: ResultViewAcademicVocab): AttributeRowView {
+  if (strand.domain_score === null || strand.band === null) {
+    return { state: 'not_assessed', name: 'Vocab_B2', itemsSeen: strand.items_seen };
+  }
+  return {
+    state: 'assessed',
+    name: 'Vocab_B2',
+    status: strand.band,
+    domainScore: strand.domain_score,
+    itemsSeen: strand.items_seen,
+    delta: null,
+    deltaReliable: null,
+  };
+}
+
 function evidenceFor(rows: readonly AttributeRowView[]): AttributeEvidence {
   const items = rows.flatMap((row) => (row.state === 'assessed' ? [row.itemsSeen] : []));
   if (items.length === 0) return { state: 'none_assessed', total: rows.length };
@@ -81,7 +101,9 @@ function evidenceFor(rows: readonly AttributeRowView[]): AttributeEvidence {
 // An absent evidence map splits into the SAME two absences every other
 // crosswalk-derived field on this report splits into, through the same
 // function — so the panel can never disagree with the header about which
-// absence this result is.
+// absence this result is. The Academic row follows the CDM rows, so the three
+// vocabulary rows read Everyday → Classroom → Academic; the evidence summary
+// stays the modelled attributes' own.
 export function buildAttributePanel(result: ResultView): AttributePanelView {
   const names = orderAttributeNames(Object.keys(result.attributes));
   if (names.length === 0) {
@@ -92,5 +114,9 @@ export function buildAttributePanel(result: ResultView): AttributePanelView {
     const entry = result.attributes[name];
     return entry ? [resolveAttributeRow(name, entry)] : [];
   });
-  return { state: 'rows', rows, evidence: evidenceFor(rows) };
+  return {
+    state: 'rows',
+    rows: [...rows, resolveAcademicVocabRow(result.academic_vocab)],
+    evidence: evidenceFor(rows),
+  };
 }

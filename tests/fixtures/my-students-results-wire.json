@@ -27,6 +27,13 @@
       "domain_score": 86,
       "provisional_cut": true
     },
+    "academic_vocab": {
+      "domain_score": null,
+      "se": null,
+      "band": null,
+      "items_seen": 0,
+      "provisional_cut": true
+    },
     "effort_valid": true,
     "low_confidence": null,
     "items_answered": 94,

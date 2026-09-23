@@ -9,13 +9,17 @@ export type AttributeDeltaView =
   | { kind: 'bands'; before: AssessedBand; after: AssessedBand }
   | { kind: 'band_movement' };
 
+// Spec 4 §7. Academic Vocabulary (`Vocab_B2`) is a Rasch strand, never a key of
+// `attributes`, but the report shows it as one more banded row after the CDM rows.
+export type AttributeRowName = AttributeName | 'Vocab_B2';
+
 // E11-09. A zero-evidence attribute has NO domain_score field to default to 0
 // and NO delta field to default to 0 — the shape itself makes the false claim
 // unrepresentable. Posterior fields are audit-only and never reach a view.
 export type AttributeRowView =
   | {
       state: 'assessed';
-      name: AttributeName;
+      name: AttributeRowName;
       status: AssessedBand;
       domainScore: number;
       itemsSeen: number;
@@ -24,7 +28,7 @@ export type AttributeRowView =
     }
   | {
       state: 'not_assessed';
-      name: AttributeName;
+      name: AttributeRowName;
       insufficientEvidence?: boolean;
       itemsSeen: number;
     };

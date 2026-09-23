@@ -49,7 +49,7 @@ describe('studentDetail — recorded Dilnoza (GET /results/:id, 8 sittings, 3 sc
     });
   });
 
-  test('eight subskill cards in display order — Everyday and Classroom Vocabulary separate', () => {
+  test('nine subskill cards in display order — Everyday, Classroom and Academic Vocabulary separate', () => {
     expect(view.subskills.map((entry) => entry.skill)).toEqual([
       'Decoding',
       'Vocab_A2',
@@ -58,6 +58,7 @@ describe('studentDetail — recorded Dilnoza (GET /results/:id, 8 sittings, 3 sc
       'Gist',
       'Detail',
       'Inference',
+      'Vocab_B2',
       'Critical',
     ]);
   });

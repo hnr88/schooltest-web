@@ -91,7 +91,7 @@ test.describe(`BUG-008 vocabulary split (${MODE})`, () => {
     await expect(everyday).toContainText(everydayLabel);
     await expect(classroom).toContainText(classroomLabel);
     await expect(page.locator('[data-slot="student-subskill"][data-skill="Vocabulary"]')).toHaveCount(0);
-    await expect(page.locator('[data-slot="student-subskill"]')).toHaveCount(8);
+    await expect(page.locator('[data-slot="student-subskill"]')).toHaveCount(9);
     await everyday.scrollIntoViewIfNeeded();
     await shot(page, 'student-page');
     await page.locator('[data-slot="student-subskills"]').screenshot({ path: path.join(PROOF_DIR, `${MODE}-student-subskill-cards.png`), animations: 'disabled' });

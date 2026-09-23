@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.scoreRequestSchema = exports.referenceSetsSchema = exports.section3PoolSchema = exports.overallPoolSchema = exports.overallTransformSchema = exports.raschPoolItemSchema = exports.referenceItemSchema = exports.scoreRequestResponseSchema = exports.itemParamsSchema = exports.SCORE_REQUEST_SCHEMA_VERSION = void 0;
+exports.scoreRequestSchema = exports.referenceSetsSchema = exports.academicVocabPoolSchema = exports.section3PoolSchema = exports.overallPoolSchema = exports.overallTransformSchema = exports.raschPoolItemSchema = exports.referenceItemSchema = exports.scoreRequestResponseSchema = exports.itemParamsSchema = exports.SCORE_REQUEST_SCHEMA_VERSION = void 0;
 /**
  * `score-req/1` — the ONLY request shape POSTed to the R sidecar (spec v2 §3).
  *
@@ -30,7 +30,10 @@ exports.itemParamsSchema = zod_1.z.record(core_1.nonEmptyString, zod_1.z.union([
  *
  * The cross-field rules are memo §1 made unfalsifiable on the wire: stage 3 is
  * held out of the CDM, so it is exactly the rows with no matrix and no Q-vector,
- * and a Q-vector's width is fixed by its matrix.
+ * and a Q-vector's width is fixed by its matrix. A row held out of the CDM names
+ * the Rasch strand it feeds (`rasch_strand`) — Section 3's gate or the Academic
+ * Vocabulary mini-scale — so the two stage-3 strands can never be pooled into one
+ * theta by accident; a matrix row names none.
  */
 exports.scoreRequestResponseSchema = zod_1.z
     .strictObject({
@@ -48,6 +51,8 @@ exports.scoreRequestResponseSchema = zod_1.z
     block_id: core_1.nonEmptyString.nullable(),
     /** Fixed calibrated Rasch difficulty. `null` on an item with no calibration yet. */
     difficulty: zod_1.z.number().nullable(),
+    /** The pooled Rasch strand a matrix-null row feeds (7A-7C `critical`, 2G `academic_vocab`). `null` on a matrix row. */
+    rasch_strand: enums_1.raschStrandSchema.nullable(),
 })
     .superRefine((row, ctx) => {
     const isStageThree = row.stage === 3;
@@ -63,6 +68,13 @@ exports.scoreRequestResponseSchema = zod_1.z
             code: 'custom',
             path: ['attribute_vector'],
             message: 'an attribute_vector exists exactly when the row loads on a matrix',
+        });
+    }
+    if ((row.matrix === null) !== (row.rasch_strand !== null)) {
+        ctx.addIssue({
+            code: 'custom',
+            path: ['rasch_strand'],
+            message: 'a rasch_strand exists exactly when the row is held out of the CDM (`matrix` null)',
         });
     }
     const expectedWidth = row.matrix === 1 ? constants_1.MATRIX_1_WIDTH : row.matrix === 2 ? constants_1.MATRIX_2_WIDTH : null;
@@ -121,20 +133,45 @@ exports.section3PoolSchema = zod_1.z.strictObject({
     provisional: zod_1.z.boolean(),
 });
 /**
+ * The Academic Vocabulary (2G) Rasch pool and the transform that maps its theta
+ * to 0-100 (spec 4 §4). Its own pool, never the Section 3 one. During the field
+ * test the transform is the registry's provisional linear placeholder, so R
+ * reports `academic_vocab.provisional_transform: true`.
+ */
+exports.academicVocabPoolSchema = zod_1.z.strictObject({
+    items: zod_1.z.array(exports.raschPoolItemSchema).min(1),
+    transform: exports.overallTransformSchema,
+});
+/**
  * spec v2 §3.2. `skills` is PARTIAL over the seven attributes: a skill with no
  * reference set yet simply has no key, and R omits it from both output blocks.
+ * `academic_vocab_pool` is OPTIONAL: a registry version from before the strand
+ * existed carries none, and a request that sends an `academic_vocab` row
+ * without it is refused below rather than scored against nothing.
  */
 exports.referenceSetsSchema = zod_1.z.strictObject({
     version: core_1.nonEmptyString,
     skills: zod_1.z.partialRecord(enums_1.attributeNameSchema, zod_1.z.array(exports.referenceItemSchema).min(1)),
     overall_pool: exports.overallPoolSchema,
     section3_pool: exports.section3PoolSchema,
+    academic_vocab_pool: exports.academicVocabPoolSchema.optional(),
 });
 /** spec v2 §3.3 — the versioned envelope. R answers 422 `schema_mismatch` to any other pair. */
-exports.scoreRequestSchema = zod_1.z.strictObject({
+exports.scoreRequestSchema = zod_1.z
+    .strictObject({
     schema_version: zod_1.z.literal(exports.SCORE_REQUEST_SCHEMA_VERSION),
     model_version: enums_1.currentModelVersionSchema,
     session_key: core_1.nonEmptyString,
     responses: zod_1.z.array(exports.scoreRequestResponseSchema),
     reference_sets: exports.referenceSetsSchema,
+})
+    .superRefine((body, ctx) => {
+    const academic = body.responses.some((row) => row.rasch_strand === 'academic_vocab');
+    if (academic && body.reference_sets.academic_vocab_pool === undefined) {
+        ctx.addIssue({
+            code: 'custom',
+            path: ['reference_sets', 'academic_vocab_pool'],
+            message: 'academic_vocab rows need reference_sets.academic_vocab_pool to map their theta to 0-100 (spec 4 §4)',
+        });
+    }
 });

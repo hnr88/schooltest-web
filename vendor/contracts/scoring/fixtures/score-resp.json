@@ -45,6 +45,13 @@
     "domain_score": 70,
     "provisional_cut": true
   },
+  "academic_vocab": {
+    "theta": 0.9,
+    "se": 0.61,
+    "domain_score": 61,
+    "items_scored": 12,
+    "provisional_transform": true
+  },
   "warnings": [
     {
       "code": "testlet_dependence_ignored",

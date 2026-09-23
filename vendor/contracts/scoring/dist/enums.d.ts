@@ -24,11 +24,13 @@ export declare const attributeNameSchema: z.ZodEnum<{
 }>;
 export type AttributeName = z.infer<typeof attributeNameSchema>;
 /**
- * The eight DISPLAY skills — the bars on screen (data contract §2.2, dashboard
+ * The nine DISPLAY skills — the bars on screen (data contract §2.2, dashboard
  * §1.1 / §5). The seven model attributes, each its own bar — `Vocab_A2`
  * (Everyday Vocabulary) and `Vocab_B1` (Classroom Vocabulary) are two skills,
- * never blended into one — plus `Critical`, the Section 3 graded score (data
- * contract §4), which is not an attribute.
+ * never blended into one — plus the two Rasch strands, which are NOT
+ * attributes: `Vocab_B2` (Academic Vocabulary, the 2G mini-scale administered
+ * immediately before Section 3, banded four ways) and `Critical`, the Section 3
+ * graded score (data contract §4).
  */
 export declare const displaySkillSchema: z.ZodEnum<{
     Decoding: "Decoding";
@@ -38,9 +40,21 @@ export declare const displaySkillSchema: z.ZodEnum<{
     Gist: "Gist";
     Detail: "Detail";
     Inference: "Inference";
+    Vocab_B2: "Vocab_B2";
     Critical: "Critical";
 }>;
 export type DisplaySkill = z.infer<typeof displaySkillSchema>;
+/**
+ * Which pooled Rasch strand a reading row held out of the CDM (`matrix: null`)
+ * feeds: `critical` — Section 3 (7A-7C), the exit gate — or `academic_vocab` —
+ * the Academic Vocabulary mini-scale (2G), administered immediately before it.
+ * Two strands, two thetas: an Academic Vocabulary answer never moves the gate.
+ */
+export declare const raschStrandSchema: z.ZodEnum<{
+    critical: "critical";
+    academic_vocab: "academic_vocab";
+}>;
+export type RaschStrand = z.infer<typeof raschStrandSchema>;
 /**
  * spec v2 §5.2 — FOUR bands off the posterior `prob` against the Crosswalk's
  * `label_rules` (secure >= .80, developing .50-.79, emerging .20-.49, not_yet
@@ -100,10 +114,10 @@ export declare const scoringModelTypeSchema: z.ZodEnum<{
 }>;
 export type ScoringModelType = z.infer<typeof scoringModelTypeSchema>;
 /** Which CDM an item loads on. `null` on stage 3 (spec v2 §3.1.1). */
-export declare const matrixIdSchema: z.ZodLiteral<1 | 2>;
+export declare const matrixIdSchema: z.ZodLiteral<2 | 1>;
 export type MatrixId = z.infer<typeof matrixIdSchema>;
 /** Doc 1 s.3.4 `stage` — receptive routing stage. */
-export declare const stageSchema: z.ZodLiteral<3 | 1 | 2>;
+export declare const stageSchema: z.ZodLiteral<2 | 3 | 1>;
 export type Stage = z.infer<typeof stageSchema>;
 /** Doc 1 s.3.15 `distractor_type` — the aggregation keys of spec v2 §5.7. */
 export declare const errorPatternTypeSchema: z.ZodEnum<{

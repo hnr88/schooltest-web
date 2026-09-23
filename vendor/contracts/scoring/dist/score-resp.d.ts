@@ -63,6 +63,22 @@ export declare const gateSchema: z.ZodUnion<readonly [z.ZodObject<{
     provisional_cut: z.ZodBoolean;
 }, z.core.$strict>]>;
 export type Gate = z.infer<typeof gateSchema>;
+/**
+ * spec 4 §4 — the Academic Vocabulary (2G) Rasch strand: its OWN theta and SE
+ * over the reached `academic_vocab` rows, the 0-100 domain score through the
+ * Academic pool's transform, and `items_scored`, which the worker checks against
+ * the rows it sent. OMITTED when no academic row was sent — like a matrix block
+ * that received no rows, a zero-evidence strand is never reported (so a theta
+ * with nothing behind it cannot exist). No band here: bands are Strapi's.
+ */
+export declare const academicVocabScoreSchema: z.ZodObject<{
+    theta: z.ZodNumber;
+    se: z.ZodNumber;
+    domain_score: z.ZodNumber;
+    items_scored: z.ZodNumber;
+    provisional_transform: z.ZodBoolean;
+}, z.core.$strict>;
+export type AcademicVocabScore = z.infer<typeof academicVocabScoreSchema>;
 /** spec v2 §2.6 — informative, never blocking; persisted for audit. */
 export declare const scoringWarningSchema: z.ZodObject<{
     code: z.ZodString;
@@ -76,7 +92,7 @@ export type ScoringWarning = z.infer<typeof scoringWarningSchema>;
  *
  * `matrix_1` / `matrix_2` / `scale_score` are optional because a matrix that
  * received zero reached items is OMITTED (spec v2 §2.3) — never reported as a
- * zero-evidence block.
+ * zero-evidence block. `academic_vocab` follows the same rule (spec 4 §4).
  */
 export declare const scoreResponseSchema: z.ZodObject<{
     schema_version: z.ZodLiteral<"score-resp/1">;
@@ -136,6 +152,13 @@ export declare const scoreResponseSchema: z.ZodObject<{
         domain_score: z.ZodNumber;
         provisional_cut: z.ZodBoolean;
     }, z.core.$strict>]>;
+    academic_vocab: z.ZodOptional<z.ZodObject<{
+        theta: z.ZodNumber;
+        se: z.ZodNumber;
+        domain_score: z.ZodNumber;
+        items_scored: z.ZodNumber;
+        provisional_transform: z.ZodBoolean;
+    }, z.core.$strict>>;
     warnings: z.ZodArray<z.ZodObject<{
         code: z.ZodString;
         detail: z.ZodString;

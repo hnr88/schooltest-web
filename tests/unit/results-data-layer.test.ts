@@ -233,7 +233,7 @@ describe('the diagnostic export read (GET /api/results/{id}/export?format=diagno
     get.mockResolvedValueOnce({ data: diagnosticExportFixture });
     const bundle = await fetchResultExport('res-fixture-0001');
     expect(bundle.overall.domain_score).toBe(74);
-    expect(Object.keys(bundle.skills)).toHaveLength(8);
+    expect(Object.keys(bundle.skills)).toHaveLength(9);
     expect(bundle.caveats.length).toBeGreaterThanOrEqual(1);
   });
 
@@ -245,11 +245,33 @@ describe('the diagnostic export read (GET /api/results/{id}/export?format=diagno
   });
 });
 
-describe('display-skills — the eight-tile mapping every screen uses', () => {
-  test('the canonical order is exactly the eight display skills — two vocabulary skills, no blend', () => {
+describe('display-skills — the nine-tile mapping every screen uses', () => {
+  test('the canonical order is exactly the nine display skills — Academic Vocabulary directly before Critical', () => {
     expect(DISPLAY_SKILL_ORDER).toEqual([
-      'Decoding', 'Vocab_A2', 'Grammar', 'Vocab_B1', 'Gist', 'Detail', 'Inference', 'Critical',
+      'Decoding', 'Vocab_A2', 'Grammar', 'Vocab_B1', 'Gist', 'Detail', 'Inference', 'Vocab_B2', 'Critical',
     ]);
+  });
+
+  test('Academic Vocabulary (Vocab_B2) is a banded tile read from `academic_vocab`, never from `attributes`', () => {
+    const view = resultViewSchema.parse(resultViewFixture);
+    const tiles = displaySkills(view);
+    const academic = tiles.find((t) => t.skill === 'Vocab_B2');
+
+    expect(academic).toEqual({ skill: 'Vocab_B2', domain_score: 61, status: 'developing', source: 'academic_vocab' });
+    expect(tiles.map((t) => t.skill).slice(-2)).toEqual(['Vocab_B2', 'Critical']);
+    expect(Object.keys(view.attributes)).not.toContain('Vocab_B2');
+    // A banded tile, not the gate: the gate stays Critical's alone.
+    expect(tiles.filter((t) => t.source === 'gate').map((t) => t.skill)).toEqual(['Critical']);
+  });
+
+  test('an Academic strand with no band or no score is not assessed — null, never 0', () => {
+    const base = resultViewSchema.parse(resultViewFixture);
+    const notReached = { domain_score: null, se: null, band: null, items_seen: 0, provisional_cut: true };
+    const noCuts = { ...base.academic_vocab, band: null };
+    for (const academic_vocab of [notReached, noCuts]) {
+      const tile = displaySkills({ ...base, academic_vocab }).find((t) => t.skill === 'Vocab_B2');
+      expect(tile).toEqual({ skill: 'Vocab_B2', domain_score: null, status: null, source: 'academic_vocab' });
+    }
   });
 
   test('Everyday and Classroom Vocabulary read their own attributes, Critical reads the gate, attributes map one-to-one', async () => {

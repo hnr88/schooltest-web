@@ -13,7 +13,8 @@
       "params": { "slip": 0.1, "guess": 0.1 },
       "anchor": true,
       "block_id": null,
-      "difficulty": -0.8
+      "difficulty": -0.8,
+      "rasch_strand": null
     },
     {
       "item_code": "RDG-2A-004",
@@ -25,7 +26,8 @@
       "params": { "slip": 0.12, "guess": 0.2 },
       "anchor": false,
       "block_id": null,
-      "difficulty": -0.3
+      "difficulty": -0.3,
+      "rasch_strand": null
     },
     {
       "item_code": "RDG-4B-011",
@@ -37,7 +39,8 @@
       "params": { "delta": [0.15, 0.3, 0.25, 0.1] },
       "anchor": true,
       "block_id": "RDG-PASSAGE-07",
-      "difficulty": 0.4
+      "difficulty": 0.4,
+      "rasch_strand": null
     },
     {
       "item_code": "RDG-7A-002",
@@ -49,7 +52,21 @@
       "params": null,
       "anchor": true,
       "block_id": "RDG-PASSAGE-12",
-      "difficulty": 1.1
+      "difficulty": 1.1,
+      "rasch_strand": "critical"
+    },
+    {
+      "item_code": "RDG-2G-105",
+      "score": 1,
+      "stage": 3,
+      "attribute_vector": null,
+      "matrix": null,
+      "model_type": "rasch",
+      "params": null,
+      "anchor": false,
+      "block_id": null,
+      "difficulty": 0.2,
+      "rasch_strand": "academic_vocab"
     }
   ],
   "reference_sets": {
@@ -81,6 +98,7 @@
       "items": [
         { "item_code": "RDG-1A-001", "difficulty": -0.8 },
         { "item_code": "RDG-2A-004", "difficulty": -0.3 },
+        { "item_code": "RDG-2G-105", "difficulty": 0.2 },
         { "item_code": "RDG-4B-011", "difficulty": 0.4 },
         { "item_code": "RDG-7A-002", "difficulty": 1.1 }
       ],
@@ -90,6 +108,10 @@
       "items": [{ "item_code": "RDG-7A-002", "difficulty": 1.1 }],
       "cut": 0.75,
       "provisional": true
+    },
+    "academic_vocab_pool": {
+      "items": [{ "item_code": "RDG-2G-105", "difficulty": 0.2 }],
+      "transform": { "kind": "linear", "a": 50, "b": 12 }
     }
   }
 }

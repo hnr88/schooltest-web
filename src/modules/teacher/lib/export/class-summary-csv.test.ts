@@ -81,6 +81,6 @@ describe('classSummaryCsv — edge case derived from the recorded roster', () =>
     expect(averages[0]).toEqual([csv.classAverage, '', '', '', '', '']);
     expect(averages[2]?.[1]).toBe(String(t2Roster.length));
     expect(table(records, csv.phases).map((record) => record.slice(1, 3))).toEqual(Array(4).fill(['0', '']));
-    expect(table(records, csv.subskills).map((record) => record[1])).toEqual(Array(8).fill(''));
+    expect(table(records, csv.subskills).map((record) => record[1])).toEqual(Array(9).fill(''));
   });
 });

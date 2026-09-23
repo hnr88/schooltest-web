@@ -1825,6 +1825,12 @@
       "not_yet": "masih membina kemahiran ini",
       "not_assessed": "tidak dinilai dalam sesi ini"
     },
+    "academicVocabBand": {
+      "not_yet": "Anda sedang membina kosa kata harian yang paling kerap Anda baca.",
+      "emerging": "Anda mengetahui banyak perkataan bilik darjah dan mula mempelajari perkataan yang lebih formal dalam teks sekolah.",
+      "developing": "Anda memahami banyak perkataan akademik yang digunakan merentas mata pelajaran Anda.",
+      "secure": "Anda boleh menangani perkataan akademik yang formal dalam teks yang mencabar merentas pelbagai mata pelajaran."
+    },
     "parentStrengthsLabel": "Kekuatan",
     "parentNextStepsLabel": "Langkah seterusnya",
     "parentPhaseLabel": "Fasa ACARA: {phase}",
@@ -1839,7 +1845,8 @@
       "Vocab_B1": "Kosa kata bilik darjah",
       "Gist": "Isi utama",
       "Detail": "Butiran",
-      "Inference": "Simpulan"
+      "Inference": "Simpulan",
+      "Vocab_B2": "Kosa kata akademik"
     },
     "parentSubskillStateNote": {
       "secure": "Anak anda menjawab bidang ini dengan baik dan konsisten sepanjang sesi ini.",
@@ -4785,6 +4792,7 @@
     "trendBestGain": "Penambahbaikan terbesar: {skill} +{delta} mata",
     "attrDecoding": "Penyahkodan",
     "attrVocabularyB1": "Kosa kata bilik darjah",
+    "attrVocabularyB2": "Kosa kata akademik",
     "attrGist": "Isi utama",
     "attrDetail": "Butiran",
     "attrInference": "Simpulan",
@@ -4968,12 +4976,14 @@
         "gist": "Memahami idea utama dan tujuan sesuatu teks",
         "detail": "Mencari fakta khusus dan maklumat yang dinyatakan",
         "inference": "Membaca yang tersirat untuk memahami maksud",
+        "vocabB2": "Mengetahui perkataan akademik formal yang digunakan merentas mata pelajaran",
         "critical": "Menilai niat, nada dan sudut pandangan penulis"
       },
       "attribute": {
         "decoding": "Penyahkodan",
         "vocabA2": "Kosa kata harian",
         "vocabB1": "Kosa kata bilik darjah",
+        "vocabB2": "Kosa kata akademik",
         "grammar": "Tatabahasa",
         "gist": "Isi utama",
         "detail": "Butiran",
@@ -6188,7 +6198,7 @@
         "sittingsSince": "{count} sejak {month}"
       },
       "subskillsTitle": "Subkemahiran membaca",
-      "subskillsDescription": "Prestasi {first} merentas lapan komponen membaca pada borang terkini",
+      "subskillsDescription": "Prestasi {first} merentas sembilan komponen membaca pada borang terkini",
       "subskills": {
         "deltaUp": "↑ +{points}",
         "deltaDown": "↓ −{points}",

@@ -1825,6 +1825,12 @@
       "not_yet": "아직 이 기술을 다지는 중입니다",
       "not_assessed": "이번 응시에서는 평가하지 않았습니다"
     },
+    "academicVocabBand": {
+      "not_yet": "가장 자주 읽는 일상 단어들을 익혀 가고 있어요.",
+      "emerging": "교실에서 쓰는 단어를 많이 알고 있고, 학교 글에 나오는 더 격식 있는 단어들을 익히기 시작했어요.",
+      "developing": "여러 과목에서 쓰이는 학술 어휘를 많이 이해하고 있어요.",
+      "secure": "여러 과목의 어려운 글에 나오는 격식 있는 학술 어휘를 잘 다룰 수 있어요."
+    },
     "parentStrengthsLabel": "강점",
     "parentNextStepsLabel": "다음 단계",
     "parentPhaseLabel": "ACARA 단계: {phase}",
@@ -1839,7 +1845,8 @@
       "Vocab_B1": "교실 어휘",
       "Gist": "핵심 내용 파악",
       "Detail": "세부 정보",
-      "Inference": "추론"
+      "Inference": "추론",
+      "Vocab_B2": "학술 어휘"
     },
     "parentSubskillStateNote": {
       "secure": "이번 응시 내내 이 영역들을 꾸준히 잘 답했습니다.",
@@ -4785,6 +4792,7 @@
     "trendBestGain": "가장 큰 향상: {skill} +{delta}점",
     "attrDecoding": "단어 해독",
     "attrVocabularyB1": "교실 어휘",
+    "attrVocabularyB2": "학술 어휘",
     "attrGist": "핵심 내용 파악",
     "attrDetail": "세부 정보",
     "attrInference": "추론",
@@ -4968,12 +4976,14 @@
         "gist": "글의 핵심 내용과 목적 파악하기",
         "detail": "구체적인 사실과 명시된 정보 찾기",
         "inference": "행간을 읽어 의미 추론하기",
+        "vocabB2": "여러 과목에서 쓰이는 격식 있는 학술 어휘 알기",
         "critical": "글쓴이의 의도, 어조, 관점 판단하기"
       },
       "attribute": {
         "decoding": "단어 해독",
         "vocabA2": "일상 어휘",
         "vocabB1": "교실 어휘",
+        "vocabB2": "학술 어휘",
         "grammar": "문법",
         "gist": "핵심 내용 파악",
         "detail": "세부 정보",
@@ -6188,7 +6198,7 @@
         "sittingsSince": "{month}부터 {count}회"
       },
       "subskillsTitle": "읽기 하위 기능",
-      "subskillsDescription": "최근 시험지에서 {first} 학생이 읽기의 여덟 가지 구성 요소에서 보인 수행",
+      "subskillsDescription": "최근 시험지에서 {first} 학생이 읽기의 아홉 가지 구성 요소에서 보인 수행",
       "subskills": {
         "deltaUp": "↑ +{points}",
         "deltaDown": "↓ −{points}",

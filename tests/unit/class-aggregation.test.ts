@@ -66,10 +66,10 @@ function withRoster(overrides: Array<Partial<ResultView> | null>): RosterRow[] {
 
 describe('weakestSkill — minimum among assessed banded skills only', () => {
   test('picks the lowest assessed score and never a not-assessed or gated skill', () => {
-    // The EIGHT TILES are the comparison set (dashboard §2): Decoding 92,
+    // The NINE TILES are the comparison set (dashboard §2): Decoding 92,
     // Everyday Vocabulary 90, Grammar 72, Classroom Vocabulary 54, Detail 74,
-    // Inference 80 — Gist is the not-assessed gap and Critical is the gated
-    // tile, both excluded. Classroom Vocabulary is its own skill, so its gap
+    // Inference 80, Academic Vocabulary 61 — Gist is the not-assessed gap and
+    // Critical is the gated tile, both excluded. Classroom Vocabulary is its own skill, so its gap
     // shows rather than hiding inside a blend.
     expect(weakestSkill(fixture)).toEqual({ skill: 'Vocab_B1', score: 54 });
   });
@@ -100,6 +100,7 @@ describe('weakestSkill — minimum among assessed banded skills only', () => {
       ...fixture,
       attributes,
       vocab: { a2: { domain_score: null }, b1: { domain_score: null } },
+      academic_vocab: { domain_score: null, se: null, band: null, items_seen: 0, provisional_cut: true },
     };
     expect(weakestSkill(nothing as ResultView)).toBeNull();
   });
@@ -198,7 +199,7 @@ describe('scoredCount — scored over the ROSTER total, never over students-with
 describe('subskillAverages — per-skill means with their own denominator', () => {
   test('averages each skill over the students who have it assessed, and counts the excluded', () => {
     const rows = withScores([
-      { overall: { ...fixture.overall, domain_score: 80 } }, // fixture attributes: Decoding 92, Vocab_A2 90, Grammar 72, Vocab_B1 54, Detail 74, Inference 80, gate 70
+      { overall: { ...fixture.overall, domain_score: 80 } }, // fixture attributes: Decoding 92, Vocab_A2 90, Grammar 72, Vocab_B1 54, Detail 74, Inference 80, Academic 61, gate 70
       { overall: { ...fixture.overall, domain_score: 60 }, attributes: { ...fixture.attributes, Grammar: { status: 'not_assessed', items_seen: 0 } } },
     ]);
     const averages = subskillAverages(rows);
@@ -208,7 +209,7 @@ describe('subskillAverages — per-skill means with their own denominator', () =
     // D13 per-function: Critical's gate score averages WITHIN itself…
     expect(bySkill.get('Critical')).toEqual({ skill: 'Critical', average: 70, assessed: 2, excluded: 0 });
     // …and the canonical order holds, Gist (never assessed) absent.
-    expect(averages.map((a) => a.skill)).toEqual(['Decoding', 'Vocab_A2', 'Grammar', 'Vocab_B1', 'Detail', 'Inference', 'Critical']);
+    expect(averages.map((a) => a.skill)).toEqual(['Decoding', 'Vocab_A2', 'Grammar', 'Vocab_B1', 'Detail', 'Inference', 'Vocab_B2', 'Critical']);
   });
 });
 

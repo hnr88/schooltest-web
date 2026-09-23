@@ -1825,6 +1825,12 @@
       "not_yet": "仍在培养这项技能",
       "not_assessed": "本次未评估"
     },
+    "academicVocabBand": {
+      "not_yet": "你正在积累最常读到的日常词汇。",
+      "emerging": "你认识很多课堂词汇，并开始学习学校课文中较正式的词语。",
+      "developing": "你能理解各门学科中用到的许多学术词汇。",
+      "secure": "你能从容应对各学科高难度文本中正式的学术词汇。"
+    },
     "parentStrengthsLabel": "优势",
     "parentNextStepsLabel": "下一步",
     "parentPhaseLabel": "ACARA 阶段：{phase}",
@@ -1839,7 +1845,8 @@
       "Vocab_B1": "课堂词汇",
       "Gist": "主旨理解",
       "Detail": "细节把握",
-      "Inference": "推理"
+      "Inference": "推理",
+      "Vocab_B2": "学术词汇"
     },
     "parentSubskillStateNote": {
       "secure": "孩子在本次作答中对这些方面始终答得很好。",
@@ -4775,6 +4782,7 @@
     "trendBestGain": "最大进步：{skill} +{delta} 分",
     "attrDecoding": "解码",
     "attrVocabularyB1": "课堂词汇",
+    "attrVocabularyB2": "学术词汇",
     "attrGist": "主旨理解",
     "attrDetail": "细节把握",
     "attrInference": "推理",
@@ -4958,12 +4966,14 @@
         "gist": "把握文本的主旨和目的",
         "detail": "查找具体事实和明确陈述的信息",
         "inference": "读出言外之意，推断含义",
+        "vocabB2": "理解各学科中使用的正式学术词汇",
         "critical": "判断作者的意图、语气和观点"
       },
       "attribute": {
         "decoding": "解码",
         "vocabA2": "日常词汇",
         "vocabB1": "课堂词汇",
+        "vocabB2": "学术词汇",
         "grammar": "语法",
         "gist": "主旨理解",
         "detail": "细节把握",
@@ -6178,7 +6188,7 @@
         "sittingsSince": "自 {month} 起 {count} 次"
       },
       "subskillsTitle": "阅读子技能",
-      "subskillsDescription": "{first} 在最新一次测试中阅读八个组成部分的表现",
+      "subskillsDescription": "{first} 在最新一次测试中阅读九个组成部分的表现",
       "subskills": {
         "deltaUp": "↑ +{points}",
         "deltaDown": "↓ −{points}",

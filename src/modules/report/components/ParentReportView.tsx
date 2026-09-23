@@ -5,7 +5,7 @@ import { useFormatter, useTranslations } from 'next-intl';
 import { Eyebrow } from '@/modules/design-system';
 import { ParentSubskillList } from '@/modules/report/components/ParentSubskillList';
 import { useAcaraPhaseText } from '@/modules/report/hooks/useAcaraPhaseText';
-import type { FamilyPreviewView } from '@/modules/report/lib/parent-view-model';
+import { familyPhraseKey, type FamilyPreviewView } from '@/modules/report/lib/parent-view-model';
 
 /**
  * E11-10/E11-14 — the family-facing rendering of the SAME result. The ONLY arm
@@ -60,7 +60,7 @@ export function ParentReportView({ view }: { view: FamilyPreviewView }) {
                 >
                   {t('familyStrengthLine', {
                     skill: t(`attributes.${strength.skill}`),
-                    phrase: t(`parentStatePhrase.${strength.state}`),
+                    phrase: t(familyPhraseKey(strength)),
                   })}
                 </li>
               ))}
@@ -84,7 +84,7 @@ export function ParentReportView({ view }: { view: FamilyPreviewView }) {
                     ? t('familyPracticeLine')
                     : t('familyFocusLine', {
                         skill: t(`attributes.${step.skill}`),
-                        phrase: t(`parentStatePhrase.${step.state}`),
+                        phrase: t(familyPhraseKey(step)),
                       })}
                 </li>
               ))}

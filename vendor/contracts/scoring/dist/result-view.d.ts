@@ -118,6 +118,29 @@ export declare const resultViewGateSchema: z.ZodObject<{
     provisional_cut: z.ZodBoolean;
 }, z.core.$strict>;
 export type ResultViewGate = z.infer<typeof resultViewGateSchema>;
+/**
+ * Academic Vocabulary (spec 4 §4) — the 2G Rasch strand, shaped like the gate
+ * but BANDED four ways (Beginning/Emerging/Developing/Consolidating are the
+ * `not_yet`/`emerging`/`developing`/`secure` band values). `band: null` means
+ * not assessed (or measured with no deployed cuts); `domain_score: null` means
+ * not reached — never a zero. `se` is the strand theta's SE in logits, carried
+ * for audit like the gate's theta: no client renders it. `provisional_cut` is
+ * true for the whole field test — the cuts are placeholders pending standard
+ * setting, and no screen may present the band as final while it is set.
+ */
+export declare const resultViewAcademicVocabSchema: z.ZodObject<{
+    domain_score: z.ZodNullable<z.ZodNumber>;
+    se: z.ZodNullable<z.ZodNumber>;
+    band: z.ZodNullable<z.ZodEnum<{
+        secure: "secure";
+        developing: "developing";
+        emerging: "emerging";
+        not_yet: "not_yet";
+    }>>;
+    items_seen: z.ZodNumber;
+    provisional_cut: z.ZodBoolean;
+}, z.core.$strict>;
+export type ResultViewAcademicVocab = z.infer<typeof resultViewAcademicVocabSchema>;
 /** One vocabulary strand's score: `a2` is Vocab_A2, `b1` is Vocab_B1 (spec v2 §6.3). */
 export declare const resultViewVocabStrandSchema: z.ZodObject<{
     domain_score: z.ZodNullable<z.ZodNumber>;
@@ -137,11 +160,11 @@ export declare const resultViewVocabSchema: z.ZodObject<{
 }, z.core.$strict>;
 export type ResultViewVocab = z.infer<typeof resultViewVocabSchema>;
 /**
- * One point on the trend chart (dashboard §1.1). Keyed by the eight DISPLAY
- * skills — `Vocab_A2` and `Vocab_B1` as two lines, `Critical` the Section 3
- * graded score — and exhaustive: every sitting reports all eight, `null` where
- * that sitting did not assess the skill. A `null` is an absence; it is never
- * rendered as 0.
+ * One point on the trend chart (dashboard §1.1). Keyed by the nine DISPLAY
+ * skills — `Vocab_A2` and `Vocab_B1` as two lines, `Vocab_B2` the Academic
+ * Vocabulary strand score, `Critical` the Section 3 graded score — and
+ * exhaustive: every sitting reports all nine, `null` where that sitting did not
+ * assess the skill. A `null` is an absence; it is never rendered as 0.
  */
 export declare const resultHistoryPointSchema: z.ZodObject<{
     sat_at: z.ZodISODate;
@@ -154,6 +177,7 @@ export declare const resultHistoryPointSchema: z.ZodObject<{
         Gist: "Gist";
         Detail: "Detail";
         Inference: "Inference";
+        Vocab_B2: "Vocab_B2";
         Critical: "Critical";
     }>, z.ZodNullable<z.ZodNumber>>;
 }, z.core.$strict>;
@@ -242,6 +266,18 @@ export declare const resultViewSchema: z.ZodObject<{
         domain_score: z.ZodNullable<z.ZodNumber>;
         provisional_cut: z.ZodBoolean;
     }, z.core.$strict>;
+    academic_vocab: z.ZodObject<{
+        domain_score: z.ZodNullable<z.ZodNumber>;
+        se: z.ZodNullable<z.ZodNumber>;
+        band: z.ZodNullable<z.ZodEnum<{
+            secure: "secure";
+            developing: "developing";
+            emerging: "emerging";
+            not_yet: "not_yet";
+        }>>;
+        items_seen: z.ZodNumber;
+        provisional_cut: z.ZodBoolean;
+    }, z.core.$strict>;
     effort_valid: z.ZodNullable<z.ZodBoolean>;
     low_confidence: z.ZodNullable<z.ZodBoolean>;
     items_answered: z.ZodNumber;
@@ -324,6 +360,7 @@ export declare const resultViewSchema: z.ZodObject<{
             Gist: "Gist";
             Detail: "Detail";
             Inference: "Inference";
+            Vocab_B2: "Vocab_B2";
             Critical: "Critical";
         }>, z.ZodNullable<z.ZodNumber>>;
     }, z.core.$strict>>>;

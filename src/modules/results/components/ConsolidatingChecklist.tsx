@@ -14,6 +14,13 @@ import { cn } from '@/lib/utils';
  * `met = gate.passed === true` — null is NOT false, it is "Section 3 not
  * reached" (the same distinction the critical card renders).
  *
+ * Spec 4 (reading v6): Consolidating also requires Academic Vocabulary
+ * secure, so the Academic row sits after the four Section 2 rows and before
+ * the gate: `met = academic_vocab.band === "secure"`. Academic is a Rasch
+ * strand, not an attribute, so it reads `view.academic_vocab`, never
+ * `view.attributes`; a null band is "not assessed this sitting". Its band rests
+ * on provisional cuts (`provisional_cut`) like the phase itself.
+ *
  * When `acara_phase === "consolidating"` the checklist is replaced by the
  * meets-all-requirements banner.
  */
@@ -49,6 +56,9 @@ export function ConsolidatingChecklist({ view }: { view: ResultView }) {
     };
   });
 
+  const academic = view.academic_vocab;
+  const academicMet = academic.band === 'secure';
+
   return (
     <section data-slot="consolidating-checklist" aria-label={t('checklistHeading')} className="flex flex-col gap-2">
       <h2 className="text-caption font-bold uppercase tracking-wide text-muted-foreground">{t('checklistHeading')}</h2>
@@ -66,6 +76,19 @@ export function ConsolidatingChecklist({ view }: { view: ResultView }) {
             </span>
           </li>
         ))}
+        <li data-slot="checklist-row" data-row="Vocab_B2" data-met={academicMet} className="flex items-center justify-between gap-2">
+          <span className="min-w-0 truncate text-body-md font-semibold" title={t('attrVocabularyB2')}>
+            <span aria-hidden className={cn('mr-2', academicMet ? 'text-success-ink' : 'text-muted-foreground')}>
+              {academicMet ? '✓' : '○'}
+            </span>
+            {t('attrVocabularyB2')}
+          </span>
+          <span className="text-caption tabular-nums text-muted-foreground">
+            {academic.band === null || academic.domain_score === null
+              ? t('notAssessedThisSitting')
+              : t('scorePercent', { score: academic.domain_score })}
+          </span>
+        </li>
         <li data-slot="checklist-row" data-row="gate" data-met={view.gate.passed === true} className="flex items-center justify-between gap-2">
           <span className="min-w-0 truncate text-body-md font-semibold" title={t('exitGateSection3')}>
             <span aria-hidden className={cn('mr-2', view.gate.passed === true ? 'text-success-ink' : 'text-muted-foreground')}>

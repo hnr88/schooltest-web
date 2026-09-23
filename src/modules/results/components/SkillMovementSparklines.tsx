@@ -37,7 +37,7 @@ export function sparklineRows(view: ResultView): MovementRow[] {
 
   const rows: RowWithSort[] = [];
   for (const skill of DISPLAY_SKILL_ORDER) {
-    if (skill === 'Critical') continue; // ruling 4a: no movement row for the gate card
+    if (skill === 'Critical' || skill === 'Vocab_B2') continue; // no growth: the gate (ruling 4a), the Academic strand (spec 4 §4)
     const growth = growthOf(view, skill);
     if (growth === null) continue; // an unassessed skill has no movement to chart
     const group: 0 | 1 | 2 = growth.reliable && growth.value !== null && growth.value > 0 ? 0
@@ -64,8 +64,8 @@ export function sparklineRows(view: ResultView): MovementRow[] {
 
 type Growth = { reliable: boolean | null; value: number | null; display: string | null } | null;
 
-/** The seven attribute-backed skills only — Critical has no growth (ruling 4a). */
-function growthOf(view: ResultView, skill: Exclude<DisplaySkill, 'Critical'>): Growth {
+/** The seven attribute-backed skills only — Critical (ruling 4a) and Academic Vocabulary have no growth. */
+function growthOf(view: ResultView, skill: Exclude<DisplaySkill, 'Critical' | 'Vocab_B2'>): Growth {
   const attribute = view.attributes[skill];
   if (attribute === undefined || attribute.status === 'not_assessed') return null;
   return {
@@ -83,6 +83,7 @@ const SKILL_KEY: Record<DisplaySkill, string> = {
   Gist: 'skillGist',
   Detail: 'skillDetail',
   Inference: 'skillInference',
+  Vocab_B2: 'attrVocabularyB2',
   Critical: 'skillCritical',
 };
 

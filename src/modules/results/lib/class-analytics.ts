@@ -22,7 +22,7 @@ export interface SubskillAverage {
   excluded: number;
 }
 
-/** Per-skill mean of `domain_score` over students with THAT skill assessed, in canonical order over the eight display tiles. D13 PER-FUNCTION: Critical IS included here (each skill averages within itself, no cross-scale mixing) but counted NOWHERE else (see secureCounts). */
+/** Per-skill mean of `domain_score` over students with THAT skill assessed, in canonical order over the nine display tiles. D13 PER-FUNCTION: Critical IS included here (each skill averages within itself, no cross-scale mixing) but counted NOWHERE else (see secureCounts). */
 export function subskillAverages(rows: readonly ResultView[]): SubskillAverage[] {
   const tallies = new Map<DisplaySkill, { sum: number; assessed: number }>();
   for (const row of rows) {

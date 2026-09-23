@@ -30,6 +30,7 @@ export const DISPLAY_SKILLS = [
   'Gist',
   'Detail',
   'Inference',
+  'Vocab_B2',
   'Critical',
 ] as const satisfies readonly DisplaySkill[];
 

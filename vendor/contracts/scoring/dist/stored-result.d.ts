@@ -89,6 +89,38 @@ export declare const storedGateSchema: z.ZodUnion<readonly [z.ZodObject<{
 }, z.core.$strict>]>;
 export type StoredGate = z.infer<typeof storedGateSchema>;
 /**
+ * Academic Vocabulary as stored (spec 4 §4) — the 2G Rasch strand, stored the
+ * way the gate is, but BANDED instead of passed/failed:
+ *
+ * - not reached (or an incomplete attempt withheld) is the not-assessed object,
+ *   never a zero;
+ * - reached carries R's theta and SE (logits, audit), the provisional-linear
+ *   domain score, the evidence count, and the four-step band Strapi cut from the
+ *   DOMAIN SCORE with the active Crosswalk's provisional Academic cuts (it has no
+ *   posterior, so the .20/.50/.80 posterior cuts never apply). `band` is null
+ *   only when the active Crosswalk carries no Academic cuts: measured, not
+ *   banded — a band is never guessed. `provisional_cut` stays true until
+ *   standard setting replaces the placeholder cuts.
+ */
+export declare const storedAcademicVocabSchema: z.ZodUnion<readonly [z.ZodObject<{
+    status: z.ZodLiteral<"not_assessed">;
+    insufficient_evidence: z.ZodOptional<z.ZodBoolean>;
+    items_seen: z.ZodNumber;
+}, z.core.$strict>, z.ZodObject<{
+    theta: z.ZodNumber;
+    se: z.ZodNumber;
+    domain_score: z.ZodNumber;
+    items_seen: z.ZodNumber;
+    band: z.ZodNullable<z.ZodEnum<{
+        secure: "secure";
+        developing: "developing";
+        emerging: "emerging";
+        not_yet: "not_yet";
+    }>>;
+    provisional_cut: z.ZodBoolean;
+}, z.core.$strict>]>;
+export type StoredAcademicVocab = z.infer<typeof storedAcademicVocabSchema>;
+/**
  * One vocabulary strand as stored (spec v2 §5.4 — "store both strand statuses
  * too"). An unreached strand is the not-assessed object, never a zero.
  */
@@ -201,6 +233,23 @@ export declare const storedResultSchema: z.ZodObject<{
         domain_score: z.ZodNumber;
         provisional_cut: z.ZodBoolean;
     }, z.core.$strict>]>;
+    academic_vocab: z.ZodOptional<z.ZodUnion<readonly [z.ZodObject<{
+        status: z.ZodLiteral<"not_assessed">;
+        insufficient_evidence: z.ZodOptional<z.ZodBoolean>;
+        items_seen: z.ZodNumber;
+    }, z.core.$strict>, z.ZodObject<{
+        theta: z.ZodNumber;
+        se: z.ZodNumber;
+        domain_score: z.ZodNumber;
+        items_seen: z.ZodNumber;
+        band: z.ZodNullable<z.ZodEnum<{
+            secure: "secure";
+            developing: "developing";
+            emerging: "emerging";
+            not_yet: "not_yet";
+        }>>;
+        provisional_cut: z.ZodBoolean;
+    }, z.core.$strict>]>>;
     vocab: z.ZodObject<{
         a2: z.ZodUnion<readonly [z.ZodObject<{
             domain_score: z.ZodNumber;

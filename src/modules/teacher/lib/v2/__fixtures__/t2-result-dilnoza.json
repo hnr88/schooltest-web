@@ -26,6 +26,13 @@
     "domain_score": null,
     "provisional_cut": true
   },
+  "academic_vocab": {
+    "domain_score": null,
+    "se": null,
+    "band": null,
+    "items_seen": 0,
+    "provisional_cut": true
+  },
   "effort_valid": true,
   "low_confidence": null,
   "items_answered": 39,
@@ -171,6 +178,7 @@
         "Gist": null,
         "Detail": null,
         "Inference": null,
+        "Vocab_B2": null,
         "Critical": null
       }
     },
@@ -185,6 +193,7 @@
         "Gist": null,
         "Detail": null,
         "Inference": null,
+        "Vocab_B2": null,
         "Critical": null
       }
     },
@@ -199,6 +208,7 @@
         "Gist": null,
         "Detail": null,
         "Inference": null,
+        "Vocab_B2": null,
         "Critical": null
       }
     },
@@ -213,6 +223,7 @@
         "Gist": null,
         "Detail": null,
         "Inference": null,
+        "Vocab_B2": null,
         "Critical": null
       }
     },
@@ -227,6 +238,7 @@
         "Gist": null,
         "Detail": null,
         "Inference": null,
+        "Vocab_B2": null,
         "Critical": null
       }
     },
@@ -241,6 +253,7 @@
         "Gist": 84,
         "Detail": null,
         "Inference": null,
+        "Vocab_B2": null,
         "Critical": null
       }
     },
@@ -255,6 +268,7 @@
         "Gist": 90,
         "Detail": 90,
         "Inference": 90,
+        "Vocab_B2": null,
         "Critical": 86
       }
     },
@@ -269,6 +283,7 @@
         "Gist": 28,
         "Detail": 25,
         "Inference": 49,
+        "Vocab_B2": null,
         "Critical": null
       }
     }

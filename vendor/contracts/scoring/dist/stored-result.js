@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.storedResultSchema = exports.storedVocabSchema = exports.storedVocabStrandSchema = exports.storedGateSchema = exports.storedOverallSchema = exports.storedAttributeSchema = exports.storedAttributeScoredSchema = exports.errorPatternSchema = void 0;
+exports.storedResultSchema = exports.storedVocabSchema = exports.storedVocabStrandSchema = exports.storedAcademicVocabSchema = exports.storedGateSchema = exports.storedOverallSchema = exports.storedAttributeSchema = exports.storedAttributeScoredSchema = exports.errorPatternSchema = void 0;
 /**
  * The stored Result — what the worker writes after validation (spec v2 §5.1).
  *
@@ -61,6 +61,31 @@ exports.storedGateSchema = zod_1.z.union([
     }),
 ]);
 /**
+ * Academic Vocabulary as stored (spec 4 §4) — the 2G Rasch strand, stored the
+ * way the gate is, but BANDED instead of passed/failed:
+ *
+ * - not reached (or an incomplete attempt withheld) is the not-assessed object,
+ *   never a zero;
+ * - reached carries R's theta and SE (logits, audit), the provisional-linear
+ *   domain score, the evidence count, and the four-step band Strapi cut from the
+ *   DOMAIN SCORE with the active Crosswalk's provisional Academic cuts (it has no
+ *   posterior, so the .20/.50/.80 posterior cuts never apply). `band` is null
+ *   only when the active Crosswalk carries no Academic cuts: measured, not
+ *   banded — a band is never guessed. `provisional_cut` stays true until
+ *   standard setting replaces the placeholder cuts.
+ */
+exports.storedAcademicVocabSchema = zod_1.z.union([
+    core_1.notAssessedSchema,
+    zod_1.z.strictObject({
+        theta: core_1.thetaSchema,
+        se: core_1.standardErrorSchema,
+        domain_score: core_1.domainScoreSchema,
+        items_seen: core_1.itemsSeenSchema,
+        band: enums_1.assessedBandSchema.nullable(),
+        provisional_cut: zod_1.z.boolean(),
+    }),
+]);
+/**
  * One vocabulary strand as stored (spec v2 §5.4 — "store both strand statuses
  * too"). An unreached strand is the not-assessed object, never a zero.
  */
@@ -96,6 +121,12 @@ exports.storedResultSchema = zod_1.z.strictObject({
     attributes: zod_1.z.partialRecord(enums_1.attributeNameSchema, exports.storedAttributeSchema),
     overall: exports.storedOverallSchema,
     gate: exports.storedGateSchema,
+    /**
+     * OPTIONAL only because rows scored before spec 4 have no value in this
+     * column; every row written since carries it (the not-assessed object when the
+     * strand was not reached). Kept out of `vocab`, which is the two CDM strands.
+     */
+    academic_vocab: exports.storedAcademicVocabSchema.optional(),
     vocab: exports.storedVocabSchema,
     error_patterns: zod_1.z.array(exports.errorPatternSchema),
     effort_valid: zod_1.z.boolean(),

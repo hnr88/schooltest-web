@@ -21,6 +21,7 @@ exports.DISPLAY_SKILLS = [
     'Gist',
     'Detail',
     'Inference',
+    'Vocab_B2',
     'Critical',
 ];
 /** memo §2 — Matrix 1 (DINA, linear hierarchy Decoding -> Vocab_A2 -> Grammar). */

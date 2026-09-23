@@ -16,6 +16,8 @@ import { runSql } from './helpers/auth-db';
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
+// The seven modelled attribute rows; spec 4's Academic Vocabulary strand row follows them.
+const CDM_ROWS = '[data-slot="report-attribute-row"]:not([data-attribute="Vocab_B2"])';
 const TEACHER = fixtureTeacherCredentials();
 
 function teacherResult(label: string, condition: string): string {
@@ -175,13 +177,13 @@ test.describe('task 79: report module vs live C-4 payloads', () => {
     await signIn(page);
     await page.goto(`/en/dashboard/reports/${NONE}`);
 
-    const rows = page.locator('[data-slot="report-attribute-row"]');
+    const rows = page.locator(CDM_ROWS);
     await expect(rows).toHaveCount(7);
     for (const r of await rows.all()) {
       await expect(r).toHaveAttribute('data-state', 'not_assessed');
     }
     await expect(page.locator('[data-slot="report-attribute-probability"]')).toHaveCount(0);
-    await expect(page.locator('[data-slot="report-attribute-not-assessed-note"]')).toHaveCount(7);
+    await expect(page.locator(`${CDM_ROWS} [data-slot="report-attribute-not-assessed-note"]`)).toHaveCount(7);
 
     const panel = page.locator('[data-slot="report-attributes"]');
     await expect(panel.getByText(/[0-9]+%/)).toHaveCount(0);
@@ -206,7 +208,7 @@ test.describe('task 79: report module vs live C-4 payloads', () => {
     await expect(page.locator('[data-slot="report-display-label-value"]')).toHaveText(
       'Critical Reader',
     );
-    const rows = page.locator('[data-slot="report-attribute-row"]');
+    const rows = page.locator(CDM_ROWS);
     await expect(rows).toHaveCount(7);
     for (const r of await rows.all()) {
       await expect(r).toHaveAttribute('data-state', 'assessed');
@@ -247,6 +249,6 @@ test.describe('task 79: report module vs live C-4 payloads', () => {
     await expect(page.locator('[data-slot="report-view-toggle"]')).toHaveCount(0);
     await expect(page.locator('[data-slot="report-parent-view"]')).toHaveCount(0);
     // Teacher blocks stay fully rendered: the seven attribute rows.
-    await expect(page.locator('[data-slot="report-attribute-row"]')).toHaveCount(7);
+    await expect(page.locator(CDM_ROWS)).toHaveCount(7);
   });
 });

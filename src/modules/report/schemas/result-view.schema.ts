@@ -25,6 +25,7 @@ export {
   resultDestinationSchema,
   resultScopeSchema,
   resultStatusSchema,
+  resultViewAcademicVocabSchema,
   resultViewSchema,
   skillSchema,
 } from '@schooltest/scoring-contracts';
@@ -42,6 +43,7 @@ export type {
   ResultScope,
   ResultStatus,
   ResultView,
+  ResultViewAcademicVocab,
   ResultViewAttribute,
   ResultViewAttributeScored,
   ResultViewGate,

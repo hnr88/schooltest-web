@@ -35,7 +35,7 @@ export function apiBaseUrl(): string {
   return match[1].trim().replace(/^(['"])(.*)\1$/, '$2');
 }
 
-type Json = null | boolean | number | string | Json[] | { [key: string]: Json };
+export type Json = null | boolean | number | string | Json[] | { [key: string]: Json };
 
 function isObject(value: Json): value is { [key: string]: Json } {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -65,7 +65,7 @@ export function toSplitContract(value: Json): Json {
   return out;
 }
 
-function corsHeaders(origin: string): Record<string, string> {
+export function corsHeaders(origin: string): Record<string, string> {
   return {
     'access-control-allow-origin': origin,
     'access-control-allow-credentials': 'true',

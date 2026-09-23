@@ -53,6 +53,11 @@
       "status": "secure",
       "delta_display": "+15"
     },
+    "Vocab_B2": {
+      "domain_score": 61,
+      "status": "developing",
+      "delta_display": null
+    },
     "Critical": {
       "domain_score": 70,
       "gate_passed": false

@@ -1825,6 +1825,12 @@
       "not_yet": "vẫn đang xây dựng kỹ năng này",
       "not_assessed": "chưa được đánh giá trong lượt này"
     },
+    "academicVocabBand": {
+      "not_yet": "Bạn đang xây dựng vốn từ thông dụng mà bạn đọc thường xuyên nhất.",
+      "emerging": "Bạn biết nhiều từ vựng lớp học và đang bắt đầu làm quen với những từ trang trọng hơn trong các văn bản ở trường.",
+      "developing": "Bạn hiểu được nhiều từ vựng học thuật dùng trong các môn học của mình.",
+      "secure": "Bạn nắm vững các từ học thuật, trang trọng trong những văn bản khó ở nhiều môn học."
+    },
     "parentStrengthsLabel": "Điểm mạnh",
     "parentNextStepsLabel": "Bước tiếp theo",
     "parentPhaseLabel": "Giai đoạn ACARA: {phase}",
@@ -1839,7 +1845,8 @@
       "Vocab_B1": "Từ vựng lớp học",
       "Gist": "Ý chính",
       "Detail": "Chi tiết",
-      "Inference": "Suy luận"
+      "Inference": "Suy luận",
+      "Vocab_B2": "Từ vựng học thuật"
     },
     "parentSubskillStateNote": {
       "secure": "Con bạn trả lời tốt và đều đặn ở những mảng này trong suốt lượt làm bài.",
@@ -4794,6 +4801,7 @@
     "trendBestGain": "Cải thiện tốt nhất: {skill} +{delta} điểm",
     "attrDecoding": "Giải mã từ",
     "attrVocabularyB1": "Từ vựng lớp học",
+    "attrVocabularyB2": "Từ vựng học thuật",
     "attrGist": "Ý chính",
     "attrDetail": "Chi tiết",
     "attrInference": "Suy luận",
@@ -4977,12 +4985,14 @@
         "gist": "Nắm được ý chính và mục đích của văn bản",
         "detail": "Tìm các sự kiện cụ thể và thông tin được nêu",
         "inference": "Hiểu hàm ý để suy ra ý nghĩa của văn bản",
+        "vocabB2": "Hiểu các từ học thuật trang trọng dùng trong nhiều môn học",
         "critical": "Đánh giá ý định, giọng điệu và quan điểm của tác giả"
       },
       "attribute": {
         "decoding": "Giải mã từ",
         "vocabA2": "Từ vựng thông dụng",
         "vocabB1": "Từ vựng lớp học",
+        "vocabB2": "Từ vựng học thuật",
         "grammar": "Ngữ pháp",
         "gist": "Ý chính",
         "detail": "Chi tiết",
@@ -6197,7 +6207,7 @@
         "sittingsSince": "{count} lần từ {month}"
       },
       "subskillsTitle": "Các kỹ năng đọc thành phần",
-      "subskillsDescription": "Kết quả của {first} ở tám thành phần của kỹ năng đọc trong bài gần nhất",
+      "subskillsDescription": "Kết quả của {first} ở chín thành phần của kỹ năng đọc trong bài gần nhất",
       "subskills": {
         "deltaUp": "↑ +{points}",
         "deltaDown": "↓ −{points}",

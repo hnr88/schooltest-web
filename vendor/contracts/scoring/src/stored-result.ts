@@ -83,6 +83,33 @@ export const storedGateSchema = z.union([
 export type StoredGate = z.infer<typeof storedGateSchema>;
 
 /**
+ * Academic Vocabulary as stored (spec 4 §4) — the 2G Rasch strand, stored the
+ * way the gate is, but BANDED instead of passed/failed:
+ *
+ * - not reached (or an incomplete attempt withheld) is the not-assessed object,
+ *   never a zero;
+ * - reached carries R's theta and SE (logits, audit), the provisional-linear
+ *   domain score, the evidence count, and the four-step band Strapi cut from the
+ *   DOMAIN SCORE with the active Crosswalk's provisional Academic cuts (it has no
+ *   posterior, so the .20/.50/.80 posterior cuts never apply). `band` is null
+ *   only when the active Crosswalk carries no Academic cuts: measured, not
+ *   banded — a band is never guessed. `provisional_cut` stays true until
+ *   standard setting replaces the placeholder cuts.
+ */
+export const storedAcademicVocabSchema = z.union([
+  notAssessedSchema,
+  z.strictObject({
+    theta: thetaSchema,
+    se: standardErrorSchema,
+    domain_score: domainScoreSchema,
+    items_seen: itemsSeenSchema,
+    band: assessedBandSchema.nullable(),
+    provisional_cut: z.boolean(),
+  }),
+]);
+export type StoredAcademicVocab = z.infer<typeof storedAcademicVocabSchema>;
+
+/**
  * One vocabulary strand as stored (spec v2 §5.4 — "store both strand statuses
  * too"). An unreached strand is the not-assessed object, never a zero.
  */
@@ -122,6 +149,12 @@ export const storedResultSchema = z.strictObject({
   attributes: z.partialRecord(attributeNameSchema, storedAttributeSchema),
   overall: storedOverallSchema,
   gate: storedGateSchema,
+  /**
+   * OPTIONAL only because rows scored before spec 4 have no value in this
+   * column; every row written since carries it (the not-assessed object when the
+   * strand was not reached). Kept out of `vocab`, which is the two CDM strands.
+   */
+  academic_vocab: storedAcademicVocabSchema.optional(),
   vocab: storedVocabSchema,
   error_patterns: z.array(errorPatternSchema),
   effort_valid: z.boolean(),

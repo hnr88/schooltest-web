@@ -221,3 +221,84 @@ describe('overall transform — one field, two kinds (data contract §2.1)', () 
     expect(withTransform({ a: 50, b: 12 }).success).toBe(false);
   });
 });
+
+describe('spec 4 — the Academic Vocabulary (2G) Rasch strand on the wire', () => {
+  const academicRow = (body: any) => body.responses.find((row: any) => row.rasch_strand === 'academic_vocab');
+
+  it('rejects a matrix row that names a Rasch strand', () => {
+    const body = broken(scoreReqFixture);
+    body.responses[0].rasch_strand = 'critical';
+    expect(scoreRequestSchema.safeParse(body).success).toBe(false);
+  });
+
+  it('rejects a held-out (matrix null) row with no strand — it would silently pool into the gate', () => {
+    const body = broken(scoreReqFixture);
+    academicRow(body).rasch_strand = null;
+    const parsed = scoreRequestSchema.safeParse(body);
+    expect(parsed.success).toBe(false);
+    expect(parsed.error?.issues.some((issue) => issue.path.includes('rasch_strand'))).toBe(true);
+  });
+
+  it('rejects an unknown strand', () => {
+    const body = broken(scoreReqFixture);
+    academicRow(body).rasch_strand = 'vocabulary';
+    expect(scoreRequestSchema.safeParse(body).success).toBe(false);
+  });
+
+  it('rejects academic rows sent without an academic_vocab_pool', () => {
+    const body = broken(scoreReqFixture);
+    delete body.reference_sets.academic_vocab_pool;
+    const parsed = scoreRequestSchema.safeParse(body);
+    expect(parsed.success).toBe(false);
+    expect(parsed.error?.issues[0]?.path).toEqual(['reference_sets', 'academic_vocab_pool']);
+  });
+
+  it('accepts a request with no academic rows and no pool — a registry from before the strand', () => {
+    const body = broken(scoreReqFixture);
+    body.responses = body.responses.filter((row: any) => row.rasch_strand !== 'academic_vocab');
+    delete body.reference_sets.academic_vocab_pool;
+    expect(scoreRequestSchema.safeParse(body).success).toBe(true);
+  });
+
+  it('rejects a zero-evidence academic_vocab block — an unreached strand is OMITTED', () => {
+    const body = broken(scoreRespFixture);
+    body.academic_vocab.items_scored = 0;
+    expect(scoreResponseSchema.safeParse(body).success).toBe(false);
+    delete body.academic_vocab;
+    expect(scoreResponseSchema.safeParse(body).success).toBe(true);
+  });
+
+  it('rejects a band on the R block — bands are Strapi\'s', () => {
+    const body = broken(scoreRespFixture);
+    body.academic_vocab.band = 'secure';
+    expect(scoreResponseSchema.safeParse(body).success).toBe(false);
+  });
+
+  it('never accepts Vocab_B2 as an attribute posterior', () => {
+    const body = broken(scoreRespFixture);
+    body.attribute_posteriors.Vocab_B2 = { prob: 0.9, prob_se: 0.05, items_seen: 12 };
+    body.attribute_scores.Vocab_B2 = { domain_score: 61, se: 4 };
+    expect(scoreResponseSchema.safeParse(body).success).toBe(false);
+  });
+
+  it('the stored strand is the not-assessed object or the banded claim; a stored band is one of the four', () => {
+    const body = broken(storedResultFixture);
+    body.academic_vocab = { status: 'not_assessed', items_seen: 0 };
+    expect(storedResultSchema.safeParse(body).success).toBe(true);
+    body.academic_vocab = { theta: 0.9, se: 0.6, domain_score: 61, items_seen: 12, band: 'Developing', provisional_cut: true };
+    expect(storedResultSchema.safeParse(body).success).toBe(false);
+    delete body.academic_vocab;
+    expect(storedResultSchema.safeParse(body).success, 'rows scored before spec 4 carry no strand').toBe(true);
+  });
+
+  it('the view always carries academic_vocab, and never as a zero-from-nothing', () => {
+    const view = broken(resultViewFixture);
+    delete view.academic_vocab;
+    expect(resultViewSchema.safeParse(view).success).toBe(false);
+    const unassessed = broken(resultViewFixture);
+    unassessed.academic_vocab = { domain_score: null, se: null, band: null, items_seen: 0, provisional_cut: true };
+    expect(resultViewSchema.safeParse(unassessed).success).toBe(true);
+    unassessed.academic_vocab.theta = 0.9;
+    expect(resultViewSchema.safeParse(unassessed).success, 'no theta on the view').toBe(false);
+  });
+});

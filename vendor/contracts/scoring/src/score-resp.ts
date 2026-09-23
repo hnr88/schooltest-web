@@ -121,6 +121,23 @@ export const gateSchema = z.union([
 ]);
 export type Gate = z.infer<typeof gateSchema>;
 
+/**
+ * spec 4 §4 — the Academic Vocabulary (2G) Rasch strand: its OWN theta and SE
+ * over the reached `academic_vocab` rows, the 0-100 domain score through the
+ * Academic pool's transform, and `items_scored`, which the worker checks against
+ * the rows it sent. OMITTED when no academic row was sent — like a matrix block
+ * that received no rows, a zero-evidence strand is never reported (so a theta
+ * with nothing behind it cannot exist). No band here: bands are Strapi's.
+ */
+export const academicVocabScoreSchema = z.strictObject({
+  theta: thetaSchema,
+  se: standardErrorSchema,
+  domain_score: domainScoreSchema,
+  items_scored: itemCountSchema.min(1),
+  provisional_transform: z.boolean(),
+});
+export type AcademicVocabScore = z.infer<typeof academicVocabScoreSchema>;
+
 /** spec v2 §2.6 — informative, never blocking; persisted for audit. */
 export const scoringWarningSchema = z.strictObject({
   code: nonEmptyString,
@@ -135,7 +152,7 @@ export type ScoringWarning = z.infer<typeof scoringWarningSchema>;
  *
  * `matrix_1` / `matrix_2` / `scale_score` are optional because a matrix that
  * received zero reached items is OMITTED (spec v2 §2.3) — never reported as a
- * zero-evidence block.
+ * zero-evidence block. `academic_vocab` follows the same rule (spec 4 §4).
  */
 export const scoreResponseSchema = z
   .strictObject({
@@ -150,6 +167,7 @@ export const scoreResponseSchema = z
     attribute_scores: z.partialRecord(attributeNameSchema, attributeScoreSchema),
     scale_score: scaleScoreSchema.optional(),
     gate: gateSchema,
+    academic_vocab: academicVocabScoreSchema.optional(),
     warnings: z.array(scoringWarningSchema),
   })
   .superRefine((body, ctx) => {

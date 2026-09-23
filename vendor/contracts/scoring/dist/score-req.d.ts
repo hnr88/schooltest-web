@@ -25,14 +25,17 @@ export type ItemParams = z.infer<typeof itemParamsSchema>;
  *
  * The cross-field rules are memo §1 made unfalsifiable on the wire: stage 3 is
  * held out of the CDM, so it is exactly the rows with no matrix and no Q-vector,
- * and a Q-vector's width is fixed by its matrix.
+ * and a Q-vector's width is fixed by its matrix. A row held out of the CDM names
+ * the Rasch strand it feeds (`rasch_strand`) — Section 3's gate or the Academic
+ * Vocabulary mini-scale — so the two stage-3 strands can never be pooled into one
+ * theta by accident; a matrix row names none.
  */
 export declare const scoreRequestResponseSchema: z.ZodObject<{
     item_code: z.ZodString;
     score: z.ZodLiteral<0 | 1>;
-    stage: z.ZodLiteral<3 | 1 | 2>;
+    stage: z.ZodLiteral<2 | 3 | 1>;
     attribute_vector: z.ZodNullable<z.ZodArray<z.ZodLiteral<0 | 1>>>;
-    matrix: z.ZodNullable<z.ZodLiteral<1 | 2>>;
+    matrix: z.ZodNullable<z.ZodLiteral<2 | 1>>;
     model_type: z.ZodEnum<{
         dina: "dina";
         gdina: "gdina";
@@ -42,6 +45,10 @@ export declare const scoreRequestResponseSchema: z.ZodObject<{
     anchor: z.ZodBoolean;
     block_id: z.ZodNullable<z.ZodString>;
     difficulty: z.ZodNullable<z.ZodNumber>;
+    rasch_strand: z.ZodNullable<z.ZodEnum<{
+        critical: "critical";
+        academic_vocab: "academic_vocab";
+    }>>;
 }, z.core.$strict>;
 export type ScoreRequestResponse = z.infer<typeof scoreRequestResponseSchema>;
 /** One reference item for a skill's expected domain score (memo §5, spec v2 §3.2). */
@@ -111,8 +118,31 @@ export declare const section3PoolSchema: z.ZodObject<{
 }, z.core.$strict>;
 export type Section3Pool = z.infer<typeof section3PoolSchema>;
 /**
+ * The Academic Vocabulary (2G) Rasch pool and the transform that maps its theta
+ * to 0-100 (spec 4 §4). Its own pool, never the Section 3 one. During the field
+ * test the transform is the registry's provisional linear placeholder, so R
+ * reports `academic_vocab.provisional_transform: true`.
+ */
+export declare const academicVocabPoolSchema: z.ZodObject<{
+    items: z.ZodArray<z.ZodObject<{
+        item_code: z.ZodString;
+        difficulty: z.ZodNumber;
+    }, z.core.$strict>>;
+    transform: z.ZodDiscriminatedUnion<[z.ZodObject<{
+        kind: z.ZodLiteral<"linear">;
+        a: z.ZodNumber;
+        b: z.ZodNumber;
+    }, z.core.$strict>, z.ZodObject<{
+        kind: z.ZodLiteral<"tcc">;
+    }, z.core.$strict>], "kind">;
+}, z.core.$strict>;
+export type AcademicVocabPool = z.infer<typeof academicVocabPoolSchema>;
+/**
  * spec v2 §3.2. `skills` is PARTIAL over the seven attributes: a skill with no
  * reference set yet simply has no key, and R omits it from both output blocks.
+ * `academic_vocab_pool` is OPTIONAL: a registry version from before the strand
+ * existed carries none, and a request that sends an `academic_vocab` row
+ * without it is refused below rather than scored against nothing.
  */
 export declare const referenceSetsSchema: z.ZodObject<{
     version: z.ZodString;
@@ -150,6 +180,19 @@ export declare const referenceSetsSchema: z.ZodObject<{
         cut: z.ZodNumber;
         provisional: z.ZodBoolean;
     }, z.core.$strict>;
+    academic_vocab_pool: z.ZodOptional<z.ZodObject<{
+        items: z.ZodArray<z.ZodObject<{
+            item_code: z.ZodString;
+            difficulty: z.ZodNumber;
+        }, z.core.$strict>>;
+        transform: z.ZodDiscriminatedUnion<[z.ZodObject<{
+            kind: z.ZodLiteral<"linear">;
+            a: z.ZodNumber;
+            b: z.ZodNumber;
+        }, z.core.$strict>, z.ZodObject<{
+            kind: z.ZodLiteral<"tcc">;
+        }, z.core.$strict>], "kind">;
+    }, z.core.$strict>>;
 }, z.core.$strict>;
 export type ReferenceSets = z.infer<typeof referenceSetsSchema>;
 /** spec v2 §3.3 — the versioned envelope. R answers 422 `schema_mismatch` to any other pair. */
@@ -160,9 +203,9 @@ export declare const scoreRequestSchema: z.ZodObject<{
     responses: z.ZodArray<z.ZodObject<{
         item_code: z.ZodString;
         score: z.ZodLiteral<0 | 1>;
-        stage: z.ZodLiteral<3 | 1 | 2>;
+        stage: z.ZodLiteral<2 | 3 | 1>;
         attribute_vector: z.ZodNullable<z.ZodArray<z.ZodLiteral<0 | 1>>>;
-        matrix: z.ZodNullable<z.ZodLiteral<1 | 2>>;
+        matrix: z.ZodNullable<z.ZodLiteral<2 | 1>>;
         model_type: z.ZodEnum<{
             dina: "dina";
             gdina: "gdina";
@@ -172,6 +215,10 @@ export declare const scoreRequestSchema: z.ZodObject<{
         anchor: z.ZodBoolean;
         block_id: z.ZodNullable<z.ZodString>;
         difficulty: z.ZodNullable<z.ZodNumber>;
+        rasch_strand: z.ZodNullable<z.ZodEnum<{
+            critical: "critical";
+            academic_vocab: "academic_vocab";
+        }>>;
     }, z.core.$strict>>;
     reference_sets: z.ZodObject<{
         version: z.ZodString;
@@ -209,6 +256,19 @@ export declare const scoreRequestSchema: z.ZodObject<{
             cut: z.ZodNumber;
             provisional: z.ZodBoolean;
         }, z.core.$strict>;
+        academic_vocab_pool: z.ZodOptional<z.ZodObject<{
+            items: z.ZodArray<z.ZodObject<{
+                item_code: z.ZodString;
+                difficulty: z.ZodNumber;
+            }, z.core.$strict>>;
+            transform: z.ZodDiscriminatedUnion<[z.ZodObject<{
+                kind: z.ZodLiteral<"linear">;
+                a: z.ZodNumber;
+                b: z.ZodNumber;
+            }, z.core.$strict>, z.ZodObject<{
+                kind: z.ZodLiteral<"tcc">;
+            }, z.core.$strict>], "kind">;
+        }, z.core.$strict>>;
     }, z.core.$strict>;
 }, z.core.$strict>;
 export type ScoreRequest = z.infer<typeof scoreRequestSchema>;

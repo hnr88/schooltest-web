@@ -42,7 +42,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": -1.2473
+        "difficulty": -1.2473,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-1A-002",
@@ -61,7 +62,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": 1.1436
+        "difficulty": 1.1436,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-1A-003",
@@ -80,7 +82,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": 0.5066
+        "difficulty": 0.5066,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-1A-004",
@@ -99,7 +102,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": -1.1045
+        "difficulty": -1.1045,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-1A-005",
@@ -118,7 +122,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": -0.5235
+        "difficulty": -0.5235,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-1A-006",
@@ -137,7 +142,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": 0.5207
+        "difficulty": 0.5207,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-1B-001",
@@ -156,7 +162,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": -0.1348
+        "difficulty": -0.1348,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-1B-002",
@@ -175,7 +182,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": 1.3204
+        "difficulty": 1.3204,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-1B-003",
@@ -194,7 +202,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": 0.4157
+        "difficulty": 0.4157,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-1B-004",
@@ -213,7 +222,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": -0.9186
+        "difficulty": -0.9186,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-1B-005",
@@ -232,7 +242,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": -1.8863
+        "difficulty": -1.8863,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-1B-006",
@@ -251,7 +262,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": -1.8248
+        "difficulty": -1.8248,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-2A-001",
@@ -270,7 +282,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": -0.5961
+        "difficulty": -0.5961,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-2A-002",
@@ -289,7 +302,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": 0.4587
+        "difficulty": 0.4587,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-2A-003",
@@ -308,7 +322,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": 1.3808
+        "difficulty": 1.3808,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-2A-004",
@@ -327,7 +342,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": -1.3544
+        "difficulty": -1.3544,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-2A-005",
@@ -346,7 +362,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": -0.7256
+        "difficulty": -0.7256,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-2B-001",
@@ -365,7 +382,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": -1.2341
+        "difficulty": -1.2341,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-2B-002",
@@ -384,7 +402,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": 0.6671
+        "difficulty": 0.6671,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-2B-003",
@@ -403,7 +422,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": -1.5066
+        "difficulty": -1.5066,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-2B-004",
@@ -422,7 +442,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": 0.9609
+        "difficulty": 0.9609,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-2B-005",
@@ -441,7 +462,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": 0.8659
+        "difficulty": 0.8659,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-2C-001",
@@ -460,7 +482,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": -1.2486
+        "difficulty": -1.2486,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-2C-002",
@@ -479,7 +502,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": 1.5633
+        "difficulty": 1.5633,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-2C-003",
@@ -498,7 +522,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": -1.1306
+        "difficulty": -1.1306,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-2C-004",
@@ -517,7 +542,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": -0.5764
+        "difficulty": -0.5764,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-2D-001",
@@ -536,7 +562,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": -0.0781
+        "difficulty": -0.0781,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-2D-002",
@@ -555,7 +582,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": 1.1368
+        "difficulty": 1.1368,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-2D-003",
@@ -574,7 +602,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": 0.3873
+        "difficulty": 0.3873,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-2D-004",
@@ -593,7 +622,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": 1.2528
+        "difficulty": 1.2528,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-3A-001",
@@ -612,7 +642,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": -1.9023
+        "difficulty": -1.9023,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-3A-002",
@@ -631,7 +662,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": -0.2832
+        "difficulty": -0.2832,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-3A-003",
@@ -650,7 +682,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": -1.0752
+        "difficulty": -1.0752,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-3A-004",
@@ -669,7 +702,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": 0.7442
+        "difficulty": 0.7442,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-3A-005",
@@ -688,7 +722,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": -0.2992
+        "difficulty": -0.2992,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-3A-006",
@@ -707,7 +742,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": 1.4733
+        "difficulty": 1.4733,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-3B-001",
@@ -726,7 +762,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": 0.0063
+        "difficulty": 0.0063,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-3B-002",
@@ -745,7 +782,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": 0.655
+        "difficulty": 0.655,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-3B-003",
@@ -764,7 +802,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": -1.2563
+        "difficulty": -1.2563,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-3B-004",
@@ -783,7 +822,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": -0.6162
+        "difficulty": -0.6162,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-3B-005",
@@ -802,7 +842,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": -0.8225
+        "difficulty": -0.8225,
+        "rasch_strand": null
       },
       {
         "item_code": "RDG-3B-006",
@@ -821,7 +862,8 @@
         },
         "anchor": true,
         "block_id": null,
-        "difficulty": 0.5329
+        "difficulty": 0.5329,
+        "rasch_strand": null
       }
     ],
     "reference_sets": {

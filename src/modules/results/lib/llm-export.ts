@@ -17,10 +17,11 @@ const ERROR_PATTERN_LABEL: Record<string, string> = {
   semantic_neighbour: 'Close in meaning',
 };
 
-/** The two vocabulary strands by their register names; every other skill key is already plain English. */
+/** The three vocabulary strands by their register names (spec 4 adds Academic); every other skill key is already plain English. */
 const SKILL_LABEL: Record<string, string> = {
   Vocab_A2: 'Everyday Vocabulary',
   Vocab_B1: 'Classroom Vocabulary',
+  Vocab_B2: 'Academic Vocabulary',
 };
 
 function skillLabel(skill: string): string {

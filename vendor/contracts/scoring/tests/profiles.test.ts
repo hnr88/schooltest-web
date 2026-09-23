@@ -55,7 +55,7 @@ describe('profile spaces', () => {
 });
 
 describe('enums', () => {
-  it('the eight display skills are the seven attributes plus Critical — two vocabulary skills, no blend', () => {
+  it('the nine display skills are the seven attributes plus the two Rasch strands — three vocabulary skills, no blend', () => {
     expect(DISPLAY_SKILLS).toEqual(displaySkillSchema.options);
     expect(DISPLAY_SKILLS).toEqual([
       'Decoding',
@@ -65,8 +65,11 @@ describe('enums', () => {
       'Gist',
       'Detail',
       'Inference',
+      'Vocab_B2',
       'Critical',
     ]);
+    // Spec 4: Academic Vocabulary (Vocab_B2) is a DISPLAY skill, never a CDM attribute.
+    expect(attributeNameSchema.options).not.toContain('Vocab_B2');
     // Everyday (Vocab_A2) and Classroom (Vocab_B1) are separate skills; there
     // is no single blended vocabulary skill on screen.
     expect(DISPLAY_SKILLS).not.toContain('Vocabulary');

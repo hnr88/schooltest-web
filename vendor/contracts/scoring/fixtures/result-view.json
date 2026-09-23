@@ -26,6 +26,13 @@
     "domain_score": 70,
     "provisional_cut": true
   },
+  "academic_vocab": {
+    "domain_score": 61,
+    "se": 0.61,
+    "band": "developing",
+    "items_seen": 12,
+    "provisional_cut": true
+  },
   "effort_valid": true,
   "low_confidence": false,
   "items_answered": 72,
@@ -138,6 +145,7 @@
         "Gist": 63,
         "Detail": 68,
         "Inference": 65,
+        "Vocab_B2": null,
         "Critical": null
       }
     },
@@ -152,6 +160,7 @@
         "Gist": null,
         "Detail": 74,
         "Inference": 80,
+        "Vocab_B2": 61,
         "Critical": 70
       }
     }

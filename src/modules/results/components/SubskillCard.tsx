@@ -28,6 +28,7 @@ const SKILL_KEY: Record<DisplaySkill, string> = {
   Gist: 'skillGist',
   Detail: 'skillDetail',
   Inference: 'skillInference',
+  Vocab_B2: 'attrVocabularyB2',
   Critical: 'skillCritical',
 };
 

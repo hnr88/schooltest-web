@@ -62,9 +62,13 @@ export function expectedKpis(rows: readonly RosterRow[]) {
   };
 }
 
-/** One subskill of one result, read from the contract blocks (the gate, else the attribute). */
+/** One subskill of one result, read from the contract blocks (the gate, the Academic strand, else the attribute). */
 function reading(result: ResultView, skill: DisplaySkill): { score: number | null; status: string | null } {
   if (skill === 'Critical') return { score: result.gate.domain_score, status: null };
+  if (skill === 'Vocab_B2') {
+    const { domain_score: score, band } = result.academic_vocab;
+    return score === null || band === null ? { score: null, status: null } : { score, status: band };
+  }
   const attribute = result.attributes[skill];
   if (attribute === undefined || attribute.status === 'not_assessed') return { score: null, status: null };
   return { score: attribute.domain_score, status: attribute.status };

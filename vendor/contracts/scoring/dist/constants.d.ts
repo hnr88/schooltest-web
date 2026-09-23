@@ -1,7 +1,7 @@
 /** Every model attribute, memo canonical order (Matrix 1 then Matrix 2). */
 export declare const ATTRIBUTE_NAMES: readonly ["Decoding", "Vocab_A2", "Grammar", "Vocab_B1", "Gist", "Detail", "Inference"];
 /** The bars on screen, dashboard §5 canonical order. */
-export declare const DISPLAY_SKILLS: readonly ["Decoding", "Vocab_A2", "Grammar", "Vocab_B1", "Gist", "Detail", "Inference", "Critical"];
+export declare const DISPLAY_SKILLS: readonly ["Decoding", "Vocab_A2", "Grammar", "Vocab_B1", "Gist", "Detail", "Inference", "Vocab_B2", "Critical"];
 /** memo §2 — Matrix 1 (DINA, linear hierarchy Decoding -> Vocab_A2 -> Grammar). */
 export declare const MATRIX_1_ATTRIBUTES: readonly ["Decoding", "Vocab_A2", "Grammar"];
 /** memo §3 — Matrix 2 (G-DINA, saturated). */

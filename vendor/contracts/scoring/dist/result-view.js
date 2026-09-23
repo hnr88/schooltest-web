@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resultViewSchema = exports.resultNarrativeSchema = exports.RESULT_HISTORY_MAX_POINTS = exports.resultHistoryPointSchema = exports.resultViewVocabSchema = exports.resultViewVocabStrandSchema = exports.resultViewGateSchema = exports.resultViewOverallSchema = exports.resultViewAttributeSchema = exports.resultViewAttributeScoredSchema = exports.resultViewReleaseStateSchema = void 0;
+exports.resultViewSchema = exports.resultNarrativeSchema = exports.RESULT_HISTORY_MAX_POINTS = exports.resultHistoryPointSchema = exports.resultViewVocabSchema = exports.resultViewVocabStrandSchema = exports.resultViewAcademicVocabSchema = exports.resultViewGateSchema = exports.resultViewOverallSchema = exports.resultViewAttributeSchema = exports.resultViewAttributeScoredSchema = exports.resultViewReleaseStateSchema = void 0;
 /**
  * `ResultView` v2 — the read model of GET /results/{documentId} (spec v2 §6.3).
  *
@@ -69,6 +69,23 @@ exports.resultViewGateSchema = zod_1.z.strictObject({
     domain_score: core_1.domainScoreSchema.nullable(),
     provisional_cut: zod_1.z.boolean(),
 });
+/**
+ * Academic Vocabulary (spec 4 §4) — the 2G Rasch strand, shaped like the gate
+ * but BANDED four ways (Beginning/Emerging/Developing/Consolidating are the
+ * `not_yet`/`emerging`/`developing`/`secure` band values). `band: null` means
+ * not assessed (or measured with no deployed cuts); `domain_score: null` means
+ * not reached — never a zero. `se` is the strand theta's SE in logits, carried
+ * for audit like the gate's theta: no client renders it. `provisional_cut` is
+ * true for the whole field test — the cuts are placeholders pending standard
+ * setting, and no screen may present the band as final while it is set.
+ */
+exports.resultViewAcademicVocabSchema = zod_1.z.strictObject({
+    domain_score: core_1.domainScoreSchema.nullable(),
+    se: core_1.standardErrorSchema.nullable(),
+    band: enums_1.assessedBandSchema.nullable(),
+    items_seen: core_1.itemCountSchema,
+    provisional_cut: zod_1.z.boolean(),
+});
 /** One vocabulary strand's score: `a2` is Vocab_A2, `b1` is Vocab_B1 (spec v2 §6.3). */
 exports.resultViewVocabStrandSchema = zod_1.z.strictObject({
     domain_score: core_1.domainScoreSchema.nullable(),
@@ -83,11 +100,11 @@ exports.resultViewVocabSchema = zod_1.z.strictObject({
     b1: exports.resultViewVocabStrandSchema,
 });
 /**
- * One point on the trend chart (dashboard §1.1). Keyed by the eight DISPLAY
- * skills — `Vocab_A2` and `Vocab_B1` as two lines, `Critical` the Section 3
- * graded score — and exhaustive: every sitting reports all eight, `null` where
- * that sitting did not assess the skill. A `null` is an absence; it is never
- * rendered as 0.
+ * One point on the trend chart (dashboard §1.1). Keyed by the nine DISPLAY
+ * skills — `Vocab_A2` and `Vocab_B1` as two lines, `Vocab_B2` the Academic
+ * Vocabulary strand score, `Critical` the Section 3 graded score — and
+ * exhaustive: every sitting reports all nine, `null` where that sitting did not
+ * assess the skill. A `null` is an absence; it is never rendered as 0.
  */
 exports.resultHistoryPointSchema = zod_1.z.strictObject({
     sat_at: zod_1.z.iso.date(),
@@ -152,6 +169,7 @@ exports.resultViewSchema = zod_1.z.strictObject({
     transitioning_attribute: core_1.nonEmptyString.nullable(),
     readiness: enums_1.readinessSchema.nullable(),
     gate: exports.resultViewGateSchema,
+    academic_vocab: exports.resultViewAcademicVocabSchema,
     effort_valid: zod_1.z.boolean().nullable(),
     low_confidence: zod_1.z.boolean().nullable(),
     items_answered: core_1.itemCountSchema,

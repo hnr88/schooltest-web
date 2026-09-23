@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.provisionalSchema = exports.cefrBandSchema = exports.readinessSchema = exports.resultDestinationSchema = exports.resultStatusSchema = exports.resultScopeSchema = exports.skillSchema = exports.errorPatternTypeSchema = exports.stageSchema = exports.matrixIdSchema = exports.scoringModelTypeSchema = exports.currentModelVersionSchema = exports.modelVersionSchema = exports.LEGACY_MODEL_VERSION = exports.LISTENING_MODEL_VERSION = exports.MODEL_VERSION = exports.assessedBandSchema = exports.bandSchema = exports.displaySkillSchema = exports.attributeNameSchema = void 0;
+exports.provisionalSchema = exports.cefrBandSchema = exports.readinessSchema = exports.resultDestinationSchema = exports.resultStatusSchema = exports.resultScopeSchema = exports.skillSchema = exports.errorPatternTypeSchema = exports.stageSchema = exports.matrixIdSchema = exports.scoringModelTypeSchema = exports.currentModelVersionSchema = exports.modelVersionSchema = exports.LEGACY_MODEL_VERSION = exports.LISTENING_MODEL_VERSION = exports.MODEL_VERSION = exports.assessedBandSchema = exports.bandSchema = exports.raschStrandSchema = exports.displaySkillSchema = exports.attributeNameSchema = void 0;
 /**
  * Every controlled vocabulary the scoring contract needs, in ONE place.
  *
@@ -26,11 +26,13 @@ exports.attributeNameSchema = zod_1.z.enum([
     'Inference',
 ]);
 /**
- * The eight DISPLAY skills — the bars on screen (data contract §2.2, dashboard
+ * The nine DISPLAY skills — the bars on screen (data contract §2.2, dashboard
  * §1.1 / §5). The seven model attributes, each its own bar — `Vocab_A2`
  * (Everyday Vocabulary) and `Vocab_B1` (Classroom Vocabulary) are two skills,
- * never blended into one — plus `Critical`, the Section 3 graded score (data
- * contract §4), which is not an attribute.
+ * never blended into one — plus the two Rasch strands, which are NOT
+ * attributes: `Vocab_B2` (Academic Vocabulary, the 2G mini-scale administered
+ * immediately before Section 3, banded four ways) and `Critical`, the Section 3
+ * graded score (data contract §4).
  */
 exports.displaySkillSchema = zod_1.z.enum([
     'Decoding',
@@ -40,8 +42,16 @@ exports.displaySkillSchema = zod_1.z.enum([
     'Gist',
     'Detail',
     'Inference',
+    'Vocab_B2',
     'Critical',
 ]);
+/**
+ * Which pooled Rasch strand a reading row held out of the CDM (`matrix: null`)
+ * feeds: `critical` — Section 3 (7A-7C), the exit gate — or `academic_vocab` —
+ * the Academic Vocabulary mini-scale (2G), administered immediately before it.
+ * Two strands, two thetas: an Academic Vocabulary answer never moves the gate.
+ */
+exports.raschStrandSchema = zod_1.z.enum(['critical', 'academic_vocab']);
 /**
  * spec v2 §5.2 — FOUR bands off the posterior `prob` against the Crosswalk's
  * `label_rules` (secure >= .80, developing .50-.79, emerging .20-.49, not_yet

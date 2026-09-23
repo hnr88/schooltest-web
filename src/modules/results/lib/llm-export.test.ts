@@ -27,6 +27,8 @@ const bundle = (a2: number | null, b1: number | null) =>
       Gist: { status: 'not_assessed', items_seen: 0 },
       Detail: { status: 'not_assessed', items_seen: 0 },
       Inference: { status: 'not_assessed', items_seen: 0 },
+      // Spec 4: the export follows the nine-skill enum — Academic Vocabulary before Critical.
+      Vocab_B2: { status: 'not_assessed', items_seen: 0 },
       Critical: { status: 'not_assessed', items_seen: 0 },
     },
     vocab: { a2: { domain_score: a2 }, b1: { domain_score: b1 } },
@@ -47,6 +49,8 @@ describe('renderStudentMarkdown — vocabulary strands by name', () => {
     const markdown = renderStudentMarkdown(bundle(80, null));
     expect(markdown).toContain('- Everyday Vocabulary: 80% (secure)');
     expect(markdown).toContain('- Classroom Vocabulary: not assessed this sitting');
+    expect(markdown).toContain('- Academic Vocabulary: not assessed this sitting');
+    expect(markdown).not.toContain('Vocab_B2');
     expect(markdown).toContain('- Everyday Vocabulary: 80%\n- Classroom Vocabulary: not assessed');
     expect(markdown).not.toMatch(/Vocab_A2|Vocab_B1|A2 strand|B1 strand/);
     expect(markdown).toContain('- Grammar: 40% (emerging)');

@@ -29,8 +29,9 @@ export declare const diagnosticExportSittingSchema: z.ZodObject<{
  * OMITTED when the Crosswalk describes no such skill, never synthesised.
  *
  * THREE variants, and do not tidy them back into two:
- * 1. Banded skill — the seven CDM display skills: score + posterior band + gated
- *    change.
+ * 1. Banded skill — the seven CDM display skills (score + posterior band + gated
+ *    change) and Academic Vocabulary (`Vocab_B2`, spec 4 §7: score + the band cut
+ *    from its domain score; it carries no growth, so `delta_display` is null).
  * 2. GATE skill (Critical Reading) — score + the pass/fail verdict, and
  *    DELIBERATELY no `status` band and no `delta_display` field (D13, task 30/35
  *    rulings): the gate sits outside the CDM with no posterior, so there is no
@@ -85,7 +86,7 @@ export declare const diagnosticExportHistoryPointSchema: z.ZodObject<{
     overall: z.ZodNullable<z.ZodNumber>;
 }, z.core.$strict>;
 /**
- * The full bundle. `skills` is exhaustive over the eight display skills so an
+ * The full bundle. `skills` is exhaustive over the nine display skills so an
  * unassessed skill is stated as unassessed rather than silently missing —
  * absence of a key reads as an oversight, the not-assessed object reads as a
  * measured fact. `caveats` is `.min(1)`: the single-sitting note is
@@ -130,6 +131,7 @@ export declare const diagnosticExportSchema: z.ZodObject<{
         Gist: "Gist";
         Detail: "Detail";
         Inference: "Inference";
+        Vocab_B2: "Vocab_B2";
         Critical: "Critical";
     }>, z.ZodUnion<readonly [z.ZodObject<{
         domain_score: z.ZodNumber;

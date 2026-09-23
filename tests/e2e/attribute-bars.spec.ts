@@ -79,11 +79,12 @@ test.describe('teacher report — attribute phase ladder, evidence counts and no
     const panel = page.locator('[data-slot="report-attributes"]');
     await expect(panel).toHaveAttribute('data-state', 'rows', { timeout: 20_000 });
 
+    // Spec 4: the Academic Vocabulary strand row (never a stored attribute) follows them.
     const rows = page.locator('[data-slot="report-attribute-row"]');
-    await expect(rows).toHaveCount(names.length);
+    await expect(rows).toHaveCount(names.length + 1);
     expect(
       await rows.evaluateAll((els) => els.map((el) => el.getAttribute('data-attribute'))),
-    ).toEqual(names);
+    ).toEqual([...names, 'Vocab_B2']);
 
     for (const name of names) {
       const entry = stored[name];

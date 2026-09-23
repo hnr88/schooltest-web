@@ -30,6 +30,7 @@ export const SKILL_LABEL_KEY: Readonly<Record<DisplaySkill, string>> = {
   Gist: 'skill.gist',
   Detail: 'skill.detail',
   Inference: 'skill.inference',
+  Vocab_B2: 'attribute.vocabB2',
   Critical: 'skill.critical',
 };
 
@@ -41,6 +42,7 @@ export const SKILL_BLURB_KEY: Readonly<Record<DisplaySkill, string>> = {
   Gist: 'skillBlurb.gist',
   Detail: 'skillBlurb.detail',
   Inference: 'skillBlurb.inference',
+  Vocab_B2: 'skillBlurb.vocabB2',
   Critical: 'skillBlurb.critical',
 };
 

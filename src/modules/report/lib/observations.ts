@@ -97,7 +97,11 @@ export function buildObservations(result: ResultView): ObservationsView {
     return { state: panel.state === 'not_applicable' ? 'not_applicable' : 'not_derived' };
   }
 
-  const assessed = panel.rows.filter((row): row is AssessedRow => row.state === 'assessed');
+  // The contrast and its evidence are the CDM layers' — the Academic Vocabulary
+  // strand row (spec 4) is no attribute and sits in neither layer.
+  const assessed = panel.rows.filter(
+    (row): row is AssessedRow => row.state === 'assessed' && row.name !== 'Vocab_B2',
+  );
 
   const observations = [
     contrastObservation(
