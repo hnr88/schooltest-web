@@ -527,7 +527,7 @@
     "recordSkillReading": "Đọc",
     "recordSkillWriting": "Viết",
     "recordVerdictMastered": "Thành thạo",
-    "recordVerdictEmerging": "Đang tiến bộ",
+    "recordVerdictEmerging": "Mới hình thành",
     "recordVerdictNotAssessed": "Chưa đánh giá",
     "recordRosterTitle": "Thành phần hàng danh sách",
     "recordCompletionLabel": "Số câu đã trả lời",
@@ -1720,7 +1720,7 @@
     },
     "legacyStatus": {
       "mastered": "Đã thành thạo",
-      "emerging": "Đang phát triển",
+      "emerging": "Mới hình thành",
       "not_mastered": "Chưa thành thạo",
       "not_assessed": "Chưa đánh giá"
     },
@@ -1833,13 +1833,13 @@
     "familyFocusLine": "Trọng tâm tiếp theo: {skill} — {phrase}",
     "familyPracticeLine": "Luyện đọc ngắn, thường xuyên ở nhà — đọc cùng nhau và trò chuyện về nội dung đã đọc — hỗ trợ mọi mảng.",
     "attributes": {
-      "Decoding": "Decoding",
+      "Decoding": "Giải mã từ",
       "Vocab_A2": "Từ vựng thông dụng",
-      "Grammar": "Grammar",
+      "Grammar": "Ngữ pháp",
       "Vocab_B1": "Từ vựng lớp học",
-      "Gist": "Gist",
-      "Detail": "Detail",
-      "Inference": "Inference"
+      "Gist": "Ý chính",
+      "Detail": "Chi tiết",
+      "Inference": "Suy luận"
     },
     "parentSubskillStateNote": {
       "secure": "Con bạn trả lời tốt và đều đặn ở những mảng này trong suốt lượt làm bài.",
@@ -2252,7 +2252,7 @@
       "formLabel": "Đề {code}",
       "printDate": "Ngày in: {date}",
       "masteryTitle": "Hồ sơ đọc của lớp",
-      "masteryDescription": "Mỗi lĩnh vực đọc được đánh dấu là đã thành thạo, đang phát triển, chưa thành thạo hoặc chưa đánh giá. Chọn một học sinh để xem hồ sơ của em.",
+      "masteryDescription": "Mỗi lĩnh vực đọc được đánh dấu là đã thành thạo, mới hình thành, chưa thành thạo hoặc chưa đánh giá. Chọn một học sinh để xem hồ sơ của em.",
       "groupsTitle": "Chia nhóm cả lớp",
       "groupsDescription": "Học sinh được chia nhóm theo lĩnh vực đọc đang kìm hãm các em, để cô thấy nên ghép em nào với em nào và lên kế hoạch hoạt động khác nhau cho từng nhóm. Chọn một học sinh để xem hồ sơ của em.",
       "groupCount": "{count} học sinh",
@@ -2272,7 +2272,7 @@
         "viewFullReport": "Xem báo cáo đầy đủ của {student}"
       },
       "areas": {
-        "R1": "Giải mã",
+        "R1": "Giải mã từ",
         "R2": "Từ vựng",
         "R3": "Ngữ pháp",
         "R4": "Ý chính",
@@ -2283,7 +2283,7 @@
       },
       "status": {
         "mastered": "Đã thành thạo",
-        "emerging": "Bắt đầu hình thành",
+        "emerging": "Mới hình thành",
         "not_mastered": "Chưa thành thạo",
         "not_assessed": "Chưa đánh giá",
         "secure": "Vững",
@@ -2324,7 +2324,7 @@
       "transitionSteady": "{area}: giữ nguyên ở mức {status}",
       "statusWord": {
         "mastered": "đã thành thạo",
-        "emerging": "đang phát triển",
+        "emerging": "mới hình thành",
         "not_mastered": "chưa thành thạo"
       },
       "notAssessedLine": "Chưa được đánh giá trong một hoặc cả hai bài kiểm tra: {areas}",
@@ -2875,7 +2875,7 @@
       "mastered": "Thành thạo",
       "notYet": "Chưa đạt",
       "subskill": {
-        "decoding": "Giải mã",
+        "decoding": "Giải mã từ",
         "grammar": "Ngữ pháp",
         "gist": "Ý chính",
         "detail": "Chi tiết",
@@ -4766,7 +4766,7 @@
     "skillListening": "Nghe",
     "skillSpeaking": "Nói",
     "skillWriting": "Viết",
-    "skillDecoding": "Giải mã",
+    "skillDecoding": "Giải mã từ",
     "skillVocabulary": "Từ vựng thông dụng",
     "skillGrammar": "Ngữ pháp",
     "skillGist": "Ý chính",
@@ -4777,7 +4777,7 @@
     "steady": "Ổn định",
     "bandSecure": "Vững",
     "bandDeveloping": "Đang phát triển",
-    "bandEmerging": "Bắt đầu hình thành",
+    "bandEmerging": "Mới hình thành",
     "bandNotYet": "Chưa đạt",
     "section3NotReached": "Chưa đến Phần 3",
     "movementHeading": "Thay đổi kể từ lần thi đầu tiên",
@@ -4792,7 +4792,7 @@
     "reliable": "đáng tin cậy",
     "withinError": "trong sai số",
     "trendBestGain": "Cải thiện tốt nhất: {skill} +{delta} điểm",
-    "attrDecoding": "Giải mã",
+    "attrDecoding": "Giải mã từ",
     "attrVocabularyB1": "Từ vựng lớp học",
     "attrGist": "Ý chính",
     "attrDetail": "Chi tiết",
@@ -4962,7 +4962,7 @@
         "consolidating": "Giai đoạn củng cố"
       },
       "skill": {
-        "decoding": "Giải mã",
+        "decoding": "Giải mã từ",
         "grammar": "Ngữ pháp",
         "gist": "Ý chính",
         "detail": "Chi tiết",
@@ -4980,7 +4980,7 @@
         "critical": "Đánh giá ý định, giọng điệu và quan điểm của tác giả"
       },
       "attribute": {
-        "decoding": "Giải mã",
+        "decoding": "Giải mã từ",
         "vocabA2": "Từ vựng thông dụng",
         "vocabB1": "Từ vựng lớp học",
         "grammar": "Ngữ pháp",
@@ -5041,7 +5041,7 @@
           "inference": "Đọc giữa các dòng để suy ra ý nghĩa."
         },
         "next": {
-          "decoding": "Luyện giải mã: nhận biết từ chính xác và trôi chảy.",
+          "decoding": "Luyện giải mã từ: nhận biết từ chính xác và trôi chảy.",
           "vocabA2": "Luyện từ vựng thông dụng: nghĩa của từ thường gặp trong ngữ cảnh.",
           "vocabB1": "Luyện từ vựng lớp học: nghĩa của từ ngữ các môn học trong ngữ cảnh.",
           "grammar": "Luyện ngữ pháp: cấu trúc câu và hình thái từ.",
@@ -5086,8 +5086,8 @@
         "today": "Hôm nay"
       },
       "phase": {
-        "beginning": "Khởi đầu",
-        "emerging": "Bắt đầu hình thành",
+        "beginning": "Bắt đầu",
+        "emerging": "Mới hình thành",
         "developing": "Đang phát triển",
         "consolidating": "Củng cố",
         "notSat": "Chưa làm bài"
@@ -5095,7 +5095,7 @@
       "band": {
         "secure": "Vững",
         "developing": "Đang phát triển",
-        "emerging": "Bắt đầu hình thành",
+        "emerging": "Mới hình thành",
         "notYet": "Chưa đạt"
       }
     },

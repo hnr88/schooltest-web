@@ -527,7 +527,7 @@
     "recordSkillReading": "읽기",
     "recordSkillWriting": "쓰기",
     "recordVerdictMastered": "숙달",
-    "recordVerdictEmerging": "발전 중",
+    "recordVerdictEmerging": "도입",
     "recordVerdictNotAssessed": "미평가",
     "recordRosterTitle": "명단 행 구성요소",
     "recordCompletionLabel": "답변한 문항",
@@ -1720,7 +1720,7 @@
     },
     "legacyStatus": {
       "mastered": "마스터",
-      "emerging": "발전 중",
+      "emerging": "도입",
       "not_mastered": "미달성",
       "not_assessed": "미평가"
     },
@@ -1833,13 +1833,13 @@
     "familyFocusLine": "다음에 집중할 영역: {skill} — {phrase}",
     "familyPracticeLine": "집에서 짧고 규칙적인 독서 연습 — 함께 책을 읽고 읽은 내용에 대해 이야기하기 — 이 모든 영역을 뒷받침합니다.",
     "attributes": {
-      "Decoding": "Decoding",
+      "Decoding": "단어 해독",
       "Vocab_A2": "일상 어휘",
-      "Grammar": "Grammar",
+      "Grammar": "문법",
       "Vocab_B1": "교실 어휘",
-      "Gist": "Gist",
-      "Detail": "Detail",
-      "Inference": "Inference"
+      "Gist": "핵심 내용 파악",
+      "Detail": "세부 정보",
+      "Inference": "추론"
     },
     "parentSubskillStateNote": {
       "secure": "이번 응시 내내 이 영역들을 꾸준히 잘 답했습니다.",
@@ -2243,7 +2243,7 @@
       "formLabel": "폼 {code}",
       "printDate": "인쇄일: {date}",
       "masteryTitle": "학급 읽기 프로필",
-      "masteryDescription": "각 읽기 영역은 마스터, 발전 중, 미달성 또는 아직 평가되지 않음으로 표시됩니다. 학생을 선택하면 개별 프로필을 볼 수 있습니다.",
+      "masteryDescription": "각 읽기 영역은 마스터, 도입, 미달성 또는 아직 평가되지 않음으로 표시됩니다. 학생을 선택하면 개별 프로필을 볼 수 있습니다.",
       "groupsTitle": "학급 그룹 나누기",
       "groupsDescription": "현재 가장 어려움을 겪고 있는 읽기 영역을 기준으로 학생들을 그룹으로 묶어, 누구와 누구를 짝지을지 확인하고 그룹별로 다른 학습 활동을 계획할 수 있습니다. 학생을 선택하면 개별 프로필을 볼 수 있습니다.",
       "groupCount": "학생 {count}명",
@@ -2263,7 +2263,7 @@
         "viewFullReport": "{student}의 전체 리포트 보기"
       },
       "areas": {
-        "R1": "디코딩",
+        "R1": "단어 해독",
         "R2": "어휘",
         "R3": "문법",
         "R4": "요지",
@@ -2274,11 +2274,11 @@
       },
       "status": {
         "mastered": "마스터",
-        "emerging": "초기",
+        "emerging": "도입",
         "not_mastered": "미달성",
         "not_assessed": "아직 평가되지 않음",
         "secure": "안정",
-        "developing": "발전 중",
+        "developing": "발달",
         "not_yet": "아직 아님"
       },
       "filteredEmptyTitle": "일치하는 학생이 없습니다",
@@ -2315,7 +2315,7 @@
       "transitionSteady": "{area}: {status} 유지",
       "statusWord": {
         "mastered": "마스터",
-        "emerging": "발전 중",
+        "emerging": "도입",
         "not_mastered": "미달성"
       },
       "notAssessedLine": "한 번 또는 두 번의 테스트에서 평가되지 않음: {areas}",
@@ -2866,7 +2866,7 @@
       "mastered": "숙달",
       "notYet": "아직 아님",
       "subskill": {
-        "decoding": "디코딩",
+        "decoding": "단어 해독",
         "grammar": "문법",
         "gist": "요지",
         "detail": "세부",
@@ -4757,7 +4757,7 @@
     "skillListening": "듣기",
     "skillSpeaking": "말하기",
     "skillWriting": "쓰기",
-    "skillDecoding": "디코딩",
+    "skillDecoding": "단어 해독",
     "skillVocabulary": "일상 어휘",
     "skillGrammar": "문법",
     "skillGist": "핵심 내용 파악",
@@ -4768,7 +4768,7 @@
     "steady": "변화 없음",
     "bandSecure": "안정",
     "bandDeveloping": "발달",
-    "bandEmerging": "출현",
+    "bandEmerging": "도입",
     "bandNotYet": "아직 아님",
     "section3NotReached": "섹션 3에 도달하지 않음",
     "movementHeading": "첫 응시 이후의 변화",
@@ -4783,13 +4783,13 @@
     "reliable": "신뢰할 수 있음",
     "withinError": "오차 범위 내",
     "trendBestGain": "가장 큰 향상: {skill} +{delta}점",
-    "attrDecoding": "디코딩",
+    "attrDecoding": "단어 해독",
     "attrVocabularyB1": "교실 어휘",
     "attrGist": "핵심 내용 파악",
     "attrDetail": "세부 정보",
     "attrInference": "추론",
-    "checklistHeading": "통합(Consolidating) 단계까지의 경로",
-    "consolidatingMet": "통합 단계 — 모든 요건을 충족했습니다",
+    "checklistHeading": "정착 단계까지의 경로",
+    "consolidatingMet": "정착 단계 — 모든 요건을 충족했습니다",
     "notAssessedThisSitting": "이번 응시에서 평가하지 않음",
     "scorePercent": "{score}%",
     "exitGateSection3": "통과 기준 (섹션 3)",
@@ -4953,7 +4953,7 @@
         "consolidating": "정착 단계"
       },
       "skill": {
-        "decoding": "디코딩",
+        "decoding": "단어 해독",
         "grammar": "문법",
         "gist": "핵심 내용 파악",
         "detail": "세부 정보",
@@ -4971,7 +4971,7 @@
         "critical": "글쓴이의 의도, 어조, 관점 판단하기"
       },
       "attribute": {
-        "decoding": "디코딩",
+        "decoding": "단어 해독",
         "vocabA2": "일상 어휘",
         "vocabB1": "교실 어휘",
         "grammar": "문법",
@@ -5032,7 +5032,7 @@
           "inference": "행간을 읽어 의미를 추론합니다."
         },
         "next": {
-          "decoding": "디코딩 연습하기: 단어를 정확하고 유창하게 알아보기.",
+          "decoding": "단어 해독 연습하기: 단어를 정확하고 유창하게 알아보기.",
           "vocabA2": "일상 어휘 연습하기: 흔한 단어가 문맥에서 어떤 뜻인지 알기.",
           "vocabB1": "교실 어휘 연습하기: 교과 단어가 문맥에서 어떤 뜻인지 알기.",
           "grammar": "문법 연습하기: 문장 수준의 구조와 단어 형태.",
@@ -5078,15 +5078,15 @@
       },
       "phase": {
         "beginning": "시작",
-        "emerging": "초기",
-        "developing": "발전",
-        "consolidating": "공고화",
+        "emerging": "도입",
+        "developing": "발달",
+        "consolidating": "정착",
         "notSat": "미응시"
       },
       "band": {
         "secure": "안정",
-        "developing": "발전 중",
-        "emerging": "초기",
+        "developing": "발달",
+        "emerging": "도입",
         "notYet": "아직 아님"
       }
     },

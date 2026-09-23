@@ -527,7 +527,7 @@
     "recordSkillReading": "Membaca",
     "recordSkillWriting": "Menulis",
     "recordVerdictMastered": "Dikuasai",
-    "recordVerdictEmerging": "Sedang berkembang",
+    "recordVerdictEmerging": "Baru muncul",
     "recordVerdictNotAssessed": "Belum dinilai",
     "recordRosterTitle": "Bahagian baris senarai",
     "recordCompletionLabel": "Soalan dijawab",
@@ -1692,7 +1692,7 @@
     "acaraPhaseLabel": "Fasa ACARA",
     "acaraPhases": {
       "beginning": "Permulaan",
-      "emerging": "Peralihan",
+      "emerging": "Baru muncul",
       "developing": "Berkembang",
       "developing_to_consolidating": "Berkembang → Mantap",
       "consolidating": "Mantap"
@@ -1706,7 +1706,7 @@
     "confidenceLowNote": "Pemarkahan menandakan keputusan ini sebagai keyakinan rendah. Semak butiran atribut sebelum bertindak atas label ini.",
     "crosswalkSource": "Fasa ACARA, tahap CEFR dan kesediaan ialah nilai rujukan yang dibawa oleh crosswalk aktif pada keputusan ini. Tiada skor pemotongan dan tiada skor gabungan merentas kemahiran digunakan.",
     "attributesEyebrow": "Bukti atribut",
-    "attributesDescription": "Satu tangga fasa ACARA empat langkah bagi setiap atribut yang dimodelkan: Permulaan, Peralihan, Berkembang, Mantap. Langkah yang menyala menunjukkan status paparan yang diterbitkan bersama keputusan ini.",
+    "attributesDescription": "Satu tangga fasa ACARA empat langkah bagi setiap atribut yang dimodelkan: Permulaan, Baru muncul, Berkembang, Mantap. Langkah yang menyala menunjukkan status paparan yang diterbitkan bersama keputusan ini.",
     "attributesNotDerived": "Belum diperoleh",
     "attributesNotDerivedDescription": "Bukti bagi setiap atribut akan muncul setelah pemarkahan sesi ini selesai.",
     "attributesNotApplicable": "Tiada tangga atribut untuk kemahiran ini",
@@ -1714,13 +1714,13 @@
     "attributeStatus": {
       "secure": "Mantap",
       "developing": "Berkembang",
-      "emerging": "Peralihan",
+      "emerging": "Baru muncul",
       "not_yet": "Permulaan",
       "not_assessed": "Tidak dinilai"
     },
     "legacyStatus": {
       "mastered": "Dikuasai",
-      "emerging": "Sedang berkembang",
+      "emerging": "Baru muncul",
       "not_mastered": "Belum dikuasai",
       "not_assessed": "Tidak dinilai"
     },
@@ -1833,13 +1833,13 @@
     "familyFocusLine": "Fokus seterusnya: {skill} — {phrase}",
     "familyPracticeLine": "Latihan membaca berkala yang pendek di rumah — membaca bersama dan berbincang tentang apa yang dibaca — menyokong setiap bidang.",
     "attributes": {
-      "Decoding": "Decoding",
+      "Decoding": "Penyahkodan",
       "Vocab_A2": "Kosa kata harian",
-      "Grammar": "Grammar",
+      "Grammar": "Tatabahasa",
       "Vocab_B1": "Kosa kata bilik darjah",
-      "Gist": "Gist",
-      "Detail": "Detail",
-      "Inference": "Inference"
+      "Gist": "Isi utama",
+      "Detail": "Butiran",
+      "Inference": "Simpulan"
     },
     "parentSubskillStateNote": {
       "secure": "Anak anda menjawab bidang ini dengan baik dan konsisten sepanjang sesi ini.",
@@ -2243,7 +2243,7 @@
       "formLabel": "Borang {code}",
       "printDate": "Dicetak pada {date}",
       "masteryTitle": "Profil membaca kelas",
-      "masteryDescription": "Setiap bidang membaca ditandai sebagai dikuasai, sedang berkembang, belum dikuasai, atau belum dinilai. Pilih seorang murid untuk melihat profilnya.",
+      "masteryDescription": "Setiap bidang membaca ditandai sebagai dikuasai, baru muncul, belum dikuasai, atau belum dinilai. Pilih seorang murid untuk melihat profilnya.",
       "groupsTitle": "Kumpulkan kelas",
       "groupsDescription": "Murid dikumpulkan mengikut bidang membaca yang sedang menghalang kemajuan mereka, supaya anda dapat melihat siapa perlu dipasangkan dengan siapa dan merancang tugasan berbeza untuk setiap kumpulan. Pilih seorang murid untuk melihat profilnya.",
       "groupCount": "{count} orang murid",
@@ -2263,7 +2263,7 @@
         "viewFullReport": "Lihat laporan penuh untuk {student}"
       },
       "areas": {
-        "R1": "Pengekodan",
+        "R1": "Penyahkodan",
         "R2": "Perbendaharaan kata",
         "R3": "Tatabahasa",
         "R4": "Intipati",
@@ -2274,11 +2274,11 @@
       },
       "status": {
         "mastered": "Dikuasai",
-        "emerging": "Baharu muncul",
+        "emerging": "Baru muncul",
         "not_mastered": "Belum dikuasai",
         "not_assessed": "Belum dinilai",
         "secure": "Teguh",
-        "developing": "Sedang berkembang",
+        "developing": "Berkembang",
         "not_yet": "Belum lagi"
       },
       "filteredEmptyTitle": "Tiada pelajar sepadan",
@@ -2315,7 +2315,7 @@
       "transitionSteady": "{area}: kekal pada {status}",
       "statusWord": {
         "mastered": "dikuasai",
-        "emerging": "sedang berkembang",
+        "emerging": "baru muncul",
         "not_mastered": "belum dikuasai"
       },
       "notAssessedLine": "Tidak dinilai pada salah satu atau kedua-dua ujian: {areas}",
@@ -2987,7 +2987,7 @@
       "acaraPhaseHint": "Pilihan. Hanya pentadbir sekolah dapat melihatnya.",
       "acaraPhaseOption": {
         "beginning": "Permulaan",
-        "emerging": "Peralihan",
+        "emerging": "Baru muncul",
         "developing": "Berkembang",
         "consolidating": "Mantap"
       },
@@ -4768,7 +4768,7 @@
     "steady": "Tetap",
     "bandSecure": "Mantap",
     "bandDeveloping": "Berkembang",
-    "bandEmerging": "Mula terbentuk",
+    "bandEmerging": "Baru muncul",
     "bandNotYet": "Belum lagi",
     "section3NotReached": "Bahagian 3 belum dicapai",
     "movementHeading": "Pergerakan sejak sessi pertama",
@@ -4788,8 +4788,8 @@
     "attrGist": "Isi utama",
     "attrDetail": "Butiran",
     "attrInference": "Simpulan",
-    "checklistHeading": "Jalan ke peringkat menyatukan",
-    "consolidatingMet": "Menyatukan — memenuhi semua keperluan",
+    "checklistHeading": "Laluan ke fasa mantap",
+    "consolidatingMet": "Mantap — memenuhi semua keperluan",
     "notAssessedThisSitting": "tidak dinilai pada sessi ini",
     "scorePercent": "{score}%",
     "exitGateSection3": "Laluan keluar (Bahagian 3)",
@@ -4941,14 +4941,14 @@
     "viewModel": {
       "phase": {
         "beginning": "Permulaan",
-        "emerging": "Peralihan",
+        "emerging": "Baru muncul",
         "developing": "Berkembang",
         "consolidating": "Mantap",
         "notSat": "Tidak menduduki"
       },
       "phaseSub": {
         "beginning": "Fasa permulaan",
-        "emerging": "Fasa peralihan",
+        "emerging": "Fasa baru muncul",
         "developing": "Fasa berkembang",
         "consolidating": "Fasa mantap"
       },
@@ -4983,7 +4983,7 @@
       "band": {
         "secure": "Mantap",
         "developing": "Berkembang",
-        "emerging": "Peralihan",
+        "emerging": "Baru muncul",
         "notYet": "Permulaan"
       },
       "gate": {
@@ -5078,15 +5078,15 @@
       },
       "phase": {
         "beginning": "Permulaan",
-        "emerging": "Baharu muncul",
-        "developing": "Sedang berkembang",
-        "consolidating": "Pengukuhan",
+        "emerging": "Baru muncul",
+        "developing": "Berkembang",
+        "consolidating": "Mantap",
         "notSat": "Tidak menduduki"
       },
       "band": {
         "secure": "Teguh",
-        "developing": "Sedang berkembang",
-        "emerging": "Baharu muncul",
+        "developing": "Berkembang",
+        "emerging": "Baru muncul",
         "notYet": "Belum lagi"
       }
     },
@@ -6285,7 +6285,7 @@
       "phaseNotSet": "Fasa belum ditetapkan",
       "phase": {
         "beginning": "Permulaan",
-        "emerging": "Peralihan",
+        "emerging": "Baru muncul",
         "developing": "Berkembang",
         "consolidating": "Mantap"
       },

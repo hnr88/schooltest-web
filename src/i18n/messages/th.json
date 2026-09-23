@@ -527,7 +527,7 @@
     "recordSkillReading": "การอ่าน",
     "recordSkillWriting": "การเขียน",
     "recordVerdictMastered": "เชี่ยวชาญ",
-    "recordVerdictEmerging": "กำลังพัฒนา",
+    "recordVerdictEmerging": "เริ่มก่อตัว",
     "recordVerdictNotAssessed": "ยังไม่ประเมิน",
     "recordRosterTitle": "ส่วนประกอบแถวรายชื่อ",
     "recordCompletionLabel": "จำนวนข้อที่ตอบแล้ว",
@@ -1720,7 +1720,7 @@
     },
     "legacyStatus": {
       "mastered": "เชี่ยวชาญ",
-      "emerging": "กำลังพัฒนา",
+      "emerging": "เริ่มก่อตัว",
       "not_mastered": "ยังไม่เชี่ยวชาญ",
       "not_assessed": "ไม่ได้ประเมิน"
     },
@@ -1833,13 +1833,13 @@
     "familyFocusLine": "สิ่งที่ควรเน้นต่อไป: {skill} — {phrase}",
     "familyPracticeLine": "การฝึกอ่านสั้น ๆ เป็นประจำที่บ้าน — การอ่านร่วมกันและพูดคุยเกี่ยวกับสิ่งที่อ่าน — สนับสนุนทุกด้าน",
     "attributes": {
-      "Decoding": "Decoding",
+      "Decoding": "การถอดรหัสคำ",
       "Vocab_A2": "คำศัพท์ในชีวิตประจำวัน",
-      "Grammar": "Grammar",
+      "Grammar": "ไวยากรณ์",
       "Vocab_B1": "คำศัพท์ในห้องเรียน",
-      "Gist": "Gist",
-      "Detail": "Detail",
-      "Inference": "Inference"
+      "Gist": "ใจความสำคัญ",
+      "Detail": "รายละเอียด",
+      "Inference": "การอนุมาน"
     },
     "parentSubskillStateNote": {
       "secure": "บุตรหลานของคุณตอบด้านเหล่านี้ได้ดีอย่างสม่ำเสมอตลอดการสอบครั้งนี้",
@@ -2243,7 +2243,7 @@
       "formLabel": "แบบสอบ {code}",
       "printDate": "พิมพ์เมื่อ {date}",
       "masteryTitle": "โปรไฟล์การอ่านของชั้นเรียน",
-      "masteryDescription": "แต่ละด้านการอ่านถูกทำเครื่องหมายเป็นเชี่ยวชาญ กำลังพัฒนา ยังไม่เชี่ยวชาญ หรือยังไม่ได้ประเมิน เลือกนักเรียนเพื่อดูโปรไฟล์ของนักเรียน",
+      "masteryDescription": "แต่ละด้านการอ่านถูกทำเครื่องหมายเป็นเชี่ยวชาญ เริ่มก่อตัว ยังไม่เชี่ยวชาญ หรือยังไม่ได้ประเมิน เลือกนักเรียนเพื่อดูโปรไฟล์ของนักเรียน",
       "groupsTitle": "จัดกลุ่มนักเรียนทั้งชั้น",
       "groupsDescription": "นักเรียนถูกจัดกลุ่มตามด้านการอ่านที่กำลังเป็นอุปสรรคอยู่ในตอนนี้ เพื่อให้คุณเห็นว่าควรจับคู่ใครกับใครและวางแผนงานที่แตกต่างกันสำหรับแต่ละกลุ่ม เลือกนักเรียนเพื่อดูโปรไฟล์ของนักเรียน",
       "groupCount": "นักเรียน {count} คน",
@@ -2263,7 +2263,7 @@
         "viewFullReport": "ดูรายงานฉบับเต็มของ {student}"
       },
       "areas": {
-        "R1": "การถอดรหัส",
+        "R1": "การถอดรหัสคำ",
         "R2": "คำศัพท์",
         "R3": "ไวยากรณ์",
         "R4": "ใจความสำคัญ",
@@ -2315,7 +2315,7 @@
       "transitionSteady": "{area}: คงที่ที่{status}",
       "statusWord": {
         "mastered": "เชี่ยวชาญ",
-        "emerging": "กำลังพัฒนา",
+        "emerging": "เริ่มก่อตัว",
         "not_mastered": "ยังไม่เชี่ยวชาญ"
       },
       "notAssessedLine": "ไม่ได้รับการประเมินในการทดสอบครั้งใดครั้งหนึ่งหรือทั้งสองครั้ง: {areas}",
@@ -2866,7 +2866,7 @@
       "mastered": "เชี่ยวชาญ",
       "notYet": "ยังไม่ถึง",
       "subskill": {
-        "decoding": "การถอดรหัส",
+        "decoding": "การถอดรหัสคำ",
         "grammar": "ไวยากรณ์",
         "gist": "ใจความสำคัญ",
         "detail": "รายละเอียด",
@@ -4788,8 +4788,8 @@
     "attrGist": "ใจความสำคัญ",
     "attrDetail": "รายละเอียด",
     "attrInference": "การอนุมาน",
-    "checklistHeading": "เส้นทางสู่ระยะรวมความรู้",
-    "consolidatingMet": "ระยะรวมความรู้ — ตรงตามข้อกำหนดครบทุกข้อ",
+    "checklistHeading": "เส้นทางสู่ระยะมั่นคง",
+    "consolidatingMet": "ระยะมั่นคง — ตรงตามข้อกำหนดครบทุกข้อ",
     "notAssessedThisSitting": "ไม่ได้รับการประเมินในครั้งนี้",
     "scorePercent": "{score}%",
     "exitGateSection3": "เกณฑ์ผ่าน (ส่วนที่ 3)",
@@ -5080,7 +5080,7 @@
         "beginning": "เริ่มต้น",
         "emerging": "เริ่มก่อตัว",
         "developing": "กำลังพัฒนา",
-        "consolidating": "มั่นคงขึ้น",
+        "consolidating": "มั่นคง",
         "notSat": "ไม่ได้สอบ"
       },
       "band": {
