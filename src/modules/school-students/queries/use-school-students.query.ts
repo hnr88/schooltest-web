@@ -36,5 +36,8 @@ export function useSchoolStudentsQuery(query: SchoolStudentsQuery, enabled: bool
     queryFn: () => fetchSchoolStudents(query),
     enabled,
     placeholderData: keepPreviousData,
+    // A student archived elsewhere must not read as active after Back: the
+    // cached page shows at once and the server's answer replaces it.
+    refetchOnMount: 'always',
   });
 }
