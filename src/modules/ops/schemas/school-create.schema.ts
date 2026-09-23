@@ -100,6 +100,7 @@ export function createSchoolEditFormSchema(t: SchoolCreateSchemaTranslator) {
       .max(255, t('emailTooLong'))
       .pipe(z.email(t('emailInvalid'))),
     phone: phoneField(t),
+    timezone: z.string().trim().max(64, t('tooLong')).optional(),
   });
 }
 

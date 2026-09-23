@@ -4132,6 +4132,9 @@
       "contactName": "Nama kenalan utama",
       "contactEmail": "E-mel kenalan",
       "phone": "Telefon",
+      "timezone": "Zon waktu",
+      "timezonePlaceholder": "Pilih zon waktu",
+      "timezoneHelper": "Mengikut negeri melainkan anda memilihnya di sini. Masa sesi disemak dalam zon ini.",
       "sectorOptions": {
         "government": "Kerajaan",
         "catholic": "Katolik",

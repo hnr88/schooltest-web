@@ -10,6 +10,7 @@ import {
   OpsFieldShell,
   SelectField,
 } from '@/modules/design-system';
+import { SCHOOL_TIMEZONE_OPTIONS } from '@/modules/ops/constants/components.constants';
 import type { SchoolCreateFormValues, SchoolEditFormValues } from '@/modules/ops/schemas/school-create.schema';
 
 const STATE_CODES = ['VIC', 'NSW', 'QLD', 'WA', 'SA', 'TAS', 'ACT', 'NT'];
@@ -286,9 +287,33 @@ export function OpsEditSchoolFields({ form, emailWarning }: OpsEditSchoolFieldsP
           />
         </OpsFieldShell>
       </div>
-      <OpsFieldShell id="edit-school-phone" label={t('phone')} errorText={errors.phone?.message}>
-        <Input id="edit-school-phone" className={editInput()} {...form.register('phone')} />
-      </OpsFieldShell>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <OpsFieldShell id="edit-school-phone" label={t('phone')} errorText={errors.phone?.message}>
+          <Input id="edit-school-phone" className={editInput()} {...form.register('phone')} />
+        </OpsFieldShell>
+        <Controller
+          control={form.control}
+          name="timezone"
+          render={({ field }) => {
+            const value = String(field.value ?? '');
+            const zones: readonly string[] = SCHOOL_TIMEZONE_OPTIONS;
+            const options = value && !zones.includes(value) ? [value, ...zones] : zones;
+            return (
+              <SelectField
+                id="edit-school-timezone"
+                label={t('timezone')}
+                placeholder={t('timezonePlaceholder')}
+                helperText={t('timezoneHelper')}
+                options={options.map((zone) => ({ value: zone, label: zone }))}
+                value={value}
+                onValueChange={field.onChange}
+                errorText={errors.timezone?.message}
+                triggerClassName={OPS_CONTROL_CLASS}
+              />
+            );
+          }}
+        />
+      </div>
       {showEmailWarning ? (
         <p className="-mt-2 text-xs font-medium text-warning" data-testid="edit-school-email-warning">
           {t('emailDomainWarning')}

@@ -33,6 +33,7 @@ export interface SchoolEditDraft {
   contact_name: string | null;
   plan: string | null;
   portal_plan: string | null;
+  timezone: string | null;
   updatedAt: string;
 }
 

@@ -314,6 +314,7 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
             contact_name: detail.contact_name,
             plan: detail.plan,
             portal_plan: detail.portal_plan,
+            timezone: detail.timezone ?? null,
             updatedAt: detail.updatedAt,
           }}
           onDone={() => {

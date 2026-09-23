@@ -4104,6 +4104,9 @@
       "contactName": "Primary contact name",
       "contactEmail": "Contact email",
       "phone": "Phone",
+      "timezone": "Timezone",
+      "timezonePlaceholder": "Select a timezone",
+      "timezoneHelper": "Follows the state unless you choose one here. Session times are checked in this zone.",
       "sectorOptions": {
         "government": "Government",
         "catholic": "Catholic",

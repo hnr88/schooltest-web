@@ -124,6 +124,7 @@ export declare const schoolDetailSchema: z.ZodObject<{
     contact_last_name: z.ZodNullable<z.ZodString>;
     contact_name: z.ZodNullable<z.ZodString>;
     phone: z.ZodNullable<z.ZodString>;
+    timezone: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     createdAt: z.ZodNullable<z.ZodString>;
     updatedAt: z.ZodString;
     last_active_at: z.ZodNullable<z.ZodString>;
@@ -208,6 +209,7 @@ declare const schoolDetailDataSchema: z.ZodObject<{
         contact_last_name: z.ZodNullable<z.ZodString>;
         contact_name: z.ZodNullable<z.ZodString>;
         phone: z.ZodNullable<z.ZodString>;
+        timezone: z.ZodOptional<z.ZodNullable<z.ZodString>>;
         createdAt: z.ZodNullable<z.ZodString>;
         updatedAt: z.ZodString;
         last_active_at: z.ZodNullable<z.ZodString>;
@@ -292,6 +294,7 @@ export declare const schoolDetailResponseSchema: z.ZodObject<{
         contact_last_name: z.ZodNullable<z.ZodString>;
         contact_name: z.ZodNullable<z.ZodString>;
         phone: z.ZodNullable<z.ZodString>;
+        timezone: z.ZodOptional<z.ZodNullable<z.ZodString>>;
         createdAt: z.ZodNullable<z.ZodString>;
         updatedAt: z.ZodString;
         last_active_at: z.ZodNullable<z.ZodString>;

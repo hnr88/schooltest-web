@@ -31,7 +31,9 @@ import {
   schoolNameConflict,
 } from '@/modules/ops/queries/use-school-create.mutation';
 import { isStatusActiveWarning } from '@/modules/ops/hooks/use-school-create-form';
-import { schoolEmailDomainWarning } from '@/modules/ops/hooks/use-school-edit-form';
+import { buildEditPatch, schoolEmailDomainWarning } from '@/modules/ops/hooks/use-school-edit-form';
+import { SCHOOL_TIMEZONE_OPTIONS } from '@/modules/ops/constants/components.constants';
+import type { SchoolEditDraft } from '@/modules/ops/types/school-create.types';
 
 const get = vi.mocked(strapi.get);
 
@@ -308,5 +310,78 @@ describe('duplicate name — the server-confirmed shape (curled live, 2026-09-10
   it('does not misfire on the Idempotency-Key 409 or a generic 500', () => {
     expect(schoolNameConflict({ response: { status: 409 } })).toBe(false);
     expect(schoolNameConflict({ response: { status: 500 } })).toBe(false);
+  });
+});
+
+describe('BUG-002 — the school timezone on the ops edit form', () => {
+  const schema = createSchoolEditFormSchema(t);
+  const school: SchoolEditDraft = {
+    documentId: 'school-1',
+    name: 'Riverbend College',
+    suburb: 'Riverbend',
+    state: null,
+    sector: null,
+    postcode: null,
+    schoolType: null,
+    contact_email: 'jamie.lee@riverbend.edu.au',
+    contact_first_name: null,
+    contact_last_name: null,
+    phone: null,
+    contact_name: 'Jamie Lee',
+    plan: 'trial',
+    portal_plan: null,
+    timezone: 'Australia/Melbourne',
+    updatedAt: '2026-09-23T00:00:00.000Z',
+  };
+  const values = {
+    name: 'Riverbend College',
+    suburb: 'Riverbend',
+    state: '' as const,
+    sector: '' as const,
+    postcode: '',
+    schoolType: '' as const,
+    plan: 'pilot' as const,
+    contact_name: 'Jamie Lee',
+    contact_email: 'jamie.lee@riverbend.edu.au',
+    phone: '',
+    timezone: 'Australia/Melbourne',
+  };
+
+  it('the edit schema carries the zone the select holds', () => {
+    expect(schema.safeParse(values).success).toBe(true);
+    expect(schema.safeParse({ ...values, timezone: 'x'.repeat(65) }).success).toBe(false);
+  });
+
+  it('a state change alone sends NO zone, so the API re-derives it from the new state', () => {
+    const patch = buildEditPatch({ ...values, state: 'WA' }, school);
+    expect(patch.state).toBe('WA');
+    expect(patch).not.toHaveProperty('timezone');
+  });
+
+  it('a zone the operator picks is sent, alongside any state change', () => {
+    expect(buildEditPatch({ ...values, timezone: 'Australia/Perth' }, school).timezone).toBe('Australia/Perth');
+    const both = buildEditPatch({ ...values, state: 'NSW', timezone: 'Australia/Broken_Hill' }, school);
+    expect(both).toMatchObject({ state: 'NSW', timezone: 'Australia/Broken_Hill' });
+  });
+
+  it('an empty select on a school with no stored zone sends nothing', () => {
+    expect(buildEditPatch({ ...values, timezone: '' }, { ...school, timezone: null })).not.toHaveProperty('timezone');
+  });
+
+  it('offers only real IANA zones, covering every state capital', () => {
+    for (const zone of SCHOOL_TIMEZONE_OPTIONS) {
+      expect(new Intl.DateTimeFormat('en-AU', { timeZone: zone }).resolvedOptions().timeZone).toBe(zone);
+    }
+    for (const zone of [
+      'Australia/Perth',
+      'Australia/Darwin',
+      'Australia/Adelaide',
+      'Australia/Brisbane',
+      'Australia/Sydney',
+      'Australia/Melbourne',
+      'Australia/Hobart',
+    ]) {
+      expect(SCHOOL_TIMEZONE_OPTIONS).toContain(zone);
+    }
   });
 });

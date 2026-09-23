@@ -35,6 +35,7 @@ const CONTACT_PART_MAX = 100;
 const CONTACT_NAME_MAX = 200;
 const EMAIL_MAX = 255;
 const PHONE_MAX = 40;
+const TIMEZONE_MAX = 64;
 exports.PATCH_REJECTED_LIFECYCLE_KEYS = ['account_status', 'onboarding_status', 'portal_status'];
 exports.SCHOOL_PATCH_IF_MATCH_REQUIRED = school_suspend_1.SCHOOL_SUSPEND_CODES.versionRequired;
 exports.SCHOOL_PATCH_IF_MATCH_STALE = school_suspend_1.SCHOOL_SUSPEND_CODES.versionStale;
@@ -56,6 +57,10 @@ exports.schoolPatchSchema = zod_1.z
     plan: school_create_1.schoolPlanSchema.optional(),
     portal_plan: school_create_1.portalPlanSchema.nullish(),
     contact_name: zod_1.z.string().trim().max(CONTACT_NAME_MAX).nullish(),
+    // BUG-002: the school's IANA zone (the booking window's school-hours rule
+    // reads it). Correctable, never clearable — so optional, not nullish. The
+    // API refuses a name that is not a real IANA zone with a `timezone` issue.
+    timezone: zod_1.z.string().trim().min(1).max(TIMEZONE_MAX).optional(),
 })
     .refine((body) => Object.keys(body).length > 0, { message: 'an empty patch is not a valid edit' });
 /** A lifecycle key arriving through the form patch is an explicit 409-boundary rejection. */

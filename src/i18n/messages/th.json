@@ -4132,6 +4132,9 @@
       "contactName": "ชื่อผู้ติดต่อหลัก",
       "contactEmail": "อีเมลผู้ติดต่อ",
       "phone": "โทรศัพท์",
+      "timezone": "เขตเวลา",
+      "timezonePlaceholder": "เลือกเขตเวลา",
+      "timezoneHelper": "จะตามรัฐ เว้นแต่คุณเลือกที่นี่ เวลาของรอบสอบจะตรวจสอบตามเขตเวลานี้",
       "sectorOptions": {
         "government": "รัฐบาล",
         "catholic": "คาทอลิก",

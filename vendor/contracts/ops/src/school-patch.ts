@@ -50,6 +50,7 @@ const CONTACT_PART_MAX = 100;
 const CONTACT_NAME_MAX = 200;
 const EMAIL_MAX = 255;
 const PHONE_MAX = 40;
+const TIMEZONE_MAX = 64;
 
 export const PATCH_REJECTED_LIFECYCLE_KEYS = ['account_status', 'onboarding_status', 'portal_status'] as const;
 export type PatchRejectedLifecycleKey = (typeof PATCH_REJECTED_LIFECYCLE_KEYS)[number];
@@ -75,6 +76,10 @@ export const schoolPatchSchema = z
     plan: schoolPlanSchema.optional(),
     portal_plan: portalPlanSchema.nullish(),
     contact_name: z.string().trim().max(CONTACT_NAME_MAX).nullish(),
+    // BUG-002: the school's IANA zone (the booking window's school-hours rule
+    // reads it). Correctable, never clearable — so optional, not nullish. The
+    // API refuses a name that is not a real IANA zone with a `timezone` issue.
+    timezone: z.string().trim().min(1).max(TIMEZONE_MAX).optional(),
   })
   .refine((body) => Object.keys(body).length > 0, { message: 'an empty patch is not a valid edit' });
 export type SchoolPatch = z.infer<typeof schoolPatchSchema>;

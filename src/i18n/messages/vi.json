@@ -4141,6 +4141,9 @@
       "contactName": "Tên liên hệ chính",
       "contactEmail": "Email liên hệ",
       "phone": "Số điện thoại",
+      "timezone": "Múi giờ",
+      "timezonePlaceholder": "Chọn múi giờ",
+      "timezoneHelper": "Theo tiểu bang trừ khi bạn chọn ở đây. Giờ phiên kiểm tra được xét theo múi giờ này.",
       "sectorOptions": {
         "government": "Công lập",
         "catholic": "Công giáo",

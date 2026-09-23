@@ -4122,6 +4122,9 @@
       "contactName": "主要联系人姓名",
       "contactEmail": "联系邮箱",
       "phone": "电话",
+      "timezone": "时区",
+      "timezonePlaceholder": "请选择时区",
+      "timezoneHelper": "除非在此选择，否则跟随所在州。测试时段按此时区校验。",
       "sectorOptions": {
         "government": "公立",
         "catholic": "天主教",

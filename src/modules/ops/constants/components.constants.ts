@@ -7,6 +7,22 @@ export const DATE_TIME = 'd MMM yyyy, HH:mm';
 // switch - there is no self-serve path onto it.
 export const SCHOOL_PLAN_OPTIONS: readonly SchoolPlan[] = ['trial', 'full_license'];
 
+// BUG-002: the Australian IANA zones a school can sit in, west to east. The
+// API accepts any real IANA zone; a stored zone outside this list is still
+// offered by the edit form so it is never silently replaced.
+export const SCHOOL_TIMEZONE_OPTIONS = [
+  'Australia/Perth',
+  'Australia/Eucla',
+  'Australia/Darwin',
+  'Australia/Adelaide',
+  'Australia/Broken_Hill',
+  'Australia/Brisbane',
+  'Australia/Sydney',
+  'Australia/Melbourne',
+  'Australia/Hobart',
+  'Australia/Lord_Howe',
+] as const;
+
 // OpsConfirmDialog's `skin`, one class string per part. `ops` (the default) is the
 // portal's own confirm (`Ops Portal.dc.html:819-841`) and stays exactly as it was;
 // `teacher` is `Teacher Portal v2.dc.html:1846-1853`: #FAFBFC r11 panel of 440 content

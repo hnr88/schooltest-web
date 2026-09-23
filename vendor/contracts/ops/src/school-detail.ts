@@ -133,6 +133,13 @@ export const schoolDetailSchema = z.strictObject({
   /** Single-field contact name (OPS-013). Independent of first/last, not derived. */
   contact_name: z.string().max(200).nullable(),
   phone: z.string().max(40).nullable(),
+  /**
+   * BUG-002: the school's IANA zone, which the booking window's school-hours
+   * rule reads. The API always emits it (null only for a row written around
+   * the Document Service); `.optional()` lets a portal built on this contract
+   * read an API that predates the field, so the web can deploy first.
+   */
+  timezone: z.string().max(64).nullable().optional(),
 
   /* ---- timestamps ------------------------------------------------------ */
   createdAt: z.string().nullable(),

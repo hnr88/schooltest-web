@@ -63,6 +63,7 @@ export function useSchoolEditForm({
         contact_name: school.contact_name ?? '',
         contact_email: school.contact_email ?? '',
         phone: school.phone ?? '',
+        timezone: school.timezone ?? '',
       }) as SchoolEditFormValues,
     [school]
   );
@@ -141,8 +142,12 @@ export function schoolEmailDomainWarning(email: string): boolean {
   return trimmed !== '' && EMAIL_FORMAT.test(trimmed) && !SCHOOL_DOMAIN_PATTERN.test(trimmed);
 }
 
-/** The EDIT patch carries only what the operator can see and change. */
-function buildEditPatch(
+/**
+ * The EDIT patch carries only what the operator can see and change. The zone
+ * rides ONLY when the operator changed it: a state change alone lets the API
+ * re-derive the zone from the new state (BUG-002).
+ */
+export function buildEditPatch(
   values: SchoolEditFormValues,
   school: SchoolEditDraft
 ): Record<string, unknown> {
@@ -162,5 +167,6 @@ function buildEditPatch(
   // The portal tier is the school's commercial plan; portal STATUS is a
   // lifecycle decision and stays with task 12's services.
   if (school.portal_plan) patch.portal_plan = values.plan;
+  if (values.timezone && values.timezone !== (school.timezone ?? '')) patch.timezone = values.timezone;
   return patch;
 }
