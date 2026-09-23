@@ -28,9 +28,22 @@ export function pendingTeacherLabelKey(
   return 'teacherReassign';
 }
 
-/** The badge tile's label: the class name's leading word ("8B" of "8B English"). */
+/**
+ * The badge tile's label: the name's "8B"-shaped token ("8B" of "8B English",
+ * "8A" of "Reading 8A — Farsi"), else the initials of its first two words.
+ * At most three characters, so the label always fits inside its fixed tile.
+ */
 export function classBadge(name: string | null): string {
-  return (name ?? '').trim().split(/\s+/)[0] ?? '';
+  const tokens = (name ?? '').trim().split(/\s+/).filter(Boolean);
+  const code = tokens.find((token) => /^\d{1,2}[a-z]{0,2}$/i.test(token));
+  const label =
+    code ??
+    tokens
+      .map((token) => token.match(/[\p{L}\p{N}]/u)?.[0] ?? '')
+      .filter(Boolean)
+      .slice(0, 2)
+      .join('');
+  return label.toUpperCase().slice(0, 3);
 }
 
 // Spec §2 "Tests completed": each student sits TWO reading tests and the column

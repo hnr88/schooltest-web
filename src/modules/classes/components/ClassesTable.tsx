@@ -157,11 +157,11 @@ export function ClassesTable({ rows, completions, onEdit, query = IDLE_QUERY }: 
           <span className="flex items-center gap-3.5">
             <span
               aria-hidden="true"
-              className="grid size-[38px] flex-none place-items-center rounded-tile bg-[#EEF1F6] text-[12.5px] font-bold text-[#0E2350]"
+              className="grid size-9.5 flex-none place-items-center overflow-hidden rounded-tile bg-surface-inset text-meta font-bold text-foreground"
             >
               {classBadge(row.name)}
             </span>
-            <span className="min-w-0 truncate text-[14.5px] font-semibold text-foreground" title={row.name}>
+            <span className="min-w-0 truncate text-lede font-semibold text-foreground" title={row.name}>
               {row.name}
             </span>
           </span>

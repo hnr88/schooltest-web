@@ -9,7 +9,7 @@ import { Button } from '@/modules/design-system';
 
 import type { ClassDetailHeaderProps } from '@/modules/classes/types/components.types';
 
-// Spec §1 header: the design's 56px navy badge with the class's leading word,
+// Spec §1 header: the design's 56px navy badge with the class's short code,
 // the class name as the ONLY h1, the student count and the assigned-teacher
 // panel beneath it, and the two 42px radius-12 actions (white Edit class, navy
 // Import students). This surface still holds no checkbox and no save button.
@@ -25,7 +25,7 @@ export function ClassDetailHeader({
     <div className="flex flex-wrap items-center gap-[18px]">
       <span
         aria-hidden="true"
-        className="grid size-14 flex-none place-items-center rounded-panel bg-navy-900 text-base font-bold text-white"
+        className="grid size-14 flex-none place-items-center overflow-hidden rounded-panel bg-navy-900 text-base font-bold text-white"
       >
         {classBadge(schoolClass.name)}
       </span>
