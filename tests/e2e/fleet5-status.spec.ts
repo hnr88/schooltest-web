@@ -19,15 +19,25 @@ import { watchErrors } from './helpers/ui';
  * school-admin UI ships NO unarchive control — asserted here, reported),
  * idempotent re-archive, double-click guards, refresh mid-form, back-nav
  * staleness. Deactivate/reactivate are OPS-console actions, not school-admin
- * ones — the API's 404 for them is pinned here as the contract probe.
+ * ones — the school-admin surface has no route for them, pinned here as the
+ * contract probe (test 42).
+ *
+ * The tests run IN ORDER in one worker (mode 'default'): they share Demo School
+ * A, and test 40's seat math reads the school-wide seats_used, which a
+ * parallel create, archive or teardown in a sibling test would move. Unlike
+ * 'serial', a failure does not skip the tests after it.
  */
 
 const ROSTER = '/en/dashboard/school/students';
 const NEW = '/en/dashboard/school/students/new';
 const API = 'http://127.0.0.1:5500';
 
+/**
+ * The roster, searched down to one student. The caller signs in first, as the
+ * sibling fleet5 specs do: a signed-in user who opens /sign-in is redirected
+ * to the dashboard, so a second signIn() would never find the Email field.
+ */
 async function openRosterWithStudent(page: Page, family: string) {
-  await signIn(page);
   await page.goto(ROSTER);
   const screen = page.locator('[data-slot="school-students"]');
   await expect(screen).toBeVisible({ timeout: 30_000 });
@@ -40,6 +50,7 @@ async function openRosterWithStudent(page: Page, family: string) {
 }
 
 test.describe('fleet5: status lifecycle', () => {
+  test.describe.configure({ mode: 'default' });
   test.setTimeout(90_000);
   const createdEmails: string[] = [];
   test.afterEach(async ({ request }) => {
@@ -212,12 +223,26 @@ test.describe('fleet5: status lifecycle', () => {
         headers: { Authorization: `Bearer ${jwt}` },
         data: {},
       });
-      // Not offered to this surface: 404 (no such route) is the contract.
+      // Not offered to this surface: the school-admin routes
+      // (schooltest-api src/api/school/routes/01-custom-students.ts) have no
+      // deactivate/reactivate; they live on the ops surface
+      // (/api/ops/schools/:school/students/:student/...). Strapi answers a POST
+      // to a path with no POST route with 405, not 404: strapi::public
+      // registers GET '/((?!uploads/).+)', so every path matches a GET route
+      // and koa-router's allowedMethods() answers 405 Allow: HEAD, GET, as it
+      // does for any made-up path.
       expect(
         res.status(),
         `${action} must not be a school-admin student action`,
-      ).toBe(404);
+      ).toBe(405);
+      expect(res.headers()['allow'] ?? '', `${action}: no POST route at this path`).not.toMatch(
+        /POST/i,
+      );
     }
+    // The probe changed nothing: the student is still active.
+    expect((await apiChildren(request, jwt, `q=${family}`)).rows[0]!.student_status).toBe(
+      'active',
+    );
   });
 
   test('43 double-click Save creates exactly ONE student', async ({ page, request }) => {
@@ -313,14 +338,16 @@ test.describe('fleet5: status lifecycle', () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     const jwt = await apiLogin(request);
     const family = `${STAMP}Ghost`;
-    const before = await apiChildren(request, jwt, 'page=1&pageSize=1');
+    const email = `f5.ghost.${STAMP.toLowerCase()}@schooltest.local`;
+    // Registered so a ghost row, if one were created, is still cleaned up.
+    createdEmails.push(email);
 
     await signIn(page);
     await page.goto(NEW);
     const form = page.locator('[data-slot="school-student-new"]');
     await form.getByLabel('Given name').fill('Ghostly');
     await form.getByLabel('Family name', { exact: true }).fill(family);
-    await form.getByLabel(/^Email/).fill(`f5.ghost.${STAMP.toLowerCase()}@schooltest.local`);
+    await form.getByLabel(/^Email/).fill(email);
     await shot(page, '45a-mid-form-filled');
 
     await page.reload();
@@ -330,10 +357,10 @@ test.describe('fleet5: status lifecycle', () => {
     await expect(reloaded.getByLabel('Family name', { exact: true })).toHaveValue('');
     await shot(page, '45b-after-refresh-form-reset');
 
-    const after = await apiChildren(request, jwt, 'page=1&pageSize=1');
-    expect(after.total, 'a refresh mid-form must not create a row').toBe(before.total);
+    // Checked on this test's own stamped family name, never the school-wide
+    // total: other tests and users create students in the same school.
     const ghost = await apiChildren(request, jwt, `q=${family}`);
-    expect(ghost.total).toBe(0);
+    expect(ghost.total, 'a refresh mid-form must not create a row').toBe(0);
     expect(realErrors(errors), realErrors(errors).join('\n')).toEqual([]);
   });
 
@@ -358,8 +385,14 @@ test.describe('fleet5: status lifecycle', () => {
     expect(created.status).toBe(201);
     const documentId = created.data!.documentId;
 
+    // Open the detail FROM the roster, as a user does, so Back returns to it.
     await signIn(page);
-    await page.goto(`${ROSTER}/${documentId}`);
+    const { row: rosterRow } = await openRosterWithStudent(page, family);
+    await expect(rosterRow).toHaveAttribute('data-student-status', 'active');
+    await rosterRow.getByRole('link').first().click();
+    await page.waitForURL(new RegExp(`/dashboard/school/students/${documentId}$`), {
+      timeout: 30_000,
+    });
     const detail = page.locator('[data-slot="school-student-detail"]');
     await expect(detail.getByRole('heading', { level: 1, name: `Bak ${family}` })).toBeVisible({
       timeout: 30_000,
@@ -374,6 +407,7 @@ test.describe('fleet5: status lifecycle', () => {
     // ...navigate BACK to the roster: it must show the fresh archived truth,
     // not a cached active row.
     await page.goBack();
+    await page.waitForURL(/\/dashboard\/school\/students(\?.*)?$/, { timeout: 30_000 });
     const screen = page.locator('[data-slot="school-students"]');
     await expect(screen).toBeVisible({ timeout: 30_000 });
     await screen.getByLabel('Search by name').fill(family);
