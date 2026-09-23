@@ -11,6 +11,7 @@ import {
   STAMP,
 } from './helpers/fleet5-live';
 import { getMessage, waitForMessages } from './helpers/mailpit';
+import { deleteStudentsByEmail } from './helpers/student-cleanup';
 import { watchErrors } from './helpers/ui';
 
 /**
@@ -45,6 +46,10 @@ async function fillStudentForm(
 
 test.describe('fleet5: add student (happy)', () => {
   test.setTimeout(90_000);
+  const createdEmails: string[] = [];
+  test.afterEach(async ({ request }) => {
+    await deleteStudentsByEmail(request, createdEmails.splice(0));
+  });
 
   test('10 create via the form -> roster row -> linked user account (DB + Mailpit + verify JWT)', async ({
     page,
@@ -58,6 +63,7 @@ test.describe('fleet5: add student (happy)', () => {
     const given = 'Fleet';
     const family = `${STAMP}Add`;
     const email = `f5.add.${STAMP.toLowerCase()}@schooltest.local`;
+    createdEmails.push(email);
     const fullName = `${given} ${family}`;
 
     await signIn(page);

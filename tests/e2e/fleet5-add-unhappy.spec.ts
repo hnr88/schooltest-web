@@ -10,6 +10,7 @@ import {
   signIn,
   STAMP,
 } from './helpers/fleet5-live';
+import { deleteStudentsByEmail } from './helpers/student-cleanup';
 import { watchErrors } from './helpers/ui';
 
 /**
@@ -39,6 +40,10 @@ async function submit(page: Page): Promise<void> {
 test.describe('fleet5: add student (unhappy)', () => {
   // Shared dev stack: sign-in alone can eat a minute under fleet load.
   test.setTimeout(180_000);
+  const createdEmails: string[] = [];
+  test.afterEach(async ({ request }) => {
+    await deleteStudentsByEmail(request, createdEmails.splice(0));
+  });
 
   test('20 empty submit: required given-name inline error, no navigation, no row', async ({
     page,
@@ -69,7 +74,7 @@ test.describe('fleet5: add student (unhappy)', () => {
     const form = page.locator('[data-slot="school-student-new"]');
     await form.getByLabel('Given name').fill('Badly');
     await form.getByLabel('Family name', { exact: true }).fill(`${STAMP}BadMail`);
-    await form.getByLabel('Email', { exact: true }).fill('not-an-email');
+    await form.getByLabel(/^Email/).fill('not-an-email');
     await submit(page);
     await expect(page.getByText('Enter a valid email address.')).toBeVisible({ timeout: 60_000 });
     expect(new URL(page.url()).pathname).toContain('/students/new');
@@ -86,6 +91,7 @@ test.describe('fleet5: add student (unhappy)', () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     const jwt = await apiLogin(request);
     const email = `f5.dup.${STAMP.toLowerCase()}@schooltest.local`;
+    createdEmails.push(email);
 
     // First owner of the email — created through the UI like a real admin.
     await gotoForm(page);
@@ -152,11 +158,13 @@ test.describe('fleet5: add student (unhappy)', () => {
     });
 
     const family = `${STAMP}Xss`;
+    const email = `f5.xss.${STAMP.toLowerCase()}@schooltest.local`;
+    createdEmails.push(email);
     await page.goto(NEW);
     const form = page.locator('[data-slot="school-student-new"]');
     await form.getByLabel('Given name').fill('=SUM(A1)');
     await form.getByLabel('Family name', { exact: true }).fill('<script>');
-    await form.getByLabel('Email', { exact: true }).fill(`f5.xss.${STAMP.toLowerCase()}@schooltest.local`);
+    await form.getByLabel(/^Email/).fill(email);
     await submit(page);
     await page.waitForURL('**/dashboard/school/students', { timeout: 30_000 });
     // Toast is transient — the row content below is the hard proof.
@@ -218,12 +226,14 @@ test.describe('fleet5: add student (unhappy)', () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     const jwt = await apiLogin(request);
     const family = `${STAMP}Emoji`;
+    const email = `f5.emoji.${STAMP.toLowerCase()}@schooltest.local`;
+    createdEmails.push(email);
 
     await gotoForm(page);
     const form = page.locator('[data-slot="school-student-new"]');
     await form.getByLabel('Given name').fill('🌟Star');
     await form.getByLabel('Family name', { exact: true }).fill(family);
-    await form.getByLabel('Email', { exact: true }).fill(`f5.emoji.${STAMP.toLowerCase()}@schooltest.local`);
+    await form.getByLabel(/^Email/).fill(email);
     await submit(page);
     await page.waitForURL('**/dashboard/school/students', { timeout: 30_000 });
     await expect(

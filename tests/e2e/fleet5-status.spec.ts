@@ -10,6 +10,7 @@ import {
   signIn,
   STAMP,
 } from './helpers/fleet5-live';
+import { deleteStudentsByEmail } from './helpers/student-cleanup';
 import { watchErrors } from './helpers/ui';
 
 /**
@@ -40,6 +41,10 @@ async function openRosterWithStudent(page: Page, family: string) {
 
 test.describe('fleet5: status lifecycle', () => {
   test.setTimeout(90_000);
+  const createdEmails: string[] = [];
+  test.afterEach(async ({ request }) => {
+    await deleteStudentsByEmail(request, createdEmails.splice(0));
+  });
 
   test('40 archive: confirm gates, toast fires, pill appears, seat math stays whole', async ({
     page,
@@ -51,10 +56,12 @@ test.describe('fleet5: status lifecycle', () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     const jwt = await apiLogin(request);
     const family = `${STAMP}ArchUi`;
+    const email = `f5.archui.${STAMP.toLowerCase()}@schooltest.local`;
+    createdEmails.push(email);
     const created = await apiCreateStudent(request, jwt, {
       given_name: 'Arrow',
       family_name: family,
-      email: `f5.archui.${STAMP.toLowerCase()}@schooltest.local`,
+      email,
       year_level: 7,
     });
     expect(created.status, JSON.stringify(created.error)).toBe(201);
@@ -129,10 +136,12 @@ test.describe('fleet5: status lifecycle', () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     const jwt = await apiLogin(request);
     const family = `${STAMP}Unarch`;
+    const email = `f5.unarch.${STAMP.toLowerCase()}@schooltest.local`;
+    createdEmails.push(email);
     const created = await apiCreateStudent(request, jwt, {
       given_name: 'Una',
       family_name: family,
-      email: `f5.unarch.${STAMP.toLowerCase()}@schooltest.local`,
+      email,
       year_level: 8,
     });
     expect(created.status, JSON.stringify(created.error)).toBe(201);
@@ -188,10 +197,12 @@ test.describe('fleet5: status lifecycle', () => {
     test.setTimeout(90_000);
     const jwt = await apiLogin(request);
     const family = `${STAMP}Deact`;
+    const email = `f5.deact.${STAMP.toLowerCase()}@schooltest.local`;
+    createdEmails.push(email);
     const created = await apiCreateStudent(request, jwt, {
       given_name: 'Dea',
       family_name: family,
-      email: `f5.deact.${STAMP.toLowerCase()}@schooltest.local`,
+      email,
       year_level: 7,
     });
     expect(created.status).toBe(201);
@@ -216,13 +227,15 @@ test.describe('fleet5: status lifecycle', () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     const jwt = await apiLogin(request);
     const family = `${STAMP}DblSave`;
+    const email = `f5.dblsave.${STAMP.toLowerCase()}@schooltest.local`;
+    createdEmails.push(email);
 
     await signIn(page);
     await page.goto(NEW);
     const form = page.locator('[data-slot="school-student-new"]');
     await form.getByLabel('Given name').fill('Dee');
     await form.getByLabel('Family name', { exact: true }).fill(family);
-    await form.getByLabel('Email', { exact: true }).fill(`f5.dblsave.${STAMP.toLowerCase()}@schooltest.local`);
+    await form.getByLabel(/^Email/).fill(email);
     // Two rapid clicks: the pending gate must swallow the second.
     await Promise.all([
       form.getByRole('button', { name: 'Add student', exact: true }).dblclick(),
@@ -254,10 +267,12 @@ test.describe('fleet5: status lifecycle', () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     const jwt = await apiLogin(request);
     const family = `${STAMP}DblArch`;
+    const email = `f5.dblarch.${STAMP.toLowerCase()}@schooltest.local`;
+    createdEmails.push(email);
     const created = await apiCreateStudent(request, jwt, {
       given_name: 'Dee',
       family_name: family,
-      email: `f5.dblarch.${STAMP.toLowerCase()}@schooltest.local`,
+      email,
       year_level: 7,
     });
     expect(created.status).toBe(201);
@@ -305,7 +320,7 @@ test.describe('fleet5: status lifecycle', () => {
     const form = page.locator('[data-slot="school-student-new"]');
     await form.getByLabel('Given name').fill('Ghostly');
     await form.getByLabel('Family name', { exact: true }).fill(family);
-    await form.getByLabel('Email', { exact: true }).fill(`f5.ghost.${STAMP.toLowerCase()}@schooltest.local`);
+    await form.getByLabel(/^Email/).fill(`f5.ghost.${STAMP.toLowerCase()}@schooltest.local`);
     await shot(page, '45a-mid-form-filled');
 
     await page.reload();
@@ -332,10 +347,12 @@ test.describe('fleet5: status lifecycle', () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     const jwt = await apiLogin(request);
     const family = `${STAMP}BackNav`;
+    const email = `f5.backnav.${STAMP.toLowerCase()}@schooltest.local`;
+    createdEmails.push(email);
     const created = await apiCreateStudent(request, jwt, {
       given_name: 'Bak',
       family_name: family,
-      email: `f5.backnav.${STAMP.toLowerCase()}@schooltest.local`,
+      email,
       year_level: 7,
     });
     expect(created.status).toBe(201);

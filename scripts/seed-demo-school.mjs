@@ -7,7 +7,9 @@
  * Run:  node scripts/seed-demo-school.mjs
  * Env:  SEED_API_URL (default http://localhost:5500)
  *       SEED_MAILPIT_URL (default http://127.0.0.1:8125)
- *       SEED_OPS_EMAIL / SEED_OPS_PASSWORD (default admin@schooltest.local / Admin1234!)
+ *       SEED_OPS_EMAIL (default admin@schooltest.local)
+ *       SEED_OPS_PASSWORD (default SEED_ADMIN_PASSWORD from ../schooltest-api/.env;
+ *         neither set -> the script stops and names both)
  *       SEED_STAFF_PASSWORD (default Demo!Passw0rd) — every created account
  *       SEED_SCHOOL_NAME / SEED_PROBE_PREFIX — name overrides
  *
@@ -42,10 +44,20 @@
  * derives status and only trusts stored portal_plan for the tier.
  */
 
+import { existsSync, readFileSync } from 'node:fs';
+
+/** One key from the sibling schooltest-api/.env (the seed passwords' source of truth), or undefined. */
+function apiEnvValue(key) {
+  const envFile = new URL('../../schooltest-api/.env', import.meta.url);
+  if (!existsSync(envFile)) return undefined;
+  const line = readFileSync(envFile, 'utf8').match(new RegExp(`^${key}=(.*)$`, 'm'))?.[1];
+  return line?.trim().replace(/^(['"])(.*)\1$/, '$2') || undefined;
+}
+
 const API = process.env.SEED_API_URL ?? 'http://localhost:5500';
 const MAILPIT = process.env.SEED_MAILPIT_URL ?? 'http://127.0.0.1:8125';
 const OPS_EMAIL = process.env.SEED_OPS_EMAIL ?? 'admin@schooltest.local';
-const OPS_PASSWORD = process.env.SEED_OPS_PASSWORD ?? 'Admin1234!';
+const OPS_PASSWORD = process.env.SEED_OPS_PASSWORD || apiEnvValue('SEED_ADMIN_PASSWORD');
 const STAFF_PASSWORD = process.env.SEED_STAFF_PASSWORD ?? 'Demo!Passw0rd';
 
 const VERSION_HEADER = 'X-Ops-Portal-Version';
@@ -775,6 +787,9 @@ function expectedCredentials() {
 }
 
 async function main() {
+  if (!OPS_PASSWORD) {
+    die('no ops password: set SEED_OPS_PASSWORD, or SEED_ADMIN_PASSWORD in ../schooltest-api/.env');
+  }
   log(`[seed] API=${API}  Mailpit=${MAILPIT}`);
   log(`[seed] demo school="${SCHOOL_NAME}"  probes="${PROBE_PREFIX} — <NSW|VIC|QLD|WA>"`);
   const opsJwt = await login(OPS_EMAIL, OPS_PASSWORD);

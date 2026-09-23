@@ -20,6 +20,12 @@
  * The outcome is then CHECKED: the row reads 404, or `student_status:
  * 'archived'`. No raw SQL: `helpers/auth-db.ts`'s psql access stays scoped to
  * `auth_email_requests`.
+ *
+ * Deleting a student does not delete the sign-in account minted for it, so a
+ * DELETED student's linked account is removed too, the way the api-side
+ * join-load-30 teardown does: `DELETE /api/ops/users/:documentId` (the plugin's
+ * own `DELETE /api/users/:id` is granted to no role), then CHECKED to read 404.
+ * An ARCHIVED student keeps its account: it is the retained student's sign-in.
  */
 import { expect, type APIRequestContext } from '@playwright/test';
 
@@ -46,6 +52,7 @@ async function adminJwt(request: APIRequestContext): Promise<string> {
 interface StudentRead {
   student_status?: string;
   school?: { documentId?: string } | null;
+  user?: { documentId?: string } | null;
 }
 
 async function readStudent(
@@ -55,19 +62,40 @@ async function readStudent(
 ): Promise<{ status: number; row: StudentRead | null }> {
   const res = await request.get(`${API_BASE_URL}/api/students/${documentId}`, {
     headers,
-    params: { 'fields[0]': 'student_status', 'populate[school][fields][0]': 'name' },
+    params: {
+      'fields[0]': 'student_status',
+      'populate[school][fields][0]': 'name',
+      'populate[user][fields][0]': 'email',
+    },
   });
   if (res.status() !== 200) return { status: res.status(), row: null };
   return { status: 200, row: ((await res.json()) as { data: StudentRead }).data };
 }
 
+/** The deleted student's sign-in account: ops DELETE, then it must read 404. */
+async function removeAccount(
+  request: APIRequestContext,
+  headers: Record<string, string>,
+  userDocumentId: string,
+): Promise<void> {
+  const url = `${API_BASE_URL}/api/ops/users/${userDocumentId}`;
+  const del = await request.delete(url, { headers });
+  if (del.status() !== 200 && del.status() !== 404) {
+    throw new Error(`its account ${userDocumentId}: DELETE -> HTTP ${del.status()}: ${(await del.text()).slice(0, 300)}`);
+  }
+  const after = await request.get(url, { headers });
+  if (after.status() !== 404) throw new Error(`its account ${userDocumentId} reads HTTP ${after.status()} after its delete`);
+}
+
 /** Delete, or deactivate on STUDENT_HAS_HISTORY; throws when neither held. */
 async function retireStudent(request: APIRequestContext, jwt: string, documentId: string): Promise<void> {
   const headers = { Authorization: `Bearer ${jwt}` };
+  const account = (await readStudent(request, headers, documentId)).row?.user?.documentId;
   const del = await request.delete(`${API_BASE_URL}/api/students/${documentId}`, { headers });
   if (del.status() === 204 || del.status() === 404) {
     const after = await readStudent(request, headers, documentId);
     if (after.status !== 404) throw new Error(`still readable (HTTP ${after.status}) after its delete`);
+    if (account) await removeAccount(request, headers, account);
     return;
   }
 
@@ -123,6 +151,35 @@ export async function deleteStudents(
     failures.push(`admin login: ${error instanceof Error ? error.message : String(error)}`);
   }
   expect
-    .soft(failures, `students the cleanup left neither deleted nor archived:\n${failures.join('\n')}`)
+    .soft(failures, `students the cleanup left neither deleted nor archived, or whose account it kept:\n${failures.join('\n')}`)
     .toEqual([]);
+}
+
+/**
+ * `deleteStudents` for students a spec created through the form, so it never
+ * saw their documentIds: each is found by its email (run-unique in the spec),
+ * as the same ops account. Never throws; a failed lookup is a SOFT failure.
+ */
+export async function deleteStudentsByEmail(request: APIRequestContext, emails: readonly string[]): Promise<void> {
+  if (emails.length === 0) return;
+  const ids: string[] = [];
+  const failures: string[] = [];
+  try {
+    const headers = { Authorization: `Bearer ${await adminJwt(request)}` };
+    for (const email of emails) {
+      const res = await request.get(`${API_BASE_URL}/api/students`, {
+        headers,
+        params: { 'filters[email][$eqi]': email, 'fields[0]': 'email', 'pagination[pageSize]': 100 },
+      });
+      if (!res.ok()) {
+        failures.push(`${email}: HTTP ${res.status()}: ${(await res.text()).slice(0, 300)}`);
+        continue;
+      }
+      ids.push(...((await res.json()) as { data: { documentId: string }[] }).data.map((row) => row.documentId));
+    }
+  } catch (error) {
+    failures.push(`lookup: ${error instanceof Error ? error.message : String(error)}`);
+  }
+  expect.soft(failures, `students the cleanup could not look up by email:\n${failures.join('\n')}`).toEqual([]);
+  await deleteStudents(request, ids);
 }
