@@ -4,6 +4,8 @@ import {
   addDaysIso,
   minutesOf,
   scheduleErrors,
+  schoolTimeZone,
+  windowIso,
   windowsOverlap,
   zonedParts,
   zonedWallTimeToIso,
@@ -91,5 +93,62 @@ describe('windowsOverlap', () => {
     expect(windowsOverlap(at('09:00'), at('10:00'), at('10:00'), at('11:00'))).toBe(false);
     expect(windowsOverlap(at('09:00'), at('10:00'), at('09:30'), at('09:40'))).toBe(true);
     expect(windowsOverlap(at('09:00'), at('10:00'), at('08:30'), at('09:15'))).toBe(true);
+  });
+});
+
+describe('BUG-002 — the window is built in the SCHOOL zone, never the device zone', () => {
+  const MELBOURNE = 'Australia/Melbourne';
+
+  test('the class zone (C-TD-1) wins over a booking echo and the device zone', () => {
+    expect(schoolTimeZone(MELBOURNE, 'Australia/Perth', 'Europe/London')).toBe(MELBOURNE);
+    expect(schoolTimeZone(undefined, MELBOURNE, 'Europe/London')).toBe(MELBOURNE);
+    expect(schoolTimeZone(undefined, null, 'Europe/London')).toBe('Europe/London');
+  });
+
+  test('09:00–10:00 at a Melbourne school is the same instant pair whatever the device zone', () => {
+    const zone = schoolTimeZone(MELBOURNE, undefined, 'Europe/London');
+    expect(windowIso('2026-09-24', '09:00', '10:00', zone)).toEqual({
+      opens_at: '2026-09-23T23:00:00.000Z',
+      closes_at: '2026-09-24T00:00:00.000Z',
+    });
+    expect(schoolTimeZone(MELBOURNE, undefined, 'UTC')).toBe(zone);
+  });
+
+  test('BEFORE: built in a London device zone the same wall clock names other instants', () => {
+    const london = windowIso('2026-09-24', '10:00', '11:00', 'Europe/London');
+    expect(london).toEqual({ opens_at: '2026-09-24T09:00:00.000Z', closes_at: '2026-09-24T10:00:00.000Z' });
+    expect(zonedParts(new Date(london?.closes_at ?? ''), MELBOURNE).time).toBe('20:00');
+  });
+
+  test('the preview reads today and now in the school zone: 06:00 there is out of hours and earlier today', () => {
+    const now = zonedParts(new Date('2026-09-23T21:30:00.000Z'), MELBOURNE);
+    expect(now).toEqual({ date: '2026-09-24', time: '07:30' });
+    expect(zonedParts(new Date('2026-09-23T21:30:00.000Z'), 'Europe/London').date).toBe('2026-09-23');
+    const base = { timeLimit: 40, today: now.date, nowHm: now.time };
+    expect(scheduleErrors({ ...base, date: '2026-09-24', opens: '09:00', closes: '10:00' })).toEqual([]);
+    expect(scheduleErrors({ ...base, date: '2026-09-24', opens: '06:00', closes: '07:00' })).toEqual([
+      { key: 'outsideHours' },
+      { key: 'earlierToday' },
+    ]);
+    expect(scheduleErrors({ ...base, date: '2026-09-23', opens: '09:00', closes: '10:00' })).toEqual([
+      { key: 'datePassed' },
+    ]);
+  });
+
+  test('Melbourne DST starts 2026-10-04: 09:00 is UTC+10 the day before and UTC+11 on the day', () => {
+    expect(windowIso('2026-10-03', '09:00', '10:00', MELBOURNE)).toEqual({
+      opens_at: '2026-10-02T23:00:00.000Z',
+      closes_at: '2026-10-03T00:00:00.000Z',
+    });
+    expect(windowIso('2026-10-04', '07:00', '19:00', MELBOURNE)).toEqual({
+      opens_at: '2026-10-03T20:00:00.000Z',
+      closes_at: '2026-10-04T08:00:00.000Z',
+    });
+    expect(zonedParts(new Date('2026-10-03T20:00:00.000Z'), MELBOURNE)).toEqual({ date: '2026-10-04', time: '07:00' });
+  });
+
+  test('Melbourne DST ends 2027-04-04: 09:00 moves back to UTC+10', () => {
+    expect(zonedWallTimeToIso('2027-04-03', '09:00', MELBOURNE)).toBe('2027-04-02T22:00:00.000Z');
+    expect(zonedWallTimeToIso('2027-04-04', '09:00', MELBOURNE)).toBe('2027-04-03T23:00:00.000Z');
   });
 });

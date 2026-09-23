@@ -42,7 +42,8 @@ export function useStartSessionModal({ initial, classes, tests, editSittingId }:
   const formApi = useStartSessionForm(initial);
   const { form } = formApi;
   const isEdit = editSittingId !== null;
-  const data = useStartSessionClassData(form.classId, form.mode, isEdit);
+  const klass = classes.find((entry) => entry.class_document_id === form.classId);
+  const data = useStartSessionClassData(form.classId, form.mode, isEdit, klass?.timezone);
   const submit = useStartSessionSubmit(data.timeZone);
 
   const now = zonedParts(new Date(), data.timeZone);
@@ -97,7 +98,7 @@ export function useStartSessionModal({ initial, classes, tests, editSittingId }:
   return {
     ...formApi,
     isEdit,
-    klass: classes.find((entry) => entry.class_document_id === form.classId),
+    klass,
     test,
     data,
     errors,

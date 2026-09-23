@@ -92,7 +92,20 @@ export function windowsOverlap(aOpens: string, aCloses: string, bOpens: string, 
   return Date.parse(aOpens) < Date.parse(bCloses) && Date.parse(bOpens) < Date.parse(aCloses);
 }
 
-/** The browser's zone — the school zone until a booking echoes the server's. */
+/** The device's zone — a last resort only, when the server named no school zone. */
 export function browserTimeZone(): string {
   return Intl.DateTimeFormat().resolvedOptions().timeZone;
+}
+
+/**
+ * The zone a window is built, previewed and shown in: the school zone C-TD-1
+ * reports for the class (the one the server validates in), else the zone a
+ * booking of the class echoed, else the device's.
+ */
+export function schoolTimeZone(
+  classZone: string | null | undefined,
+  bookingZone: string | null | undefined,
+  deviceZone: string = browserTimeZone(),
+): string {
+  return classZone || bookingZone || deviceZone;
 }

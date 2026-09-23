@@ -5902,6 +5902,7 @@
         "closes": "Ditutup",
         "note": "Dibuka selama {window} minit · ujian {limit} minit · ditutup secara automatik pada {closes}. Waktu sekolah ialah 07:00 hingga 19:00.",
         "noteError": "Sesi berjalan antara 07:00 dan 19:00.",
+        "zoneNote": "Masa adalah dalam {zone}, zon waktu sekolah.",
         "errors": {
           "pickDate": "Pilih tarikh untuk sesi ini.",
           "datePassed": "Tarikh itu telah berlalu.",

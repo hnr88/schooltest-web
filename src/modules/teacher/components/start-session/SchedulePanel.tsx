@@ -18,6 +18,7 @@ function SchedulePanel({
   opens,
   closes,
   timeLimit,
+  timeZone,
   errors,
   serverMessages,
   onDate,
@@ -28,6 +29,7 @@ function SchedulePanel({
   opens: string;
   closes: string;
   timeLimit: number;
+  timeZone: string;
   errors: readonly ScheduleError[];
   serverMessages: readonly string[];
   onDate: (value: string) => void;
@@ -69,7 +71,8 @@ function SchedulePanel({
       <p className="mt-2.5 text-[12.5px] leading-[1.55] text-[#6B7280]">
         {errors.length > 0
           ? t('noteError')
-          : t('note', { window: minutesOf(closes) - minutesOf(opens), limit: timeLimit, closes })}
+          : t('note', { window: minutesOf(closes) - minutesOf(opens), limit: timeLimit, closes })}{' '}
+        <span data-slot="start-session-schedule-zone">{t('zoneNote', { zone: timeZone })}</span>
       </p>
       {messages.length > 0 ? (
         <div role="alert" data-slot="start-session-schedule-errors" className={SCHEDULE_ERROR_BOX_CLASS}>

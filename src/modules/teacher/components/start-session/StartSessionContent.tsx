@@ -12,7 +12,7 @@ import {
 } from '@/modules/teacher/constants/start-session-styles.constants';
 import { useStartSessionSources } from '@/modules/teacher/hooks/useStartSessionSources';
 import { resolveInitialForm } from '@/modules/teacher/lib/start-session-form';
-import { addDaysIso, browserTimeZone, zonedParts } from '@/modules/teacher/lib/start-session-schedule';
+import { addDaysIso, schoolTimeZone, zonedParts } from '@/modules/teacher/lib/start-session-schedule';
 import { useStartSessionStore } from '@/modules/teacher/stores/use-start-session-store';
 
 const STATE_KEY = {
@@ -39,7 +39,9 @@ function StartSessionContent() {
   const status = sources.status;
 
   if (status === 'ready') {
-    const tomorrow = addDaysIso(zonedParts(new Date(), browserTimeZone()).date, 1);
+    const klass = sources.classes.find((entry) => entry.class_document_id === classId) ?? sources.classes[0];
+    const zone = schoolTimeZone(klass?.timezone, sources.booking?.window?.timezone);
+    const tomorrow = addDaysIso(zonedParts(new Date(), zone).date, 1);
     const initial = resolveInitialForm({
       request: { classId, mode, tab, studentIds },
       classes: sources.classes,

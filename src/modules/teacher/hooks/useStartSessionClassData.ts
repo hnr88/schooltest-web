@@ -5,7 +5,7 @@ import { useQueries } from '@tanstack/react-query';
 import { useClassResultsQuery } from '@/modules/results';
 import { LAST_SESSION_PAGE_SIZE } from '@/modules/teacher/constants/start-session.constants';
 import { toRosterStudents } from '@/modules/teacher/lib/start-session-members';
-import { browserTimeZone } from '@/modules/teacher/lib/start-session-schedule';
+import { schoolTimeZone } from '@/modules/teacher/lib/start-session-schedule';
 import { lastSessionAt } from '@/modules/teacher/lib/start-session-view';
 import { sittingsNeedingMonitor } from '@/modules/teacher/lib/student-availability';
 import { testSessionMonitorQueryOptions } from '@/modules/teacher/queries/use-test-session-monitor.query';
@@ -16,10 +16,15 @@ import type { StartSessionMode } from '@/modules/teacher/types/start-session.typ
  * Everything the modal reads about ONE class, all live: its roster, its open
  * sittings (plus the monitor of each whole-class one, which alone knows who is
  * mid-test), its bookings when a window is being chosen, and its newest closed
- * sitting. The school zone is the one the server echoed on a booking, else the
- * browser's.
+ * sitting. The school zone is the class's (C-TD-1), else the one the server
+ * echoed on a booking, else the device's.
  */
-export function useStartSessionClassData(classId: string, mode: StartSessionMode, isEdit: boolean) {
+export function useStartSessionClassData(
+  classId: string,
+  mode: StartSessionMode,
+  isEdit: boolean,
+  classZone: string | undefined,
+) {
   const enabled = Boolean(classId);
   const roster = useClassResultsQuery(classId, enabled);
   const open = useTestSessionsQuery(enabled, { status: 'open', class: classId });
@@ -52,7 +57,7 @@ export function useStartSessionClassData(classId: string, mode: StartSessionMode
     busyError: busyReads.some((read) => read.isError),
     lastSessionAt: lastSessionAt(closed.data?.sessions ?? []),
     lastSessionPending: closed.isPending,
-    timeZone: bookingRows.find((row) => row.window)?.window?.timezone ?? browserTimeZone(),
+    timeZone: schoolTimeZone(classZone, bookingRows.find((row) => row.window)?.window?.timezone),
     retry: () => {
       for (const read of [roster, closed, ...busyReads]) void read.refetch();
     },

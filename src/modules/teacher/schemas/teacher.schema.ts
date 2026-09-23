@@ -187,6 +187,8 @@ export const dashboardClassSchema = z.strictObject({
   reading: dashboardClassReadingSchema.optional(),
   /** The most common `student.year_level` on the active roster (a tie goes to the lower year); null when none is set. */
   year_level: z.number().int().nullable().optional(),
+  /** BUG-002: the IANA zone the server validates this class's booking windows in (the school's). */
+  timezone: z.string().min(1).optional(),
 });
 
 /** The caller's most recently opened `status:'open'` sitting, else `null`. */
