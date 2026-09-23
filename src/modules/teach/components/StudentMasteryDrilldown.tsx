@@ -6,6 +6,7 @@ import { X } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { StatusPill } from '@/modules/design-system';
 import { teacherReportHref } from '@/modules/teach/components/MasteryTable';
+import { areaLabelKey } from '@/modules/teach/lib/diagnostic-areas';
 import {
   masteryAreaAttribute,
   MASTERY_AREA_CODES,
@@ -15,21 +16,20 @@ import type { StudentMasteryDrilldownProps } from '@/modules/teach/types/compone
 import { STATUS_TONE } from '@/modules/teach/constants/components.constants';
 
 // Individual level, one click down from the class view (tasks 75 and 96,
-// mvp-updates §4.9): the selected student's seven reading areas as a list
+// mvp-updates §4.9): the selected student's eight reading areas as a list
 // (never a grid). A null prob renders as "not yet assessed" - an absence,
 // never 0%. When the student has a finished result behind the row
 // (C-RPT-01 v2 latest_result_document_id), the drill links one click further
 // to the full teacher report for that result; students with no result yet get
 // the not-assessed note instead, never a dead link.
 //
-// TB-12: the list walks the seven AREAS and asks `masteryAreaAttribute` which
+// TB-12: the list walks the eight AREAS and asks `masteryAreaAttribute` which
 // of the row's attributes lands on each — the same placement the table column
-// above it uses, so the drill and the row it came from always agree. Walking
-// the wire attributes instead named them by their raw code (a missing
-// `Teach.diagnostic.areas.Decoding` key) and listed Vocabulary twice, once per
-// strand.
+// above it uses, so the drill and the row it came from always agree. Everyday
+// and Classroom Vocabulary are two areas, each with its own strand's status.
 export function StudentMasteryDrilldown({ row, onClose, reportHref = teacherReportHref }: StudentMasteryDrilldownProps) {
   const t = useTranslations('Teach.diagnostic');
+  const tLabel = useTranslations();
   const heading = t('drilldownTitle', { student: row.student_ref });
 
   return (
@@ -62,8 +62,8 @@ export function StudentMasteryDrilldown({ row, onClose, reportHref = teacherRepo
               data-status={attribute?.status ?? 'none'}
               className="flex items-center justify-between gap-4 rounded-lg border border-border px-3 py-2"
             >
-              <span className="min-w-0 truncate text-sm font-medium text-foreground" title={t(`areas.${code}`)}>
-                {t(`areas.${code}`)}
+              <span className="min-w-0 truncate text-sm font-medium text-foreground" title={tLabel(areaLabelKey(code))}>
+                {tLabel(areaLabelKey(code))}
               </span>
               {attribute ? (
                 <StatusPill tone={STATUS_TONE[attribute.status]}>

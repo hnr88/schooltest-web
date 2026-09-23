@@ -14,6 +14,7 @@ import {
 } from '@/modules/directory';
 import { StatusPill } from '@/modules/design-system';
 import { REPORTS_HREF } from '@/modules/shell';
+import { areaLabelKey } from '@/modules/teach/lib/diagnostic-areas';
 import {
   masteryAreaAttribute,
   masteryClientConfig,
@@ -40,6 +41,7 @@ import type { DiagnosticMasteryRow } from '@/modules/teach/types/diagnostic.type
 
 export function MasteryTable({ rows, onSelect, query, reportHref = teacherReportHref }: MasteryTableProps) {
   const t = useTranslations('Teach.diagnostic');
+  const tLabel = useTranslations();
 
   const sorts = useMemo<readonly DirectorySortDef[]>(
     () =>
@@ -48,9 +50,9 @@ export function MasteryTable({ rows, onSelect, query, reportHref = teacherReport
         nameDesc: t('sortNameDesc'),
         weakest: (areaLabel) => t('sortAreaWeakest', { area: areaLabel }),
         strongest: (areaLabel) => t('sortAreaStrongest', { area: areaLabel }),
-        areaLabel: (code) => t(`areas.${code}`),
+        areaLabel: (code) => tLabel(areaLabelKey(code)),
       }),
-    [t],
+    [t, tLabel],
   );
 
   const state = useDirectoryState({
@@ -106,7 +108,7 @@ export function MasteryTable({ rows, onSelect, query, reportHref = teacherReport
       },
       ...MASTERY_AREA_CODES.map((code) => ({
         key: code,
-        header: t(`areas.${code}`),
+        header: tLabel(areaLabelKey(code)),
         sortable: true,
         sortValues: { asc: `${code}:asc`, desc: `${code}:desc` },
         cell: (row: DiagnosticMasteryRow) => <AreaCell row={row} code={code} />,
@@ -119,7 +121,7 @@ export function MasteryTable({ rows, onSelect, query, reportHref = teacherReport
         ),
       },
     ],
-    [t, reportHref],
+    [t, tLabel, reportHref],
   );
 
   return (

@@ -78,7 +78,7 @@ describe('ops/33 mastery directory config', () => {
     expect([...live].sort(masteryClientConfig.comparators!['R1:desc']!).map((row) => row.student_ref)).toEqual(['Cat', 'Bea', 'Ann']);
   });
 
-  test('the vocabulary column ranks on the LIMITING strand of the two', () => {
+  test('Everyday and Classroom Vocabulary are two columns, each ranking on its own strand', () => {
     const vocab = [
       masteryRow({
         student_ref: 'Ann',
@@ -95,7 +95,9 @@ describe('ops/33 mastery directory config', () => {
         ],
       }),
     ];
-    expect([...vocab].sort(masteryClientConfig.comparators!['R2:asc']!).map((row) => row.student_ref)).toEqual(['Ann', 'Bea']);
+    expect([...vocab].sort(masteryClientConfig.comparators!['Vocab_A2:asc']!).map((row) => row.student_ref)).toEqual(['Bea', 'Ann']);
+    expect([...vocab].sort(masteryClientConfig.comparators!['Vocab_B1:asc']!).map((row) => row.student_ref)).toEqual(['Ann', 'Bea']);
+    expect(masteryClientConfig.comparators!['R2:asc']).toBeUndefined();
   });
 
   test('search matches only the student name', () => {

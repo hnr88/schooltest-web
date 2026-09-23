@@ -9,10 +9,13 @@ import { z } from 'zod';
 // field the server started sending, which is the drift these schemas exist to
 // catch — an unexpected key is a contract change and must fail here.
 
+// The product-wide display order: Everyday (vocab_a2) and Classroom (vocab_b1)
+// Vocabulary are two tiles, never one blended figure (BUG-008).
 export const SUBSKILL_KEYS = [
   'decoding',
-  'vocabulary',
+  'vocab_a2',
   'grammar',
+  'vocab_b1',
   'gist',
   'detail',
   'inference',
@@ -23,14 +26,19 @@ export const ACARA_PHASES = ['Beginning', 'Emerging', 'Developing', 'Consolidati
 
 export const subskillVerdictSchema = z.enum(['mastered', 'not_yet']);
 
+// A null tile is one the sitting holds no evidence for (a strand never
+// reached, no gate) — the UI renders the em dash, never "Not yet".
+const tileSchema = subskillVerdictSchema.nullable();
+
 export const subskillsSchema = z.strictObject({
-  decoding: subskillVerdictSchema,
-  vocabulary: subskillVerdictSchema,
-  grammar: subskillVerdictSchema,
-  gist: subskillVerdictSchema,
-  detail: subskillVerdictSchema,
-  inference: subskillVerdictSchema,
-  critical: subskillVerdictSchema,
+  decoding: tileSchema,
+  vocab_a2: tileSchema,
+  grammar: tileSchema,
+  vocab_b1: tileSchema,
+  gist: tileSchema,
+  detail: tileSchema,
+  inference: tileSchema,
+  critical: tileSchema,
 });
 
 /**

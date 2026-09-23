@@ -17,6 +17,16 @@ const ERROR_PATTERN_LABEL: Record<string, string> = {
   semantic_neighbour: 'Close in meaning',
 };
 
+/** The two vocabulary strands by their register names; every other skill key is already plain English. */
+const SKILL_LABEL: Record<string, string> = {
+  Vocab_A2: 'Everyday Vocabulary',
+  Vocab_B1: 'Classroom Vocabulary',
+};
+
+function skillLabel(skill: string): string {
+  return SKILL_LABEL[skill] ?? skill;
+}
+
 /**
  * The three-variant union, narrowed by ITS OWN discriminators (task 38's
  * membership lesson: never assume a shape the union no longer guarantees):
@@ -57,7 +67,8 @@ export function renderStudentMarkdown(bundle: DiagnosticExport): string {
   lines.push('');
 
   lines.push('## Skills');
-  for (const [skill, entry] of Object.entries(bundle.skills)) {
+  for (const [key, entry] of Object.entries(bundle.skills)) {
+    const skill = skillLabel(key);
     if (isNotAssessed(entry)) {
       lines.push(`- ${skill}: not assessed this sitting`);
       continue;
@@ -74,8 +85,8 @@ export function renderStudentMarkdown(bundle: DiagnosticExport): string {
   lines.push('');
 
   lines.push('## Vocabulary');
-  lines.push(`- A2 strand: ${bundle.vocab.a2.domain_score === null ? 'not assessed' : `${bundle.vocab.a2.domain_score}%`}`);
-  lines.push(`- B1 strand: ${bundle.vocab.b1.domain_score === null ? 'not assessed' : `${bundle.vocab.b1.domain_score}%`}`);
+  lines.push(`- ${skillLabel('Vocab_A2')}: ${bundle.vocab.a2.domain_score === null ? 'not assessed' : `${bundle.vocab.a2.domain_score}%`}`);
+  lines.push(`- ${skillLabel('Vocab_B1')}: ${bundle.vocab.b1.domain_score === null ? 'not assessed' : `${bundle.vocab.b1.domain_score}%`}`);
   lines.push('');
 
   lines.push('## Exit gate (Section 3)');

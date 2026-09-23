@@ -9,5 +9,5 @@ export { useClassDiagnosticQuery, classDiagnosticQueryOptions } from './queries/
 export type { ClassDiagnostic, DiagnosticMasteryRow, DiagnosticStatus } from './types/diagnostic.types';
 export type { ClassProgress, ProgressStudent, ProgressTransition } from './types/progress.types';
 // School analytics aggregate — a live diagnostic cell's code placed on its reading area.
-export { diagnosticAreaCode } from './lib/diagnostic-areas';
+export { areaLabelKey, diagnosticAreaCodes } from './lib/diagnostic-areas';
 export { MASTERY_AREA_CODES } from './lib/mastery-directory.lib';

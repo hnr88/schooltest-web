@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import type { SchoolClass } from '@/modules/classes';
 import { PanelHeaderRow, Skeleton } from '@/modules/design-system';
 import { useSchoolAggregate } from '@/modules/school-admin/hooks/useSchoolAggregate';
+import { areaLabelKey } from '@/modules/teach';
 
 import type { SchoolAggregatePanelProps } from '@/modules/school-admin/types/components.types';
 
@@ -17,6 +18,7 @@ import type { SchoolAggregatePanelProps } from '@/modules/school-admin/types/com
 export function SchoolAggregatePanel({ classes, onSelectClass }: SchoolAggregatePanelProps) {
   const t = useTranslations('SchoolAdmin.analytics');
   const td = useTranslations('Teach.diagnostic');
+  const tLabel = useTranslations();
   const aggregate = useSchoolAggregate(classes, true);
 
   if (aggregate.isPending) {
@@ -67,7 +69,7 @@ export function SchoolAggregatePanel({ classes, onSelectClass }: SchoolAggregate
                 {aggregate.areas.map((area) => (
                   <tr key={area.code} className="border-b border-divider last:border-b-0">
                     <th scope="row" className="py-2 pr-4 text-left text-body-sm font-medium text-foreground">
-                      {td(`areas.${area.code}`)}
+                      {tLabel(areaLabelKey(area.code))}
                     </th>
                     <td className="px-2 py-2 text-right text-body-sm text-body tabular-nums">{area.secure}</td>
                     <td className="px-2 py-2 text-right text-body-sm text-body tabular-nums">{area.developing}</td>

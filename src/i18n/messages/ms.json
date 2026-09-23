@@ -2859,7 +2859,6 @@
       "notYet": "Belum lagi",
       "subskill": {
         "decoding": "Penyahkodan",
-        "vocabulary": "Kosa kata",
         "grammar": "Tatabahasa",
         "gist": "Inti",
         "detail": "Perincian",
@@ -4503,7 +4502,6 @@
         "groupStudents": "{count, plural, other {# pelajar}}",
         "groupsNone": "Pelayan tidak menyarankan sebarang kumpulan untuk kelas ini: belum ada keputusan selesai yang membawa profil subkemahiran penuh untuk dikumpulkan.",
         "strandTitle": "Purata strata kosa kata",
-        "strandCaption": "Purata A2 dan B1 — murid strata tunggal dikira untuk strata yang mereka duduki sahaja",
         "strandA2": "Kosa kata harian",
         "strandB1": "Kosa kata bilik darjah",
         "strandNone": "—",
@@ -4785,8 +4783,6 @@
     "notAssessedThisSitting": "tidak dinilai pada sessi ini",
     "scorePercent": "{score}%",
     "exitGateSection3": "Laluan keluar (Bahagian 3)",
-    "vocabStrandsBoth": "A2 {a2} · B1 {b1}",
-    "vocabStrandSingle": "{assessed} · {gap}",
     "askAria": "Tanya AI tentang keputusan ini",
     "askHeading": "Tanya AI",
     "askPlaceholder": "Tanya tentang keputusan ini…",
@@ -4849,9 +4845,7 @@
     "fallbackCommonSlip": "Kesilapan paling kerap: {label} ({pct}% daripada jawapan salah).",
     "fallbackVocabA2Only": "Hanya kosa kata harian dinilai pada sessi ini ({a2}); kosa kata bilik darjah tidak dinilai. Fokus pengajaran: terus mengukuhkan kosa kata harian sebelum sessi akan datang.",
     "fallbackVocabB1Only": "Hanya kosa kata bilik darjah dinilai pada sessi ini ({b1}); kosa kata harian tidak dinilai. Fokus pengajaran: bina atas kosa kata bilik darjah yang kini jelas.",
-    "fallbackVocabBlend": "Kosa kata harian {a2}, kosa kata bilik darjah {b1}. Fokus pengajaran: kembangkan yang lebih lemah sebelum sessi akan datang.",
-    "fallbackNoScore": "tiada skor",
-    "fallbackNotAssessed": "tidak dinilai"
+    "fallbackVocabBlend": "Kosa kata harian {a2}, kosa kata bilik darjah {b1}. Fokus pengajaran: kembangkan yang lebih lemah sebelum sessi akan datang."
   },
   "Components": {
     "pagination": "paginasi",
@@ -4950,7 +4944,6 @@
       },
       "skill": {
         "decoding": "Penyahkodan",
-        "vocabulary": "Kosa kata",
         "grammar": "Tatabahasa",
         "gist": "Isi utama",
         "detail": "Butiran",
@@ -4959,7 +4952,8 @@
       },
       "skillBlurb": {
         "decoding": "Mengenal perkataan dengan tepat dan lancar",
-        "vocabulary": "Mengetahui maksud perkataan mengikut konteks",
+        "vocabulary": "Mengetahui maksud perkataan harian mengikut konteks",
+        "vocabB1": "Mengetahui maksud perkataan bilik darjah dan subjek mengikut konteks",
         "grammar": "Struktur ayat dan bentuk kata",
         "gist": "Memahami idea utama dan tujuan sesuatu teks",
         "detail": "Mencari fakta khusus dan maklumat yang dinyatakan",
@@ -6185,10 +6179,7 @@
         "deltaUp": "↑ +{points}",
         "deltaDown": "↓ −{points}",
         "deltaFlat": "±0",
-        "deltaBands": "{before} → {after}",
-        "strands": "A2 {a2}% · B1 {b1}%",
-        "strandA2": "A2 {a2}%",
-        "strandB1": "B1 {b1}%"
+        "deltaBands": "{before} → {after}"
       },
       "analysisTitle": "Analisis murid",
       "analysisBadge": "Ringkasan dijana",
@@ -6207,7 +6198,7 @@
         "strengthFocus": "Bidang paling kukuh {first} ialah {strongest} ({strongestScore}%), manakala {weakest} ({weakestScore}%) ialah fokus yang paling jelas.",
         "focusNext": "Latihan bersasar dalam {weakest} — dengan teks yang sedikit melebihi tahap semasa {first} — paling berkemungkinan menaikkan skor keseluruhan.",
         "vocabBoth": "Kosa kata harian berada pada {a2}% dan kosa kata bilik darjah pada {b1}%.",
-        "vocabAcademicNext": "Latihan ringkas dan eksplisit tentang keluarga kata akademik — digabungkan dengan tugasan membaca untuk makna yang melangkaui makna literal — ialah cara paling langsung untuk meningkatkan kefahaman {first}.",
+        "vocabAcademicNext": "Latihan ringkas dan eksplisit tentang kosa kata bilik darjah dan subjek — digabungkan dengan tugasan membaca untuk makna yang melangkaui makna literal — ialah cara paling langsung untuk meningkatkan kefahaman {first}.",
         "vocabA2Only": "Hanya kosa kata harian diukur pada borang ini: {a2}%.",
         "vocabB1Only": "Hanya kosa kata bilik darjah diukur pada borang ini: {b1}%."
       },

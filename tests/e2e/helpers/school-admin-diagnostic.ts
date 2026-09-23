@@ -15,22 +15,42 @@ import { en } from './teacher-rail';
 /** The aggregate panel's status columns, left to right. */
 export const AGGREGATE_STATUSES = ['secure', 'developing', 'emerging', 'not_yet', 'mastered', 'not_mastered', 'not_assessed'] as const;
 
-/** The seven teach areas, and where a scored student's attribute cell lands (both vocabulary strands on Vocabulary). */
-const AREA_CODES = ['R1', 'R2', 'R3', 'R4', 'R5', 'R6', 'R7'] as const;
+/**
+ * The eight teach areas in display order — Everyday (Vocab_A2) and Classroom (Vocab_B1) Vocabulary
+ * are two areas (BUG-008) — and where a scored student's attribute cell lands.
+ */
+export const AREA_CODES = ['R1', 'Vocab_A2', 'R3', 'Vocab_B1', 'R4', 'R5', 'R6', 'R7'] as const;
 const ATTRIBUTE_AREA: Readonly<Record<string, string>> = {
   Decoding: 'R1',
-  Vocab_A2: 'R2',
-  Vocab_B1: 'R2',
+  Vocab_A2: 'Vocab_A2',
+  Vocab_B1: 'Vocab_B1',
   Grammar: 'R3',
   Gist: 'R4',
   Detail: 'R5',
   Inference: 'R6',
 };
+const STRAND_LABEL_KEY: Readonly<Record<string, string>> = {
+  Vocab_A2: 'Report.attributes.Vocab_A2',
+  Vocab_B1: 'Report.attributes.Vocab_B1',
+};
 
 export const areaOf = (code: string): string | null =>
   (AREA_CODES as readonly string[]).includes(code) ? code : (ATTRIBUTE_AREA[code] ?? null);
 
-export const areaLabel = (code: string): string => cat(en, `Teach.diagnostic.areas.${areaOf(code) ?? code}`);
+/**
+ * Every area one wire cell counts on: the unscored placeholder R2 ("not assessed") is true of both
+ * strands; an R2 with a real status (the retired joint vocabulary) is evidence for neither.
+ */
+export const areasOf = (attribute: { code: string; status: string }): string[] => {
+  if (attribute.code === 'R2') return attribute.status === 'not_assessed' ? ['Vocab_A2', 'Vocab_B1'] : [];
+  const area = areaOf(attribute.code);
+  return area === null ? [] : [area];
+};
+
+export const areaLabel = (code: string): string => {
+  const area = areaOf(code) ?? code;
+  return cat(en, STRAND_LABEL_KEY[area] ?? `Teach.diagnostic.areas.${area}`);
+};
 
 /** Every class diagnostic the page receives, parsed; `settled()` dedupes by class. */
 function collectDiagnostics(page: Page): { settled: () => Promise<ClassDiagnostic[]> } {
@@ -89,33 +109,17 @@ export async function openBandedClass(page: Page, bodies: readonly ClassDiagnost
 
 // TB-12 — the MASTERY TABLE + student drill-down half. The status a cell shows is
 // re-derived here from the diagnostic the page itself received, with NO app code:
-// the area a wire code lands on (`areaOf`), then, where both vocabulary strands
-// land on Vocabulary, the LIMITING one — the lowest-ranked banded status, a band
-// always beating the other strand's absence.
-const STATUS_RANK: Readonly<Record<string, number | null>> = {
-  not_yet: 0,
-  not_mastered: 0,
-  emerging: 1,
-  developing: 2,
-  mastered: 2,
-  secure: 3,
-  not_assessed: null,
-};
+// the one wire cell that lands on the area (`areasOf`), its status verbatim. Each
+// vocabulary strand is its own column; no strand stands in for the other.
 
 /** The status the given area's cell must carry for this row, or 'none' for the em dash. */
 export function expectedAreaStatus(row: ClassDiagnostic['mastery'][number], area: string): string {
-  let best: { status: string; rank: number | null } | null = null;
-  for (const attribute of row.attributes) {
-    if (areaOf(attribute.code) !== area) continue;
-    const rank = STATUS_RANK[attribute.status] ?? null;
-    if (best === null || (rank !== null && (best.rank === null || rank < best.rank))) {
-      best = { status: attribute.status, rank };
-    }
-  }
-  return best?.status ?? 'none';
+  const landing = row.attributes.filter((attribute) => areasOf(attribute).includes(area));
+  expect(landing.length, `${row.student_ref} ${area}: at most one cell per area`).toBeLessThanOrEqual(1);
+  return landing[0]?.status ?? 'none';
 }
 
-/** Every mastery row in the table's default order (name asc, documentId tie-break), with its seven cells. */
+/** Every mastery row in the table's default order (name asc, documentId tie-break), with its eight cells. */
 export function expectedMasteryTable(diagnostic: ClassDiagnostic): { ref: string; areas: string[] }[] {
   return [...diagnostic.mastery]
     .sort(
@@ -145,11 +149,11 @@ export function renderedMasteryTable(table: Locator): Promise<{ ref: string; are
 export function expectedAggregate(diagnostics: readonly ClassDiagnostic[]): { code: string; counts: number[] }[] {
   const counts = new Map<string, Record<string, number>>();
   for (const attribute of diagnostics.flatMap((diagnostic) => diagnostic.mastery.flatMap((row) => row.attributes))) {
-    const area = areaOf(attribute.code);
-    if (area === null) continue;
-    const entry = counts.get(area) ?? Object.fromEntries(AGGREGATE_STATUSES.map((status) => [status, 0]));
-    entry[attribute.status] += 1;
-    counts.set(area, entry);
+    for (const area of areasOf(attribute)) {
+      const entry = counts.get(area) ?? Object.fromEntries(AGGREGATE_STATUSES.map((status) => [status, 0]));
+      entry[attribute.status] += 1;
+      counts.set(area, entry);
+    }
   }
   return AREA_CODES.flatMap((code) => {
     const entry = counts.get(code);

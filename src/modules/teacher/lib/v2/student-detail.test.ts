@@ -78,11 +78,14 @@ describe('studentDetail — recorded Dilnoza (GET /results/:id, 8 sittings, 3 sc
     });
   });
 
-  test('Everyday and Classroom Vocabulary: two cards, each its own band and band movement — no blended "-65"', () => {
-    for (const [skill, labelKey] of [['Vocab_A2', 'attribute.vocabA2'], ['Vocab_B1', 'attribute.vocabB1']] as const) {
+  test('Everyday and Classroom Vocabulary: two cards, each its own label, blurb, band and band movement — no blended "-65"', () => {
+    for (const [skill, labelKey, blurbKey] of [
+      ['Vocab_A2', 'attribute.vocabA2', 'skillBlurb.vocabulary'],
+      ['Vocab_B1', 'attribute.vocabB1', 'skillBlurb.vocabB1'],
+    ] as const) {
       expect(card(view, skill)).toMatchObject({
         labelKey,
-        blurbKey: 'skillBlurb.vocabulary',
+        blurbKey,
         score: 25,
         band: { band: 'not_yet', labelKey: 'band.notYet', tone: RED },
         delta: { kind: 'bands', before: 'secure', after: 'not_yet', fg: '#B42318' },

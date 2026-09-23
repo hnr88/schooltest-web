@@ -2868,7 +2868,6 @@
       "notYet": "Chưa đạt",
       "subskill": {
         "decoding": "Giải mã",
-        "vocabulary": "Từ vựng",
         "grammar": "Ngữ pháp",
         "gist": "Ý chính",
         "detail": "Chi tiết",
@@ -4512,7 +4511,6 @@
         "groupStudents": "{count, plural, other {# học sinh}}",
         "groupsNone": "Máy chủ không đề xuất nhóm nào cho lớp này: chưa có kết quả hoàn thành nào có đủ hồ sơ kỹ năng con để nhóm.",
         "strandTitle": "Trung bình từng phân ngành từ vựng",
-        "strandCaption": "Trung bình A2 và B1 — học sinh chỉ làm một phân ngành chỉ tính cho phân ngành đó",
         "strandA2": "Từ vựng thông dụng",
         "strandB1": "Từ vựng lớp học",
         "strandNone": "—",
@@ -4794,8 +4792,6 @@
     "notAssessedThisSitting": "không được đánh giá trong lần thi này",
     "scorePercent": "{score}%",
     "exitGateSection3": "Cửa ối (Phần 3)",
-    "vocabStrandsBoth": "A2 {a2} · B1 {b1}",
-    "vocabStrandSingle": "{assessed} · {gap}",
     "askAria": "Hỏi AI về kết quả này",
     "askHeading": "Hỏi AI",
     "askPlaceholder": "Hỏi về kết quả này…",
@@ -4858,9 +4854,7 @@
     "fallbackCommonSlip": "Lỗi phổ biến nhất: {label} ({pct}% số câu trả lời sai).",
     "fallbackVocabA2Only": "Lần thi này chỉ đánh giá từ vựng thông dụng ({a2}); từ vựng lớp học không được đánh giá. Trọng tâm dạy học: tiếp tục củng cố từ vựng thông dụng trước buổi thi tới.",
     "fallbackVocabB1Only": "Lần thi này chỉ đánh giá từ vựng lớp học ({b1}); từ vựng thông dụng không được đánh giá. Trọng tâm dạy học: phát triển từ vựng lớp học đang thể hiện rõ.",
-    "fallbackVocabBlend": "Từ vựng thông dụng {a2}, từ vựng lớp học {b1}. Trọng tâm dạy học: phát triển phần yếu hơn trước buổi thi tới.",
-    "fallbackNoScore": "không có điểm",
-    "fallbackNotAssessed": "không đánh giá"
+    "fallbackVocabBlend": "Từ vựng thông dụng {a2}, từ vựng lớp học {b1}. Trọng tâm dạy học: phát triển phần yếu hơn trước buổi thi tới."
   },
   "Components": {
     "pagination": "phân trang",
@@ -4959,7 +4953,6 @@
       },
       "skill": {
         "decoding": "Giải mã",
-        "vocabulary": "Từ vựng",
         "grammar": "Ngữ pháp",
         "gist": "Ý chính",
         "detail": "Chi tiết",
@@ -4968,7 +4961,8 @@
       },
       "skillBlurb": {
         "decoding": "Nhận biết từ chính xác và trôi chảy",
-        "vocabulary": "Hiểu nghĩa của từ trong ngữ cảnh",
+        "vocabulary": "Hiểu nghĩa của từ thông dụng trong ngữ cảnh",
+        "vocabB1": "Hiểu nghĩa của từ dùng trong lớp học và môn học trong ngữ cảnh",
         "grammar": "Cấu trúc câu và hình thái từ",
         "gist": "Nắm được ý chính và mục đích của văn bản",
         "detail": "Tìm các sự kiện cụ thể và thông tin được nêu",
@@ -6194,10 +6188,7 @@
         "deltaUp": "↑ +{points}",
         "deltaDown": "↓ −{points}",
         "deltaFlat": "±0",
-        "deltaBands": "{before} → {after}",
-        "strands": "A2 {a2}% · B1 {b1}%",
-        "strandA2": "A2 {a2}%",
-        "strandB1": "B1 {b1}%"
+        "deltaBands": "{before} → {after}"
       },
       "analysisTitle": "Phân tích học sinh",
       "analysisBadge": "Tóm tắt tự động",
@@ -6216,7 +6207,7 @@
         "strengthFocus": "Thế mạnh rõ nhất của {first} là {strongest} ({strongestScore}%), còn {weakest} ({weakestScore}%) là trọng tâm cần chú ý nhất.",
         "focusNext": "Luyện tập có mục tiêu về {weakest} — với các văn bản cao hơn một chút so với trình độ hiện tại của {first} — nhiều khả năng sẽ nâng điểm tổng thể nhất.",
         "vocabBoth": "Từ vựng thông dụng đạt {a2}% và từ vựng lớp học đạt {b1}%.",
-        "vocabAcademicNext": "Luyện ngắn gọn, rõ ràng các họ từ học thuật — kết hợp với các bài đọc hiểu vượt ra ngoài nghĩa đen — là cách trực tiếp nhất để nâng khả năng đọc hiểu của {first}.",
+        "vocabAcademicNext": "Luyện ngắn gọn, rõ ràng từ vựng lớp học và từ vựng môn học — kết hợp với các bài đọc hiểu vượt ra ngoài nghĩa đen — là cách trực tiếp nhất để nâng khả năng đọc hiểu của {first}.",
         "vocabA2Only": "Bài này chỉ đo từ vựng thông dụng: {a2}%.",
         "vocabB1Only": "Bài này chỉ đo từ vựng lớp học: {b1}%."
       },

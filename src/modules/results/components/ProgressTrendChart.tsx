@@ -86,6 +86,7 @@ export function ProgressTrendChart({ view }: { view: ResultView }) {
 const ATTRIBUTE_KEY: Record<string, string> = {
   Decoding: 'attrDecoding',
   'Vocab_A2': 'skillVocabulary',
+  Grammar: 'skillGrammar',
   'Vocab_B1': 'attrVocabularyB1',
   Gist: 'attrGist',
   Detail: 'attrDetail',

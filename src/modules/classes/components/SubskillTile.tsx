@@ -5,6 +5,8 @@ import { useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
 import { TintTile } from '@/modules/design-system';
+import { SUBSKILL_LABEL_KEY } from '@/modules/classes/constants/subskills.constants';
+import { EMPTY_VALUE } from '@/modules/classes/lib/class-detail.helpers';
 
 import type { SubskillTileProps } from '@/modules/classes/types/components.types';
 
@@ -14,16 +16,18 @@ import type { SubskillTileProps } from '@/modules/classes/types/components.types
 // new tone or a raw colour.
 //
 // The verdict is carried in TEXT — the icon is decorative — so it survives with
-// colour removed and never depends on hue alone (WCAG 1.4.1).
+// colour removed and never depends on hue alone (WCAG 1.4.1). A null verdict
+// is no evidence for this tile: the em dash, never "Not yet".
 export function SubskillTile({ subskill, verdict }: SubskillTileProps) {
   const t = useTranslations('Classes.studentDetail');
+  const tLabel = useTranslations();
   const mastered = verdict === 'mastered';
   const Icon = mastered ? CheckIcon : XIcon;
 
   return (
     <TintTile className={cn('text-center', mastered && 'bg-success-soft text-success-ink')}>
       <p className={cn('text-meta', mastered ? 'text-success-ink' : 'text-body')}>
-        {t(`subskill.${subskill}`)}
+        {tLabel(SUBSKILL_LABEL_KEY[subskill])}
       </p>
       <p
         className={cn(
@@ -31,8 +35,14 @@ export function SubskillTile({ subskill, verdict }: SubskillTileProps) {
           mastered ? 'text-success-ink' : 'text-body',
         )}
       >
-        <Icon className="size-3.5" aria-hidden />
-        {mastered ? t('mastered') : t('notYet')}
+        {verdict === null ? (
+          EMPTY_VALUE
+        ) : (
+          <>
+            <Icon className="size-3.5" aria-hidden />
+            {mastered ? t('mastered') : t('notYet')}
+          </>
+        )}
       </p>
     </TintTile>
   );

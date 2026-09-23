@@ -25,7 +25,7 @@ import { runSql } from './auth-db';
 
 export const PRE_INTEGRATION = process.env.BUG008_PRE_INTEGRATION === '1';
 
-export const PROOF_DIR = process.env.BUG008_PROOF_DIR ?? '/Users/hunor.nagy/Desktop/live_feedback_1/proof/BUG-008';
+export const PROOF_DIR = process.env.BUG008_PROOF_DIR ?? path.resolve('test-results', 'BUG-008');
 
 /** NEXT_PUBLIC_API_BASE_URL exactly as the dev server reads it from `.env`. */
 export function apiBaseUrl(): string {

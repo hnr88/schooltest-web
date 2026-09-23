@@ -2830,7 +2830,6 @@
       "notYet": "尚未掌握",
       "subskill": {
         "decoding": "解码",
-        "vocabulary": "词汇",
         "grammar": "语法",
         "gist": "主旨",
         "detail": "细节",
@@ -4493,7 +4492,6 @@
         "groupStudents": "{count, plural, other {# 名学生}}",
         "groupsNone": "服务器未为该班级建议任何分组：目前还没有任何已完成的结果具备完整的子技能数据可供分组。",
         "strandTitle": "词汇分项均值",
-        "strandCaption": "A2 与 B1 均值——仅做一个分项的学生只计入该分项",
         "strandA2": "日常词汇",
         "strandB1": "课堂词汇",
         "strandNone": "—",
@@ -4775,8 +4773,6 @@
     "notAssessedThisSitting": "本次考试未评估",
     "scorePercent": "{score}%",
     "exitGateSection3": "达标线（第 3 部分）",
-    "vocabStrandsBoth": "A2 {a2} · B1 {b1}",
-    "vocabStrandSingle": "{assessed} · {gap}",
     "askAria": "就此结果询问 AI",
     "askHeading": "询问 AI",
     "askPlaceholder": "就此结果提问…",
@@ -4839,9 +4835,7 @@
     "fallbackCommonSlip": "最常见失误：{label}（占错误答案的 {pct}%）。",
     "fallbackVocabA2Only": "本次只评估了日常词汇（{a2}）；未评估课堂词汇。教学重点：在下次考试前继续巩固日常词汇。",
     "fallbackVocabB1Only": "本次只评估了课堂词汇（{b1}）；未评估日常词汇。教学重点：在已展现的课堂词汇基础上继续提升。",
-    "fallbackVocabBlend": "日常词汇 {a2}，课堂词汇 {b1}。教学重点：在下次考试前加强较弱的一项。",
-    "fallbackNoScore": "无分数",
-    "fallbackNotAssessed": "未评估"
+    "fallbackVocabBlend": "日常词汇 {a2}，课堂词汇 {b1}。教学重点：在下次考试前加强较弱的一项。"
   },
   "Components": {
     "pagination": "分页",
@@ -4940,7 +4934,6 @@
       },
       "skill": {
         "decoding": "解码",
-        "vocabulary": "词汇",
         "grammar": "语法",
         "gist": "主旨理解",
         "detail": "细节把握",
@@ -4949,7 +4942,8 @@
       },
       "skillBlurb": {
         "decoding": "准确、流畅地识别单词",
-        "vocabulary": "理解单词在语境中的含义",
+        "vocabulary": "理解日常词汇在语境中的含义",
+        "vocabB1": "理解课堂和学科词汇在语境中的含义",
         "grammar": "句子结构与词形",
         "gist": "把握文本的主旨和目的",
         "detail": "查找具体事实和明确陈述的信息",
@@ -6175,10 +6169,7 @@
         "deltaUp": "↑ +{points}",
         "deltaDown": "↓ −{points}",
         "deltaFlat": "±0",
-        "deltaBands": "{before} → {after}",
-        "strands": "A2 {a2}% · B1 {b1}%",
-        "strandA2": "A2 {a2}%",
-        "strandB1": "B1 {b1}%"
+        "deltaBands": "{before} → {after}"
       },
       "analysisTitle": "学生分析",
       "analysisBadge": "自动生成摘要",
@@ -6197,7 +6188,7 @@
         "strengthFocus": "{first} 最强的领域是{strongest}（{strongestScore}%），而{weakest}（{weakestScore}%）是最明确的重点。",
         "focusNext": "针对{weakest}进行专项练习，并选用略高于{first}当前水平的文本，最有可能提升总分。",
         "vocabBoth": "日常词汇为 {a2}%，课堂词汇为 {b1}%。",
-        "vocabAcademicNext": "简短、明确地学习学术词族，并结合超越字面理解的阅读任务，是提升{first}理解能力最直接的方法。",
+        "vocabAcademicNext": "简短、明确地学习课堂和学科词汇，并结合超越字面理解的阅读任务，是提升{first}理解能力最直接的方法。",
         "vocabA2Only": "本次测试只测量了日常词汇：{a2}%。",
         "vocabB1Only": "本次测试只测量了课堂词汇：{b1}%。"
       },

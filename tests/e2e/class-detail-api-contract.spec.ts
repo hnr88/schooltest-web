@@ -15,7 +15,7 @@ import { ROLE_CREDENTIALS } from './helpers/roles';
 // C-CLS-05 / C-CLS-06 wire contract, asserted against the RUNNING API — not
 // "a 2xx came back". Both bodies are parsed with the app's OWN shared Zod
 // schemas (in the helper), so a shape drift fails here first.
-const SUBSKILLS = ['decoding', 'vocabulary', 'grammar', 'gist', 'detail', 'inference', 'critical'];
+const SUBSKILLS = ['decoding', 'vocab_a2', 'grammar', 'vocab_b1', 'gist', 'detail', 'inference', 'critical'];
 const UNKNOWN_ID = 'aaaaaaaaaaaaaaaaaaaaaaaa';
 
 test.describe('C-CLS-05 / C-CLS-06 contract', () => {
@@ -51,7 +51,7 @@ test.describe('C-CLS-05 / C-CLS-06 contract', () => {
         if (test.subskills !== null) {
           expect(Object.keys(test.subskills)).toEqual(SUBSKILLS);
           for (const verdict of Object.values(test.subskills)) {
-            expect(['mastered', 'not_yet']).toContain(verdict);
+            expect(['mastered', 'not_yet', null]).toContain(verdict);
           }
         }
       }
@@ -61,7 +61,7 @@ test.describe('C-CLS-05 / C-CLS-06 contract', () => {
 
     // The null-tolerant checks above would all pass against a server that
     // returned nothing but nulls, so require the evidence to actually be there:
-    // at least one completed test carrying a score, a phase AND seven verdicts,
+    // at least one completed test carrying a score, a phase AND eight verdicts,
     // and a summary average derived from them.
     const evidenced = detail.students
       .flatMap((student) => student.tests)

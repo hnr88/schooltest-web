@@ -159,7 +159,7 @@ export interface StudentTestCardProps {
 
 export interface SubskillTileProps {
   subskill: SubskillKey;
-  verdict: SubskillVerdict;
+  verdict: SubskillVerdict | null;
 }
 
 export interface StudentDetailSubtitleProps {

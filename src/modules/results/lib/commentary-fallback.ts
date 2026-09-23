@@ -47,10 +47,11 @@ function isBanded(
  */
 
 export function fallbackParagraphs(bundle: DiagnosticExport, t: ResultsTranslate): string[] {
+  const vocabulary = vocabularyParagraph(bundle, t);
   return [
     positionParagraph(bundle, t),
     strengthAndErrorsParagraph(bundle, t),
-    vocabularyParagraph(bundle, t),
+    ...(vocabulary === null ? [] : [vocabulary]),
   ];
 }
 
@@ -115,15 +116,16 @@ function strengthAndErrorsParagraph(bundle: DiagnosticExport, t: ResultsTranslat
   return parts.join(' ');
 }
 
-function vocabularyParagraph(bundle: DiagnosticExport, t: ResultsTranslate): string {
+/** No vocabulary paragraph when neither strand was assessed — there is no weaker of the two to name. */
+function vocabularyParagraph(bundle: DiagnosticExport, t: ResultsTranslate): string | null {
   const a2 = bundle.vocab.a2.domain_score;
   const b1 = bundle.vocab.b1.domain_score;
-  if (a2 !== null && b1 === null) return t('fallbackVocabA2Only', { a2: t('scorePercent', { score: a2 }) });
-  if (b1 !== null && a2 === null) return t('fallbackVocabB1Only', { b1: t('scorePercent', { score: b1 }) });
-  return t('fallbackVocabBlend', {
-    a2: a2 === null ? t('fallbackNotAssessed') : t('scorePercent', { score: a2 }),
-    b1: b1 === null ? t('fallbackNotAssessed') : t('scorePercent', { score: b1 }),
-  });
+  if (a2 !== null && b1 !== null) {
+    return t('fallbackVocabBlend', { a2: t('scorePercent', { score: a2 }), b1: t('scorePercent', { score: b1 }) });
+  }
+  if (a2 !== null) return t('fallbackVocabA2Only', { a2: t('scorePercent', { score: a2 }) });
+  if (b1 !== null) return t('fallbackVocabB1Only', { b1: t('scorePercent', { score: b1 }) });
+  return null;
 }
 
 /** Error-pattern type → message-key fragment (shared with ErrorPatternsPanel). */

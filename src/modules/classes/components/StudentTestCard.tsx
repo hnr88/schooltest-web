@@ -9,7 +9,7 @@ import { EMPTY_VALUE } from '@/modules/classes/lib/class-detail.helpers';
 import type { StudentTestCardProps } from '@/modules/classes/types/components.types';
 
 // Spec §2 test card: the title on the left, overall score and ACARA phase on
-// the right, and the seven subskill tiles below in the spec's FIXED order
+// the right, and the eight subskill tiles below in the spec's FIXED order
 // (decoding … critical, read from SUBSKILL_ORDER — never re-typed inline).
 // The phase is printed exactly as the backend returned it.
 //

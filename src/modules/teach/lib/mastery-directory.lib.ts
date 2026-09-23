@@ -1,5 +1,5 @@
 import { MASTERY_AREA_CODES } from '@/modules/teach/constants/lib.constants';
-import { diagnosticAreaCode } from '@/modules/teach/lib/diagnostic-areas';
+import { diagnosticAreaCodes } from '@/modules/teach/lib/diagnostic-areas';
 
 import type {
   DirectoryClientConfig,
@@ -25,7 +25,7 @@ import type { MasteryAreaCode } from '@/modules/teach/types/lib.types';
 // as a low score, so it sorts last in BOTH directions, never against the
 // assessed rows (task 50's sentinel, and mvp spec: absence is never a zero).
 
-// The seven area codes and their type moved to `constants/lib.constants.ts` /
+// The eight area codes and their type moved to `constants/lib.constants.ts` /
 // `types/lib.types.ts` so `diagnostic-areas.ts` can read them without importing
 // this file back. Re-exported here: this is still where the mastery surface
 // (and the module barrel) reaches for them.
@@ -50,32 +50,18 @@ const UNRANKED = Number.POSITIVE_INFINITY;
  *
  * A live C-RPT-01 row names its cells by MODEL ATTRIBUTE (Decoding, Vocab_A2, …)
  * once the student is scored and by area code (R1..R7) while they are not, so an
- * area's cell is whichever of the row's attributes `diagnosticAreaCode` places
- * there — never a second lookup table.
- *
- * Both vocabulary strands (Vocab_A2, Vocab_B1) land on Vocabulary and this
- * payload carries no server-owned blend, so the cell shows the LIMITING strand:
- * the lowest-ranked BANDED status, i.e. the one holding the student back. A
- * banded status always wins over an absence, and nothing is averaged, cut or
- * invented — the status rendered is one the wire carried, verbatim. An area no
- * attribute of the row reaches (Critical reading, which no model attribute
- * feeds; a listening row's L1..L7) resolves to null — the honest em dash.
+ * area's cell is the row's attribute `diagnosticAreaCodes` places there — never
+ * a second lookup table. Everyday and Classroom Vocabulary are two areas, each
+ * showing its own strand's status verbatim: nothing is blended and no strand
+ * stands in for the other. An area no attribute of the row reaches (Critical
+ * reading, which no model attribute feeds; a listening row's L1..L7) resolves
+ * to null — the honest em dash.
  */
 export function masteryAreaAttribute(
   row: DiagnosticMasteryRow,
   area: string,
 ): DiagnosticAttribute | null {
-  let best: DiagnosticAttribute | null = null;
-  let bestRank: number | null = null;
-  for (const attribute of row.attributes) {
-    if (diagnosticAreaCode(attribute.code) !== area) continue;
-    const rank = STATUS_RANK[attribute.status];
-    if (best === null || (rank !== null && (bestRank === null || rank < bestRank))) {
-      best = attribute;
-      bestRank = rank;
-    }
-  }
-  return best;
+  return row.attributes.find((attribute) => diagnosticAreaCodes(attribute).some((code) => code === area)) ?? null;
 }
 
 function attributeRank(row: DiagnosticMasteryRow, code: string): number | null {

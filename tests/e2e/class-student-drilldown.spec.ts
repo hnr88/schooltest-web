@@ -20,8 +20,19 @@ import { watchErrors } from './helpers/ui';
 const en = loadMessages('en');
 const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 
-// The spec's fixed tile order.
-const SUBSKILLS = ['decoding', 'vocabulary', 'grammar', 'gist', 'detail', 'inference', 'critical'] as const;
+// The fixed tile order: Everyday and Classroom Vocabulary are two tiles (BUG-008),
+// labelled with the report's own attribute names.
+const SUBSKILLS = ['decoding', 'vocab_a2', 'grammar', 'vocab_b1', 'gist', 'detail', 'inference', 'critical'] as const;
+const TILE_LABEL_KEY: Record<(typeof SUBSKILLS)[number], string> = {
+  decoding: 'Classes.studentDetail.subskill.decoding',
+  vocab_a2: 'Report.attributes.Vocab_A2',
+  grammar: 'Classes.studentDetail.subskill.grammar',
+  vocab_b1: 'Report.attributes.Vocab_B1',
+  gist: 'Classes.studentDetail.subskill.gist',
+  detail: 'Classes.studentDetail.subskill.detail',
+  inference: 'Classes.studentDetail.subskill.inference',
+  critical: 'Classes.studentDetail.subskill.critical',
+};
 
 test.describe.configure({ mode: 'serial' });
 
@@ -92,11 +103,14 @@ test.describe('student drill-down (spec §2)', () => {
     await expect(tiles).toHaveCount(SUBSKILLS.length);
     const tileText = await tiles.allInnerTexts();
     for (const [index, key] of SUBSKILLS.entries()) {
-      const label = cat(en, `Classes.studentDetail.subskill.${key}`);
+      const label = cat(en, TILE_LABEL_KEY[key]);
+      const wire = testA!.subskills![key];
       const verdict =
-        testA!.subskills![key] === 'mastered'
-          ? cat(en, 'Classes.studentDetail.mastered')
-          : cat(en, 'Classes.studentDetail.notYet');
+        wire === null
+          ? '—'
+          : wire === 'mastered'
+            ? cat(en, 'Classes.studentDetail.mastered')
+            : cat(en, 'Classes.studentDetail.notYet');
       expect(tileText[index], `tile ${index} should be ${label}`).toContain(label);
       expect(tileText[index], `${label} verdict`).toContain(verdict);
     }

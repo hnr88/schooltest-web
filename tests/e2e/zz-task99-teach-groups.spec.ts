@@ -1,6 +1,6 @@
 import { expect, test, type APIRequestContext } from '@playwright/test';
 
-import { diagnosticAreaCode } from '@/modules/teach/lib/diagnostic-areas';
+import { areaLabelKey, diagnosticAreaCode } from '@/modules/teach/lib/diagnostic-areas';
 
 import { roleCredentials } from './helpers/credentials';
 import { fetchWithRetry, loginCached } from './helpers/http';
@@ -71,12 +71,12 @@ test.describe('task 99: group by limiting attribute vs live C-RPT-01 v2', () => 
       // missing key, so an unknown attribute fails loud here).
       expect(group.count).toBe(group.student_refs.length);
       expect(group.count).toBeGreaterThan(0);
+      // A legacy row's R2 (the retired joint vocabulary) is on no strand area but keeps its label.
       const area =
         group.limiting_attribute === NOT_YET_ASSESSED
           ? NOT_YET_ASSESSED
-          : diagnosticAreaCode(group.limiting_attribute);
-      expect(area, `${group.limiting_attribute} has no reading area`).not.toBeNull();
-      cat(en, `Teach.diagnostic.areas.${area}`);
+          : (diagnosticAreaCode(group.limiting_attribute) ?? group.limiting_attribute);
+      cat(en, areaLabelKey(area));
       for (const ref of group.student_refs) {
         expect(masteryRefs).toContain(ref);
       }

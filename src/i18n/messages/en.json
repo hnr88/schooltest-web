@@ -2830,7 +2830,6 @@
       "notYet": "Not yet",
       "subskill": {
         "decoding": "Decoding",
-        "vocabulary": "Vocabulary",
         "grammar": "Grammar",
         "gist": "Gist",
         "detail": "Detail",
@@ -4493,7 +4492,6 @@
         "groupStudents": "{count, plural, one {# student} other {# students}}",
         "groupsNone": "The server suggested no groups for this class: no completed result carries a full subskill profile to group on yet.",
         "strandTitle": "Vocabulary strand means",
-        "strandCaption": "A2 and B1 means — a single-strand student counts only for the strand they sat",
         "strandA2": "Everyday Vocabulary",
         "strandB1": "Classroom Vocabulary",
         "strandNone": "—",
@@ -4775,8 +4773,6 @@
     "notAssessedThisSitting": "not assessed this sitting",
     "scorePercent": "{score}%",
     "exitGateSection3": "Exit gate (Section 3)",
-    "vocabStrandsBoth": "A2 {a2} · B1 {b1}",
-    "vocabStrandSingle": "{assessed} · {gap}",
     "askAria": "Ask AI about this result",
     "askHeading": "Ask AI",
     "askPlaceholder": "Ask about this result…",
@@ -4839,9 +4835,7 @@
     "fallbackCommonSlip": "Most common slip: {label} ({pct}% of wrong answers).",
     "fallbackVocabA2Only": "Only Everyday Vocabulary was assessed this sitting ({a2}); Classroom Vocabulary was not. Teaching focus: keep consolidating everyday word knowledge before the next sitting.",
     "fallbackVocabB1Only": "Only Classroom Vocabulary was assessed this sitting ({b1}); Everyday Vocabulary was not. Teaching focus: build on the classroom vocabulary now in evidence.",
-    "fallbackVocabBlend": "Everyday Vocabulary {a2}, Classroom Vocabulary {b1}. Teaching focus: grow the weaker of the two before the next sitting.",
-    "fallbackNoScore": "no score",
-    "fallbackNotAssessed": "not assessed"
+    "fallbackVocabBlend": "Everyday Vocabulary {a2}, Classroom Vocabulary {b1}. Teaching focus: grow the weaker of the two before the next sitting."
   },
   "Components": {
     "pagination": "pagination",
@@ -4940,7 +4934,6 @@
       },
       "skill": {
         "decoding": "Decoding",
-        "vocabulary": "Vocabulary",
         "grammar": "Grammar",
         "gist": "Gist",
         "detail": "Detail",
@@ -4949,7 +4942,8 @@
       },
       "skillBlurb": {
         "decoding": "Recognising words accurately and fluently",
-        "vocabulary": "Knowing what words mean in context",
+        "vocabulary": "Knowing what everyday words mean in context",
+        "vocabB1": "Knowing what classroom and subject words mean in context",
         "grammar": "Sentence-level structure and word forms",
         "gist": "Grasping the main idea and purpose of a text",
         "detail": "Locating specific facts and stated information",
@@ -6175,10 +6169,7 @@
         "deltaUp": "↑ +{points}",
         "deltaDown": "↓ −{points}",
         "deltaFlat": "±0",
-        "deltaBands": "{before} → {after}",
-        "strands": "A2 {a2}% · B1 {b1}%",
-        "strandA2": "A2 {a2}%",
-        "strandB1": "B1 {b1}%"
+        "deltaBands": "{before} → {after}"
       },
       "analysisTitle": "Student analysis",
       "analysisBadge": "Generated summary",
@@ -6197,7 +6188,7 @@
         "strengthFocus": "{first}’s strongest area is {strongest} ({strongestScore}%), while {weakest} ({weakestScore}%) is the clearest focus.",
         "focusNext": "Targeted work on {weakest} — with texts pitched just beyond {first}’s current level — is likely to move the overall score most.",
         "vocabBoth": "Everyday vocabulary is at {a2}% and classroom vocabulary at {b1}%.",
-        "vocabAcademicNext": "Short, explicit work on academic word families — paired with reading-for-meaning tasks that push beyond the literal — is the most direct way to lift {first}’s comprehension.",
+        "vocabAcademicNext": "Short, explicit work on classroom and subject vocabulary — paired with reading-for-meaning tasks that push beyond the literal — is the most direct way to lift {first}’s comprehension.",
         "vocabA2Only": "Only everyday vocabulary was measured on this form: {a2}%.",
         "vocabB1Only": "Only classroom vocabulary was measured on this form: {b1}%."
       },

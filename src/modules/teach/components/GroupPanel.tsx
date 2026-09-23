@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 
-import { diagnosticAreaCode } from '@/modules/teach/lib/diagnostic-areas';
+import { areaLabelKey, diagnosticAreaCode } from '@/modules/teach/lib/diagnostic-areas';
 import type { DiagnosticGroup } from '@/modules/teach/types/diagnostic.types';
 
 import type { GroupPanelProps } from '@/modules/teach/types/components.types';
@@ -17,6 +17,7 @@ import type { GroupPanelProps } from '@/modules/teach/types/components.types';
 // (C-RPT-01 v2 behavioural contract).
 export function GroupPanel({ groups, onSelectStudent }: GroupPanelProps) {
   const t = useTranslations('Teach.diagnostic');
+  const tLabel = useTranslations();
 
   if (groups.length === 0) {
     return null;
@@ -34,7 +35,7 @@ export function GroupPanel({ groups, onSelectStudent }: GroupPanelProps) {
           >
             <div className="flex flex-wrap items-baseline gap-2">
               <span className="text-sm font-semibold text-foreground">
-                {t(`areas.${diagnosticAreaCode(group.limiting_attribute) ?? group.limiting_attribute}`)}
+                {tLabel(areaLabelKey(diagnosticAreaCode(group.limiting_attribute) ?? group.limiting_attribute))}
               </span>
               <span className="text-xs text-body">{t('groupCount', { count: group.count })}</span>
             </div>

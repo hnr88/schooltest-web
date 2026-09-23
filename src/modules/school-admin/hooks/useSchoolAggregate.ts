@@ -6,7 +6,7 @@ import type { SchoolClass } from '@/modules/classes';
 import {
   MASTERY_AREA_CODES,
   classDiagnosticQueryOptions,
-  diagnosticAreaCode,
+  diagnosticAreaCodes,
   type DiagnosticStatus,
 } from '@/modules/teach';
 
@@ -18,7 +18,8 @@ import type { AreaAggregate, SchoolAggregate } from '@/modules/school-admin/type
 // distribution across every rostered student. Statuses are counted verbatim
 // from the wire rows; each cell lands on its reading area (a scored student's
 // attribute names and an unscored student's area codes both map onto the
-// seven teach areas, the two vocabulary strands onto Vocabulary).
+// eight teach areas). Everyday and Classroom Vocabulary are two rows, each
+// counting each student once.
 export function useSchoolAggregate(classes: SchoolClass[], enabled: boolean): SchoolAggregate {
   const queries = useQueries({
     queries: classes.map((klass) => ({ ...classDiagnosticQueryOptions(klass.documentId), enabled })),
@@ -37,12 +38,12 @@ export function useSchoolAggregate(classes: SchoolClass[], enabled: boolean): Sc
     satTotal += data.sat_count;
     for (const row of data.mastery) {
       for (const attribute of row.attributes) {
-        const area = diagnosticAreaCode(attribute.code);
-        if (area === null) continue;
-        if (!counts.has(area)) {
-          counts.set(area, { mastered: 0, emerging: 0, not_mastered: 0, not_assessed: 0, secure: 0, developing: 0, not_yet: 0 });
+        for (const area of diagnosticAreaCodes(attribute)) {
+          if (!counts.has(area)) {
+            counts.set(area, { mastered: 0, emerging: 0, not_mastered: 0, not_assessed: 0, secure: 0, developing: 0, not_yet: 0 });
+          }
+          counts.get(area)![attribute.status] += 1;
         }
-        counts.get(area)![attribute.status] += 1;
       }
     }
   }

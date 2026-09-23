@@ -2859,7 +2859,6 @@
       "notYet": "아직 아님",
       "subskill": {
         "decoding": "디코딩",
-        "vocabulary": "어휘",
         "grammar": "문법",
         "gist": "요지",
         "detail": "세부",
@@ -4503,7 +4502,6 @@
         "groupStudents": "{count, plural, other {학생 #명}}",
         "groupsNone": "서버가 이 학급에 추천한 그룹이 없습니다: 그룹을 나눌 만한 완전한 하위 기능 프로필을 가진 완료 결과가 아직 없습니다.",
         "strandTitle": "어휘 하위영역 평균",
-        "strandCaption": "A2와 B1 평균 — 단일 하위영역 응시자는 응시한 영역에만 계산됩니다",
         "strandA2": "일상 어휘",
         "strandB1": "교실 어휘",
         "strandNone": "—",
@@ -4785,8 +4783,6 @@
     "notAssessedThisSitting": "이번 응시에서 평가하지 않음",
     "scorePercent": "{score}%",
     "exitGateSection3": "통과 기준 (섹션 3)",
-    "vocabStrandsBoth": "A2 {a2} · B1 {b1}",
-    "vocabStrandSingle": "{assessed} · {gap}",
     "askAria": "이 결과에 대해 AI에게 물어보기",
     "askHeading": "AI에게 물어보기",
     "askPlaceholder": "이 결과에 대해 궁금한 점을 입력하세요…",
@@ -4849,9 +4845,7 @@
     "fallbackCommonSlip": "가장 흔한 실수: {label} (오답의 {pct}%).",
     "fallbackVocabA2Only": "이번 응시에서는 일상 어휘만 평가했습니다 ({a2}). 교실 어휘는 평가하지 않았습니다. 지도 초점: 다음 응시 전까지 일상 어휘를 계속 다져주세요.",
     "fallbackVocabB1Only": "이번 응시에서는 교실 어휘만 평가했습니다 ({b1}). 일상 어휘는 평가하지 않았습니다. 지도 초점: 확인된 교실 어휘를 바탕으로 발전시켜 주세요.",
-    "fallbackVocabBlend": "일상 어휘 {a2}, 교실 어휘 {b1}. 지도 초점: 다음 응시 전까지 더 약한 쪽을 키워주세요.",
-    "fallbackNoScore": "점수 없음",
-    "fallbackNotAssessed": "평가 안 함"
+    "fallbackVocabBlend": "일상 어휘 {a2}, 교실 어휘 {b1}. 지도 초점: 다음 응시 전까지 더 약한 쪽을 키워주세요."
   },
   "Components": {
     "pagination": "페이지 매김",
@@ -4950,7 +4944,6 @@
       },
       "skill": {
         "decoding": "디코딩",
-        "vocabulary": "어휘",
         "grammar": "문법",
         "gist": "핵심 내용 파악",
         "detail": "세부 정보",
@@ -4959,7 +4952,8 @@
       },
       "skillBlurb": {
         "decoding": "단어를 정확하고 유창하게 알아보기",
-        "vocabulary": "문맥 속 단어의 뜻 알기",
+        "vocabulary": "문맥 속 일상 단어의 뜻 알기",
+        "vocabB1": "문맥 속 교실·교과 단어의 뜻 알기",
         "grammar": "문장 수준의 구조와 단어 형태",
         "gist": "글의 요지와 목적 파악하기",
         "detail": "구체적인 사실과 명시된 정보 찾기",
@@ -6185,10 +6179,7 @@
         "deltaUp": "↑ +{points}",
         "deltaDown": "↓ −{points}",
         "deltaFlat": "±0",
-        "deltaBands": "{before} → {after}",
-        "strands": "A2 {a2}% · B1 {b1}%",
-        "strandA2": "A2 {a2}%",
-        "strandB1": "B1 {b1}%"
+        "deltaBands": "{before} → {after}"
       },
       "analysisTitle": "학생 분석",
       "analysisBadge": "자동 생성 요약",
@@ -6207,7 +6198,7 @@
         "strengthFocus": "{first} 학생의 가장 강한 영역은 {strongest}({strongestScore}%)이며, {weakest}({weakestScore}%) 영역이 가장 분명한 중점 영역입니다.",
         "focusNext": "{first} 학생의 현재 수준보다 조금 높은 글로 {weakest} 영역을 집중 지도하면 전체 점수를 가장 크게 끌어올릴 수 있습니다.",
         "vocabBoth": "일상 어휘는 {a2}%, 교실 어휘는 {b1}%입니다.",
-        "vocabAcademicNext": "학술 어휘군을 짧고 명시적으로 지도하고 글자 그대로의 이해를 넘어서는 의미 중심 읽기 활동을 함께하는 것이 {first} 학생의 이해력을 높이는 가장 직접적인 방법입니다.",
+        "vocabAcademicNext": "교실·교과 어휘를 짧고 명시적으로 지도하고 글자 그대로의 이해를 넘어서는 의미 중심 읽기 활동을 함께하는 것이 {first} 학생의 이해력을 높이는 가장 직접적인 방법입니다.",
         "vocabA2Only": "이번 시험지에서는 일상 어휘만 측정되었습니다: {a2}%.",
         "vocabB1Only": "이번 시험지에서는 교실 어휘만 측정되었습니다: {b1}%."
       },

@@ -9,6 +9,7 @@ import { loginCached } from '../helpers/http';
 import { cat, icu } from '../helpers/i18n';
 import {
   AGGREGATE_STATUSES,
+  AREA_CODES,
   areaLabel,
   expectedAggregate,
   expectedMasteryTable,
@@ -44,8 +45,6 @@ import { watchErrors } from '../helpers/ui';
 const PROOFS = path.resolve(process.cwd(), 'tests', 'e2e', 'proofs', 'teacher-v2');
 const pct = (value: number) => icu(insights('percent'), { value: String(value) });
 const note = (type: string, value: unknown) => test.info().annotations.push({ type, description: JSON.stringify(value) });
-/** The seven teach reading areas, in the order the mastery table columns and the drill-down list them. */
-const AREA_CODES = ['R1', 'R2', 'R3', 'R4', 'R5', 'R6', 'R7'] as const;
 /** The seven skills the Progress panel renders a movement row for — Critical reading is the gate, not a skill. */
 const MOVEMENT_SKILLS = ['Decoding', 'Vocab_A2', 'Grammar', 'Vocab_B1', 'Gist', 'Detail', 'Inference'] as const;
 
@@ -166,7 +165,7 @@ test.describe('S5 — Teaching insights tab', () => {
     expectNoNewErrors(errors, 'Teaching insights (scrolled)');
   });
 
-  test('school-admin overview: seven labelled reading areas with the live counts, zero console errors', async ({ page }) => {
+  test('school-admin overview: eight labelled reading areas with the live counts, zero console errors', async ({ page }) => {
     test.setTimeout(180_000);
     const errors = watchErrors(page);
     const { bodies, table, failed } = await openSchoolAnalytics(page, errors);
@@ -175,7 +174,7 @@ test.describe('S5 — Teaching insights tab', () => {
       ...AGGREGATE_STATUSES.map((status) => cat(en, `Teach.diagnostic.status.${status}`)),
     ]);
     const rendered = await renderedAggregate(table);
-    expect(rendered).toHaveLength(7);
+    expect(rendered).toHaveLength(AREA_CODES.length);
     expect(rendered).toEqual(expectedAggregate(bodies).map((row) => ({ label: areaLabel(row.code), cells: row.counts.map(String) })));
     note('aggregate', rendered);
     await page.screenshot({ path: path.join(PROOFS, 'insights-school-admin-analytics.png'), animations: 'disabled' });
@@ -237,7 +236,7 @@ test.describe('S5 — Teaching insights tab', () => {
     const banded = renderedRows.flatMap((row) => row.areas).filter((status) => status !== 'none' && status !== 'not_assessed');
     expect(banded.length, 'the banded class renders real statuses, not a wall of em dashes').toBeGreaterThan(0);
 
-    // Drill one click down on a student the live payload bands, and the seven area
+    // Drill one click down on a student the live payload bands, and the eight area
     // rows carry exactly the statuses their table row carried.
     const drillIndex = expectedRows.findIndex((row) => row.areas.some((status) => status !== 'none' && status !== 'not_assessed'));
     const drillRef = expectedRows[drillIndex]!;
@@ -249,7 +248,7 @@ test.describe('S5 — Teaching insights tab', () => {
     await expect(drilldown).toBeVisible();
     await expect(drilldown).toContainText(drillRef.ref);
     const areaRows = drilldown.locator('[data-slot="drilldown-area"]');
-    await expect(areaRows).toHaveCount(7);
+    await expect(areaRows).toHaveCount(AREA_CODES.length);
     expect(
       await areaRows.evaluateAll((rows) => rows.map((row) => row.getAttribute('data-status') ?? '')),
     ).toEqual(drillRef.areas);
