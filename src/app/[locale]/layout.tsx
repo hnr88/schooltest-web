@@ -45,6 +45,36 @@ export async function generateMetadata({
       template: `%s · ${SITE_NAME}`,
     },
     description: t('siteDescription'),
+    icons: {
+      icon: [
+        { url: '/icons/icon.svg', type: 'image/svg+xml' },
+        {
+          url: '/icons/favicon-32-light.png',
+          sizes: '32x32',
+          type: 'image/png',
+          media: '(prefers-color-scheme: light)',
+        },
+        {
+          url: '/icons/favicon-32-dark.png',
+          sizes: '32x32',
+          type: 'image/png',
+          media: '(prefers-color-scheme: dark)',
+        },
+        {
+          url: '/icons/favicon-16-light.png',
+          sizes: '16x16',
+          type: 'image/png',
+          media: '(prefers-color-scheme: light)',
+        },
+        {
+          url: '/icons/favicon-16-dark.png',
+          sizes: '16x16',
+          type: 'image/png',
+          media: '(prefers-color-scheme: dark)',
+        },
+      ],
+      apple: [{ url: '/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
+    },
     openGraph: {
       type: 'website',
       url: '/',
