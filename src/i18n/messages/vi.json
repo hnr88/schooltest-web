@@ -4988,10 +4988,10 @@
         "notYetAssessed": "Chưa đánh giá"
       },
       "band": {
-        "secure": "Vững",
+        "secure": "Củng cố",
         "developing": "Đang phát triển",
-        "emerging": "Bắt đầu hình thành",
-        "notYet": "Chưa đạt"
+        "emerging": "Mới hình thành",
+        "notYet": "Bắt đầu"
       },
       "gate": {
         "passed": "Ngưỡng đầu ra: đã đạt",
@@ -5264,7 +5264,7 @@
         "subskills": "Chi tiết kỹ năng con",
         "subskill": "Kỹ năng con",
         "score": "Điểm",
-        "band": "Mức",
+        "band": "Giai đoạn",
         "focus": "Trọng tâm và thế mạnh",
         "strength": "Thế mạnh",
         "focusArea": "Trọng tâm",
@@ -5366,8 +5366,8 @@
         "title": "Cặp đôi gợi ý",
         "intro": "Ghép một bạn giỏi {skill} với một bạn cần hỗ trợ về kỹ năng này.",
         "none": "Không có cặp rõ ràng cho {skill} — lớp khá đồng đều ở kỹ năng này.",
-        "strong": "{score}% · giỏi",
-        "support": "{score}% · cần hỗ trợ"
+        "strong": "{phase} · giỏi",
+        "support": "{phase} · cần hỗ trợ"
       },
       "groups": {
         "title": "Nhóm gợi ý",
@@ -6196,7 +6196,8 @@
         "deltaUp": "↑ +{points}",
         "deltaDown": "↓ −{points}",
         "deltaFlat": "±0",
-        "deltaBands": "{before} → {after}"
+        "deltaBands": "{before} → {after}",
+        "ladderLabel": "{skill}: {phase}, bậc {step} trên 4 của thang giai đoạn ACARA"
       },
       "analysisTitle": "Phân tích học sinh",
       "analysisBadge": "Tóm tắt tự động",
@@ -6212,12 +6213,12 @@
         "growthDown": "Kể từ lần làm bài đầu tiên, điểm đọc đã giảm {points} điểm.",
         "growthFlat": "Điểm đọc bằng với lần làm bài đầu tiên.",
         "growthSteady": "Điểm đọc vẫn ổn định kể từ lần làm bài đầu tiên, trong phạm vi sai số đo lường.",
-        "strengthFocus": "Thế mạnh rõ nhất của {first} là {strongest} ({strongestScore}%), còn {weakest} ({weakestScore}%) là trọng tâm cần chú ý nhất.",
+        "strengthFocus": "Thế mạnh rõ nhất của {first} là {strongest} ({strongestPhase}), còn {weakest} ({weakestPhase}) là trọng tâm cần chú ý nhất.",
         "focusNext": "Luyện tập có mục tiêu về {weakest} — với các văn bản cao hơn một chút so với trình độ hiện tại của {first} — nhiều khả năng sẽ nâng điểm tổng thể nhất.",
-        "vocabBoth": "Từ vựng thông dụng đạt {a2}% và từ vựng lớp học đạt {b1}%.",
+        "vocabBoth": "Từ vựng thông dụng ở giai đoạn {a2} và từ vựng lớp học ở giai đoạn {b1}.",
         "vocabAcademicNext": "Luyện ngắn gọn, rõ ràng từ vựng lớp học và từ vựng môn học — kết hợp với các bài đọc hiểu vượt ra ngoài nghĩa đen — là cách trực tiếp nhất để nâng khả năng đọc hiểu của {first}.",
-        "vocabA2Only": "Bài này chỉ đo từ vựng thông dụng: {a2}%.",
-        "vocabB1Only": "Bài này chỉ đo từ vựng lớp học: {b1}%."
+        "vocabA2Only": "Bài này chỉ đo từ vựng thông dụng: {a2}.",
+        "vocabB1Only": "Bài này chỉ đo từ vựng lớp học: {b1}."
       },
       "hideAi": "Ẩn AI",
       "exported": "Đã tải hồ sơ ẩn danh.",

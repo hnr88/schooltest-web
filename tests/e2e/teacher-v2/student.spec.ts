@@ -79,13 +79,19 @@ test('S3 — the student page per design: header, progress, subskills, analysis,
     await expect(page.locator('[data-tile="latest"] dd')).toHaveText(`${score}%`);
   }
 
-  // Subskills: every served display tile, each with its own score or the kit dash.
+  // Subskills: every served display tile, each with its own ACARA phase (the served
+  // band — Phase Model, spec 3) or the kit dash; Critical shows its exit gate. No %.
   const tiles = displaySkills(result);
   await expect(page.locator('[data-slot="student-subskill"]')).toHaveCount(tiles.length);
   for (const tile of tiles) {
-    await expect(
-      page.locator(`[data-slot="student-subskill"][data-skill="${tile.skill}"] [data-slot="student-subskill-score"]`),
-    ).toHaveText(tile.domain_score === null ? cat(en, 'TeacherPortal.kit.noValue') : `${tile.domain_score}%`);
+    const card = page.locator(`[data-slot="student-subskill"][data-skill="${tile.skill}"]`);
+    await expect(card).not.toContainText('%');
+    if (tile.source === 'gate') continue;
+    await expect(card.locator('[data-slot="student-subskill-phase"]')).toHaveText(
+      tile.status === null || tile.status === 'not_assessed'
+        ? cat(en, 'TeacherPortal.kit.noValue')
+        : cat(en, `TeacherPortal.viewModel.band.${tile.status === 'not_yet' ? 'notYet' : tile.status}`),
+    );
   }
   const analysis = page.locator('[data-slot="student-analysis"] p');
   if (score !== null) await expect(analysis.first()).toContainText(`${first}’s overall reading score is ${score}%`);

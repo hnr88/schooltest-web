@@ -75,14 +75,22 @@ test.describe('journey 06 — scoring to teacher report', () => {
       await expect(headline).toBeInViewport();
       await expect(headline).toHaveText(`${overall}%`);
 
-      // …and each of the eight subskill cards carries ITS OWN server value: the
-      // gate score for Critical, the attribute elsewhere (Everyday and Classroom
-      // Vocabulary each their own) — and an absence renders as the kit dash, never as 0.
+      // …and each of the eight subskill cards carries ITS OWN server value as an
+      // ACARA phase (Phase Model, spec 3): the attribute's band on the ladder
+      // (Everyday and Classroom Vocabulary each their own), the exit gate on
+      // Critical — never a percentage, and an absence renders as the kit dash.
       for (const tile of displaySkills(view)) {
         const card = page.locator(`[data-slot="student-subskill"][data-skill="${tile.skill}"]`);
         await expect(card).toHaveAttribute('data-assessed', String(tile.domain_score !== null));
-        await expect(card.locator('[data-slot="student-subskill-score"]')).toHaveText(
-          tile.domain_score === null ? cat(en, 'TeacherPortal.kit.noValue') : `${tile.domain_score}%`,
+        await expect(card).not.toContainText('%');
+        if (tile.source === 'gate') {
+          await expect(card.locator('[data-slot="student-subskill-ladder"]')).toHaveCount(0);
+          continue;
+        }
+        await expect(card.locator('[data-slot="student-subskill-phase"]')).toHaveText(
+          tile.status === null || tile.status === 'not_assessed'
+            ? cat(en, 'TeacherPortal.kit.noValue')
+            : cat(en, `TeacherPortal.viewModel.band.${tile.status === 'not_yet' ? 'notYet' : tile.status}`),
         );
       }
       if (view.acara_phase !== null) {

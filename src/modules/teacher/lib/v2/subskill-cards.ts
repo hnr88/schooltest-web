@@ -9,7 +9,7 @@ import { GROWTH_FG, STUDENT_TAG_TONE, UNASSESSED_TONE } from '@/modules/teacher/
 import { sparkline } from '@/modules/teacher/lib/v2/chart-geometry';
 import { parseSignedDisplay, signedFg } from '@/modules/teacher/lib/v2/growth';
 import { skillOf, studentSeries } from '@/modules/teacher/lib/v2/history-series';
-import { isAttributeName } from '@/modules/teacher/lib/v2/skill-refs';
+import { assessedBandOf, isAttributeName } from '@/modules/teacher/lib/v2/skill-refs';
 import { bandView, gateView } from '@/modules/teacher/lib/v2/tone';
 import type {
   SubskillCard,
@@ -41,7 +41,7 @@ function tagFor(skill: DisplaySkill, strongest: DisplaySkill | null, weakest: Di
 }
 
 export function vocabStrands(result: ResultView): VocabStrands {
-  return { a2: result.vocab.a2.domain_score, b1: result.vocab.b1.domain_score };
+  return { a2: assessedBandOf(result, 'Vocab_A2'), b1: assessedBandOf(result, 'Vocab_B1') };
 }
 
 export function subskillCards(result: ResultView): SubskillCard[] {

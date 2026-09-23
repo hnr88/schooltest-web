@@ -4969,10 +4969,10 @@
         "notYetAssessed": "尚未评估"
       },
       "band": {
-        "secure": "稳固",
+        "secure": "巩固",
         "developing": "发展中",
         "emerging": "初显",
-        "notYet": "尚未达到"
+        "notYet": "起步"
       },
       "gate": {
         "passed": "达标线：已通过",
@@ -5245,7 +5245,7 @@
         "subskills": "子技能明细",
         "subskill": "子技能",
         "score": "分数",
-        "band": "等级",
+        "band": "阶段",
         "focus": "重点与优势",
         "strength": "优势",
         "focusArea": "重点领域",
@@ -5347,8 +5347,8 @@
         "title": "建议配对",
         "intro": "让{skill}较强的同学与需要这方面帮助的同学结对。",
         "none": "{skill}没有明显的配对 — 全班在这方面水平相近。",
-        "strong": "{score}% · 较强",
-        "support": "{score}% · 需帮助"
+        "strong": "{phase} · 较强",
+        "support": "{phase} · 需帮助"
       },
       "groups": {
         "title": "建议分组",
@@ -6177,7 +6177,8 @@
         "deltaUp": "↑ +{points}",
         "deltaDown": "↓ −{points}",
         "deltaFlat": "±0",
-        "deltaBands": "{before} → {after}"
+        "deltaBands": "{before} → {after}",
+        "ladderLabel": "{skill}：{phase}，ACARA 阶段阶梯第 {step} 级（共 4 级）"
       },
       "analysisTitle": "学生分析",
       "analysisBadge": "自动生成摘要",
@@ -6193,12 +6194,12 @@
         "growthDown": "自首次测试以来，其阅读成绩下降了 {points} 分。",
         "growthFlat": "其阅读成绩与首次测试持平。",
         "growthSteady": "自首次测试以来，其阅读成绩在测量误差范围内保持稳定。",
-        "strengthFocus": "{first} 最强的领域是{strongest}（{strongestScore}%），而{weakest}（{weakestScore}%）是最明确的重点。",
+        "strengthFocus": "{first} 最强的领域是{strongest}（{strongestPhase}），而{weakest}（{weakestPhase}）是最明确的重点。",
         "focusNext": "针对{weakest}进行专项练习，并选用略高于{first}当前水平的文本，最有可能提升总分。",
-        "vocabBoth": "日常词汇为 {a2}%，课堂词汇为 {b1}%。",
+        "vocabBoth": "日常词汇处于{a2}阶段，课堂词汇处于{b1}阶段。",
         "vocabAcademicNext": "简短、明确地学习课堂和学科词汇，并结合超越字面理解的阅读任务，是提升{first}理解能力最直接的方法。",
-        "vocabA2Only": "本次测试只测量了日常词汇：{a2}%。",
-        "vocabB1Only": "本次测试只测量了课堂词汇：{b1}%。"
+        "vocabA2Only": "本次测试只测量了日常词汇：{a2}。",
+        "vocabB1Only": "本次测试只测量了课堂词汇：{b1}。"
       },
       "hideAi": "隐藏 AI",
       "exported": "已下载去标识化档案。",

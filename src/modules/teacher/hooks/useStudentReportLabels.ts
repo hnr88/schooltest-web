@@ -34,7 +34,6 @@ export function useStudentReportLabels(
     growth: t('print.growth'),
     subskills: t('print.subskills'),
     subskill: t('print.subskill'),
-    score: t('print.score'),
     band: t('print.band'),
     focus: t('print.focus'),
     strength: t('print.strength'),

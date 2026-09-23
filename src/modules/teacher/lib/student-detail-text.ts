@@ -5,6 +5,7 @@ import {
   SUBSKILL_DELTA_KEY,
 } from '@/modules/teacher/constants/student-detail.constants';
 import { BAND_LABEL_KEY, GROWTH_STEADY_KEY, PHASE_LABEL_KEY } from '@/modules/teacher/constants/v2-i18n.constants';
+import { BAND_RANK } from '@/modules/teacher/constants/v2-thresholds.constants';
 import type { ProgressTile, TextDescriptor } from '@/modules/teacher/types/student-drill-down.types';
 import type {
   StudentDetailTiles,
@@ -92,7 +93,8 @@ function focusParagraph(view: StudentDetailView, first: string): TextDescriptor[
   return [
     {
       key: 'analysis.strengthFocus',
-      values: { first, strongestScore: strongest.score, weakestScore: weakest.score },
+      values: { first },
+      labels: { strongestPhase: BAND_LABEL_KEY[strongest.band], weakestPhase: BAND_LABEL_KEY[weakest.band] },
       lowerLabels: { strongest: strongest.labelKey, weakest: weakest.labelKey },
     },
     { key: 'analysis.focusNext', values: { first }, lowerLabels: { weakest: weakest.labelKey } },
@@ -102,11 +104,11 @@ function focusParagraph(view: StudentDetailView, first: string): TextDescriptor[
 function vocabParagraph(view: StudentDetailView, first: string): TextDescriptor[] {
   const { a2, b1 } = view.analysis.vocab;
   if (a2 !== null && b1 !== null) {
-    const both: TextDescriptor = { key: 'analysis.vocabBoth', values: { a2, b1 } };
-    return b1 < a2 ? [both, { key: 'analysis.vocabAcademicNext', values: { first } }] : [both];
+    const both: TextDescriptor = { key: 'analysis.vocabBoth', labels: { a2: BAND_LABEL_KEY[a2], b1: BAND_LABEL_KEY[b1] } };
+    return BAND_RANK[b1] < BAND_RANK[a2] ? [both, { key: 'analysis.vocabAcademicNext', values: { first } }] : [both];
   }
-  if (a2 !== null) return [{ key: 'analysis.vocabA2Only', values: { a2 } }];
-  if (b1 !== null) return [{ key: 'analysis.vocabB1Only', values: { b1 } }];
+  if (a2 !== null) return [{ key: 'analysis.vocabA2Only', labels: { a2: BAND_LABEL_KEY[a2] } }];
+  if (b1 !== null) return [{ key: 'analysis.vocabB1Only', labels: { b1: BAND_LABEL_KEY[b1] } }];
   return [];
 }
 

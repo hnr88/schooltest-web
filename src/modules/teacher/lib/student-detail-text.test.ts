@@ -83,12 +83,13 @@ describe('student detail text — recorded Dilnoza (reliable fall, 8 sittings, 3
       [
         {
           key: 'analysis.strengthFocus',
-          values: { first: 'Dilnoza', strongestScore: 49, weakestScore: 25 },
+          values: { first: 'Dilnoza' },
+          labels: { strongestPhase: 'band.emerging', weakestPhase: 'band.notYet' },
           lowerLabels: { strongest: 'skill.inference', weakest: 'skill.decoding' },
         },
         { key: 'analysis.focusNext', values: { first: 'Dilnoza' }, lowerLabels: { weakest: 'skill.decoding' } },
       ],
-      [{ key: 'analysis.vocabBoth', values: { a2: 25, b1: 25 } }],
+      [{ key: 'analysis.vocabBoth', labels: { a2: 'band.notYet', b1: 'band.notYet' } }],
     ]);
   });
 });
@@ -124,12 +125,13 @@ describe('student detail text — recorded Amara (server "steady", single B1 str
       [
         {
           key: 'analysis.strengthFocus',
-          values: { first: 'Amara', strongestScore: 29, weakestScore: 25 },
+          values: { first: 'Amara' },
+          labels: { strongestPhase: 'band.notYet', weakestPhase: 'band.notYet' },
           lowerLabels: { strongest: 'skill.gist', weakest: 'attribute.vocabB1' },
         },
         { key: 'analysis.focusNext', values: { first: 'Amara' }, lowerLabels: { weakest: 'attribute.vocabB1' } },
       ],
-      [{ key: 'analysis.vocabB1Only', values: { b1: 25 } }],
+      [{ key: 'analysis.vocabB1Only', labels: { b1: 'band.notYet' } }],
     ]);
   });
 });
@@ -178,24 +180,36 @@ describe('student detail text — edge cases derived from recorded rows', () => 
     expect(studentAnalysis(view, 'Rosa')[0]?.[1]).toEqual({ key: 'analysis.growthUp', values: { points: 5 } });
   });
 
-  test('academic vocabulary below everyday (Dilnoza, B1 20) adds the academic-words advice', () => {
+  test('classroom vocabulary a phase below everyday (Dilnoza, Everyday at Emerging) adds the academic-words advice', () => {
+    const everyday = t2ResultDilnoza.attributes.Vocab_A2;
+    if (everyday === undefined || everyday.status === 'not_assessed') throw new Error('fixture Vocab_A2 must be assessed');
+    const derived: ResultView = {
+      ...t2ResultDilnoza,
+      attributes: { ...t2ResultDilnoza.attributes, Vocab_A2: { ...everyday, status: 'emerging' } },
+    };
+    expect(studentAnalysis(studentDetail(derived), 'Dilnoza').at(-1)).toEqual([
+      { key: 'analysis.vocabBoth', labels: { a2: 'band.emerging', b1: 'band.notYet' } },
+      { key: 'analysis.vocabAcademicNext', values: { first: 'Dilnoza' } },
+    ]);
+  });
+
+  test('the same phase on both strands gives no academic-words advice, whatever the scores (Dilnoza, B1 20)', () => {
     const derived: ResultView = {
       ...t2ResultDilnoza,
       vocab: { ...t2ResultDilnoza.vocab, b1: { ...t2ResultDilnoza.vocab.b1, domain_score: 20 } },
     };
     expect(studentAnalysis(studentDetail(derived), 'Dilnoza').at(-1)).toEqual([
-      { key: 'analysis.vocabBoth', values: { a2: 25, b1: 20 } },
-      { key: 'analysis.vocabAcademicNext', values: { first: 'Dilnoza' } },
+      { key: 'analysis.vocabBoth', labels: { a2: 'band.notYet', b1: 'band.notYet' } },
     ]);
   });
 
-  test('an A2-only sitting (Amara, Everyday Vocabulary only) prints the A2 strand alone', () => {
+  test('an A2-only sitting (Dilnoza with Classroom Vocabulary unassessed) prints the A2 strand alone', () => {
     const derived: ResultView = {
-      ...t2ResultAmara,
-      vocab: { a2: { domain_score: 25 }, b1: { domain_score: null } },
+      ...t2ResultDilnoza,
+      attributes: { ...t2ResultDilnoza.attributes, Vocab_B1: t2ResultAmara.attributes.Vocab_A2 },
     };
     const view = studentDetail(derived);
-    expect(studentAnalysis(view, 'Amara').at(-1)).toEqual([{ key: 'analysis.vocabA2Only', values: { a2: 25 } }]);
+    expect(studentAnalysis(view, 'Dilnoza').at(-1)).toEqual([{ key: 'analysis.vocabA2Only', labels: { a2: 'band.notYet' } }]);
   });
 
   test('subskill points up and zero (Dilnoza Everyday Vocabulary "+7" / "0")', () => {

@@ -1,3 +1,5 @@
+import type { AssessedBand } from '@schooltest/scoring-contracts';
+
 import type { ClassDiagnostic } from '@/modules/teach';
 import type { AcaraPhaseName, SkillRef, ViewTone } from '@/modules/teacher/types/v2-view-common.types';
 
@@ -77,7 +79,9 @@ export interface CohortView {
 export interface PairingStudent {
   studentDocumentId: string;
   firstName: string;
+  /** Ranks and gaps the pair; never shown — the card shows `band`. */
   score: number;
+  band: AssessedBand;
 }
 
 export interface Pairing {

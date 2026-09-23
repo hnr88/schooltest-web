@@ -119,9 +119,9 @@ describe('studentDetail — recorded Dilnoza (GET /results/:id, 8 sittings, 3 sc
 
   test('analysis values', () => {
     expect(view.analysis).toEqual({
-      strongest: { skill: 'Inference', labelKey: 'skill.inference', score: 49 },
-      weakest: { skill: 'Decoding', labelKey: 'skill.decoding', score: 25 },
-      vocab: { a2: 25, b1: 25 },
+      strongest: { skill: 'Inference', labelKey: 'skill.inference', score: 49, band: 'emerging' },
+      weakest: { skill: 'Decoding', labelKey: 'skill.decoding', score: 25, band: 'not_yet' },
+      vocab: { a2: 'not_yet', b1: 'not_yet' },
     });
   });
 });
@@ -146,7 +146,7 @@ describe('studentDetail — recorded Amara (single-strand vocabulary, scored gat
       band: { band: 'not_yet', labelKey: 'band.notYet', tone: RED },
       delta: { kind: 'bands', before: 'not_yet', after: 'not_yet', fg: '#5B6472' },
     });
-    expect(view.analysis.vocab).toEqual({ a2: null, b1: 25 });
+    expect(view.analysis.vocab).toEqual({ a2: null, b1: 'not_yet' });
   });
 
   test('not-assessed skills carry no score, band, movement or trajectory', () => {

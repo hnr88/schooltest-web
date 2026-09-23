@@ -1,6 +1,6 @@
 import type { AssessedBand } from '@schooltest/scoring-contracts';
 
-import type { BandKey, ToneChipTone } from '@/modules/teacher/types/teacher-kit.types';
+import type { ToneChipTone } from '@/modules/teacher/types/teacher-kit.types';
 import type { SubskillTagKind } from '@/modules/teacher/types/v2-student-detail.types';
 
 /** Every student-page string lives here (`TeacherPortal.student`); labels come from `TeacherPortal.viewModel`. */
@@ -49,13 +49,8 @@ export const STUDENT_CHART_STYLE = {
   axisTopY: 12,
 } as const;
 
-/** The kit BandChip for each server band; its tone pairs are the view model's `BAND_TONE`. */
-export const STUDENT_BAND_CHIP: Readonly<Record<AssessedBand, BandKey>> = {
-  secure: 'secure',
-  developing: 'developing',
-  emerging: 'emerging',
-  not_yet: 'notYet',
-};
+/** The four-step ACARA phase ladder a subskill card draws, lowest step first (Beginning → Consolidating). */
+export const STUDENT_LADDER_BANDS: readonly AssessedBand[] = ['not_yet', 'emerging', 'developing', 'secure'];
 
 /** Strength green · Focus area amber (`studentVals` tagFg/tagBg). */
 export const STUDENT_TAG_CHIP_TONE: Readonly<Record<SubskillTagKind, ToneChipTone>> = {

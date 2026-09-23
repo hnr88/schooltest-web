@@ -6,9 +6,15 @@ import { studentChart } from '@/modules/teacher/lib/v2/chart-geometry';
 import { growthFromServer, scoreSpan } from '@/modules/teacher/lib/v2/growth';
 import { overallOf, studentSeries } from '@/modules/teacher/lib/v2/history-series';
 import { phaseOfResult } from '@/modules/teacher/lib/v2/phase';
-import { toScoredSkill } from '@/modules/teacher/lib/v2/skill-refs';
+import { assessedBandOf, toScoredSkill } from '@/modules/teacher/lib/v2/skill-refs';
 import { subskillCards, vocabStrands } from '@/modules/teacher/lib/v2/subskill-cards';
-import type { StudentDetailView } from '@/modules/teacher/types/v2-student-detail.types';
+import type { AnalysisSkill, StudentDetailView } from '@/modules/teacher/types/v2-student-detail.types';
+
+function analysisSkill(result: ResultView, found: Parameters<typeof toScoredSkill>[0]): AnalysisSkill | null {
+  const scored = toScoredSkill(found);
+  const band = scored === null ? null : assessedBandOf(result, scored.skill);
+  return scored === null || band === null ? null : { ...scored, band };
+}
 
 export function studentDetail(result: ResultView): StudentDetailView {
   const history = result.history ?? [];
@@ -32,8 +38,8 @@ export function studentDetail(result: ResultView): StudentDetailView {
     chart: studentChart(series),
     subskills: subskillCards(result),
     analysis: {
-      strongest: toScoredSkill(strongestSkill(result)),
-      weakest: toScoredSkill(weakestSkill(result)),
+      strongest: analysisSkill(result, strongestSkill(result)),
+      weakest: analysisSkill(result, weakestSkill(result)),
       vocab: vocabStrands(result),
     },
   };

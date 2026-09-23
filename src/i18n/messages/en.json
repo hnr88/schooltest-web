@@ -4969,10 +4969,10 @@
         "notYetAssessed": "Not yet assessed"
       },
       "band": {
-        "secure": "Secure",
+        "secure": "Consolidating",
         "developing": "Developing",
         "emerging": "Emerging",
-        "notYet": "Not yet"
+        "notYet": "Beginning"
       },
       "gate": {
         "passed": "Exit gate: passed",
@@ -5245,7 +5245,7 @@
         "subskills": "Subskill breakdown",
         "subskill": "Subskill",
         "score": "Score",
-        "band": "Band",
+        "band": "Phase",
         "focus": "Focus and strengths",
         "strength": "Strength",
         "focusArea": "Focus area",
@@ -5347,8 +5347,8 @@
         "title": "Suggested pairings",
         "intro": "Pair a peer strong in {skill} with one who needs support in it.",
         "none": "No clear pairings for {skill} — the class is evenly matched here.",
-        "strong": "{score}% · strong",
-        "support": "{score}% · support"
+        "strong": "{phase} · strong",
+        "support": "{phase} · support"
       },
       "groups": {
         "title": "Suggested groups",
@@ -6177,7 +6177,8 @@
         "deltaUp": "↑ +{points}",
         "deltaDown": "↓ −{points}",
         "deltaFlat": "±0",
-        "deltaBands": "{before} → {after}"
+        "deltaBands": "{before} → {after}",
+        "ladderLabel": "{skill}: {phase}, step {step} of 4 on the ACARA phase ladder"
       },
       "analysisTitle": "Student analysis",
       "analysisBadge": "Generated summary",
@@ -6193,12 +6194,12 @@
         "growthDown": "Since the first sitting their reading has fallen {points} points.",
         "growthFlat": "Their reading score is level with the first sitting.",
         "growthSteady": "Their reading has held steady since the first sitting, within measurement error.",
-        "strengthFocus": "{first}’s strongest area is {strongest} ({strongestScore}%), while {weakest} ({weakestScore}%) is the clearest focus.",
+        "strengthFocus": "{first}’s strongest area is {strongest} ({strongestPhase}), while {weakest} ({weakestPhase}) is the clearest focus.",
         "focusNext": "Targeted work on {weakest} — with texts pitched just beyond {first}’s current level — is likely to move the overall score most.",
-        "vocabBoth": "Everyday vocabulary is at {a2}% and classroom vocabulary at {b1}%.",
+        "vocabBoth": "Everyday vocabulary is at the {a2} phase and classroom vocabulary at the {b1} phase.",
         "vocabAcademicNext": "Short, explicit work on classroom and subject vocabulary — paired with reading-for-meaning tasks that push beyond the literal — is the most direct way to lift {first}’s comprehension.",
-        "vocabA2Only": "Only everyday vocabulary was measured on this form: {a2}%.",
-        "vocabB1Only": "Only classroom vocabulary was measured on this form: {b1}%."
+        "vocabA2Only": "Only everyday vocabulary was measured on this form: {a2}.",
+        "vocabB1Only": "Only classroom vocabulary was measured on this form: {b1}."
       },
       "hideAi": "Hide AI",
       "exported": "De-identified profile downloaded.",

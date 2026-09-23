@@ -1,7 +1,9 @@
 import type { RosterRow } from '@/modules/results';
 
 import { STUDENT_REPORT_PRINT_CSS } from '@/modules/teacher/constants/class-summary-print.constants';
-import { GROWTH_STEADY_KEY } from '@/modules/teacher/constants/v2-i18n.constants';
+import type { AssessedBand } from '@schooltest/scoring-contracts';
+
+import { BAND_LABEL_KEY, GROWTH_STEADY_KEY } from '@/modules/teacher/constants/v2-i18n.constants';
 import { escapeHtml, tile } from '@/modules/teacher/lib/print/class-summary-print';
 import { formatDelta } from '@/modules/teacher/lib/teacher-kit';
 import { carerReport } from '@/modules/teacher/lib/v2/carer-report';
@@ -15,16 +17,17 @@ import type {
 } from '@/modules/teacher/types/class-summary-print.types';
 import type { ScoredRosterRow } from '@/modules/teacher/types/class-reports.types';
 import type { CarerLine } from '@/modules/teacher/types/v2-family.types';
-import type { SubskillCard } from '@/modules/teacher/types/v2-student-detail.types';
-import type { GrowthView, ScoredSkill, ViewTone } from '@/modules/teacher/types/v2-view-common.types';
+import type { AnalysisSkill, SubskillCard } from '@/modules/teacher/types/v2-student-detail.types';
+import type { GrowthView, ViewTone } from '@/modules/teacher/types/v2-view-common.types';
 
 /**
  * The student reading report (design `printStudentReport`, l.2247), on the class
  * report's print helpers: one student from the Students tab's PDF button, or every
  * scored student of the roster read, one page each, from the Reports modal. Every
  * value comes from `studentDetail()` / `carerReport()` over the student's
- * ResultView; a missing value prints the dash, never a number. Every interpolated
- * string is escaped.
+ * ResultView; a missing value prints the dash, never a number. Subskills print
+ * their ACARA phase step (the band's phase word), never a score or percentage;
+ * the overall score and growth stay. Every interpolated string is escaped.
  */
 
 function percent(value: number | null, labels: StudentReportLabels): string {
@@ -36,8 +39,12 @@ function growthValue(growth: GrowthView, labels: StudentReportLabels): string {
   return growth.points === null ? labels.noValue : labels.points(formatDelta(growth.points, 'signed').text);
 }
 
-function skillValue(skill: ScoredSkill | null, labels: StudentReportLabels): string {
-  return skill === null ? labels.noValue : `${labels.viewModel(skill.labelKey)} · ${skill.score}%`;
+function phaseValue(band: AssessedBand | null, labels: StudentReportLabels): string {
+  return band === null ? labels.noValue : labels.viewModel(BAND_LABEL_KEY[band]);
+}
+
+function skillValue(skill: AnalysisSkill | null, labels: StudentReportLabels): string {
+  return skill === null ? labels.noValue : `${labels.viewModel(skill.labelKey)} · ${phaseValue(skill.band, labels)}`;
 }
 
 function chip(label: string, tone: ViewTone): string {
@@ -47,10 +54,7 @@ function chip(label: string, tone: ViewTone): string {
 function subskillRow(card: SubskillCard, labels: StudentReportLabels): string {
   const state = card.band ?? card.gate;
   const cell = state === null ? escapeHtml(labels.noValue) : chip(labels.viewModel(state.labelKey), state.tone);
-  return (
-    `<tr><td>${escapeHtml(labels.viewModel(card.labelKey))}</td>` +
-    `<td class="num">${escapeHtml(percent(card.score, labels))}</td><td>${cell}</td></tr>`
-  );
+  return `<tr><td>${escapeHtml(labels.viewModel(card.labelKey))}</td><td>${cell}</td></tr>`;
 }
 
 function lineList(kind: 'canDo' | 'next', lines: readonly CarerLine[], labels: StudentReportLabels): string {
@@ -80,14 +84,14 @@ function reportPage(input: StudentReportInput, labels: StudentReportLabels): str
     tile('kpi', labels.growth, growthValue(detail.overall.growth, labels)),
     '</div>',
     `<h2>${escapeHtml(labels.subskills)}</h2><table><thead><tr><th>${escapeHtml(labels.subskill)}</th>`,
-    `<th>${escapeHtml(labels.score)}</th><th>${escapeHtml(labels.band)}</th></tr></thead><tbody>`,
+    `<th>${escapeHtml(labels.band)}</th></tr></thead><tbody>`,
     detail.subskills.map((card) => subskillRow(card, labels)).join(''),
     `</tbody></table><h2>${escapeHtml(labels.focus)}</h2><div class="two">`,
     tile('box', labels.strength, skillValue(strongest, labels)),
     tile('box', labels.focusArea, skillValue(focus, labels)),
     `</div><h2>${escapeHtml(labels.vocabulary)}</h2><div class="two">`,
-    tile('box', labels.everyday, percent(vocab.a2, labels)),
-    tile('box', labels.academic, percent(vocab.b1, labels)),
+    tile('box', labels.everyday, phaseValue(vocab.a2, labels)),
+    tile('box', labels.academic, phaseValue(vocab.b1, labels)),
     '</div>',
     lineList('canDo', carer.canDo, labels),
     lineList('next', carer.next, labels),

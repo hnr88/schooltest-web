@@ -4,6 +4,7 @@ import { getStudentFirstName } from '@/lib/student-name';
 import { displaySkills, type RosterRow } from '@/modules/results';
 
 import { SKILL_LABEL_KEY } from '@/modules/teacher/constants/v2-i18n.constants';
+import { assessedBandOf } from '@/modules/teacher/lib/v2/skill-refs';
 import { PAIRING_MAX_PAIRS, PAIRING_MIN_GAP } from '@/modules/teacher/constants/v2-thresholds.constants';
 import type { Pairing, PairingStudent, PairingsView } from '@/modules/teacher/types/v2-insights.types';
 
@@ -11,8 +12,9 @@ function scoredOn(roster: readonly RosterRow[], skill: DisplaySkill): PairingStu
   return roster.flatMap((row) => {
     if (row.result === null) return [];
     const score = displaySkills(row.result).find((tile) => tile.skill === skill)?.domain_score ?? null;
-    if (score === null) return [];
-    return [{ studentDocumentId: row.student.document_id, firstName: getStudentFirstName(row.student.name), score }];
+    const band = assessedBandOf(row.result, skill);
+    if (score === null || band === null) return [];
+    return [{ studentDocumentId: row.student.document_id, firstName: getStudentFirstName(row.student.name), score, band }];
   });
 }
 

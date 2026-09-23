@@ -4,11 +4,13 @@ import { useLocale, useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
 import { SectionCard } from '@/modules/teacher/components/v2/SectionCard';
+import { BAND_LABEL_KEY } from '@/modules/teacher/constants/v2-i18n.constants';
 import type { SuggestedPairingsCardProps } from '@/modules/teacher/types/class-analytics.types';
 
 // Teaching insights · Suggested pairings (`:832–851`), from `peerPairings()` on the class
 // focus: the strongest scorer beside the weakest while the gap is at least 12 points,
-// walking in from both ends, at most four pairs. No pair clearing the gap is said in words.
+// walking in from both ends, at most four pairs. Each side shows its ACARA phase, not
+// its score. No pair clearing the gap is said in words.
 function SuggestedPairingsCard({ pairings }: SuggestedPairingsCardProps) {
   const t = useTranslations('TeacherPortal.insights');
   const tv = useTranslations('TeacherPortal.viewModel');
@@ -34,11 +36,11 @@ function SuggestedPairingsCard({ pairings }: SuggestedPairingsCardProps) {
               data-slot="insights-pair"
               className="flex items-center gap-3 rounded-[10px] border border-[#ECEEF2] px-[18px] py-4"
             >
-              <PairSide name={pair.strong.firstName} label={t('pairings.strong', { score: pair.strong.score })} tone="text-[#1F7A4D]" />
+              <PairSide name={pair.strong.firstName} label={t('pairings.strong', { phase: tv(BAND_LABEL_KEY[pair.strong.band]) })} tone="text-[#1F7A4D]" />
               <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-none">
                 <path d="M8 7h11M8 7l3-3M8 7l3 3M16 17H5M16 17l-3-3M16 17l-3 3" />
               </svg>
-              <PairSide name={pair.support.firstName} label={t('pairings.support', { score: pair.support.score })} tone="text-[#92610B]" />
+              <PairSide name={pair.support.firstName} label={t('pairings.support', { phase: tv(BAND_LABEL_KEY[pair.support.band]) })} tone="text-[#92610B]" />
             </li>
           ))}
         </ul>

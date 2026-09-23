@@ -32,9 +32,15 @@ export interface SubskillTag {
   tone: ViewTone;
 }
 
+/** Each vocabulary strand's band (its ACARA phase step), or null when not assessed. */
 export interface VocabStrands {
-  a2: number | null;
-  b1: number | null;
+  a2: AssessedBand | null;
+  b1: AssessedBand | null;
+}
+
+/** A strongest/weakest skill, named with its band — the analysis states the phase, not the score. */
+export interface AnalysisSkill extends ScoredSkill {
+  band: AssessedBand;
 }
 
 export interface SubskillCard extends SkillRef {
@@ -58,8 +64,8 @@ export interface StudentDetailTiles {
 }
 
 export interface StudentAnalysis {
-  strongest: ScoredSkill | null;
-  weakest: ScoredSkill | null;
+  strongest: AnalysisSkill | null;
+  weakest: AnalysisSkill | null;
   vocab: VocabStrands;
 }
 

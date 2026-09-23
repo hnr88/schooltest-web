@@ -4979,10 +4979,10 @@
         "notYetAssessed": "아직 평가되지 않음"
       },
       "band": {
-        "secure": "안정",
-        "developing": "발전 중",
-        "emerging": "초기",
-        "notYet": "아직 아님"
+        "secure": "정착",
+        "developing": "발달",
+        "emerging": "도입",
+        "notYet": "시작"
       },
       "gate": {
         "passed": "통과 기준: 통과",
@@ -5255,7 +5255,7 @@
         "subskills": "하위 기술별 결과",
         "subskill": "하위 기술",
         "score": "점수",
-        "band": "수준",
+        "band": "단계",
         "focus": "중점 영역과 강점",
         "strength": "강점",
         "focusArea": "중점 영역",
@@ -5357,8 +5357,8 @@
         "title": "추천 짝",
         "intro": "{skill}에 강한 학생과 도움이 필요한 학생을 짝지어 보세요.",
         "none": "{skill}에는 뚜렷한 짝이 없습니다 — 이 영역은 학급 수준이 고릅니다.",
-        "strong": "{score}% · 강함",
-        "support": "{score}% · 지원 필요"
+        "strong": "{phase} · 강함",
+        "support": "{phase} · 지원 필요"
       },
       "groups": {
         "title": "추천 그룹",
@@ -6187,7 +6187,8 @@
         "deltaUp": "↑ +{points}",
         "deltaDown": "↓ −{points}",
         "deltaFlat": "±0",
-        "deltaBands": "{before} → {after}"
+        "deltaBands": "{before} → {after}",
+        "ladderLabel": "{skill}: {phase}, ACARA 단계 사다리 4단계 중 {step}단계"
       },
       "analysisTitle": "학생 분석",
       "analysisBadge": "자동 생성 요약",
@@ -6203,12 +6204,12 @@
         "growthDown": "첫 응시 이후 읽기 점수가 {points}점 떨어졌습니다.",
         "growthFlat": "읽기 점수가 첫 응시와 같습니다.",
         "growthSteady": "첫 응시 이후 읽기 점수가 측정 오차 범위 안에서 유지되고 있습니다.",
-        "strengthFocus": "{first} 학생의 가장 강한 영역은 {strongest}({strongestScore}%)이며, {weakest}({weakestScore}%) 영역이 가장 분명한 중점 영역입니다.",
+        "strengthFocus": "{first} 학생의 가장 강한 영역은 {strongest}({strongestPhase})이며, {weakest}({weakestPhase}) 영역이 가장 분명한 중점 영역입니다.",
         "focusNext": "{first} 학생의 현재 수준보다 조금 높은 글로 {weakest} 영역을 집중 지도하면 전체 점수를 가장 크게 끌어올릴 수 있습니다.",
-        "vocabBoth": "일상 어휘는 {a2}%, 교실 어휘는 {b1}%입니다.",
+        "vocabBoth": "일상 어휘는 {a2} 단계, 교실 어휘는 {b1} 단계입니다.",
         "vocabAcademicNext": "교실·교과 어휘를 짧고 명시적으로 지도하고 글자 그대로의 이해를 넘어서는 의미 중심 읽기 활동을 함께하는 것이 {first} 학생의 이해력을 높이는 가장 직접적인 방법입니다.",
-        "vocabA2Only": "이번 시험지에서는 일상 어휘만 측정되었습니다: {a2}%.",
-        "vocabB1Only": "이번 시험지에서는 교실 어휘만 측정되었습니다: {b1}%."
+        "vocabA2Only": "이번 시험지에서는 일상 어휘만 측정되었습니다: {a2}.",
+        "vocabB1Only": "이번 시험지에서는 교실 어휘만 측정되었습니다: {b1}."
       },
       "hideAi": "AI 숨기기",
       "exported": "비식별화된 프로필을 다운로드했습니다.",

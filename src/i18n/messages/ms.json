@@ -4979,10 +4979,10 @@
         "notYetAssessed": "Belum dinilai"
       },
       "band": {
-        "secure": "Teguh",
+        "secure": "Mantap",
         "developing": "Berkembang",
-        "emerging": "Baharu muncul",
-        "notYet": "Belum lagi"
+        "emerging": "Peralihan",
+        "notYet": "Permulaan"
       },
       "gate": {
         "passed": "Laluan keluar: lulus",
@@ -5255,7 +5255,7 @@
         "subskills": "Pecahan subkemahiran",
         "subskill": "Subkemahiran",
         "score": "Skor",
-        "band": "Tahap",
+        "band": "Fasa",
         "focus": "Fokus dan kekuatan",
         "strength": "Kekuatan",
         "focusArea": "Bidang fokus",
@@ -5357,8 +5357,8 @@
         "title": "Pasangan dicadangkan",
         "intro": "Pasangkan rakan yang kuat dalam {skill} dengan rakan yang memerlukan sokongan dalamnya.",
         "none": "Tiada pasangan yang jelas untuk {skill} — kelas ini setara dalam kemahiran ini.",
-        "strong": "{score}% · kuat",
-        "support": "{score}% · sokongan"
+        "strong": "{phase} · kuat",
+        "support": "{phase} · sokongan"
       },
       "groups": {
         "title": "Kumpulan dicadangkan",
@@ -6187,7 +6187,8 @@
         "deltaUp": "↑ +{points}",
         "deltaDown": "↓ −{points}",
         "deltaFlat": "±0",
-        "deltaBands": "{before} → {after}"
+        "deltaBands": "{before} → {after}",
+        "ladderLabel": "{skill}: {phase}, langkah {step} daripada 4 pada tangga fasa ACARA"
       },
       "analysisTitle": "Analisis murid",
       "analysisBadge": "Ringkasan dijana",
@@ -6203,12 +6204,12 @@
         "growthDown": "Sejak sesi pertama, skor membacanya menurun {points} mata.",
         "growthFlat": "Skor membacanya sama dengan sesi pertama.",
         "growthSteady": "Skor membacanya kekal stabil sejak sesi pertama, dalam lingkungan ralat pengukuran.",
-        "strengthFocus": "Bidang paling kukuh {first} ialah {strongest} ({strongestScore}%), manakala {weakest} ({weakestScore}%) ialah fokus yang paling jelas.",
+        "strengthFocus": "Bidang paling kukuh {first} ialah {strongest} ({strongestPhase}), manakala {weakest} ({weakestPhase}) ialah fokus yang paling jelas.",
         "focusNext": "Latihan bersasar dalam {weakest} — dengan teks yang sedikit melebihi tahap semasa {first} — paling berkemungkinan menaikkan skor keseluruhan.",
-        "vocabBoth": "Kosa kata harian berada pada {a2}% dan kosa kata bilik darjah pada {b1}%.",
+        "vocabBoth": "Kosa kata harian berada pada fasa {a2} dan kosa kata bilik darjah pada fasa {b1}.",
         "vocabAcademicNext": "Latihan ringkas dan eksplisit tentang kosa kata bilik darjah dan subjek — digabungkan dengan tugasan membaca untuk makna yang melangkaui makna literal — ialah cara paling langsung untuk meningkatkan kefahaman {first}.",
-        "vocabA2Only": "Hanya kosa kata harian diukur pada borang ini: {a2}%.",
-        "vocabB1Only": "Hanya kosa kata bilik darjah diukur pada borang ini: {b1}%."
+        "vocabA2Only": "Hanya kosa kata harian diukur pada borang ini: {a2}.",
+        "vocabB1Only": "Hanya kosa kata bilik darjah diukur pada borang ini: {b1}."
       },
       "hideAi": "Sembunyikan AI",
       "exported": "Profil tanpa pengenalan diri telah dimuat turun.",

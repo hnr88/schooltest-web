@@ -31,18 +31,18 @@ describe('student page text — recorded Dilnoza, en', () => {
   test('overall chip and band movement — Everyday and Classroom Vocabulary each move on their own band', () => {
     const card = (skill: string) => view.subskills.find((entry) => entry.skill === skill);
     expect(text(overallDeltaText(view.overall.growth) ?? { key: 'missing' })).toBe('↓ −45 pts');
-    expect(text(subskillDeltaText(card('Decoding')?.delta ?? { kind: 'none' }) ?? { key: 'missing' })).toBe('Secure → Not yet');
-    expect(text(subskillDeltaText(card('Vocab_A2')?.delta ?? { kind: 'none' }) ?? { key: 'missing' })).toBe('Secure → Not yet');
-    expect(text(subskillDeltaText(card('Vocab_B1')?.delta ?? { kind: 'none' }) ?? { key: 'missing' })).toBe('Secure → Not yet');
+    expect(text(subskillDeltaText(card('Decoding')?.delta ?? { kind: 'none' }) ?? { key: 'missing' })).toBe('Consolidating → Beginning');
+    expect(text(subskillDeltaText(card('Vocab_A2')?.delta ?? { kind: 'none' }) ?? { key: 'missing' })).toBe('Consolidating → Beginning');
+    expect(text(subskillDeltaText(card('Vocab_B1')?.delta ?? { kind: 'none' }) ?? { key: 'missing' })).toBe('Consolidating → Beginning');
   });
 
-  test('analysis: phase label verbatim, skill labels lower-cased, reliable fall', () => {
+  test('analysis: phase label verbatim, skill labels lower-cased, subskills named by phase (no %), reliable fall', () => {
     expect(resolveParagraphs(studentAnalysis(view, 'Dilnoza'), en)).toEqual([
       'Dilnoza’s overall reading score is 41%, placing them in the Beginning phase of the ACARA English progression. ' +
         'Since the first sitting their reading has fallen 45 points — a reliable drop that exceeds measurement error.',
-      'Dilnoza’s strongest area is inference (49%), while decoding (25%) is the clearest focus. ' +
+      'Dilnoza’s strongest area is inference (Emerging), while decoding (Beginning) is the clearest focus. ' +
         'Targeted work on decoding — with texts pitched just beyond Dilnoza’s current level — is likely to move the overall score most.',
-      'Everyday vocabulary is at 25% and classroom vocabulary at 25%.',
+      'Everyday vocabulary is at the Beginning phase and classroom vocabulary at the Beginning phase.',
     ]);
   });
 });

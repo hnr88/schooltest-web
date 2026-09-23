@@ -79,19 +79,21 @@ describe('buildStudentReportHtml — recorded Dilnoza (41, server phase, reliabl
     expect(texts(doc, '.kpi .v')).toEqual(['41%', 'Beginning', '−45 pts']);
   });
 
-  test('one breakdown row per display subskill, banded by the API status; Critical has no gate score', () => {
+  test('one breakdown row per display subskill, its phase from the API status and no score; Critical has no gate score', () => {
     const rows = Array.from(doc.querySelectorAll('tbody tr'), (row) =>
       Array.from(row.querySelectorAll('td'), (cell) => cell.textContent),
     );
     expect(rows).toHaveLength(input.detail.subskills.length);
-    expect(rows).toContainEqual(['Inference', '49%', 'Emerging']);
-    expect(rows).toContainEqual(['Decoding', '25%', 'Not yet']);
-    expect(rows).toContainEqual(['Critical reading', '—', '—']);
+    expect(rows).toContainEqual(['Inference', 'Emerging']);
+    expect(rows).toContainEqual(['Decoding', 'Beginning']);
+    expect(rows).toContainEqual(['Critical reading', '—']);
+    expect(texts(doc, 'thead th')).toEqual([print.subskill, print.band]);
+    expect(doc.querySelector('table')?.textContent).not.toMatch(/\d+%/);
   });
 
   test('focus and strengths, vocabulary strands, and the carer lines from carerReport', () => {
     const boxes = texts(doc, '.two .box .v');
-    expect(boxes).toEqual(['Inference · 49%', 'Decoding · 25%', '25%', '25%']);
+    expect(boxes).toEqual(['Inference · Emerging', 'Decoding · Beginning', 'Beginning', 'Beginning']);
     expect(texts(doc, '[data-list="canDo"] li')).toEqual([en.TeacherPortal.viewModel.carer.can.inference]);
     expect(texts(doc, '[data-list="next"] li')).toEqual(input.carer.next.map((line) => viewModel(line.key)));
     expect(doc.querySelector('.note')).toBeNull();
@@ -111,7 +113,7 @@ describe('buildStudentReportHtml — recorded Amara (no server phase, steady, si
   });
 
   test('the unmeasured A2 strand and an empty can-do list print the dash, never a number', () => {
-    expect(texts(doc, '.two .box .v').slice(2)).toEqual(['—', '25%']);
+    expect(texts(doc, '.two .box .v').slice(2)).toEqual(['—', 'Beginning']);
     expect(texts(doc, '[data-list="canDo"] li')).toEqual(['—']);
   });
 });

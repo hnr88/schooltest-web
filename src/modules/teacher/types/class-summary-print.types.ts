@@ -106,7 +106,6 @@ export interface StudentReportLabels {
   growth: string;
   subskills: string;
   subskill: string;
-  score: string;
   band: string;
   focus: string;
   strength: string;
