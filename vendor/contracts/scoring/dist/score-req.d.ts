@@ -24,16 +24,18 @@ export type ItemParams = z.infer<typeof itemParamsSchema>;
  * are excluded by the assembler and can never appear here.
  *
  * The cross-field rules are memo §1 made unfalsifiable on the wire: stage 3 is
- * held out of the CDM, so it is exactly the rows with no matrix and no Q-vector,
- * and a Q-vector's width is fixed by its matrix. A row held out of the CDM names
- * the Rasch strand it feeds (`rasch_strand`) — Section 3's gate or the Academic
- * Vocabulary mini-scale — so the two stage-3 strands can never be pooled into one
- * theta by accident; a matrix row names none.
+ * held out of the CDM, and so is spec 4's Academic Vocabulary stage 4, so they
+ * are exactly the rows with no matrix and no Q-vector, and a Q-vector's width
+ * is fixed by its matrix. A row held out of the CDM names the Rasch strand it
+ * feeds (`rasch_strand`), and the strand follows the stage — stage 3 is
+ * Section 3's `critical` gate, stage 4 the `academic_vocab` mini-scale — so the
+ * two strands can never be pooled into one theta by accident; a matrix row
+ * names none.
  */
 export declare const scoreRequestResponseSchema: z.ZodObject<{
     item_code: z.ZodString;
     score: z.ZodLiteral<0 | 1>;
-    stage: z.ZodLiteral<2 | 3 | 1>;
+    stage: z.ZodLiteral<2 | 4 | 3 | 1>;
     attribute_vector: z.ZodNullable<z.ZodArray<z.ZodLiteral<0 | 1>>>;
     matrix: z.ZodNullable<z.ZodLiteral<2 | 1>>;
     model_type: z.ZodEnum<{
@@ -203,7 +205,7 @@ export declare const scoreRequestSchema: z.ZodObject<{
     responses: z.ZodArray<z.ZodObject<{
         item_code: z.ZodString;
         score: z.ZodLiteral<0 | 1>;
-        stage: z.ZodLiteral<2 | 3 | 1>;
+        stage: z.ZodLiteral<2 | 4 | 3 | 1>;
         attribute_vector: z.ZodNullable<z.ZodArray<z.ZodLiteral<0 | 1>>>;
         matrix: z.ZodNullable<z.ZodLiteral<2 | 1>>;
         model_type: z.ZodEnum<{

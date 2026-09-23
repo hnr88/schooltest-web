@@ -93,8 +93,11 @@ exports.currentModelVersionSchema = zod_1.z.literal(exports.MODEL_VERSION);
 exports.scoringModelTypeSchema = zod_1.z.enum(['dina', 'gdina', 'rasch']);
 /** Which CDM an item loads on. `null` on stage 3 (spec v2 §3.1.1). */
 exports.matrixIdSchema = zod_1.z.literal([1, 2]);
-/** Doc 1 s.3.4 `stage` — receptive routing stage. */
-exports.stageSchema = zod_1.z.literal([1, 2, 3]);
+/**
+ * Doc 1 s.3.4 `stage` — receptive routing stage. `4` is spec 4's Academic
+ * Vocabulary stage (2G), administered between stage 2 and stage 3.
+ */
+exports.stageSchema = zod_1.z.literal([1, 2, 3, 4]);
 /** Doc 1 s.3.15 `distractor_type` — the aggregation keys of spec v2 §5.7. */
 exports.errorPatternTypeSchema = zod_1.z.enum([
     'literal_match',

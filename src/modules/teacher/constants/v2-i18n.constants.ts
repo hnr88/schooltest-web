@@ -42,7 +42,7 @@ export const SKILL_BLURB_KEY: Readonly<Record<DisplaySkill, string>> = {
   Gist: 'skillBlurb.gist',
   Detail: 'skillBlurb.detail',
   Inference: 'skillBlurb.inference',
-  Vocab_B2: 'skillBlurb.vocabB2',
+  Vocab_B2: 'skillBlurb.vocabulary',
   Critical: 'skillBlurb.critical',
 };
 

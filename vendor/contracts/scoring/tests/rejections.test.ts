@@ -245,6 +245,16 @@ describe('spec 4 — the Academic Vocabulary (2G) Rasch strand on the wire', () 
     expect(scoreRequestSchema.safeParse(body).success).toBe(false);
   });
 
+  it('the strand follows the stage: stage 4 is academic_vocab, stage 3 is critical', () => {
+    expect(academicRow(broken(scoreReqFixture)).stage).toBe(4);
+    const academicAsGate = broken(scoreReqFixture);
+    academicRow(academicAsGate).rasch_strand = 'critical';
+    expect(scoreRequestSchema.safeParse(academicAsGate).success).toBe(false);
+    const academicInStage3 = broken(scoreReqFixture);
+    academicRow(academicInStage3).stage = 3;
+    expect(scoreRequestSchema.safeParse(academicInStage3).success).toBe(false);
+  });
+
   it('rejects academic rows sent without an academic_vocab_pool', () => {
     const body = broken(scoreReqFixture);
     delete body.reference_sets.academic_vocab_pool;

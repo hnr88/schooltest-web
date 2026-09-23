@@ -20,8 +20,12 @@ const str = z.string().min(1);
 /** `api::sitting.sitting` lifecycle status. */
 export const sittingStatusSchema = z.enum(['open', 'closed']);
 
-/** 3.4 `stage` — the receptive stage ladder; `stage` IS `session.current_stage`. */
-export const stageSchema = z.literal([1, 2, 3]);
+/**
+ * 3.4 `stage` — the receptive stage ladder, 1-4 (4 = spec 4's Academic
+ * Vocabulary stage). On a monitor tile it is `session.current_stage`'s position
+ * in the plan, so it reads against `total_stages` (the Academic stage is third).
+ */
+export const stageSchema = z.literal([1, 2, 3, 4]);
 
 /* ── C-SIT-SETTINGS · PATCH /api/sittings/:documentId/settings (teacher 11) ── */
 

@@ -29,7 +29,7 @@ describe('subskillCards — Academic Vocabulary (Vocab_B2)', () => {
   test('a four-step banded card read from `academic_vocab`: no gate, no growth', () => {
     expect(cardOf(fixture, 'Vocab_B2')).toMatchObject({
       labelKey: 'attribute.vocabB2',
-      blurbKey: 'skillBlurb.vocabB2',
+      blurbKey: 'skillBlurb.vocabulary',
       score: 61,
       band: { band: 'developing', labelKey: 'band.developing', tone: BAND_TONE.developing },
       gate: null,

@@ -116,8 +116,11 @@ export type ScoringModelType = z.infer<typeof scoringModelTypeSchema>;
 /** Which CDM an item loads on. `null` on stage 3 (spec v2 §3.1.1). */
 export declare const matrixIdSchema: z.ZodLiteral<2 | 1>;
 export type MatrixId = z.infer<typeof matrixIdSchema>;
-/** Doc 1 s.3.4 `stage` — receptive routing stage. */
-export declare const stageSchema: z.ZodLiteral<2 | 3 | 1>;
+/**
+ * Doc 1 s.3.4 `stage` — receptive routing stage. `4` is spec 4's Academic
+ * Vocabulary stage (2G), administered between stage 2 and stage 3.
+ */
+export declare const stageSchema: z.ZodLiteral<2 | 4 | 3 | 1>;
 export type Stage = z.infer<typeof stageSchema>;
 /** Doc 1 s.3.15 `distractor_type` — the aggregation keys of spec v2 §5.7. */
 export declare const errorPatternTypeSchema: z.ZodEnum<{

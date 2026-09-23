@@ -29,18 +29,20 @@ exports.itemParamsSchema = zod_1.z.record(core_1.nonEmptyString, zod_1.z.union([
  * are excluded by the assembler and can never appear here.
  *
  * The cross-field rules are memo §1 made unfalsifiable on the wire: stage 3 is
- * held out of the CDM, so it is exactly the rows with no matrix and no Q-vector,
- * and a Q-vector's width is fixed by its matrix. A row held out of the CDM names
- * the Rasch strand it feeds (`rasch_strand`) — Section 3's gate or the Academic
- * Vocabulary mini-scale — so the two stage-3 strands can never be pooled into one
- * theta by accident; a matrix row names none.
+ * held out of the CDM, and so is spec 4's Academic Vocabulary stage 4, so they
+ * are exactly the rows with no matrix and no Q-vector, and a Q-vector's width
+ * is fixed by its matrix. A row held out of the CDM names the Rasch strand it
+ * feeds (`rasch_strand`), and the strand follows the stage — stage 3 is
+ * Section 3's `critical` gate, stage 4 the `academic_vocab` mini-scale — so the
+ * two strands can never be pooled into one theta by accident; a matrix row
+ * names none.
  */
 exports.scoreRequestResponseSchema = zod_1.z
     .strictObject({
     item_code: core_1.nonEmptyString,
     score: core_1.itemScoreSchema,
     stage: enums_1.stageSchema,
-    /** The item's Q-row over its matrix's attributes. `null` on stage 3. */
+    /** The item's Q-row over its matrix's attributes. `null` on stages 3 and 4. */
     attribute_vector: zod_1.z.array(core_1.binaryIndicatorSchema).nullable(),
     matrix: enums_1.matrixIdSchema.nullable(),
     model_type: enums_1.scoringModelTypeSchema,
@@ -55,12 +57,20 @@ exports.scoreRequestResponseSchema = zod_1.z
     rasch_strand: enums_1.raschStrandSchema.nullable(),
 })
     .superRefine((row, ctx) => {
-    const isStageThree = row.stage === 3;
-    if (isStageThree !== (row.matrix === null)) {
+    const isRaschStage = row.stage === 3 || row.stage === 4;
+    if (isRaschStage !== (row.matrix === null)) {
         ctx.addIssue({
             code: 'custom',
             path: ['matrix'],
-            message: 'memo §1: stage 3 is held out of the CDM — `matrix` is null exactly on stage 3',
+            message: 'memo §1 / spec 4: stages 3 and 4 are held out of the CDM — `matrix` is null exactly on them',
+        });
+    }
+    const stageStrand = row.stage === 3 ? 'critical' : row.stage === 4 ? 'academic_vocab' : null;
+    if (stageStrand !== null && row.rasch_strand !== null && row.rasch_strand !== stageStrand) {
+        ctx.addIssue({
+            code: 'custom',
+            path: ['rasch_strand'],
+            message: `spec 4: a stage-${row.stage} row feeds the '${stageStrand}' strand`,
         });
     }
     if ((row.matrix === null) !== (row.attribute_vector === null)) {
