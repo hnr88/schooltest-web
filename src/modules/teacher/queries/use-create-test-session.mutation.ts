@@ -16,8 +16,9 @@ import type {
 // The body is parsed BEFORE the request so a malformed documentId fails here
 // rather than as a server 400, and the 201 is parsed on the way back. The code
 // is the server's (F-SITTING-CODE, DECISIONS.md A3) — nothing is minted here.
-// Optional `student_document_ids`, `settings` and `start` (server default true)
-// are the start-now fields; a 409 carries `details.busy_student_document_ids`.
+// `student_document_ids` is always sent (BUG-003); optional `settings` and
+// `start` (server default true) are the start-now fields; a 409 carries
+// `details.busy_student_document_ids`.
 // With `window` it BOOKS instead: the 201 is a booking (`phase: 'scheduled'`,
 // `code: null`), a refused window is a 400 with `details.schedule_errors` and a
 // clash is a 409 with `details.clashes`.

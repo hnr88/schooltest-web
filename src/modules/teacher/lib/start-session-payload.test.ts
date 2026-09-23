@@ -73,6 +73,32 @@ describe('booking (C-TS-1 with window, C-TS-5)', () => {
   });
 });
 
+describe('BUG-003 follow-up — the request schemas refuse an implicit "whole class"', () => {
+  const base = { class_document_id: classId, form_document_id: formId };
+
+  test('C-TS-1: omitted, null and empty student lists are refused before anything is sent', () => {
+    expect(createTestSessionBodySchema.safeParse(base).success).toBe(false);
+    expect(createTestSessionBodySchema.safeParse({ ...base, student_document_ids: null }).success).toBe(false);
+    expect(createTestSessionBodySchema.safeParse({ ...base, student_document_ids: [] }).success).toBe(false);
+    expect(createTestSessionBodySchema.safeParse({ ...base, window, student_document_ids: undefined }).success).toBe(false);
+    expect(createTestSessionBodySchema.safeParse({ ...base, student_document_ids: [rosterIds[0]] }).success).toBe(true);
+  });
+
+  test('C-TS-5: an edit must name its students — omitted, null (the old whole-class value) and empty are refused', () => {
+    expect(updateTestSessionBodySchema.safeParse({ window }).success).toBe(false);
+    expect(updateTestSessionBodySchema.safeParse({ window, student_document_ids: null }).success).toBe(false);
+    expect(updateTestSessionBodySchema.safeParse({ window, student_document_ids: [] }).success).toBe(false);
+    expect(updateTestSessionBodySchema.safeParse({}).success).toBe(false);
+    expect(updateTestSessionBodySchema.safeParse({ student_document_ids: [rosterIds[0]] }).success).toBe(true);
+  });
+
+  test('a duplicate id is still refused', () => {
+    const twice = [rosterIds[0], rosterIds[0]];
+    expect(createTestSessionBodySchema.safeParse({ ...base, student_document_ids: twice }).success).toBe(false);
+    expect(updateTestSessionBodySchema.safeParse({ student_document_ids: twice }).success).toBe(false);
+  });
+});
+
 describe('the CTA (design §7.4 `mStartLabel`)', () => {
   test('label and whether it can go', () => {
     expect(ctaView({ mode: 'demo', isEdit: false, count: 0, scheduleErrorCount: 0 })).toEqual({ labelKey: 'startDemo', count: 0, canGo: true });

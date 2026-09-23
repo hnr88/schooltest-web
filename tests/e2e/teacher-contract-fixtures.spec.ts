@@ -82,7 +82,8 @@ const TESTS = {
   ],
 };
 
-const CREATE_BODY = { class_document_id: CLASS_ID, form_document_id: FORM_ID };
+// BUG-003: the web mirror requires the explicit student list the web always sends.
+const CREATE_BODY = { class_document_id: CLASS_ID, form_document_id: FORM_ID, student_document_ids: [STUDENT_ID] };
 const CREATED = {
   sitting_document_id: SITTING_ID,
   code: 'READ-4821',

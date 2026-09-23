@@ -122,16 +122,18 @@ export const testSessionStudentIdsSchema = z
 /* ── C-TS-1 · POST /api/teacher/test-sessions ──────────────────────────── */
 
 /**
- * The start-now keys are optional, so the original two-key body stays valid:
- * `student_document_ids` (active students of the class, none busy),
- * `settings` (saved at create) and `start` (server default `true`). `window`
- * books it instead (the 201 is then a booking); the server refuses it with
- * `start: true`.
+ * BUG-003: the web always names who sits it — `student_document_ids` is a
+ * required, non-empty list of active students of the class (none busy). The
+ * API still accepts the original two-key body (omitted = whole class) from
+ * other callers; this mirror is deliberately stricter so no web write can
+ * leave membership implicit. `settings` (saved at create) and `start` (server
+ * default `true`) stay optional. `window` books it instead (the 201 is then a
+ * booking); the server refuses it with `start: true`.
  */
 export const createTestSessionBodySchema = z.strictObject({
   class_document_id: teacherDocumentIdSchema,
   form_document_id: teacherDocumentIdSchema,
-  student_document_ids: testSessionStudentIdsSchema.optional(),
+  student_document_ids: testSessionStudentIdsSchema,
   settings: sittingSettingsPatchSchema.optional(),
   start: z.boolean().optional(),
   window: testSessionWindowSchema.optional(),
@@ -416,17 +418,17 @@ export const createTestSessionResultSchema = z.union([
   testSessionBookingSchema,
 ]);
 
-/** C-TS-5 PATCH body; `student_document_ids: null` is the whole class again. */
-export const updateTestSessionBodySchema = z
-  .strictObject({
-    window: testSessionWindowSchema.optional(),
-    form_document_id: teacherDocumentIdSchema.optional(),
-    student_document_ids: testSessionStudentIdsSchema.nullable().optional(),
-    settings: sittingSettingsPatchSchema.optional(),
-  })
-  .refine((body) => Object.values(body).some((value) => value !== undefined), {
-    message: 'send at least one of window, form_document_id, student_document_ids, settings',
-  });
+/**
+ * C-TS-5 PATCH body. BUG-003: the web re-sends who sits it on every edit as an
+ * explicit, non-empty list — never omitted, never `null` (the old whole-class
+ * value), so the body is never empty either.
+ */
+export const updateTestSessionBodySchema = z.strictObject({
+  window: testSessionWindowSchema.optional(),
+  form_document_id: teacherDocumentIdSchema.optional(),
+  student_document_ids: testSessionStudentIdsSchema,
+  settings: sittingSettingsPatchSchema.optional(),
+});
 
 export const cancelTestSessionResponseSchema = z.strictObject({
   sitting_document_id: teacherDocumentIdSchema,
