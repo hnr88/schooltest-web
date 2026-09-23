@@ -920,7 +920,7 @@ test.describe('W1-N2 role rails', () => {
     await page.getByRole('menuitem', { name: 'Sign out' }).click();
     await page.waitForURL(/sign-in/, { timeout: 15_000 });
 
-    // School admin: School / Classes / Teachers / Students / Account.
+    // School admin: School / Teachers / Classes / Students / Account.
     await uiLogin(page, SCHOOL_ADMIN.email, SCHOOL_ADMIN.password);
     await expect(page.getByRole('link', { name: 'Teachers' })).toBeVisible({ timeout: 15_000 });
     await expect(page.getByRole('link', { name: 'Students', exact: true })).toBeVisible();

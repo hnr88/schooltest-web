@@ -42,12 +42,12 @@ const railLink = (page: Page, key: string) =>
   page.locator(`a[data-sidebar="menu-button"][aria-label="${cat(en, `Shell.nav.${key}`)}"]`);
 
 test.describe('school admin dashboard redesign', () => {
-  test('sidebar: School / Classes / Teachers / Students, Account pinned in the footer', async ({
+  test('sidebar: School / Teachers / Classes / Students, Account pinned in the footer', async ({
     page,
   }) => {
     await signIn(page);
 
-    for (const key of ['school', 'classes', 'teachers', 'students', 'account']) {
+    for (const key of ['school', 'teachers', 'classes', 'students', 'account']) {
       await expect(railLink(page, key)).toBeVisible({ timeout: 20_000 });
     }
 

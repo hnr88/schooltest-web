@@ -60,8 +60,8 @@ export const STAFF_SETTINGS_HREF = '/dashboard/teach/settings';
 // answer 403 to every other role, so the whole section is role-scoped).
 export const SCHOOL_HREF = '/dashboard/school';
 
-// School admin destinations (spec §Sidebar Navigation): School / Classes /
-// Teachers / Students, with Account pinned to the bottom behind a divider.
+// School admin destinations (spec §Sidebar Navigation): School / Teachers /
+// Classes / Students, with Account pinned to the bottom behind a divider.
 export const STUDENTS_HREF = `${SCHOOL_HREF}/students`;
 export const ACCOUNT_HREF = `${SCHOOL_HREF}/account`;
 
@@ -126,17 +126,17 @@ export const NAV_ITEMS: readonly NavItem[] = [
     roles: [SCHOOL_ADMIN_ROLE_TYPE],
   },
   {
-    labelKey: 'classes',
-    href: '/dashboard/school/classes',
-    icon: LayoutGrid,
+    labelKey: 'teachers',
+    href: '/dashboard/school/teachers',
+    icon: Users,
     exact: false,
     group: 'primary',
     roles: [SCHOOL_ADMIN_ROLE_TYPE],
   },
   {
-    labelKey: 'teachers',
-    href: '/dashboard/school/teachers',
-    icon: Users,
+    labelKey: 'classes',
+    href: '/dashboard/school/classes',
+    icon: LayoutGrid,
     exact: false,
     group: 'primary',
     roles: [SCHOOL_ADMIN_ROLE_TYPE],

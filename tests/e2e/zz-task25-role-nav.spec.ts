@@ -128,8 +128,8 @@ test.describe('task 25: role nav wiring + guard fixes', () => {
 const PARENT_PORTAL_NAV_KEYS = ['overview', 'myChildren', 'search', 'settings'] as const;
 
 // The rail the redesign spec §Sidebar Navigation defines for a school admin:
-// School / Classes / Teachers / Students, with Account pinned in the footer.
-const SCHOOL_ADMIN_PRIMARY_KEYS = ['school', 'classes', 'teachers', 'students'] as const;
+// School / Teachers / Classes / Students, with Account pinned in the footer.
+const SCHOOL_ADMIN_PRIMARY_KEYS = ['school', 'teachers', 'classes', 'students'] as const;
 
 test.describe('parent portal is role-scoped, not flag-scoped (flag ON)', () => {
   skipWhenParentPortalMasked();

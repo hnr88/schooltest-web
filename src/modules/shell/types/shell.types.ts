@@ -71,7 +71,7 @@ export interface NavItem {
   // entry carries BOTH, so the flag decides whether the portal exists yet and the
   // role decides whose rail it belongs on. Flag off => hidden from everyone; flag
   // on => visible to parents ONLY (never to a school admin, whose rail the redesign
-  // spec fixes at School/Classes/Teachers/Students + Account).
+  // spec fixes at School/Teachers/Classes/Students + Account).
   parentViews?: boolean;
 }
 
