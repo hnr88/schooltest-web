@@ -5,21 +5,46 @@ import { expect, test, type Page, type Response } from '@playwright/test';
 
 import { createDemoLinkResponseSchema } from '@/modules/teacher/schemas/teacher-demo-link.schema';
 
+import { bridgeApiCors } from '../helpers/api-cors-bridge';
 import { runSql, sha256 } from '../helpers/auth-db';
 import { cat } from '../helpers/i18n';
-import { en, signIn } from '../helpers/teacher-rail';
+import { ACCOUNTS, en, signIn } from '../helpers/teacher-rail';
 
 // BUG-004 — the Teacher demo journey on the REAL API, end to end: mint, the "Your demo
 // link is ready" dialog, Copy, Open in a NEW TAB, and the trial runner that tab lands
-// on actually serving its first question. The DB then proves the demo recorded no
-// Result. The one intercepted case is the refused mint, where the budget cannot be
-// spent on purpose without locking the seeded teacher out for an hour.
+// on serving a question. The teacher then ANSWERS a question and ENDS the trial, and
+// the DB proves the demo recorded nothing against a student: no Result, no sitting,
+// no student session, and the stored answer belongs to the teacher's trial only.
+// The one intercepted case is the refused mint, where the budget cannot be spent on
+// purpose without locking the seeded teacher out for an hour.
+//
+// NEEDS, besides the API and this web app:
+//  - the STUDENT-APP RENDERER (schooltest-app `next dev`, :3010 locally). The minted
+//    web_url is `${APP_TEACHER_BASE || APP_STUDENT_BASE || APP_WEB_BASE ||
+//    'http://localhost:3010'}/en/auth/teacher/verify?token=…` as configured on the API
+//    (src/api/teacher/lib/trial-offer.ts), and that renderer runs the trial. The spec
+//    checks the origin answers before opening it and fails naming it if not.
+//  - demo-link budget: a mint spends one of TEACHER_DEMO_LINK_MAX_PER_HOUR = 10 magic-link
+//    rows per teacher email per hour, shared with the emailed trial path. When the budget
+//    is spent the API answers 429 and this test is SKIPPED with that reason (never a silent
+//    pass). Point E2E_TEACHER_EMAIL at another seeded teacher to run it inside the hour.
 const PROOFS = process.env.E2E_PROOF_DIR ?? path.resolve(process.cwd(), 'tests', 'e2e', 'proofs', 'teacher-v2');
+const FOLLOWUP_PROOFS = path.join(process.env.BUG_PROOF_DIR ?? '/Users/hunor.nagy/Desktop/live_feedback_1/proof', 'BUG-004');
 const startSession = (key: string) => cat(en, `TeacherPortal.startSession.${key}`);
 const DOCUMENT_ID = /^[a-z0-9]{24}$/;
 const RATE_LIMITED = {
   data: null,
   error: { status: 429, name: 'RateLimitError', message: 'Too many requests', details: {} },
+};
+// The student-app renderer's own en catalog (schooltest-app), which this repo cannot import:
+// ReadingRunner.next / nextPassage / finishSection, ReadingRunner.correct,
+// TeacherTrial.runner.endLabel / endConfirm, TeacherTrial.complete.title.
+const RUNNER = {
+  advance: /^(Next question|Next passage|Finish section)$/,
+  correct: 'Correct',
+  endLabel: 'End the trial',
+  endConfirm: 'End trial',
+  complete: 'Trial complete',
 };
 
 const isPost = (pathname: string) => (response: Response) =>
@@ -36,24 +61,50 @@ async function openDemoMode(page: Page) {
   return modal;
 }
 
-function resultCountForSession(sessionDocumentId: string): number {
-  expect(sessionDocumentId).toMatch(DOCUMENT_ID);
-  return Number(
-    runSql(
-      `select count(*) from results_session_lnk r join sessions s on s.id = r.session_id
-        where s.document_id = '${sessionDocumentId}'`,
-    ),
-  );
+const count = (sql: string) => Number(runSql(sql));
+// The API stamps magic-link rows in ITS local wall clock (toLocalNaiveTimestamp) and
+// counts its hourly window the same way; this machine's clock stands in for it.
+const localNaive = (ms: number) => {
+  const at = new Date(ms);
+  const pad = (value: number) => String(value).padStart(2, '0');
+  return `${at.getFullYear()}-${pad(at.getMonth() + 1)}-${pad(at.getDate())} ${pad(at.getHours())}:${pad(at.getMinutes())}:${pad(at.getSeconds())}`;
+};
+const maxId = (table: string) => count(`select coalesce(max(id), 0) from ${table}`);
+
+/** Answer the painted item with its first option (correctness is irrelevant) and advance. */
+async function answerOneQuestion(demo: Page): Promise<Response> {
+  // The runner stamps presented_at on first paint; a pick before that is a correct server 400.
+  await demo.waitForTimeout(700);
+  const checkboxes = demo.getByRole('checkbox');
+  const radios = demo.getByRole('radio');
+  if ((await checkboxes.count()) > 0) await checkboxes.first().click({ force: true });
+  else if ((await radios.count()) > 0) await radios.first().click({ force: true });
+  else {
+    const rows = demo.getByRole('button', { name: RUNNER.correct, exact: true });
+    for (let index = 0; index < (await rows.count()); index += 1) await rows.nth(index).click({ force: true });
+  }
+  const advance = demo.getByRole('button', { name: RUNNER.advance });
+  await expect(advance).toBeEnabled();
+  const [response] = await Promise.all([
+    demo.waitForResponse((r) => /\/api\/sessions\/[^/]+\/responses$/.test(r.url()) && r.request().method() === 'POST', {
+      timeout: 30_000,
+    }),
+    advance.click(),
+  ]);
+  return response;
 }
 
 test.use({ viewport: { width: 1440, height: 900 } });
+test.beforeEach(async ({ context }) => bridgeApiCors(context));
 
 test('BUG-004 — Teacher demo mints a link, Open starts the trial in a new tab, nothing is recorded', async ({
   page,
   context,
+  request,
 }) => {
   test.setTimeout(240_000);
   mkdirSync(PROOFS, { recursive: true });
+  mkdirSync(FOLLOWUP_PROOFS, { recursive: true });
   const modal = await openDemoMode(page);
 
   const lastTest = modal.getByRole('radiogroup').last().locator('[data-slot="start-choice"]').last();
@@ -61,10 +112,30 @@ test('BUG-004 — Teacher demo mints a link, Open starts the trial in a new tab,
   const formId = await lastTest.getAttribute('data-value');
   await lastTest.click();
 
+  // Watermarks: every row the demo could write has a larger id than these.
+  const before = {
+    sessions: maxId('sessions'),
+    sittings: maxId('sittings'),
+    responses: maxId('responses'),
+  };
+
   const minted = page.waitForResponse(isPost('/api/teacher/demo-link'), { timeout: 60_000 });
   await modal.locator('[data-slot="start-session-cta"]').click();
   const mintResponse = await minted;
-  expect(mintResponse.status()).toBe(201);
+  if (mintResponse.status() === 429) {
+    const email = ACCOUNTS.teacher.email;
+    const lastHour = runSql(
+      `select count(*) || ' link(s), oldest ' || coalesce(min(created_at)::text, '-') from teacher_magic_links
+        where lower(email) = lower('${email}') and created_at >= '${localNaive(Date.now() - 3_600_000)}'`,
+    );
+    test.skip(
+      true,
+      `demo-link budget spent for ${email}: POST /api/teacher/demo-link answered 429 ` +
+        `(${await mintResponse.text()}); DB shows ${lastHour} in the last hour. ` +
+        'Re-run after the oldest row is an hour old, or set E2E_TEACHER_EMAIL to another seeded teacher.',
+    );
+  }
+  expect(mintResponse.status(), await mintResponse.text()).toBe(201);
   const link = createDemoLinkResponseSchema.parse(await mintResponse.json());
   expect(link.form_document_id).toBe(formId);
   expect(link.web_url).toMatch(/^https?:\/\/[^/]+\/en\/auth\/teacher\/verify\?token=[0-9a-f]{64}$/);
@@ -81,6 +152,17 @@ test('BUG-004 — Teacher demo mints a link, Open starts the trial in a new tab,
   await expect(dialog.locator('[data-slot="demo-link-copy"]')).toHaveText(startSession('demoLink.copied'));
   expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(link.web_url);
   await page.screenshot({ path: path.join(PROOFS, 'after-01-demo-dialog-copied.png'), animations: 'disabled' });
+
+  const renderer = new URL(link.web_url).origin;
+  const rendererUp = await request.get(renderer, { maxRedirects: 0, timeout: 15_000 }).then(
+    (answer) => answer.status() < 500,
+    () => false,
+  );
+  expect(
+    rendererUp,
+    `the demo web_url is served by the student-app renderer at ${renderer} ` +
+      '(API env APP_TEACHER_BASE → APP_STUDENT_BASE → APP_WEB_BASE → http://localhost:3010); start it',
+  ).toBe(true);
 
   const popupPromise = context.waitForEvent('page');
   const verified = context.waitForEvent('response', {
@@ -114,8 +196,67 @@ test('BUG-004 — Teacher demo mints a link, Open starts the trial in a new tab,
     expect(trialStarts[0].status()).toBe(201);
     sessionDocumentId = ((await trialStarts[0].json()) as { session: { document_id: string } }).session.document_id;
   }
+  expect(sessionDocumentId).toMatch(DOCUMENT_ID);
 
-  expect(resultCountForSession(sessionDocumentId)).toBe(0);
+  // The teacher answers a question in the demo tab: the answer really reaches the server.
+  const answered = await answerOneQuestion(demo);
+  expect(answered.status(), await answered.text()).toBe(200);
+  expect(new URL(answered.url()).pathname).toBe(`/api/sessions/${sessionDocumentId}/responses`);
+  await demo.screenshot({ path: path.join(FOLLOWUP_PROOFS, 'followup-01-demo-question-answered.png'), animations: 'disabled' });
+
+  // …and ends the trial from the runner: C-TT-END answers with no Result, by contract.
+  const ended = demo.waitForResponse(
+    (r) => new URL(r.url()).pathname === `/api/teacher/trial/${sessionDocumentId}/end` && r.request().method() === 'POST',
+  );
+  await demo.getByRole('button', { name: RUNNER.endLabel }).click();
+  await demo.getByRole('button', { name: RUNNER.endConfirm, exact: true }).click();
+  const endResponse = await ended;
+  expect(endResponse.status(), await endResponse.text()).toBe(200);
+  expect(((await endResponse.json()) as { result_document_id: string | null }).result_document_id).toBeNull();
+  await expect(demo.getByText(RUNNER.complete).first()).toBeVisible({ timeout: 60_000 });
+  await demo.screenshot({ path: path.join(FOLLOWUP_PROOFS, 'followup-02-demo-trial-ended.png'), animations: 'disabled' });
+
+  // THE DB: what the demo wrote, and what it did not.
+  const session = `(select id from sessions where document_id = '${sessionDocumentId}')`;
+  expect(runSql(`select trial::text || '|' || coalesce(student_document_id, '-') || '|' || status from sessions where document_id = '${sessionDocumentId}'`)).toBe(
+    'true|-|complete',
+  );
+  expect(count(`select count(*) from sessions_student_lnk where session_id = ${session}`), 'the trial has no student').toBe(0);
+  expect(
+    runSql(
+      `select u.email from sessions_trial_teacher_lnk l join up_users u on u.id = l.user_id where l.session_id = ${session}`,
+    ),
+    'the trial is bound to the teacher who minted the link',
+  ).toBe(ACCOUNTS.teacher.email);
+  const storedAnswers = count(
+    `select count(*) from responses_session_lnk where session_id = ${session} and response_id > ${before.responses}`,
+  );
+  expect(storedAnswers, 'the answer is stored against the TRIAL session').toBeGreaterThanOrEqual(1);
+  expect(
+    count(
+      `select count(*) from responses_student_lnk rs join responses_session_lnk rl on rl.response_id = rs.response_id
+        where rl.session_id = ${session}`,
+    ),
+    'no answer of the demo is stored against a student',
+  ).toBe(0);
+  expect(count(`select count(*) from results_session_lnk where session_id = ${session}`), 'no Result for the trial').toBe(0);
+  expect(count(`select count(*) from sittings_sessions_lnk where session_id = ${session}`), 'the trial sits in no sitting').toBe(0);
+  expect(
+    count(
+      `select count(*) from sittings_teacher_lnk l join up_users u on u.id = l.user_id
+        where lower(u.email) = lower('${ACCOUNTS.teacher.email}') and l.sitting_id > ${before.sittings}`,
+    ),
+    'the demo opened no sitting for this teacher',
+  ).toBe(0);
+  expect(
+    count(
+      `select count(*) from sessions s join sessions_student_lnk st on st.session_id = s.id
+         join sessions_form_lnk f on f.session_id = s.id join forms fm on fm.id = f.form_id
+        where s.id > ${before.sessions} and fm.document_id = '${formId}'`,
+    ),
+    'no STUDENT session was created on the demo form',
+  ).toBe(0);
+
   const tokenHash = sha256(new URL(link.web_url).searchParams.get('token') ?? '');
   const tokenRow = runSql(
     `select used::text || '|' || coalesce(demo_form_document_id, '') from teacher_magic_links
