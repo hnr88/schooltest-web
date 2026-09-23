@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TimersReadOperation = exports.timersReadResponseSchema = exports.timersReadRequestSchema = exports.sectionTimersSchema = exports.timerSectionSchema = exports.timerStageSchema = exports.TIMER_MINUTES_MAX = exports.TIMER_MINUTES_MIN = exports.TIMER_DURATION_MAX_SECONDS = exports.TIMER_DURATION_MIN_SECONDS = exports.TIMER_SECTION_COUNT = exports.TIMER_STAGES = void 0;
+exports.TimersReadOperation = exports.timersReadResponseSchema = exports.timersReadRequestSchema = exports.sectionTimersSchema = exports.timerSectionSchema = exports.timerStageSchema = exports.TIMER_MINUTES_MAX = exports.TIMER_MINUTES_MIN = exports.TIMER_DURATION_MAX_SECONDS = exports.TIMER_DURATION_MIN_SECONDS = exports.TIMER_SECTION_COUNT_MAX = exports.TIMER_SECTION_COUNT = exports.TIMER_ADMINISTRATION_ORDER = exports.TIMER_ACADEMIC_VOCAB_STAGE = exports.TIMER_STAGES = void 0;
 exports.timerMinutesFromSeconds = timerMinutesFromSeconds;
 exports.timerSecondsFromMinutes = timerSecondsFromMinutes;
 exports.isWholeMinuteSectionSet = isWholeMinuteSectionSet;
@@ -19,9 +19,19 @@ exports.isWholeMinuteSectionSet = isWholeMinuteSectionSet;
  */
 const zod_1 = require("zod");
 const core_1 = require("./core");
-/** The global test has exactly three sections, and they are stages 1, 2 and 3. */
+/**
+ * The global test always has sections for stages 1, 2 and 3. Since spec 4
+ * (schooltest-api 6dc062c) the Academic Vocabulary section is its own stage 4,
+ * administered after stage 2 and before stage 3; a Config that times it
+ * carries a fourth section. These are exactly the two sets C-TMR-01 accepts.
+ */
 exports.TIMER_STAGES = [1, 2, 3];
+/** Spec 4's Academic Vocabulary stage — timed only when the active Config carries it. */
+exports.TIMER_ACADEMIC_VOCAB_STAGE = 4;
+/** The order the sections run (and are served in): 1, 2, Academic (4), 3. */
+exports.TIMER_ADMINISTRATION_ORDER = [1, 2, exports.TIMER_ACADEMIC_VOCAB_STAGE, 3];
 exports.TIMER_SECTION_COUNT = exports.TIMER_STAGES.length;
+exports.TIMER_SECTION_COUNT_MAX = exports.TIMER_ADMINISTRATION_ORDER.length;
 /** Contracted wire bounds for one section (OpenAPI `TimerSection`). */
 exports.TIMER_DURATION_MIN_SECONDS = 60;
 exports.TIMER_DURATION_MAX_SECONDS = 3600;
@@ -29,7 +39,7 @@ exports.TIMER_DURATION_MAX_SECONDS = 3600;
 exports.TIMER_MINUTES_MIN = 1;
 exports.TIMER_MINUTES_MAX = 60;
 const SECONDS_PER_MINUTE = 60;
-exports.timerStageSchema = zod_1.z.union([zod_1.z.literal(1), zod_1.z.literal(2), zod_1.z.literal(3)]);
+exports.timerStageSchema = zod_1.z.union([zod_1.z.literal(1), zod_1.z.literal(2), zod_1.z.literal(3), zod_1.z.literal(4)]);
 /** Strict: a section that smuggles a `label`, a `minutes` or an id fails the parse. */
 exports.timerSectionSchema = zod_1.z.strictObject({
     stage: exports.timerStageSchema,
@@ -40,19 +50,35 @@ exports.timerSectionSchema = zod_1.z.strictObject({
         .max(exports.TIMER_DURATION_MAX_SECONDS),
 });
 /**
- * The 200 body's `data`. Three sections is not enough on its own: two copies of
- * stage 1 and no stage 3 is still "length 3", and that is exactly the stored
- * shape the read has to refuse rather than render as a screen missing a row.
+ * The 200 body's `data`: stages 1, 2 and 3 exactly once, plus at most one
+ * stage-4 (Academic Vocabulary) section, served in administration order.
+ * A count is not enough on its own: two copies of stage 1 and no stage 3 is
+ * still "length 3", and that is exactly the stored shape the read has to
+ * refuse rather than render as a screen missing a row.
  */
 exports.sectionTimersSchema = zod_1.z
-    .strictObject({ sections: zod_1.z.array(exports.timerSectionSchema).length(exports.TIMER_SECTION_COUNT) })
+    .strictObject({
+    sections: zod_1.z.array(exports.timerSectionSchema).min(exports.TIMER_SECTION_COUNT).max(exports.TIMER_SECTION_COUNT_MAX),
+})
     .superRefine((value, ctx) => {
     const seen = value.sections.map((section) => section.stage).sort((a, b) => a - b);
-    if (seen.join(',') !== exports.TIMER_STAGES.join(',')) {
+    const required = exports.TIMER_STAGES.join(',');
+    const withAcademic = [...exports.TIMER_STAGES, exports.TIMER_ACADEMIC_VOCAB_STAGE].join(',');
+    if (seen.join(',') !== required && seen.join(',') !== withAcademic) {
         ctx.addIssue({
             code: 'custom',
             path: ['sections'],
-            message: 'sections must cover stages 1, 2 and 3 exactly once',
+            message: 'sections must cover stages 1, 2 and 3 exactly once, plus at most one stage 4',
+        });
+        return;
+    }
+    const served = value.sections.map((section) => section.stage);
+    const expected = exports.TIMER_ADMINISTRATION_ORDER.filter((stage) => served.includes(stage));
+    if (served.join(',') !== expected.join(',')) {
+        ctx.addIssue({
+            code: 'custom',
+            path: ['sections'],
+            message: 'sections are served in administration order: 1, 2, 4, 3',
         });
     }
 });

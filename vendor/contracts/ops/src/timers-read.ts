@@ -15,9 +15,19 @@ import { z } from 'zod';
 
 import { dataEnvelope, type OpsOperation } from './core';
 
-/** The global test has exactly three sections, and they are stages 1, 2 and 3. */
+/**
+ * The global test always has sections for stages 1, 2 and 3. Since spec 4
+ * (schooltest-api 6dc062c) the Academic Vocabulary section is its own stage 4,
+ * administered after stage 2 and before stage 3; a Config that times it
+ * carries a fourth section. These are exactly the two sets C-TMR-01 accepts.
+ */
 export const TIMER_STAGES = [1, 2, 3] as const;
+/** Spec 4's Academic Vocabulary stage — timed only when the active Config carries it. */
+export const TIMER_ACADEMIC_VOCAB_STAGE = 4 as const;
+/** The order the sections run (and are served in): 1, 2, Academic (4), 3. */
+export const TIMER_ADMINISTRATION_ORDER = [1, 2, TIMER_ACADEMIC_VOCAB_STAGE, 3] as const;
 export const TIMER_SECTION_COUNT = TIMER_STAGES.length;
+export const TIMER_SECTION_COUNT_MAX = TIMER_ADMINISTRATION_ORDER.length;
 
 /** Contracted wire bounds for one section (OpenAPI `TimerSection`). */
 export const TIMER_DURATION_MIN_SECONDS = 60;
@@ -29,7 +39,7 @@ export const TIMER_MINUTES_MAX = 60;
 
 const SECONDS_PER_MINUTE = 60;
 
-export const timerStageSchema = z.union([z.literal(1), z.literal(2), z.literal(3)]);
+export const timerStageSchema = z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]);
 export type TimerStage = z.infer<typeof timerStageSchema>;
 
 /** Strict: a section that smuggles a `label`, a `minutes` or an id fails the parse. */
@@ -44,19 +54,35 @@ export const timerSectionSchema = z.strictObject({
 export type TimerSection = z.infer<typeof timerSectionSchema>;
 
 /**
- * The 200 body's `data`. Three sections is not enough on its own: two copies of
- * stage 1 and no stage 3 is still "length 3", and that is exactly the stored
- * shape the read has to refuse rather than render as a screen missing a row.
+ * The 200 body's `data`: stages 1, 2 and 3 exactly once, plus at most one
+ * stage-4 (Academic Vocabulary) section, served in administration order.
+ * A count is not enough on its own: two copies of stage 1 and no stage 3 is
+ * still "length 3", and that is exactly the stored shape the read has to
+ * refuse rather than render as a screen missing a row.
  */
 export const sectionTimersSchema = z
-  .strictObject({ sections: z.array(timerSectionSchema).length(TIMER_SECTION_COUNT) })
+  .strictObject({
+    sections: z.array(timerSectionSchema).min(TIMER_SECTION_COUNT).max(TIMER_SECTION_COUNT_MAX),
+  })
   .superRefine((value, ctx) => {
     const seen = value.sections.map((section) => section.stage).sort((a, b) => a - b);
-    if (seen.join(',') !== TIMER_STAGES.join(',')) {
+    const required = TIMER_STAGES.join(',');
+    const withAcademic = [...TIMER_STAGES, TIMER_ACADEMIC_VOCAB_STAGE].join(',');
+    if (seen.join(',') !== required && seen.join(',') !== withAcademic) {
       ctx.addIssue({
         code: 'custom',
         path: ['sections'],
-        message: 'sections must cover stages 1, 2 and 3 exactly once',
+        message: 'sections must cover stages 1, 2 and 3 exactly once, plus at most one stage 4',
+      });
+      return;
+    }
+    const served = value.sections.map((section) => section.stage);
+    const expected = TIMER_ADMINISTRATION_ORDER.filter((stage) => served.includes(stage));
+    if (served.join(',') !== expected.join(',')) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['sections'],
+        message: 'sections are served in administration order: 1, 2, 4, 3',
       });
     }
   });

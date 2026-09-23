@@ -13,31 +13,43 @@
  */
 import { z } from 'zod';
 import { type OpsOperation } from './core';
-/** The global test has exactly three sections, and they are stages 1, 2 and 3. */
+/**
+ * The global test always has sections for stages 1, 2 and 3. Since spec 4
+ * (schooltest-api 6dc062c) the Academic Vocabulary section is its own stage 4,
+ * administered after stage 2 and before stage 3; a Config that times it
+ * carries a fourth section. These are exactly the two sets C-TMR-01 accepts.
+ */
 export declare const TIMER_STAGES: readonly [1, 2, 3];
+/** Spec 4's Academic Vocabulary stage — timed only when the active Config carries it. */
+export declare const TIMER_ACADEMIC_VOCAB_STAGE: 4;
+/** The order the sections run (and are served in): 1, 2, Academic (4), 3. */
+export declare const TIMER_ADMINISTRATION_ORDER: readonly [1, 2, 4, 3];
 export declare const TIMER_SECTION_COUNT: 3;
+export declare const TIMER_SECTION_COUNT_MAX: 4;
 /** Contracted wire bounds for one section (OpenAPI `TimerSection`). */
 export declare const TIMER_DURATION_MIN_SECONDS = 60;
 export declare const TIMER_DURATION_MAX_SECONDS = 3600;
 /** The whole-minute range the ops console edits — 60s..3600s expressed in minutes. */
 export declare const TIMER_MINUTES_MIN = 1;
 export declare const TIMER_MINUTES_MAX = 60;
-export declare const timerStageSchema: z.ZodUnion<readonly [z.ZodLiteral<1>, z.ZodLiteral<2>, z.ZodLiteral<3>]>;
+export declare const timerStageSchema: z.ZodUnion<readonly [z.ZodLiteral<1>, z.ZodLiteral<2>, z.ZodLiteral<3>, z.ZodLiteral<4>]>;
 export type TimerStage = z.infer<typeof timerStageSchema>;
 /** Strict: a section that smuggles a `label`, a `minutes` or an id fails the parse. */
 export declare const timerSectionSchema: z.ZodObject<{
-    stage: z.ZodUnion<readonly [z.ZodLiteral<1>, z.ZodLiteral<2>, z.ZodLiteral<3>]>;
+    stage: z.ZodUnion<readonly [z.ZodLiteral<1>, z.ZodLiteral<2>, z.ZodLiteral<3>, z.ZodLiteral<4>]>;
     duration_seconds: z.ZodNumber;
 }, z.core.$strict>;
 export type TimerSection = z.infer<typeof timerSectionSchema>;
 /**
- * The 200 body's `data`. Three sections is not enough on its own: two copies of
- * stage 1 and no stage 3 is still "length 3", and that is exactly the stored
- * shape the read has to refuse rather than render as a screen missing a row.
+ * The 200 body's `data`: stages 1, 2 and 3 exactly once, plus at most one
+ * stage-4 (Academic Vocabulary) section, served in administration order.
+ * A count is not enough on its own: two copies of stage 1 and no stage 3 is
+ * still "length 3", and that is exactly the stored shape the read has to
+ * refuse rather than render as a screen missing a row.
  */
 export declare const sectionTimersSchema: z.ZodObject<{
     sections: z.ZodArray<z.ZodObject<{
-        stage: z.ZodUnion<readonly [z.ZodLiteral<1>, z.ZodLiteral<2>, z.ZodLiteral<3>]>;
+        stage: z.ZodUnion<readonly [z.ZodLiteral<1>, z.ZodLiteral<2>, z.ZodLiteral<3>, z.ZodLiteral<4>]>;
         duration_seconds: z.ZodNumber;
     }, z.core.$strict>>;
 }, z.core.$strict>;
@@ -47,7 +59,7 @@ export declare const timersReadRequestSchema: z.ZodObject<{}, z.core.$strict>;
 export declare const timersReadResponseSchema: z.ZodObject<{
     data: z.ZodObject<{
         sections: z.ZodArray<z.ZodObject<{
-            stage: z.ZodUnion<readonly [z.ZodLiteral<1>, z.ZodLiteral<2>, z.ZodLiteral<3>]>;
+            stage: z.ZodUnion<readonly [z.ZodLiteral<1>, z.ZodLiteral<2>, z.ZodLiteral<3>, z.ZodLiteral<4>]>;
             duration_seconds: z.ZodNumber;
         }, z.core.$strict>>;
     }, z.core.$strict>;
