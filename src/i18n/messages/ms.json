@@ -1761,9 +1761,9 @@
     "observations": {
       "noAttributeEvidence": "Tiada atribut dalam sesi ujian ini membawa bukti, jadi tiada kontras boleh dibuat antara lapisan asas dan lapisan kefahaman.",
       "jaggedProfile": "{masteredCount, plural, other {Atribut kefahaman {mastered} telah teguh}} sementara {gapCount, plural, other {atribut asas {gap} belum}} — satu profil yang tidak dijangka oleh hierarki reseptif. Baca {gap} sebagai halangan dan tafsirkan dakwaan kefahaman itu dengan berhati-hati.",
-      "comprehensionNotAssessedWithGap": "Sesi ujian ini tidak mentadbir sebarang item kefahaman, jadi profil ini bercakap tentang lapisan asas sahaja, di mana {gapCount, plural, other {atribut {gap} belum kukuh}}.",
+      "comprehensionNotAssessedWithGap": "Sesi ujian ini tidak mentadbir sebarang item kefahaman, jadi profil ini bercakap tentang lapisan asas sahaja, di mana {gapCount, plural, other {atribut {gap} belum teguh}}.",
       "comprehensionNotAssessedFoundationSecure": "Setiap atribut asas yang dinilai di sini ({foundation}) teguh, dan sesi ujian ini tidak mentadbir sebarang item kefahaman — jadi tiada dakwaan kefahaman untuk dikontraskan dengannya.",
-      "foundationBottleneck": "{blockedCount, plural, other {Atribut kefahaman {blocked} belum teguh}}, sementara {gapCount, plural, other {atribut asas {gap} yang dituntut model reseptif terlebih dahulu tidak kukuh}} — jadi halangan itu terletak pada {gap}, bukan pada kefahaman itu sendiri.",
+      "foundationBottleneck": "{blockedCount, plural, other {Atribut kefahaman {blocked} belum teguh}}, sementara {gapCount, plural, other {atribut asas {gap} yang dituntut model reseptif terlebih dahulu tidak teguh}} — jadi halangan itu terletak pada {gap}, bukan pada kefahaman itu sendiri.",
       "foundationSecureComprehensionGap": "Setiap atribut asas yang dinilai di sini teguh, jadi jurangnya terletak dalam kefahaman: {gapCount, plural, other {atribut {gap} belum teguh}}.",
       "allMastered": "Setiap atribut yang dinilai dalam sesi ujian ini teguh, merentas kedua-dua lapisan asas dan kefahaman, jadi keputusan ini tidak menamakan sebarang halangan.",
       "evidenceCaveat": "{spread, select, uniform {Pernyataan ini bersandar pada {assessed} daripada {total} atribut, setiap satu dibuktikan oleh {maxItems} item.} other {Pernyataan ini bersandar pada {assessed} daripada {total} atribut, dibuktikan oleh antara {minItems} hingga {maxItems} item setiap satu, jadi bacalah yang lebih nipis buktinya dengan lebih berhati-hati.}}{fieldTest, select, true { Sesi ini turut mengandungi item ujian rintis, jadi anggap pernyataan ini sebagai sementara.} other {}}"
@@ -1775,7 +1775,7 @@
     "errorPatternLine": "{type} — dipilih pada {count, plural, other {# item}} ({pct}%)",
     "errorPatternTypes": {
       "literal_match": "Padanan literal",
-      "overinference": "Inferens berlebihan",
+      "overinference": "Simpulan berlebihan",
       "world_knowledge": "Pengetahuan dunia",
       "vocab_guess": "Teka kata",
       "orthographic_neighbour": "Jiran ortografi",
@@ -1814,7 +1814,7 @@
     "parentSubskillsSummary": "{total, plural, other {# bidang dilihat dalam sesi ini.}}",
     "parentSubskillCount": "{count, plural, other {# bidang}}",
     "parentSubskillStates": {
-      "secure": "Mantap",
+      "secure": "Teguh",
       "getting_there": "Semakin hampir",
       "not_yet": "Belum lagi",
       "not_assessed": "Tidak disentuh kali ini"
@@ -2266,9 +2266,9 @@
         "R1": "Penyahkodan",
         "R2": "Perbendaharaan kata",
         "R3": "Tatabahasa",
-        "R4": "Intipati",
-        "R5": "Perincian",
-        "R6": "Inferens",
+        "R4": "Isi utama",
+        "R5": "Butiran",
+        "R6": "Simpulan",
         "R7": "Membaca kritis",
         "not_yet_assessed": "Belum dinilai"
       },
@@ -2868,9 +2868,9 @@
       "subskill": {
         "decoding": "Penyahkodan",
         "grammar": "Tatabahasa",
-        "gist": "Inti",
-        "detail": "Perincian",
-        "inference": "Inferens",
+        "gist": "Isi utama",
+        "detail": "Butiran",
+        "inference": "Simpulan",
         "critical": "Bacaan kritis"
       }
     }
@@ -4766,7 +4766,7 @@
     "skillCritical": "Pembacaan kritikal",
     "notYetAssessed": "Belum dinilai",
     "steady": "Tetap",
-    "bandSecure": "Mantap",
+    "bandSecure": "Teguh",
     "bandDeveloping": "Berkembang",
     "bandEmerging": "Baru muncul",
     "bandNotYet": "Belum lagi",

@@ -4976,7 +4976,7 @@
         "grammar": "Cấu trúc câu và hình thái từ",
         "gist": "Nắm được ý chính và mục đích của văn bản",
         "detail": "Tìm các sự kiện cụ thể và thông tin được nêu",
-        "inference": "Đọc giữa các dòng để suy ra ý nghĩa",
+        "inference": "Hiểu hàm ý để suy ra ý nghĩa của văn bản",
         "critical": "Đánh giá ý định, giọng điệu và quan điểm của tác giả"
       },
       "attribute": {
@@ -5038,7 +5038,7 @@
           "grammar": "Nắm được cấu trúc câu và hình thái từ.",
           "gist": "Nắm được ý chính và mục đích của văn bản.",
           "detail": "Tìm được thông tin được nêu trực tiếp trong đoạn văn.",
-          "inference": "Đọc giữa các dòng để suy ra ý nghĩa."
+          "inference": "Hiểu hàm ý để suy ra ý nghĩa của văn bản."
         },
         "next": {
           "decoding": "Luyện giải mã từ: nhận biết từ chính xác và trôi chảy.",
@@ -5047,7 +5047,7 @@
           "grammar": "Luyện ngữ pháp: cấu trúc câu và hình thái từ.",
           "gist": "Luyện nắm ý chính: hiểu ý chính và mục đích của văn bản.",
           "detail": "Luyện đọc chi tiết: tìm sự kiện cụ thể và thông tin được nêu.",
-          "inference": "Luyện suy luận: đọc giữa các dòng để suy ra ý nghĩa."
+          "inference": "Luyện suy luận: hiểu hàm ý để suy ra ý nghĩa của văn bản."
         }
       },
       "flag": {

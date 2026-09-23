@@ -1775,7 +1775,7 @@
     "errorPatternLine": "{type} — 在 {count, plural, other {# 道题}}上被选中（{pct}%）",
     "errorPatternTypes": {
       "literal_match": "字面匹配",
-      "overinference": "过度推断",
+      "overinference": "过度推理",
       "world_knowledge": "常识背景",
       "vocab_guess": "词义猜测",
       "orthographic_neighbour": "形近词",
@@ -2266,8 +2266,8 @@
         "R1": "解码",
         "R2": "词汇",
         "R3": "语法",
-        "R4": "主旨",
-        "R5": "细节",
+        "R4": "主旨理解",
+        "R5": "细节把握",
         "R6": "推理",
         "R7": "批判性阅读",
         "not_yet_assessed": "尚未评估"
@@ -2839,9 +2839,9 @@
       "subskill": {
         "decoding": "解码",
         "grammar": "语法",
-        "gist": "主旨",
-        "detail": "细节",
-        "inference": "推断",
+        "gist": "主旨理解",
+        "detail": "细节把握",
+        "inference": "推理",
         "critical": "批判性阅读"
       }
     },
