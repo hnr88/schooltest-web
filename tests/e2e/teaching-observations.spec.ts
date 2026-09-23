@@ -129,12 +129,12 @@ async function diagnosticBundle(
 }
 
 test.describe('teacher report — teaching observations from the attribute contrast', () => {
-  test('the foundation bottleneck, retired B1 absence and evidence caveat are the real row', async ({
+  test('the foundation bottleneck and evidence caveat are the real row; vocabulary gets no special sentence', async ({
     page,
   }) => {
     // Comprehension assessed and unmastered while a foundation attribute is not
-    // secure — the E11-06 bottleneck case. The current bank has retired B1,
-    // so the observation must name its absence instead of inventing a percent.
+    // secure — the E11-06 bottleneck case. Vocabulary runs through the same
+    // contrast as every other modelled attribute: no separate vocabulary sentence.
     const documentId = teacherOwned(
       `and r.skill = 'reading'
          and r.attributes -> 'R1' ->> 'status' = 'not_mastered'
@@ -153,15 +153,12 @@ test.describe('teacher report — teaching observations from the attribute contr
     expect(foundationGap.length, 'a real foundation gap').toBeGreaterThan(0);
     expect(comprehensionGap.length, 'a real comprehension gap').toBeGreaterThan(0);
 
-    const vocabulary = rows.find((row) => ladderIndex(row.code) === 2);
-    if (!vocabulary) throw new Error('[e2e] expected an assessed vocabulary attribute');
-
     await signInAsTeacher(page);
     await page.goto(`/dashboard/reports/${documentId}`);
 
     const section = page.locator('[data-slot="report-observations"]');
     await expect(section).toHaveAttribute('data-state', 'observations');
-    await expect(section.locator('[data-slot="report-observation"]')).toHaveCount(3);
+    await expect(section.locator('[data-slot="report-observation"]')).toHaveCount(2);
 
     const bottleneck = section.locator('[data-observation="foundationBottleneck"]');
     await expect(bottleneck).toHaveCount(1);
@@ -169,12 +166,7 @@ test.describe('teacher report — teaching observations from the attribute contr
     expect(bottleneckText).toContain(LIST.format(comprehensionGap));
     expect(bottleneckText).toContain(LIST.format(foundationGap));
 
-    const vocab = section.locator('[data-observation="vocabularyBandNotAdministered"]');
-    await expect(vocab).toHaveCount(1);
-    const vocabText = (await vocab.innerText()).trim();
-    expect(vocabText).toContain(`(${vocabulary.code})`);
-    expect(vocabText).toContain(cat(en, `Report.attributeStatus.${vocabulary.status}`));
-    expect(vocabText).not.toContain('%');
+    await expect(section.locator('[data-observation^="vocabulary"]')).toHaveCount(0);
 
     const caveat = section.locator('[data-observation="evidenceCaveat"]');
     const items = rows.map((row) => row.items);
@@ -221,7 +213,6 @@ test.describe('teacher report — teaching observations from the attribute contr
     ).toHaveCount(1);
 
     await expect(section.locator('[data-observation^="vocabulary"]')).toHaveCount(0);
-    await expect(section.locator('[data-observation="vocabularyBandMeasured"]')).toHaveCount(0);
   });
 
   test('the error pattern notes are the C-5 strings, verbatim and unre-ordered', async ({

@@ -1,7 +1,5 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
-
 import type { ResultView } from '@schooltest/scoring-contracts';
 
 import { displaySkills } from '@/modules/results/lib/display-skills';
@@ -10,7 +8,7 @@ import type { DisplaySkillReading } from '@/modules/results/lib/display-skills';
 import { SubskillCard } from './SubskillCard';
 
 /**
- * The seven-card grid (dashboard §4.4), in the canonical order the data layer
+ * The eight-card grid (dashboard §4.4), in the canonical order the data layer
  * owns. Strength/Focus tags apply only when ≥ 4 skills are ASSESSED (a score —
  * the gate card's graded score included); a not-assessed skill can never carry
  * a tag because it has no score to compare.
@@ -24,7 +22,6 @@ import { SubskillCard } from './SubskillCard';
  * with one line.
  */
 export function SubskillCardGrid({ view }: { view: ResultView }) {
-  const t = useTranslations('Results');
   const tiles = displaySkills(view);
   const banded = tiles.filter((tile) => tile.source !== 'gate');
   const assessed = banded.filter((tile) => tile.domain_score !== null);
@@ -41,7 +38,6 @@ export function SubskillCardGrid({ view }: { view: ResultView }) {
           deltaDisplay={deltaDisplayOf(view, tile)}
           bandBefore={bandOf(view, tile, 'band_before')}
           bandAfter={bandOf(view, tile, 'band_after')}
-          strandLine={tile.skill === 'Vocabulary' ? vocabStrandLine(view, t) : undefined}
           gatePassed={tile.skill === 'Critical' ? view.gate.passed : undefined}
           tag={tags.get(tile.skill)}
         />
@@ -50,30 +46,18 @@ export function SubskillCardGrid({ view }: { view: ResultView }) {
   );
 }
 
-/** The per-skill `delta_display`, verbatim: attribute-owned, vocab-owned, absent on the gate. */
+/** The per-skill `delta_display`, verbatim: attribute-owned, absent on the gate. */
 function deltaDisplayOf(view: ResultView, tile: DisplaySkillReading): string | null {
-  if (tile.skill === 'Vocabulary') return view.vocab.delta_display;
   if (tile.skill === 'Critical') return null; // the gate block carries no growth fields (spec v2 §6.3)
   const attribute = view.attributes[tile.skill];
   return attribute !== undefined && attribute.status !== 'not_assessed' ? attribute.delta_display : null;
 }
 
 function bandOf(view: ResultView, tile: DisplaySkillReading, key: 'band_before' | 'band_after'): string | undefined {
-  if (tile.skill === 'Vocabulary' || tile.skill === 'Critical') return undefined;
+  if (tile.skill === 'Critical') return undefined;
   const attribute = view.attributes[tile.skill];
   if (attribute === undefined || attribute.status === 'not_assessed') return undefined;
   return attribute[key];
-}
-
-/** §4.4 vocab strand line: both strands, or the single assessed strand + the honest gap. */
-function vocabStrandLine(view: ResultView, t: (key: string, values?: Record<string, string | number>) => string): string {
-  const percent = (score: number | null): string => (score === null ? '—' : `${score}%`);
-  if (view.vocab.single_strand === null) {
-    return t('vocabStrandsBoth', { a2: percent(view.vocab.a2.domain_score), b1: percent(view.vocab.b1.domain_score) });
-  }
-  return view.vocab.single_strand === 'a2'
-    ? t('vocabStrandSingle', { assessed: `A2 ${percent(view.vocab.a2.domain_score)}`, gap: `B1 ${t('notAssessedThisSitting')}` })
-    : t('vocabStrandSingle', { assessed: `B1 ${percent(view.vocab.b1.domain_score)}`, gap: `A2 ${t('notAssessedThisSitting')}` });
 }
 
 function strengthAndFocus(assessed: DisplaySkillReading[]): Map<string, 'strength' | 'focus'> {

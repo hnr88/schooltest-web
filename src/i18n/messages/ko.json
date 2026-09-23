@@ -1758,9 +1758,6 @@
       "foundationBottleneck": "{blockedCount, plural, other {이해 계층 속성 {blocked}은(는) 아직 안정적이지 않고}}, {gapCount, plural, other {수용 기능 모형이 먼저 요구하는 기초 계층 속성 {gap} 또한 안정적이지 않습니다}} — 따라서 병목은 이해 계층이 아니라 {gap}에 있습니다.",
       "foundationSecureComprehensionGap": "여기서 평가된 기초 계층 속성은 모두 안정적이므로 격차는 이해 계층 안에 있습니다: {gapCount, plural, other {속성 {gap}은(는) 아직 안정적이지 않습니다}}.",
       "allMastered": "이번 응시에서 평가된 모든 속성이 기초 계층과 이해 계층 모두에서 안정적이므로 이 결과는 병목을 지목하지 않습니다.",
-      "vocabularyBandMeasured": "모형 어휘는 A2 대역에서 “{status}” 상태이며, 모형 밖에 있는 보조 B1 대역은 이번 응시에서 {b1}을(를) 기록했습니다.",
-      "vocabularyBandNotAdministered": "모형 어휘는 A2 대역에서 “{status}” 상태입니다. 이번 응시에는 B1 대역 문항이 제공되지 않아 A2 이상 어휘 수치를 나란히 둘 수 없습니다.",
-      "vocabularyNotAssessedBandMeasured": "이번 응시에는 모형 어휘 문항이 시행되지 않아 여기서 유일한 어휘 수치는 보조 B1 대역의 {b1}입니다 — 모형 밖 지표이지 숙달 주장이 아닙니다.",
       "evidenceCaveat": "{spread, select, uniform {위 진술은 {total}개 속성 중 {assessed}개에 근거하며 각 속성의 근거는 {maxItems}문항입니다.} other {위 진술은 {total}개 속성 중 {assessed}개에 근거하며 속성별 근거는 {minItems}~{maxItems}문항이므로 근거가 얇은 속성은 더 신중히 읽으십시오.}}{fieldTest, select, true { 이번 응시에는 필드 테스트 문항도 포함되었으므로 이 진술들을 잠정적인 것으로 다루십시오.} other {}}"
     },
     "errorPatternsEyebrow": "오답 패턴 기록",
@@ -1829,9 +1826,9 @@
     "familyPracticeLine": "집에서 짧고 규칙적인 독서 연습 — 함께 책을 읽고 읽은 내용에 대해 이야기하기 — 이 모든 영역을 뒷받침합니다.",
     "attributes": {
       "Decoding": "Decoding",
-      "Vocab_A2": "Vocabulary (A2)",
+      "Vocab_A2": "일상 어휘",
       "Grammar": "Grammar",
-      "Vocab_B1": "Vocabulary (B1)",
+      "Vocab_B1": "교실 어휘",
       "Gist": "Gist",
       "Detail": "Detail",
       "Inference": "Inference"
@@ -4494,8 +4491,8 @@
         "groupsNone": "서버가 이 학급에 추천한 그룹이 없습니다: 그룹을 나눌 만한 완전한 하위 기능 프로필을 가진 완료 결과가 아직 없습니다.",
         "strandTitle": "어휘 하위영역 평균",
         "strandCaption": "A2와 B1 평균 — 단일 하위영역 응시자는 응시한 영역에만 계산됩니다",
-        "strandA2": "어휘 A2",
-        "strandB1": "어휘 B1",
+        "strandA2": "일상 어휘",
+        "strandB1": "교실 어휘",
         "strandNone": "—",
         "strandAssessed": "{count}명 응시",
         "averageOnly": "평균 {average}",
@@ -4740,7 +4737,7 @@
     "skillSpeaking": "말하기",
     "skillWriting": "쓰기",
     "skillDecoding": "디코딩",
-    "skillVocabulary": "어휘",
+    "skillVocabulary": "일상 어휘",
     "skillGrammar": "문법",
     "skillGist": "핵심 내용 파악",
     "skillDetail": "세부 정보",
@@ -4766,7 +4763,7 @@
     "withinError": "오차 범위 내",
     "trendBestGain": "가장 큰 향상: {skill} +{delta}점",
     "attrDecoding": "디코딩",
-    "attrVocabularyB1": "어휘 B1",
+    "attrVocabularyB1": "교실 어휘",
     "attrGist": "핵심 내용 파악",
     "attrDetail": "세부 정보",
     "attrInference": "추론",
@@ -4837,9 +4834,9 @@
     "fallbackGatePassed": "통과",
     "fallbackGateNotMet": "아직 미충족",
     "fallbackCommonSlip": "가장 흔한 실수: {label} (오답의 {pct}%).",
-    "fallbackVocabA2Only": "이번 응시의 어휘는 A2 하위 영역만 평가했습니다 ({a2}). B1은 평가하지 않아 혼합 점수를 주장하지 않습니다. 지도 초점: B1 응시 전까지 A2 어휘를 계속 다져주세요.",
-    "fallbackVocabB1Only": "이번 응시의 어휘는 B1 하위 영역만 평가했습니다 ({b1}). A2는 평가하지 않아 혼합 점수를 주장하지 않습니다. 지도 초점: 확인된 B1 어휘를 바탕으로 발전시켜 주세요.",
-    "fallbackVocabBlend": "어휘는 두 하위 영역을 혼합하여 {blended}입니다 (A2 {a2}, B1 {b1}). 지도 초점: 다음 응시 전까지 더 약한 하위 영역을 키워주세요.",
+    "fallbackVocabA2Only": "이번 응시에서는 일상 어휘만 평가했습니다 ({a2}). 교실 어휘는 평가하지 않았습니다. 지도 초점: 다음 응시 전까지 일상 어휘를 계속 다져주세요.",
+    "fallbackVocabB1Only": "이번 응시에서는 교실 어휘만 평가했습니다 ({b1}). 일상 어휘는 평가하지 않았습니다. 지도 초점: 확인된 교실 어휘를 바탕으로 발전시켜 주세요.",
+    "fallbackVocabBlend": "일상 어휘 {a2}, 교실 어휘 {b1}. 지도 초점: 다음 응시 전까지 더 약한 쪽을 키워주세요.",
     "fallbackNoScore": "점수 없음",
     "fallbackNotAssessed": "평가 안 함"
   },
@@ -4953,8 +4950,8 @@
       },
       "attribute": {
         "decoding": "디코딩",
-        "vocabA2": "일상 어휘 (A2)",
-        "vocabB1": "학업 어휘 (B1)",
+        "vocabA2": "일상 어휘",
+        "vocabB1": "교실 어휘",
         "grammar": "문법",
         "gist": "핵심 내용 파악",
         "detail": "세부 정보",
@@ -5006,7 +5003,7 @@
         "can": {
           "decoding": "단어를 정확하고 유창하게 알아봅니다.",
           "vocabA2": "일상 단어가 문맥에서 어떤 뜻인지 압니다.",
-          "vocabB1": "학업 단어가 문맥에서 어떤 뜻인지 압니다.",
+          "vocabB1": "교실 단어가 문맥에서 어떤 뜻인지 압니다.",
           "grammar": "문장 수준의 구조와 단어 형태를 이해합니다.",
           "gist": "글의 요지와 목적을 파악합니다.",
           "detail": "글에 직접 나와 있는 정보를 찾습니다.",
@@ -5015,7 +5012,7 @@
         "next": {
           "decoding": "디코딩 연습하기: 단어를 정확하고 유창하게 알아보기.",
           "vocabA2": "일상 어휘 연습하기: 흔한 단어가 문맥에서 어떤 뜻인지 알기.",
-          "vocabB1": "학업 어휘 연습하기: 교과 단어가 문맥에서 어떤 뜻인지 알기.",
+          "vocabB1": "교실 어휘 연습하기: 교과 단어가 문맥에서 어떤 뜻인지 알기.",
           "grammar": "문법 연습하기: 문장 수준의 구조와 단어 형태.",
           "gist": "핵심 내용 파악 연습하기: 글의 요지와 목적 파악하기.",
           "detail": "세부 정보 연습하기: 구체적인 사실과 명시된 정보 찾기.",
@@ -5139,9 +5136,9 @@
         "improved": "향상",
         "held": "유지",
         "slipped": "하락",
-        "vocabulary": "학업 어휘",
-        "everyday": "일상 어휘 (A2)",
-        "academic": "학업 어휘 (B1)",
+        "vocabulary": "어휘",
+        "everyday": "일상 어휘",
+        "academic": "교실 어휘",
         "footer": "{date}에 {name} 읽기 진단에서 생성됨. 교사 및 학교용."
       },
       "soonValue": "–"
@@ -5243,8 +5240,8 @@
         "strength": "강점",
         "focusArea": "중점 영역",
         "vocabulary": "어휘",
-        "everyday": "일상 어휘 (A2)",
-        "academic": "학술 어휘 (B1)",
+        "everyday": "일상 어휘",
+        "academic": "교실 어휘",
         "canDo": "할 수 있는 것",
         "next": "다음에 연습할 것",
         "footer": "{date}에 {name} 읽기 진단 결과로 생성되었습니다. 교사 및 가정용입니다.",
@@ -5331,7 +5328,7 @@
         "growth": "성장",
         "growthText": "향상 {improved} · 유지 {held} · 하락 {slipped}",
         "vocab": "어휘",
-        "vocabText": "일상 A2 {a2} · 학업 B1 {b1}"
+        "vocabText": "일상 {a2} · 교실 {b1}"
       },
       "activity": {
         "title": "최근 활동"
@@ -6169,7 +6166,7 @@
         "sittingsSince": "{month}부터 {count}회"
       },
       "subskillsTitle": "읽기 하위 기능",
-      "subskillsDescription": "최근 시험지에서 {first} 학생이 읽기의 일곱 가지 구성 요소에서 보인 수행",
+      "subskillsDescription": "최근 시험지에서 {first} 학생이 읽기의 여덟 가지 구성 요소에서 보인 수행",
       "subskills": {
         "deltaUp": "↑ +{points}",
         "deltaDown": "↓ −{points}",
@@ -6195,10 +6192,10 @@
         "growthSteady": "첫 응시 이후 읽기 점수가 측정 오차 범위 안에서 유지되고 있습니다.",
         "strengthFocus": "{first} 학생의 가장 강한 영역은 {strongest}({strongestScore}%)이며, {weakest}({weakestScore}%) 영역이 가장 분명한 중점 영역입니다.",
         "focusNext": "{first} 학생의 현재 수준보다 조금 높은 글로 {weakest} 영역을 집중 지도하면 전체 점수를 가장 크게 끌어올릴 수 있습니다.",
-        "vocabBoth": "일상 어휘는 A2 {a2}%, 학술 어휘는 B1 {b1}%입니다.",
+        "vocabBoth": "일상 어휘는 {a2}%, 교실 어휘는 {b1}%입니다.",
         "vocabAcademicNext": "학술 어휘군을 짧고 명시적으로 지도하고 글자 그대로의 이해를 넘어서는 의미 중심 읽기 활동을 함께하는 것이 {first} 학생의 이해력을 높이는 가장 직접적인 방법입니다.",
-        "vocabA2Only": "이번 시험지에서는 일상 어휘만 측정되었습니다: A2 {a2}%.",
-        "vocabB1Only": "이번 시험지에서는 학술 어휘만 측정되었습니다: B1 {b1}%."
+        "vocabA2Only": "이번 시험지에서는 일상 어휘만 측정되었습니다: {a2}%.",
+        "vocabB1Only": "이번 시험지에서는 교실 어휘만 측정되었습니다: {b1}%."
       },
       "hideAi": "AI 숨기기",
       "exported": "비식별화된 프로필을 다운로드했습니다.",

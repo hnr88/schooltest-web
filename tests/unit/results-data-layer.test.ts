@@ -233,7 +233,7 @@ describe('the diagnostic export read (GET /api/results/{id}/export?format=diagno
     get.mockResolvedValueOnce({ data: diagnosticExportFixture });
     const bundle = await fetchResultExport('res-fixture-0001');
     expect(bundle.overall.domain_score).toBe(74);
-    expect(Object.keys(bundle.skills)).toHaveLength(7);
+    expect(Object.keys(bundle.skills)).toHaveLength(8);
     expect(bundle.caveats.length).toBeGreaterThanOrEqual(1);
   });
 
@@ -245,14 +245,14 @@ describe('the diagnostic export read (GET /api/results/{id}/export?format=diagno
   });
 });
 
-describe('display-skills — the seven-tile mapping every screen uses', () => {
-  test('the canonical order is exactly the seven display skills', () => {
+describe('display-skills — the eight-tile mapping every screen uses', () => {
+  test('the canonical order is exactly the eight display skills — two vocabulary skills, no blend', () => {
     expect(DISPLAY_SKILL_ORDER).toEqual([
-      'Decoding', 'Vocabulary', 'Grammar', 'Gist', 'Detail', 'Inference', 'Critical',
+      'Decoding', 'Vocab_A2', 'Grammar', 'Vocab_B1', 'Gist', 'Detail', 'Inference', 'Critical',
     ]);
   });
 
-  test('Vocabulary reads the blend, Critical reads the gate, attributes map one-to-one', async () => {
+  test('Everyday and Classroom Vocabulary read their own attributes, Critical reads the gate, attributes map one-to-one', async () => {
     get.mockResolvedValueOnce({ data: resultViewFixture });
     const payload = await fetchStudentResult('res-fixture-0001');
     if (payload.kind !== 'v2') throw new Error('fixture must dispatch to v2');
@@ -262,7 +262,8 @@ describe('display-skills — the seven-tile mapping every screen uses', () => {
     expect(tiles.map((t) => t.skill)).toEqual([...DISPLAY_SKILL_ORDER]);
     const bySkill = new Map(tiles.map((t) => [t.skill, t]));
     expect(bySkill.get('Decoding')).toMatchObject({ domain_score: 92, status: 'secure', source: 'attribute' });
-    expect(bySkill.get('Vocabulary')).toMatchObject({ domain_score: 76, status: 'secure', source: 'vocab' });
+    expect(bySkill.get('Vocab_A2')).toMatchObject({ domain_score: 90, status: 'secure', source: 'attribute' });
+    expect(bySkill.get('Vocab_B1')).toMatchObject({ domain_score: 54, status: 'emerging', source: 'attribute' });
     expect(bySkill.get('Grammar')).toMatchObject({ domain_score: 72, status: 'secure' });
     expect(bySkill.get('Detail')).toMatchObject({ domain_score: 74, status: 'developing' });
     expect(bySkill.get('Inference')).toMatchObject({ domain_score: 80, status: 'secure' });
@@ -293,21 +294,22 @@ describe('display-skills — the seven-tile mapping every screen uses', () => {
     expect(scored.band_after).toBe('secure');
   });
 
-  test('a null vocab blend or gate score maps to null, not 0', async () => {
+  test('an unassessed vocabulary strand or gate score maps to null, not 0', async () => {
     // Build the mutated payload from the SCHEMA-parsed fixture so the spread
     // is typed, then re-run it through the boundary parse under test.
     const base = resultViewSchema.parse(resultViewFixture);
     const view = {
       ...base,
-      // The schema's biconditional: blended null exactly when status not_assessed.
-      vocab: { ...base.vocab, blended: null, status: 'not_assessed' as const },
+      attributes: { ...base.attributes, Vocab_B1: { status: 'not_assessed' as const, items_seen: 0 } },
+      vocab: { ...base.vocab, b1: { domain_score: null } },
       gate: { ...base.gate, domain_score: null, passed: null },
     };
     get.mockResolvedValueOnce({ data: view });
     const payload = await fetchStudentResult('res-fixture-0001');
     if (payload.kind !== 'v2') throw new Error('fixture must dispatch to v2');
     const bySkill = new Map(displaySkills(payload.view).map((t) => [t.skill, t]));
-    expect(bySkill.get('Vocabulary')?.domain_score).toBeNull();
+    expect(bySkill.get('Vocab_B1')?.domain_score).toBeNull();
+    expect(bySkill.get('Vocab_A2')?.domain_score).toBe(90);
     expect(bySkill.get('Critical')?.domain_score).toBeNull();
   });
 });

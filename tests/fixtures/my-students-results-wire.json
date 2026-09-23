@@ -112,24 +112,18 @@
       }
     },
     "vocab": {
-      "blended": 90,
-      "status": "secure",
-      "delta": null,
-      "delta_reliable": null,
-      "delta_display": null,
       "a2": {
         "domain_score": 90
       },
       "b1": {
         "domain_score": 90
-      },
-      "single_strand": null
+      }
     },
     "error_patterns": [],
     "previous_result_document_id": null,
     "narrative": null,
     "cefr_band": "B1",
-    "display_label": "Developing \u2192 Consolidating (transitioning)",
+    "display_label": "Developing → Consolidating (transitioning)",
     "supplementary": {
       "vocab_band_a2_accuracy": 1,
       "vocab_band_b1_accuracy": null,

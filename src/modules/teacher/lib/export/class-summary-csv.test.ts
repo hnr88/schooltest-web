@@ -53,7 +53,7 @@ describe('classSummaryCsv — the recorded t2 roster', () => {
       [csv.topGap, view.kpis.topGap === null ? '' : viewModel(view.kpis.topGap.labelKey)],
     ]);
     expect(view.kpis.classAverage).toBe(41);
-    expect(view.kpis.topGap?.skill).toBe('Vocabulary');
+    expect(view.kpis.topGap?.skill).toBe('Vocab_A2');
   });
 
   test('ACARA phase spread: four phases, counts summing to the phased students', () => {
@@ -81,6 +81,6 @@ describe('classSummaryCsv — edge case derived from the recorded roster', () =>
     expect(averages[0]).toEqual([csv.classAverage, '', '', '', '', '']);
     expect(averages[2]?.[1]).toBe(String(t2Roster.length));
     expect(table(records, csv.phases).map((record) => record.slice(1, 3))).toEqual(Array(4).fill(['0', '']));
-    expect(table(records, csv.subskills).map((record) => record[1])).toEqual(Array(7).fill(''));
+    expect(table(records, csv.subskills).map((record) => record[1])).toEqual(Array(8).fill(''));
   });
 });

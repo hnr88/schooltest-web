@@ -12,19 +12,17 @@ import {
 } from '@/modules/teacher/constants/student-detail.constants';
 import { VIEW_MODEL_I18N_NAMESPACE } from '@/modules/teacher/constants/v2-i18n.constants';
 import { useStudentText } from '@/modules/teacher/hooks/useStudentText';
-import { strandsText, subskillDeltaText } from '@/modules/teacher/lib/student-detail-text';
+import { subskillDeltaText } from '@/modules/teacher/lib/student-detail-text';
 import type { StudentSubskillCardProps } from '@/modules/teacher/types/student-drill-down.types';
 
 // One reading subskill (`Teacher Portal v2.dc.html:443–461`): score, band bar, the
-// server's movement, the band chip (the exit gate on Critical reading), the vocabulary
-// strands and the blurb. Tones are the view model's; nothing here thresholds a score.
+// server's movement, the band chip (the exit gate on Critical reading) and the blurb. Tones are the view model's; nothing here thresholds a score.
 function StudentSubskillCard({ card }: StudentSubskillCardProps) {
   const t = useTranslations(STUDENT_I18N_NAMESPACE);
   const tVm = useTranslations(VIEW_MODEL_I18N_NAMESPACE);
   const tKit = useTranslations('TeacherPortal.kit');
   const { text } = useStudentText();
   const delta = subskillDeltaText(card.delta);
-  const strands = strandsText(card.strands);
 
   return (
     <article
@@ -66,11 +64,6 @@ function StudentSubskillCard({ card }: StudentSubskillCardProps) {
           <ToneChip tone={STUDENT_GATE_CHIP_TONE[card.gate.passed ? 'passed' : 'notYet']} size="sm" className="text-[11px]">
             {tVm(card.gate.labelKey)}
           </ToneChip>
-        )}
-        {strands === null ? null : (
-          <span data-slot="student-subskill-strands" className="text-[11.5px] text-[#6B7280] tabular-nums">
-            {text(strands)}
-          </span>
         )}
       </div>
       <p className="mt-[11px] text-[12px] leading-[1.5] text-[#6B7280]">{tVm(card.blurbKey)}</p>

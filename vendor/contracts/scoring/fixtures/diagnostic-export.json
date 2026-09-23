@@ -23,8 +23,8 @@
       "delta_display": "band_movement",
       "descriptor": "Reads unfamiliar words accurately by sounding them out"
     },
-    "Vocabulary": {
-      "domain_score": 76,
+    "Vocab_A2": {
+      "domain_score": 90,
       "status": "secure",
       "delta_display": "steady"
     },
@@ -32,6 +32,11 @@
       "domain_score": 72,
       "status": "secure",
       "delta_display": "+10"
+    },
+    "Vocab_B1": {
+      "domain_score": 54,
+      "status": "emerging",
+      "delta_display": null
     },
     "Gist": {
       "status": "not_assessed",
@@ -54,16 +59,12 @@
     }
   },
   "vocab": {
-    "blended": 76,
-    "status": "secure",
-    "delta_display": "steady",
     "a2": {
       "domain_score": 90
     },
     "b1": {
       "domain_score": 54
-    },
-    "single_strand": null
+    }
   },
   "gate": {
     "passed": false,

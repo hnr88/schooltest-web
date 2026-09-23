@@ -74,18 +74,15 @@ exports.storedVocabStrandSchema = zod_1.z.union([
     core_1.notAssessedSchema,
 ]);
 /**
- * spec v2 §5.4 — the items-seen-weighted blend of Vocab_A2 and Vocab_B1.
+ * The two vocabulary strands as stored (spec v2 §5.4), Vocab_A2 and Vocab_B1,
+ * side by side — no blended figure.
  *
- * `status` is a `bandSchema` and not the four-band `assessedBandSchema`: a blend
- * has no posterior of its own, so its band is borrowed from the strand with more
- * `items_seen` (tie -> the lower band) and is `not_assessed` when neither strand
- * was reached. `blended` is then null — never 0 (data contract §8).
+ * `z.object`, not `strictObject`, and on purpose: rows written before the blend
+ * was retired still carry `blended`/`blended_se`/`status`/`single_strand` in
+ * their stored `vocab` column. Stripping those keys on read keeps every existing
+ * row valid with no data migration; nothing reads them.
  */
-exports.storedVocabSchema = zod_1.z.strictObject({
-    blended: core_1.domainScoreSchema.nullable(),
-    blended_se: core_1.standardErrorSchema.nullable(),
-    status: enums_1.bandSchema,
-    single_strand: enums_1.vocabStrandNameSchema.nullable(),
+exports.storedVocabSchema = zod_1.z.object({
     a2: exports.storedVocabStrandSchema,
     b1: exports.storedVocabStrandSchema,
 });

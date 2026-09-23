@@ -29,7 +29,7 @@ export declare const diagnosticExportSittingSchema: z.ZodObject<{
  * OMITTED when the Crosswalk describes no such skill, never synthesised.
  *
  * THREE variants, and do not tidy them back into two:
- * 1. Banded skill — the six CDM display skills: score + posterior band + gated
+ * 1. Banded skill — the seven CDM display skills: score + posterior band + gated
  *    change.
  * 2. GATE skill (Critical Reading) — score + the pass/fail verdict, and
  *    DELIBERATELY no `status` band and no `delta_display` field (D13, task 30/35
@@ -65,30 +65,14 @@ export declare const diagnosticExportSkillSchema: z.ZodUnion<readonly [z.ZodObje
     items_seen: z.ZodNumber;
 }, z.core.$strict>]>;
 export type DiagnosticExportSkill = z.infer<typeof diagnosticExportSkillSchema>;
-/** The Vocabulary bar plus its two strands, scores only. */
+/** The two vocabulary strands (Vocab_A2, Vocab_B1), scores only, never blended. */
 export declare const diagnosticExportVocabSchema: z.ZodObject<{
-    blended: z.ZodNullable<z.ZodNumber>;
-    status: z.ZodEnum<{
-        secure: "secure";
-        developing: "developing";
-        emerging: "emerging";
-        not_yet: "not_yet";
-        not_assessed: "not_assessed";
-    }>;
-    delta_display: z.ZodNullable<z.ZodUnion<readonly [z.ZodEnum<{
-        steady: "steady";
-        band_movement: "band_movement";
-    }>, z.ZodString]>>;
     a2: z.ZodObject<{
         domain_score: z.ZodNullable<z.ZodNumber>;
     }, z.core.$strict>;
     b1: z.ZodObject<{
         domain_score: z.ZodNullable<z.ZodNumber>;
     }, z.core.$strict>;
-    single_strand: z.ZodNullable<z.ZodEnum<{
-        a2: "a2";
-        b1: "b1";
-    }>>;
 }, z.core.$strict>;
 /** The exit gate: graded score and boolean, no theta (spec v2 §7). */
 export declare const diagnosticExportGateSchema: z.ZodObject<{
@@ -101,7 +85,7 @@ export declare const diagnosticExportHistoryPointSchema: z.ZodObject<{
     overall: z.ZodNullable<z.ZodNumber>;
 }, z.core.$strict>;
 /**
- * The full bundle. `skills` is exhaustive over the seven display skills so an
+ * The full bundle. `skills` is exhaustive over the eight display skills so an
  * unassessed skill is stated as unassessed rather than silently missing —
  * absence of a key reads as an oversight, the not-assessed object reads as a
  * measured fact. `caveats` is `.min(1)`: the single-sitting note is
@@ -140,11 +124,12 @@ export declare const diagnosticExportSchema: z.ZodObject<{
     }>>;
     skills: z.ZodRecord<z.ZodEnum<{
         Decoding: "Decoding";
+        Vocab_A2: "Vocab_A2";
         Grammar: "Grammar";
+        Vocab_B1: "Vocab_B1";
         Gist: "Gist";
         Detail: "Detail";
         Inference: "Inference";
-        Vocabulary: "Vocabulary";
         Critical: "Critical";
     }>, z.ZodUnion<readonly [z.ZodObject<{
         domain_score: z.ZodNumber;
@@ -169,28 +154,12 @@ export declare const diagnosticExportSchema: z.ZodObject<{
         items_seen: z.ZodNumber;
     }, z.core.$strict>]>>;
     vocab: z.ZodObject<{
-        blended: z.ZodNullable<z.ZodNumber>;
-        status: z.ZodEnum<{
-            secure: "secure";
-            developing: "developing";
-            emerging: "emerging";
-            not_yet: "not_yet";
-            not_assessed: "not_assessed";
-        }>;
-        delta_display: z.ZodNullable<z.ZodUnion<readonly [z.ZodEnum<{
-            steady: "steady";
-            band_movement: "band_movement";
-        }>, z.ZodString]>>;
         a2: z.ZodObject<{
             domain_score: z.ZodNullable<z.ZodNumber>;
         }, z.core.$strict>;
         b1: z.ZodObject<{
             domain_score: z.ZodNullable<z.ZodNumber>;
         }, z.core.$strict>;
-        single_strand: z.ZodNullable<z.ZodEnum<{
-            a2: "a2";
-            b1: "b1";
-        }>>;
     }, z.core.$strict>;
     gate: z.ZodObject<{
         passed: z.ZodNullable<z.ZodBoolean>;

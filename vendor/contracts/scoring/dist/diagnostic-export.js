@@ -35,7 +35,7 @@ exports.diagnosticExportSittingSchema = zod_1.z.strictObject({
  * OMITTED when the Crosswalk describes no such skill, never synthesised.
  *
  * THREE variants, and do not tidy them back into two:
- * 1. Banded skill — the six CDM display skills: score + posterior band + gated
+ * 1. Banded skill — the seven CDM display skills: score + posterior band + gated
  *    change.
  * 2. GATE skill (Critical Reading) — score + the pass/fail verdict, and
  *    DELIBERATELY no `status` band and no `delta_display` field (D13, task 30/35
@@ -62,14 +62,10 @@ exports.diagnosticExportSkillSchema = zod_1.z.union([
     }),
     core_1.notAssessedSchema,
 ]);
-/** The Vocabulary bar plus its two strands, scores only. */
+/** The two vocabulary strands (Vocab_A2, Vocab_B1), scores only, never blended. */
 exports.diagnosticExportVocabSchema = zod_1.z.strictObject({
-    blended: core_1.domainScoreSchema.nullable(),
-    status: enums_1.bandSchema,
-    delta_display: core_1.deltaDisplaySchema.nullable(),
     a2: zod_1.z.strictObject({ domain_score: core_1.domainScoreSchema.nullable() }),
     b1: zod_1.z.strictObject({ domain_score: core_1.domainScoreSchema.nullable() }),
-    single_strand: enums_1.vocabStrandNameSchema.nullable(),
 });
 /** The exit gate: graded score and boolean, no theta (spec v2 §7). */
 exports.diagnosticExportGateSchema = zod_1.z.strictObject({
@@ -82,7 +78,7 @@ exports.diagnosticExportHistoryPointSchema = zod_1.z.strictObject({
     overall: core_1.domainScoreSchema.nullable(),
 });
 /**
- * The full bundle. `skills` is exhaustive over the seven display skills so an
+ * The full bundle. `skills` is exhaustive over the eight display skills so an
  * unassessed skill is stated as unassessed rather than silently missing —
  * absence of a key reads as an oversight, the not-assessed object reads as a
  * measured fact. `caveats` is `.min(1)`: the single-sitting note is

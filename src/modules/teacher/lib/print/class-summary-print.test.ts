@@ -19,8 +19,9 @@ const className = t2Dashboard.classes[0]?.name ?? '';
 const print = en.TeacherPortal.classes.print;
 const SKILLS: Record<string, string> = {
   Decoding: en.Results.skillDecoding,
-  Vocabulary: en.Results.skillVocabulary,
+  Vocab_A2: en.Results.skillVocabulary,
   Grammar: en.Results.skillGrammar,
+  Vocab_B1: en.Results.attrVocabularyB1,
   Gist: en.Results.skillGist,
   Detail: en.Results.skillDetail,
   Inference: en.Results.skillInference,

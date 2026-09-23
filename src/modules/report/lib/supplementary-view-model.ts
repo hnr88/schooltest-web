@@ -18,12 +18,13 @@ function toBand(code: SupplementaryBandCode, domainScore: number | null): Supple
 
 export function buildSupplementaryStrand(result: ResultView): SupplementaryStrandView {
   const vocab = result.vocab;
+  const notAssessed = vocab.a2.domain_score === null && vocab.b1.domain_score === null;
   // The same applicability rule every other absence on this report uses, called
   // with the strand reduced to null | 'present' (as buildAttributePanel does),
   // so the strand can never contradict the header about which absence this is.
-  const state = getCrosswalkFieldState(result, vocab.status === 'not_assessed' ? null : 'present');
+  const state = getCrosswalkFieldState(result, notAssessed ? null : 'present');
 
-  if (vocab.status === 'not_assessed' || state !== 'derived') {
+  if (notAssessed || state !== 'derived') {
     return state === 'not_applicable' ? { state: 'not_applicable' } : { state: 'pending' };
   }
 

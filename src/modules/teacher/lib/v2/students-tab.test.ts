@@ -107,8 +107,8 @@ describe('studentsTabRows — recorded t2 roster (Reading 8B, 20 students)', () 
     expect(studentsTabRows(withStatus('scoring_failed')).rows[0].noScoreReason).toBe('failed');
   });
 
-  test('recorded Amara: the weakest subskill can be the vocabulary blend', () => {
-    expect(rowOf('Amara').weakest).toEqual({ skill: 'Vocabulary', labelKey: 'skill.vocabulary', score: 25 });
+  test('recorded Amara: the weakest subskill can be Classroom Vocabulary', () => {
+    expect(rowOf('Amara').weakest).toEqual({ skill: 'Vocab_B1', labelKey: 'attribute.vocabB1', score: 25 });
   });
 
   test('recorded Bilal: no subskill assessed, so no weakest subskill despite a score of 54', () => {

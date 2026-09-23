@@ -4,7 +4,7 @@
  * Dashboard D3: every judgment (band, reliable-change gating, band-movement vs
  * point delta, not-assessed) arrives precomputed. The client renders; it never
  * re-derives. Spec v2 §6.1: the only displayed numbers are
- * `overall.domain_score`, per-attribute `domain_score`, `vocab.blended` and
+ * `overall.domain_score`, per-attribute `domain_score` and
  * `gate.domain_score`; `prob`/`prob_se` ride along for audit and no client
  * renders them (dashboard §7 grep guard).
  *
@@ -40,7 +40,6 @@ import {
   resultScopeSchema,
   resultStatusSchema,
   skillSchema,
-  vocabStrandNameSchema,
 } from './enums';
 import { errorPatternSchema } from './stored-result';
 
@@ -105,43 +104,28 @@ export const resultViewGateSchema = z.strictObject({
 });
 export type ResultViewGate = z.infer<typeof resultViewGateSchema>;
 
-/** The strand detail behind the Vocabulary bar (spec v2 §6.3). */
+/** One vocabulary strand's score: `a2` is Vocab_A2, `b1` is Vocab_B1 (spec v2 §6.3). */
 export const resultViewVocabStrandSchema = z.strictObject({
   domain_score: domainScoreSchema.nullable(),
 });
 
-export const resultViewVocabSchema = z
-  .strictObject({
-    blended: domainScoreSchema.nullable(),
-    status: bandSchema,
-    ...growthFields,
-    a2: resultViewVocabStrandSchema,
-    b1: resultViewVocabStrandSchema,
-    single_strand: vocabStrandNameSchema.nullable(),
-  })
-  .superRefine((vocab, ctx) => {
-    // D20 — the gap invariant lives HERE, not per-component. A blend exists
-    // exactly when at least one strand was assessed, which is also exactly
-    // when the band is a real band: `blended === null` ⇔ `status ===
-    // "not_assessed"`, in BOTH directions. Without it a chip renderer can put
-    // an untranslateable band on a gap card, and a number can appear with no
-    // band to name it.
-    if ((vocab.blended === null) !== (vocab.status === 'not_assessed')) {
-      ctx.addIssue({
-        code: 'custom',
-        path: ['blended'],
-        message:
-          'vocab gap invariant: blended === null exactly when status === "not_assessed" (a blend exists exactly when a band does)',
-      });
-    }
-  });
+/**
+ * The two vocabulary strands, side by side and never blended: each is its own
+ * model attribute, and its band and growth ride on `attributes.Vocab_A2` /
+ * `attributes.Vocab_B1` like every other attribute's.
+ */
+export const resultViewVocabSchema = z.strictObject({
+  a2: resultViewVocabStrandSchema,
+  b1: resultViewVocabStrandSchema,
+});
 export type ResultViewVocab = z.infer<typeof resultViewVocabSchema>;
 
 /**
- * One point on the trend chart (dashboard §1.1). Keyed by the seven DISPLAY
- * skills — `Vocabulary` already blended, `Critical` the Section 3 graded score —
- * and exhaustive: every sitting reports all seven, `null` where that sitting did
- * not assess the skill. A `null` is an absence; it is never rendered as 0.
+ * One point on the trend chart (dashboard §1.1). Keyed by the eight DISPLAY
+ * skills — `Vocab_A2` and `Vocab_B1` as two lines, `Critical` the Section 3
+ * graded score — and exhaustive: every sitting reports all eight, `null` where
+ * that sitting did not assess the skill. A `null` is an absence; it is never
+ * rendered as 0.
  */
 export const resultHistoryPointSchema = z.strictObject({
   sat_at: z.iso.date(),

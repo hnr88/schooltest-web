@@ -80,8 +80,9 @@ describe('classProgress — recorded t2 roster', () => {
   test('subskill trends: the class mean per skill by sitting, weakest now first', () => {
     expect(view.subskillTrends.map((entry) => [entry.skill, entry.now])).toEqual([
       ['Decoding', 25],
-      ['Vocabulary', 25],
+      ['Vocab_A2', 25],
       ['Grammar', 25],
+      ['Vocab_B1', 25],
       ['Detail', 25],
       ['Gist', 28],
       ['Inference', 36],

@@ -1,4 +1,3 @@
-import { GROWTH_FG } from '@/modules/teacher/constants/v2-tones.constants';
 import { describe, expect, test } from 'vitest';
 
 import type { DisplaySkill } from '@schooltest/scoring-contracts';
@@ -50,11 +49,12 @@ describe('studentDetail — recorded Dilnoza (GET /results/:id, 8 sittings, 3 sc
     });
   });
 
-  test('seven subskill cards in display order', () => {
+  test('eight subskill cards in display order — Everyday and Classroom Vocabulary separate', () => {
     expect(view.subskills.map((entry) => entry.skill)).toEqual([
       'Decoding',
-      'Vocabulary',
+      'Vocab_A2',
       'Grammar',
+      'Vocab_B1',
       'Gist',
       'Detail',
       'Inference',
@@ -75,18 +75,22 @@ describe('studentDetail — recorded Dilnoza (GET /results/:id, 8 sittings, 3 sc
       trajectory: [90, 90, 25],
       spark: sparkline([90, 90, 25]),
       tag: { kind: 'focus', labelKey: 'tag.focusArea', tone: AMBER },
-      strands: null,
     });
   });
 
-  test('Vocabulary: the reliable "-65" and both strands', () => {
-    expect(card(view, 'Vocabulary')).toMatchObject({
-      score: 25,
-      delta: { kind: 'points', points: -65, fg: '#B42318' },
-      trajectory: [90, 90, 25],
-      strands: { a2: 25, b1: 25 },
-      tag: null,
-    });
+  test('Everyday and Classroom Vocabulary: two cards, each its own band and band movement — no blended "-65"', () => {
+    for (const [skill, labelKey] of [['Vocab_A2', 'attribute.vocabA2'], ['Vocab_B1', 'attribute.vocabB1']] as const) {
+      expect(card(view, skill)).toMatchObject({
+        labelKey,
+        blurbKey: 'skillBlurb.vocabulary',
+        score: 25,
+        band: { band: 'not_yet', labelKey: 'band.notYet', tone: RED },
+        delta: { kind: 'bands', before: 'secure', after: 'not_yet', fg: '#B42318' },
+        trajectory: [90, 90, 25],
+        tag: null,
+      });
+      expect('strands' in card(view, skill)).toBe(false);
+    }
   });
 
   test('Inference: emerging, and the strongest subskill', () => {
@@ -132,8 +136,14 @@ describe('studentDetail — recorded Amara (single-strand vocabulary, scored gat
     });
   });
 
-  test('a single-strand student shows no A2 strand; the steady vocabulary is steady', () => {
-    expect(card(view, 'Vocabulary')).toMatchObject({ strands: { a2: null, b1: 25 }, delta: { kind: 'steady', fg: GROWTH_FG.steady } });
+  test('a student who sat only Classroom Vocabulary: Everyday is an unassessed card, Classroom carries its own band', () => {
+    expect(card(view, 'Vocab_A2')).toMatchObject({ score: null, band: null, delta: { kind: 'none' }, trajectory: [], barTone: UNASSESSED });
+    expect(card(view, 'Vocab_B1')).toMatchObject({
+      score: 25,
+      band: { band: 'not_yet', labelKey: 'band.notYet', tone: RED },
+      delta: { kind: 'bands', before: 'not_yet', after: 'not_yet', fg: '#5B6472' },
+    });
+    expect(view.analysis.vocab).toEqual({ a2: null, b1: 25 });
   });
 
   test('not-assessed skills carry no score, band, movement or trajectory', () => {
@@ -148,7 +158,7 @@ describe('studentDetail — recorded Amara (single-strand vocabulary, scored gat
 
   test('strength and focus tags', () => {
     expect(card(view, 'Gist').tag?.kind).toBe('strength');
-    expect(card(view, 'Vocabulary').tag?.kind).toBe('focus');
+    expect(card(view, 'Vocab_B1').tag?.kind).toBe('focus');
   });
 
   test('overall is steady and a result with no server phase has no phase', () => {

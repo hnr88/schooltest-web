@@ -4,8 +4,7 @@ import type { ObservationFormatters, ObservationValues } from '@/modules/report/
 
 // E11-06 — one observation to the ICU values its catalog sentence declares.
 // Every branch is exhaustive over the union, so a new observation kind cannot be
-// added without its values; nothing here composes prose. The b1 value is a
-// domain score stated VERBATIM as a bare number — never a percent.
+// added without its values; nothing here composes prose.
 export function observationValues(
   observation: Observation,
   format: ObservationFormatters,
@@ -36,12 +35,6 @@ export function observationValues(
         gap: format.list(observation.gap),
         gapCount: observation.gap.length,
       };
-    case 'vocabularyBandMeasured':
-      return { status: format.status(observation.status), b1: observation.b1 };
-    case 'vocabularyBandNotAdministered':
-      return { status: format.status(observation.status) };
-    case 'vocabularyNotAssessedBandMeasured':
-      return { b1: observation.b1 };
     case 'evidenceCaveat':
       return {
         assessed: observation.assessed,

@@ -68,8 +68,10 @@ describe('studentReportsCsv — the recorded t2 roster', () => {
 
   test('every subskill score is the served one and every band the API status', () => {
     for (const row of t2Roster) {
-      const vocab = row.result?.vocab.blended ?? null;
-      expect(skillCells(recordOf(row.student.name), 'Vocabulary')[0]).toBe(vocab === null ? '' : String(vocab));
+      const everyday = row.result?.vocab.a2.domain_score ?? null;
+      const classroom = row.result?.vocab.b1.domain_score ?? null;
+      expect(skillCells(recordOf(row.student.name), 'Vocab_A2')[0]).toBe(everyday === null ? '' : String(everyday));
+      expect(skillCells(recordOf(row.student.name), 'Vocab_B1')[0]).toBe(classroom === null ? '' : String(classroom));
     }
     const { student, result } = t2Row('Dilnoza');
     const record = recordOf(student.name);

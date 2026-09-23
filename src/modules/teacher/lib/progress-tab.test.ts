@@ -34,8 +34,9 @@ describe('progressTabView — recorded t2 roster', () => {
   test('every subskill with a recorded class mean gets a trend, weakest now first', () => {
     expect(view.trends.map((trend) => [trend.skill, trend.now])).toEqual([
       ['Decoding', 25],
-      ['Vocabulary', 25],
+      ['Vocab_A2', 25],
       ['Grammar', 25],
+      ['Vocab_B1', 25],
       ['Detail', 25],
       ['Gist', 28],
       ['Inference', 36],

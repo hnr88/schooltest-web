@@ -66,15 +66,17 @@ function withRoster(overrides: Array<Partial<ResultView> | null>): RosterRow[] {
 
 describe('weakestSkill — minimum among assessed banded skills only', () => {
   test('picks the lowest assessed score and never a not-assessed or gated skill', () => {
-    // The SEVEN TILES are the comparison set (dashboard §2): Decoding 92,
-    // Vocabulary (blend) 76, Grammar 72, Detail 74, Inference 80 — Gist is the
-    // not-assessed gap and Critical is the gated tile, both excluded.
-    expect(weakestSkill(fixture)).toEqual({ skill: 'Grammar', score: 72 });
+    // The EIGHT TILES are the comparison set (dashboard §2): Decoding 92,
+    // Everyday Vocabulary 90, Grammar 72, Classroom Vocabulary 54, Detail 74,
+    // Inference 80 — Gist is the not-assessed gap and Critical is the gated
+    // tile, both excluded. Classroom Vocabulary is its own skill, so its gap
+    // shows rather than hiding inside a blend.
+    expect(weakestSkill(fixture)).toEqual({ skill: 'Vocab_B1', score: 54 });
   });
 
   test('ties break to canonical display order (Grammar before Detail at equal scores)', () => {
     // Grammar and Detail tie at 54 — Grammar precedes Detail in canonical tile
-    // order (Decoding, Vocabulary, Grammar, Gist, Detail, Inference), so the
+    // order (Decoding, Vocab_A2, Grammar, Vocab_B1, Gist, Detail, Inference), so the
     // tie-break is deterministic, never insertion- or score-order dependent.
     const tied = {
       ...fixture,
@@ -97,7 +99,7 @@ describe('weakestSkill — minimum among assessed banded skills only', () => {
     const nothing = {
       ...fixture,
       attributes,
-      vocab: { ...fixture.vocab, blended: null, status: 'not_assessed' as const, a2: { domain_score: null }, b1: { domain_score: null } },
+      vocab: { a2: { domain_score: null }, b1: { domain_score: null } },
     };
     expect(weakestSkill(nothing as ResultView)).toBeNull();
   });
@@ -196,7 +198,7 @@ describe('scoredCount — scored over the ROSTER total, never over students-with
 describe('subskillAverages — per-skill means with their own denominator', () => {
   test('averages each skill over the students who have it assessed, and counts the excluded', () => {
     const rows = withScores([
-      { overall: { ...fixture.overall, domain_score: 80 } }, // fixture attributes: Decoding 92, Vocab blend 76, Grammar 72, Detail 74, Inference 80, gate 70
+      { overall: { ...fixture.overall, domain_score: 80 } }, // fixture attributes: Decoding 92, Vocab_A2 90, Grammar 72, Vocab_B1 54, Detail 74, Inference 80, gate 70
       { overall: { ...fixture.overall, domain_score: 60 }, attributes: { ...fixture.attributes, Grammar: { status: 'not_assessed', items_seen: 0 } } },
     ]);
     const averages = subskillAverages(rows);
@@ -206,7 +208,7 @@ describe('subskillAverages — per-skill means with their own denominator', () =
     // D13 per-function: Critical's gate score averages WITHIN itself…
     expect(bySkill.get('Critical')).toEqual({ skill: 'Critical', average: 70, assessed: 2, excluded: 0 });
     // …and the canonical order holds, Gist (never assessed) absent.
-    expect(averages.map((a) => a.skill)).toEqual(['Decoding', 'Vocabulary', 'Grammar', 'Detail', 'Inference', 'Critical']);
+    expect(averages.map((a) => a.skill)).toEqual(['Decoding', 'Vocab_A2', 'Grammar', 'Vocab_B1', 'Detail', 'Inference', 'Critical']);
   });
 });
 
@@ -215,47 +217,47 @@ describe('secureCounts — counted as sent, Critical absent by construction', ()
     const highScoreDeveloping = rescored(fixture.attributes.Decoding!, 95, 'developing');
     const rows = withScores([
       { overall: { ...fixture.overall, domain_score: 80 }, attributes: { ...fixture.attributes, Decoding: highScoreDeveloping } },
-      { overall: { ...fixture.overall, domain_score: 60 }, vocab: { ...fixture.vocab, status: 'developing' as const } },
+      { overall: { ...fixture.overall, domain_score: 60 }, attributes: { ...fixture.attributes, Vocab_A2: rescored(fixture.attributes.Vocab_A2!, 90, 'developing') } },
     ]);
     const counts = secureCounts(rows);
     const bySkill = new Map(counts.map((c) => [c.skill, c]));
     // 95% but the API said developing — the count stays 1, never recomputed.
     expect(bySkill.get('Decoding')).toEqual({ skill: 'Decoding', secure: 1, assessed: 2 });
-    // The blend: the second row's API status is developing — counted as sent.
-    expect(bySkill.get('Vocabulary')).toEqual({ skill: 'Vocabulary', secure: 1, assessed: 2 });
+    // Everyday Vocabulary: the second row's API status is developing — counted as sent.
+    expect(bySkill.get('Vocab_A2')).toEqual({ skill: 'Vocab_A2', secure: 1, assessed: 2 });
+    // Classroom Vocabulary is tallied on its own — emerging in both rows.
+    expect(bySkill.get('Vocab_B1')).toEqual({ skill: 'Vocab_B1', secure: 0, assessed: 2 });
     expect(counts.map((c) => c.skill)).not.toContain('Critical'); // no band on the gate — no tally
   });
 
-  test('a not-assessed vocabulary blend (status "not_assessed", blended null) is not counted as assessed', () => {
+  test('a not-assessed vocabulary strand is not counted as assessed', () => {
     const rows = withScores([
       { overall: { ...fixture.overall, domain_score: 80 } },
       {
         overall: { ...fixture.overall, domain_score: null },
-        vocab: { ...fixture.vocab, blended: null, status: 'not_assessed' as const },
+        attributes: { ...fixture.attributes, Vocab_B1: { status: 'not_assessed', items_seen: 0 } },
+        vocab: { ...fixture.vocab, b1: { domain_score: null } },
       },
     ]);
-    const vocabulary = secureCounts(rows).find((c) => c.skill === 'Vocabulary');
-    expect(vocabulary?.assessed).toBe(1);
+    const classroom = secureCounts(rows).find((c) => c.skill === 'Vocab_B1');
+    expect(classroom?.assessed).toBe(1);
   });
 });
 
-describe('vocabStrandMeans — single-strand students are absent from the strand they did not sit', () => {
+describe('vocabStrandMeans — students are absent from a strand they did not sit', () => {
   test('a2-only, b1-only and dual-strand rows each contribute to exactly their strands', () => {
     const rows = withScores([
-      { vocab: { ...fixture.vocab, single_strand: 'a2' as const, a2: { domain_score: 80 }, b1: { domain_score: null } } },
-      { vocab: { ...fixture.vocab, single_strand: 'b1' as const, a2: { domain_score: null }, b1: { domain_score: 60 } } },
-      { vocab: { ...fixture.vocab, single_strand: null, a2: { domain_score: 90 }, b1: { domain_score: 50 } } },
+      { vocab: { a2: { domain_score: 80 }, b1: { domain_score: null } } },
+      { vocab: { a2: { domain_score: null }, b1: { domain_score: 60 } } },
+      { vocab: { a2: { domain_score: 90 }, b1: { domain_score: 50 } } },
     ]);
     const means = vocabStrandMeans(rows);
     expect(means.a2).toEqual({ average: 85, assessed: 2 }); // 80 + 90; the b1-only row is ABSENT
     expect(means.b1).toEqual({ average: 55, assessed: 2 }); // 60 + 50; the a2-only row is ABSENT
   });
 
-  test('a single-strand row never contributes a fallback to its missing strand', () => {
-    // Even if a numeric value rode along on the unsat strand, the exclusion wins.
-    const rows = withScores([
-      { vocab: { ...fixture.vocab, single_strand: 'a2' as const, a2: { domain_score: 80 }, b1: { domain_score: 99 } } },
-    ]);
+  test('an unsat strand never contributes a fallback', () => {
+    const rows = withScores([{ vocab: { a2: { domain_score: 80 }, b1: { domain_score: null } } }]);
     const means = vocabStrandMeans(rows);
     expect(means.b1).toEqual({ average: null, assessed: 0 });
     expect(means.a2).toEqual({ average: 80, assessed: 1 });

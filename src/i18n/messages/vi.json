@@ -1758,9 +1758,6 @@
       "foundationBottleneck": "{blockedCount, plural, other {Thuộc tính lớp hiểu {blocked} chưa vững}}, trong khi {gapCount, plural, other {thuộc tính nền tảng {gap} mà mô hình tiếp nhận đòi hỏi trước cũng chưa vững}} — nên nút thắt nằm ở {gap}, không phải ở chính lớp hiểu.",
       "foundationSecureComprehensionGap": "Mọi thuộc tính nền tảng được đánh giá ở đây đều vững, nên khoảng cách nằm bên trong lớp hiểu: {gapCount, plural, other {thuộc tính {gap} chưa vững}}.",
       "allMastered": "Mọi thuộc tính được đánh giá trong lượt làm bài này đều vững, ở cả lớp nền tảng lẫn lớp hiểu, nên kết quả này không chỉ ra nút thắt nào.",
-      "vocabularyBandMeasured": "Từ vựng trong mô hình mang trạng thái “{status}” ở dải A2, còn dải B1 bổ sung — nằm ngoài mô hình — đạt {b1} trong lượt làm bài này.",
-      "vocabularyBandNotAdministered": "Từ vựng trong mô hình mang trạng thái “{status}” ở dải A2; lượt làm bài này không phục vụ câu hỏi dải B1 nào, nên không có số đo từ vựng trên mức A2 để đặt cạnh.",
-      "vocabularyNotAssessedBandMeasured": "Lượt làm bài này không thực hiện câu hỏi từ vựng trong mô hình nào, nên số đo từ vựng duy nhất ở đây là dải B1 bổ sung ở mức {b1} — một chỉ báo ngoài mô hình, không phải kết luận về mức vững.",
       "evidenceCaveat": "{spread, select, uniform {Các nhận định trên dựa trên {assessed} trong {total} thuộc tính, mỗi thuộc tính có {maxItems} câu làm bằng chứng.} other {Các nhận định trên dựa trên {assessed} trong {total} thuộc tính, với bằng chứng từ {minItems} đến {maxItems} câu mỗi thuộc tính, nên hãy đọc những thuộc tính mỏng bằng chứng hơn một cách thận trọng hơn.}}{fieldTest, select, true { Lần thi này cũng có câu hỏi thử nghiệm, nên hãy xem các nhận định trên là tạm thời.} other {}}"
     },
     "errorPatternsEyebrow": "Ghi chú mẫu lỗi",
@@ -1829,9 +1826,9 @@
     "familyPracticeLine": "Luyện đọc ngắn, thường xuyên ở nhà — đọc cùng nhau và trò chuyện về nội dung đã đọc — hỗ trợ mọi mảng.",
     "attributes": {
       "Decoding": "Decoding",
-      "Vocab_A2": "Vocabulary (A2)",
+      "Vocab_A2": "Từ vựng thông dụng",
       "Grammar": "Grammar",
-      "Vocab_B1": "Vocabulary (B1)",
+      "Vocab_B1": "Từ vựng lớp học",
       "Gist": "Gist",
       "Detail": "Detail",
       "Inference": "Inference"
@@ -4503,8 +4500,8 @@
         "groupsNone": "Máy chủ không đề xuất nhóm nào cho lớp này: chưa có kết quả hoàn thành nào có đủ hồ sơ kỹ năng con để nhóm.",
         "strandTitle": "Trung bình từng phân ngành từ vựng",
         "strandCaption": "Trung bình A2 và B1 — học sinh chỉ làm một phân ngành chỉ tính cho phân ngành đó",
-        "strandA2": "Từ vựng A2",
-        "strandB1": "Từ vựng B1",
+        "strandA2": "Từ vựng thông dụng",
+        "strandB1": "Từ vựng lớp học",
         "strandNone": "—",
         "strandAssessed": "{count} học sinh được đánh giá",
         "averageOnly": "TB {average}",
@@ -4749,7 +4746,7 @@
     "skillSpeaking": "Nói",
     "skillWriting": "Viết",
     "skillDecoding": "Giải mã",
-    "skillVocabulary": "Từ vựng",
+    "skillVocabulary": "Từ vựng thông dụng",
     "skillGrammar": "Ngữ pháp",
     "skillGist": "Ý chính",
     "skillDetail": "Chi tiết",
@@ -4775,7 +4772,7 @@
     "withinError": "trong sai số",
     "trendBestGain": "Cải thiện tốt nhất: {skill} +{delta} điểm",
     "attrDecoding": "Giải mã",
-    "attrVocabularyB1": "Từ vựng B1",
+    "attrVocabularyB1": "Từ vựng lớp học",
     "attrGist": "Ý chính",
     "attrDetail": "Chi tiết",
     "attrInference": "Suy luận",
@@ -4846,9 +4843,9 @@
     "fallbackGatePassed": "đạt",
     "fallbackGateNotMet": "chưa đạt",
     "fallbackCommonSlip": "Lỗi phổ biến nhất: {label} ({pct}% số câu trả lời sai).",
-    "fallbackVocabA2Only": "Từ vựng lần thi này chỉ có phân mục A2 ({a2}); B1 không được đánh giá nên không tuyên bố điểm hợp nhất. Trọng tâm dạy học: tiếp tục củng cố từ vựng A2 trước buổi thi B1.",
-    "fallbackVocabB1Only": "Từ vựng lần thi này chỉ có phân mục B1 ({b1}); A2 không được đánh giá nên không tuyên bố điểm hợp nhất. Trọng tâm dạy học: phát triển từ vựng B1 đang thể hiện rõ.",
-    "fallbackVocabBlend": "Từ vựng hợp nhất hai phân mục ở mức {blended} (A2 {a2}, B1 {b1}). Trọng tâm dạy học: phát triển phân mục yếu hơn trước buổi thi tới.",
+    "fallbackVocabA2Only": "Lần thi này chỉ đánh giá từ vựng thông dụng ({a2}); từ vựng lớp học không được đánh giá. Trọng tâm dạy học: tiếp tục củng cố từ vựng thông dụng trước buổi thi tới.",
+    "fallbackVocabB1Only": "Lần thi này chỉ đánh giá từ vựng lớp học ({b1}); từ vựng thông dụng không được đánh giá. Trọng tâm dạy học: phát triển từ vựng lớp học đang thể hiện rõ.",
+    "fallbackVocabBlend": "Từ vựng thông dụng {a2}, từ vựng lớp học {b1}. Trọng tâm dạy học: phát triển phần yếu hơn trước buổi thi tới.",
     "fallbackNoScore": "không có điểm",
     "fallbackNotAssessed": "không đánh giá"
   },
@@ -4962,8 +4959,8 @@
       },
       "attribute": {
         "decoding": "Giải mã",
-        "vocabA2": "Từ vựng thông dụng (A2)",
-        "vocabB1": "Từ vựng học thuật (B1)",
+        "vocabA2": "Từ vựng thông dụng",
+        "vocabB1": "Từ vựng lớp học",
         "grammar": "Ngữ pháp",
         "gist": "Ý chính",
         "detail": "Chi tiết",
@@ -5015,7 +5012,7 @@
         "can": {
           "decoding": "Nhận biết từ chính xác và trôi chảy.",
           "vocabA2": "Hiểu nghĩa của từ thông dụng trong ngữ cảnh.",
-          "vocabB1": "Hiểu nghĩa của từ học thuật trong ngữ cảnh.",
+          "vocabB1": "Hiểu nghĩa của từ dùng trong lớp học trong ngữ cảnh.",
           "grammar": "Nắm được cấu trúc câu và hình thái từ.",
           "gist": "Nắm được ý chính và mục đích của văn bản.",
           "detail": "Tìm được thông tin được nêu trực tiếp trong đoạn văn.",
@@ -5024,7 +5021,7 @@
         "next": {
           "decoding": "Luyện giải mã: nhận biết từ chính xác và trôi chảy.",
           "vocabA2": "Luyện từ vựng thông dụng: nghĩa của từ thường gặp trong ngữ cảnh.",
-          "vocabB1": "Luyện từ vựng học thuật: nghĩa của từ chuyên môn trong ngữ cảnh.",
+          "vocabB1": "Luyện từ vựng lớp học: nghĩa của từ chuyên môn trong ngữ cảnh.",
           "grammar": "Luyện ngữ pháp: cấu trúc câu và hình thái từ.",
           "gist": "Luyện nắm ý chính: hiểu ý chính và mục đích của văn bản.",
           "detail": "Luyện đọc chi tiết: tìm sự kiện cụ thể và thông tin được nêu.",
@@ -5148,9 +5145,9 @@
         "improved": "Tiến bộ",
         "held": "Giữ vững",
         "slipped": "Giảm",
-        "vocabulary": "Từ vựng học thuật",
-        "everyday": "Thông dụng (A2)",
-        "academic": "Học thuật (B1)",
+        "vocabulary": "Từ vựng",
+        "everyday": "Từ vựng thông dụng",
+        "academic": "Từ vựng lớp học",
         "footer": "Được tạo từ chẩn đoán đọc của {name} vào {date}. Dành cho giáo viên và nhà trường."
       },
       "soonValue": "–"
@@ -5252,8 +5249,8 @@
         "strength": "Thế mạnh",
         "focusArea": "Trọng tâm",
         "vocabulary": "Từ vựng",
-        "everyday": "Thông dụng (A2)",
-        "academic": "Học thuật (B1)",
+        "everyday": "Từ vựng thông dụng",
+        "academic": "Từ vựng lớp học",
         "canDo": "Những gì em làm được",
         "next": "Điều cần luyện tiếp theo",
         "footer": "Tạo từ kết quả chẩn đoán đọc của {name} vào {date}. Dành cho giáo viên và gia đình.",
@@ -5340,7 +5337,7 @@
         "growth": "Tiến bộ",
         "growthText": "{improved} tiến bộ · {held} giữ nguyên · {slipped} giảm",
         "vocab": "Từ vựng",
-        "vocabText": "Thông dụng A2 {a2} · Học thuật B1 {b1}"
+        "vocabText": "Thông dụng {a2} · Lớp học {b1}"
       },
       "activity": {
         "title": "Hoạt động gần đây"
@@ -6178,7 +6175,7 @@
         "sittingsSince": "{count} lần từ {month}"
       },
       "subskillsTitle": "Các kỹ năng đọc thành phần",
-      "subskillsDescription": "Kết quả của {first} ở bảy thành phần của kỹ năng đọc trong bài gần nhất",
+      "subskillsDescription": "Kết quả của {first} ở tám thành phần của kỹ năng đọc trong bài gần nhất",
       "subskills": {
         "deltaUp": "↑ +{points}",
         "deltaDown": "↓ −{points}",
@@ -6204,10 +6201,10 @@
         "growthSteady": "Điểm đọc vẫn ổn định kể từ lần làm bài đầu tiên, trong phạm vi sai số đo lường.",
         "strengthFocus": "Thế mạnh rõ nhất của {first} là {strongest} ({strongestScore}%), còn {weakest} ({weakestScore}%) là trọng tâm cần chú ý nhất.",
         "focusNext": "Luyện tập có mục tiêu về {weakest} — với các văn bản cao hơn một chút so với trình độ hiện tại của {first} — nhiều khả năng sẽ nâng điểm tổng thể nhất.",
-        "vocabBoth": "Từ vựng thông dụng đạt A2 {a2}% và từ vựng học thuật đạt B1 {b1}%.",
+        "vocabBoth": "Từ vựng thông dụng đạt {a2}% và từ vựng lớp học đạt {b1}%.",
         "vocabAcademicNext": "Luyện ngắn gọn, rõ ràng các họ từ học thuật — kết hợp với các bài đọc hiểu vượt ra ngoài nghĩa đen — là cách trực tiếp nhất để nâng khả năng đọc hiểu của {first}.",
-        "vocabA2Only": "Bài này chỉ đo từ vựng thông dụng: A2 {a2}%.",
-        "vocabB1Only": "Bài này chỉ đo từ vựng học thuật: B1 {b1}%."
+        "vocabA2Only": "Bài này chỉ đo từ vựng thông dụng: {a2}%.",
+        "vocabB1Only": "Bài này chỉ đo từ vựng lớp học: {b1}%."
       },
       "hideAi": "Ẩn AI",
       "exported": "Đã tải hồ sơ ẩn danh.",

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.vocabStrandNameSchema = exports.provisionalSchema = exports.cefrBandSchema = exports.readinessSchema = exports.resultDestinationSchema = exports.resultStatusSchema = exports.resultScopeSchema = exports.skillSchema = exports.errorPatternTypeSchema = exports.stageSchema = exports.matrixIdSchema = exports.scoringModelTypeSchema = exports.currentModelVersionSchema = exports.modelVersionSchema = exports.LEGACY_MODEL_VERSION = exports.LISTENING_MODEL_VERSION = exports.MODEL_VERSION = exports.assessedBandSchema = exports.bandSchema = exports.displaySkillSchema = exports.attributeNameSchema = void 0;
+exports.provisionalSchema = exports.cefrBandSchema = exports.readinessSchema = exports.resultDestinationSchema = exports.resultStatusSchema = exports.resultScopeSchema = exports.skillSchema = exports.errorPatternTypeSchema = exports.stageSchema = exports.matrixIdSchema = exports.scoringModelTypeSchema = exports.currentModelVersionSchema = exports.modelVersionSchema = exports.LEGACY_MODEL_VERSION = exports.LISTENING_MODEL_VERSION = exports.MODEL_VERSION = exports.assessedBandSchema = exports.bandSchema = exports.displaySkillSchema = exports.attributeNameSchema = void 0;
 /**
  * Every controlled vocabulary the scoring contract needs, in ONE place.
  *
@@ -26,15 +26,17 @@ exports.attributeNameSchema = zod_1.z.enum([
     'Inference',
 ]);
 /**
- * The seven DISPLAY skills — the bars on screen (data contract §2.2, dashboard
- * §1.1 / §5). Not the same list as the model attributes: `Vocabulary` is the
- * items-seen-weighted blend of `Vocab_A2` + `Vocab_B1` (memo §7, data contract
- * §3) and `Critical` is the Section 3 graded score (data contract §4).
+ * The eight DISPLAY skills — the bars on screen (data contract §2.2, dashboard
+ * §1.1 / §5). The seven model attributes, each its own bar — `Vocab_A2`
+ * (Everyday Vocabulary) and `Vocab_B1` (Classroom Vocabulary) are two skills,
+ * never blended into one — plus `Critical`, the Section 3 graded score (data
+ * contract §4), which is not an attribute.
  */
 exports.displaySkillSchema = zod_1.z.enum([
     'Decoding',
-    'Vocabulary',
+    'Vocab_A2',
     'Grammar',
+    'Vocab_B1',
     'Gist',
     'Detail',
     'Inference',
@@ -122,5 +124,3 @@ exports.cefrBandSchema = zod_1.z.enum(['pre_A1', 'A1', 'A2', 'B1', 'B2', 'C1']);
  * flag, which is `overall.provisional_transform`.
  */
 exports.provisionalSchema = zod_1.z.literal('field_test');
-/** Which vocabulary strand carried a blend on its own (spec v2 §5.4). */
-exports.vocabStrandNameSchema = zod_1.z.enum(['a2', 'b1']);

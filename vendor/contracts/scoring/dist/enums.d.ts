@@ -24,18 +24,20 @@ export declare const attributeNameSchema: z.ZodEnum<{
 }>;
 export type AttributeName = z.infer<typeof attributeNameSchema>;
 /**
- * The seven DISPLAY skills — the bars on screen (data contract §2.2, dashboard
- * §1.1 / §5). Not the same list as the model attributes: `Vocabulary` is the
- * items-seen-weighted blend of `Vocab_A2` + `Vocab_B1` (memo §7, data contract
- * §3) and `Critical` is the Section 3 graded score (data contract §4).
+ * The eight DISPLAY skills — the bars on screen (data contract §2.2, dashboard
+ * §1.1 / §5). The seven model attributes, each its own bar — `Vocab_A2`
+ * (Everyday Vocabulary) and `Vocab_B1` (Classroom Vocabulary) are two skills,
+ * never blended into one — plus `Critical`, the Section 3 graded score (data
+ * contract §4), which is not an attribute.
  */
 export declare const displaySkillSchema: z.ZodEnum<{
     Decoding: "Decoding";
+    Vocab_A2: "Vocab_A2";
     Grammar: "Grammar";
+    Vocab_B1: "Vocab_B1";
     Gist: "Gist";
     Detail: "Detail";
     Inference: "Inference";
-    Vocabulary: "Vocabulary";
     Critical: "Critical";
 }>;
 export type DisplaySkill = z.infer<typeof displaySkillSchema>;
@@ -173,9 +175,3 @@ export type CefrBand = z.infer<typeof cefrBandSchema>;
  */
 export declare const provisionalSchema: z.ZodLiteral<"field_test">;
 export type Provisional = z.infer<typeof provisionalSchema>;
-/** Which vocabulary strand carried a blend on its own (spec v2 §5.4). */
-export declare const vocabStrandNameSchema: z.ZodEnum<{
-    a2: "a2";
-    b1: "b1";
-}>;
-export type VocabStrandName = z.infer<typeof vocabStrandNameSchema>;

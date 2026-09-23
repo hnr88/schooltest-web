@@ -9,10 +9,8 @@ import { cn } from '@/lib/utils';
 /**
  * §4.7 — the Path to Consolidating checklist. DISPLAY LOGIC ONLY: the phase
  * itself still comes from `acara_phase`; this screen derives nothing. Rows are
- * Inference / Vocab_B1 / Gist / Detail with `met = status === "secure"` — and
- * the Vocab B1 row deliberately reads the RAW `Vocab_B1` attribute, not the
- * blended Vocabulary display skill: that is the spec's intent and the one
- * place the two vocabularies legitimately diverge. The gate row is
+ * Inference / Vocab_B1 / Gist / Detail with `met = status === "secure"` — the
+ * Classroom Vocabulary row reads the `Vocab_B1` attribute. The gate row is
  * `met = gate.passed === true` — null is NOT false, it is "Section 3 not
  * reached" (the same distinction the critical card renders).
  *

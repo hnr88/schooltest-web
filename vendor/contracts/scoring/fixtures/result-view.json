@@ -107,18 +107,12 @@
     }
   },
   "vocab": {
-    "blended": 76,
-    "status": "secure",
-    "delta": 4,
-    "delta_reliable": false,
-    "delta_display": "steady",
     "a2": {
       "domain_score": 90
     },
     "b1": {
       "domain_score": 54
-    },
-    "single_strand": null
+    }
   },
   "error_patterns": [
     {
@@ -138,8 +132,9 @@
       "overall": 61,
       "attributes": {
         "Decoding": 88,
-        "Vocabulary": 66,
+        "Vocab_A2": 84,
         "Grammar": 70,
+        "Vocab_B1": 48,
         "Gist": 63,
         "Detail": 68,
         "Inference": 65,
@@ -151,8 +146,9 @@
       "overall": 74,
       "attributes": {
         "Decoding": 92,
-        "Vocabulary": 76,
+        "Vocab_A2": 90,
         "Grammar": 72,
+        "Vocab_B1": 54,
         "Gist": null,
         "Detail": 74,
         "Inference": 80,

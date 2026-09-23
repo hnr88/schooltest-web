@@ -10,7 +10,6 @@ import type {
   StudentDetailTiles,
   StudentDetailView,
   SubskillDelta,
-  VocabStrands,
 } from '@/modules/teacher/types/v2-student-detail.types';
 import type { GrowthView } from '@/modules/teacher/types/v2-view-common.types';
 
@@ -45,15 +44,6 @@ export function subskillDeltaText(delta: SubskillDelta): TextDescriptor | null {
   }
   if (delta.points === 0) return { key: SUBSKILL_DELTA_KEY.flat };
   return { key: delta.points > 0 ? SUBSKILL_DELTA_KEY.up : SUBSKILL_DELTA_KEY.down, values: { points: Math.abs(delta.points) } };
-}
-
-export function strandsText(strands: VocabStrands | null): TextDescriptor | null {
-  if (strands === null) return null;
-  const { a2, b1 } = strands;
-  if (a2 !== null && b1 !== null) return { key: 'subskills.strands', values: { a2, b1 } };
-  if (a2 !== null) return { key: 'subskills.strandA2', values: { a2 } };
-  if (b1 !== null) return { key: 'subskills.strandB1', values: { b1 } };
-  return null;
 }
 
 function dated(key: string, satAt: string | null): TextDescriptor {

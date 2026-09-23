@@ -98,18 +98,12 @@
     }
   },
   "vocab": {
-    "blended": 25,
-    "status": "not_yet",
-    "delta": 0,
-    "delta_reliable": false,
-    "delta_display": "steady",
     "a2": {
       "domain_score": null
     },
     "b1": {
       "domain_score": 25
-    },
-    "single_strand": "b1"
+    }
   },
   "error_patterns": [
     {
@@ -139,8 +133,9 @@
       "overall": null,
       "attributes": {
         "Decoding": null,
-        "Vocabulary": null,
+        "Vocab_A2": null,
         "Grammar": null,
+        "Vocab_B1": null,
         "Gist": null,
         "Detail": null,
         "Inference": null,
@@ -152,8 +147,9 @@
       "overall": null,
       "attributes": {
         "Decoding": null,
-        "Vocabulary": null,
+        "Vocab_A2": null,
         "Grammar": null,
+        "Vocab_B1": null,
         "Gist": null,
         "Detail": null,
         "Inference": null,
@@ -165,8 +161,9 @@
       "overall": null,
       "attributes": {
         "Decoding": null,
-        "Vocabulary": null,
+        "Vocab_A2": null,
         "Grammar": null,
+        "Vocab_B1": null,
         "Gist": null,
         "Detail": null,
         "Inference": null,
@@ -178,8 +175,9 @@
       "overall": 42,
       "attributes": {
         "Decoding": null,
-        "Vocabulary": 25,
+        "Vocab_A2": null,
         "Grammar": null,
+        "Vocab_B1": 25,
         "Gist": 29,
         "Detail": 25,
         "Inference": 25,
@@ -191,8 +189,9 @@
       "overall": 42,
       "attributes": {
         "Decoding": null,
-        "Vocabulary": 25,
+        "Vocab_A2": null,
         "Grammar": null,
+        "Vocab_B1": 25,
         "Gist": 29,
         "Detail": 25,
         "Inference": 25,
@@ -204,8 +203,9 @@
       "overall": 40,
       "attributes": {
         "Decoding": null,
-        "Vocabulary": 25,
+        "Vocab_A2": null,
         "Grammar": null,
+        "Vocab_B1": 25,
         "Gist": 29,
         "Detail": 25,
         "Inference": 25,
@@ -217,8 +217,9 @@
       "overall": 40,
       "attributes": {
         "Decoding": null,
-        "Vocabulary": 25,
+        "Vocab_A2": null,
         "Grammar": null,
+        "Vocab_B1": 25,
         "Gist": 29,
         "Detail": 25,
         "Inference": 25,
@@ -230,8 +231,9 @@
       "overall": 42,
       "attributes": {
         "Decoding": null,
-        "Vocabulary": 25,
+        "Vocab_A2": null,
         "Grammar": null,
+        "Vocab_B1": 25,
         "Gist": 29,
         "Detail": 25,
         "Inference": 25,

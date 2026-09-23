@@ -5,7 +5,6 @@ import type { DisplaySkill, ResultView } from '@schooltest/scoring-contracts';
 import {
   overallDeltaText,
   progressTiles,
-  strandsText,
   studentAnalysis,
   subskillDeltaText,
 } from '@/modules/teacher/lib/student-detail-text';
@@ -64,13 +63,14 @@ describe('student detail text — recorded Dilnoza (reliable fall, 8 sittings, 3
       key: 'subskills.deltaBands',
       labels: { before: 'band.secure', after: 'band.notYet' },
     });
-    expect(subskillDeltaText(card(view, 'Vocabulary').delta)).toEqual({ key: 'subskills.deltaDown', values: { points: 65 } });
+    // Each vocabulary strand shows its OWN band move — the retired blend's "-65" is gone.
+    for (const skill of ['Vocab_A2', 'Vocab_B1'] as const) {
+      expect(subskillDeltaText(card(view, skill).delta)).toEqual({
+        key: 'subskills.deltaBands',
+        labels: { before: 'band.secure', after: 'band.notYet' },
+      });
+    }
     expect(subskillDeltaText(card(view, 'Critical').delta)).toBeNull();
-  });
-
-  test('both vocabulary strands, and none on other cards', () => {
-    expect(strandsText(card(view, 'Vocabulary').strands)).toEqual({ key: 'subskills.strands', values: { a2: 25, b1: 25 } });
-    expect(strandsText(card(view, 'Grammar').strands)).toBeNull();
   });
 
   test('analysis: overall + phase + reliable fall, strongest vs weakest, both strands level', () => {
@@ -103,7 +103,8 @@ describe('student detail text — recorded Amara (server "steady", single B1 str
       value: { ns: 'viewModel', key: 'growth.steady' },
       fg: GROWTH_FG.steady,
     });
-    expect(subskillDeltaText(card(view, 'Vocabulary').delta)).toEqual({ ns: 'viewModel', key: 'growth.steady' });
+    // Classroom Vocabulary held its band: flat, from the attribute's own band pair.
+    expect(subskillDeltaText(card(view, 'Vocab_B1').delta)).toEqual({ key: 'subskills.deltaFlat' });
   });
 
   test('latest tile carries the latest sitting date', () => {
@@ -113,11 +114,7 @@ describe('student detail text — recorded Amara (server "steady", single B1 str
     });
   });
 
-  test('only the B1 strand is printed', () => {
-    expect(strandsText(card(view, 'Vocabulary').strands)).toEqual({ key: 'subskills.strandB1', values: { b1: 25 } });
-  });
-
-  test('analysis: no server phase so none is named, held steady, Gist vs Vocabulary, B1 only', () => {
+  test('analysis: no server phase so none is named, held steady, Gist vs Classroom Vocabulary, B1 only', () => {
     expect(studentAnalysis(view, 'Amara')).toEqual([
       [
         { key: 'analysis.overallNoPhase', values: { first: 'Amara', score: 42 } },
@@ -127,9 +124,9 @@ describe('student detail text — recorded Amara (server "steady", single B1 str
         {
           key: 'analysis.strengthFocus',
           values: { first: 'Amara', strongestScore: 29, weakestScore: 25 },
-          lowerLabels: { strongest: 'skill.gist', weakest: 'skill.vocabulary' },
+          lowerLabels: { strongest: 'skill.gist', weakest: 'attribute.vocabB1' },
         },
-        { key: 'analysis.focusNext', values: { first: 'Amara' }, lowerLabels: { weakest: 'skill.vocabulary' } },
+        { key: 'analysis.focusNext', values: { first: 'Amara' }, lowerLabels: { weakest: 'attribute.vocabB1' } },
       ],
       [{ key: 'analysis.vocabB1Only', values: { b1: 25 } }],
     ]);
@@ -191,21 +188,24 @@ describe('student detail text — edge cases derived from recorded rows', () => 
     ]);
   });
 
-  test('an A2-only sitting (Amara, single_strand a2) prints the A2 strand alone', () => {
+  test('an A2-only sitting (Amara, Everyday Vocabulary only) prints the A2 strand alone', () => {
     const derived: ResultView = {
       ...t2ResultAmara,
-      vocab: { ...t2ResultAmara.vocab, single_strand: 'a2', a2: { ...t2ResultAmara.vocab.a2, domain_score: 25 } },
+      vocab: { a2: { domain_score: 25 }, b1: { domain_score: null } },
     };
     const view = studentDetail(derived);
-    expect(strandsText(card(view, 'Vocabulary').strands)).toEqual({ key: 'subskills.strandA2', values: { a2: 25 } });
     expect(studentAnalysis(view, 'Amara').at(-1)).toEqual([{ key: 'analysis.vocabA2Only', values: { a2: 25 } }]);
   });
 
-  test('subskill points up and zero (Dilnoza vocab "+7" / "0")', () => {
-    const up = studentDetail({ ...t2ResultDilnoza, vocab: { ...t2ResultDilnoza.vocab, delta_display: '+7' } });
-    expect(subskillDeltaText(card(up, 'Vocabulary').delta)).toEqual({ key: 'subskills.deltaUp', values: { points: 7 } });
-    const zero = studentDetail({ ...t2ResultDilnoza, vocab: { ...t2ResultDilnoza.vocab, delta: 0, delta_display: '0' } });
-    expect(subskillDeltaText(card(zero, 'Vocabulary').delta)).toEqual({ key: 'subskills.deltaFlat' });
+  test('subskill points up and zero (Dilnoza Everyday Vocabulary "+7" / "0")', () => {
+    const everyday = t2ResultDilnoza.attributes.Vocab_A2;
+    if (everyday === undefined || everyday.status === 'not_assessed') throw new Error('fixture drifted');
+    const withEveryday = (delta: number, display: string): ResultView => ({
+      ...t2ResultDilnoza,
+      attributes: { ...t2ResultDilnoza.attributes, Vocab_A2: { ...everyday, delta, delta_reliable: true, delta_display: display, band_before: undefined, band_after: undefined } },
+    });
+    expect(subskillDeltaText(card(studentDetail(withEveryday(7, '+7')), 'Vocab_A2').delta)).toEqual({ key: 'subskills.deltaUp', values: { points: 7 } });
+    expect(subskillDeltaText(card(studentDetail(withEveryday(0, '0')), 'Vocab_A2').delta)).toEqual({ key: 'subskills.deltaFlat' });
   });
 
   test('no history (omitted): undated baseline and latest labels, no baseline or sittings value', () => {

@@ -1758,9 +1758,6 @@
       "foundationBottleneck": "{blockedCount, plural, one {Comprehension attribute {blocked} is} other {Comprehension attributes {blocked} are}} not yet secure, while {gapCount, plural, one {the foundation attribute {gap}, which the receptive model requires first, is} other {the foundation attributes {gap}, which the receptive model requires first, are}} not secure — so the bottleneck sits at {gap}, not in comprehension itself.",
       "foundationSecureComprehensionGap": "Every foundation attribute assessed here is secure, so the gap sits inside comprehension: {gapCount, plural, one {attribute {gap} is} other {attributes {gap} are}} not yet secure.",
       "allMastered": "Every attribute assessed in this sitting is secure, across both the foundation and the comprehension layer, so this result names no bottleneck.",
-      "vocabularyBandMeasured": "Modelled vocabulary carries the status “{status}” at the A2 band, and the supplementary B1 band — which sits outside the model — scored {b1} in this sitting.",
-      "vocabularyBandNotAdministered": "Modelled vocabulary carries the status “{status}” at the A2 band; no B1-band item was served in this sitting, so there is no above-A2 vocabulary reading to set beside it.",
-      "vocabularyNotAssessedBandMeasured": "No modelled vocabulary item was administered in this sitting, so the only vocabulary reading here is the supplementary B1 band at {b1} — an out-of-model indicator, not a mastery claim.",
       "evidenceCaveat": "{spread, select, uniform {These statements rest on {assessed} of {total} attributes, each evidenced by {maxItems} items.} other {These statements rest on {assessed} of {total} attributes, evidenced by between {minItems} and {maxItems} items each, so read the thinner ones with more caution.}}{fieldTest, select, true { This sitting also included field-test items, so treat these statements as provisional.} other {}}"
     },
     "errorPatternsEyebrow": "Error pattern notes",
@@ -1829,9 +1826,9 @@
     "familyPracticeLine": "Short, regular reading practice at home — shared reading and talking about what was read — supports every strand.",
     "attributes": {
       "Decoding": "Decoding",
-      "Vocab_A2": "Vocabulary (A2)",
+      "Vocab_A2": "Everyday Vocabulary",
       "Grammar": "Grammar",
-      "Vocab_B1": "Vocabulary (B1)",
+      "Vocab_B1": "Classroom Vocabulary",
       "Gist": "Gist",
       "Detail": "Detail",
       "Inference": "Inference"
@@ -4484,8 +4481,8 @@
         "groupsNone": "The server suggested no groups for this class: no completed result carries a full subskill profile to group on yet.",
         "strandTitle": "Vocabulary strand means",
         "strandCaption": "A2 and B1 means — a single-strand student counts only for the strand they sat",
-        "strandA2": "Vocabulary A2",
-        "strandB1": "Vocabulary B1",
+        "strandA2": "Everyday Vocabulary",
+        "strandB1": "Classroom Vocabulary",
         "strandNone": "—",
         "strandAssessed": "{count, plural, one {# student assessed} other {# students assessed}}",
         "averageOnly": "avg {average}",
@@ -4730,7 +4727,7 @@
     "skillSpeaking": "Speaking",
     "skillWriting": "Writing",
     "skillDecoding": "Decoding",
-    "skillVocabulary": "Vocabulary",
+    "skillVocabulary": "Everyday Vocabulary",
     "skillGrammar": "Grammar",
     "skillGist": "Gist",
     "skillDetail": "Detail",
@@ -4756,7 +4753,7 @@
     "withinError": "within error",
     "trendBestGain": "Best gain: {skill} +{delta} pts",
     "attrDecoding": "Decoding",
-    "attrVocabularyB1": "Vocabulary B1",
+    "attrVocabularyB1": "Classroom Vocabulary",
     "attrGist": "Gist",
     "attrDetail": "Detail",
     "attrInference": "Inference",
@@ -4827,9 +4824,9 @@
     "fallbackGatePassed": "passed",
     "fallbackGateNotMet": "not yet met",
     "fallbackCommonSlip": "Most common slip: {label} ({pct}% of wrong answers).",
-    "fallbackVocabA2Only": "Vocabulary this sitting is the A2 strand alone ({a2}); B1 was not assessed, so no blend is claimed. Teaching focus: keep consolidating A2 word knowledge before the B1 sitting.",
-    "fallbackVocabB1Only": "Vocabulary this sitting is the B1 strand alone ({b1}); A2 was not assessed, so no blend is claimed. Teaching focus: build on the B1 vocabulary now in evidence.",
-    "fallbackVocabBlend": "Vocabulary blends the two strands at {blended} (A2 {a2}, B1 {b1}). Teaching focus: grow the weaker strand before the next sitting.",
+    "fallbackVocabA2Only": "Only Everyday Vocabulary was assessed this sitting ({a2}); Classroom Vocabulary was not. Teaching focus: keep consolidating everyday word knowledge before the next sitting.",
+    "fallbackVocabB1Only": "Only Classroom Vocabulary was assessed this sitting ({b1}); Everyday Vocabulary was not. Teaching focus: build on the classroom vocabulary now in evidence.",
+    "fallbackVocabBlend": "Everyday Vocabulary {a2}, Classroom Vocabulary {b1}. Teaching focus: grow the weaker of the two before the next sitting.",
     "fallbackNoScore": "no score",
     "fallbackNotAssessed": "not assessed"
   },
@@ -4943,8 +4940,8 @@
       },
       "attribute": {
         "decoding": "Decoding",
-        "vocabA2": "Everyday vocabulary (A2)",
-        "vocabB1": "Academic vocabulary (B1)",
+        "vocabA2": "Everyday Vocabulary",
+        "vocabB1": "Classroom Vocabulary",
         "grammar": "Grammar",
         "gist": "Gist",
         "detail": "Detail",
@@ -4996,7 +4993,7 @@
         "can": {
           "decoding": "Recognises words accurately and fluently.",
           "vocabA2": "Knows what everyday words mean in context.",
-          "vocabB1": "Knows what academic words mean in context.",
+          "vocabB1": "Knows what classroom words mean in context.",
           "grammar": "Follows sentence-level structure and word forms.",
           "gist": "Grasps the main idea and purpose of a text.",
           "detail": "Finds information that is stated directly in the passage.",
@@ -5005,7 +5002,7 @@
         "next": {
           "decoding": "Work on decoding: recognising words accurately and fluently.",
           "vocabA2": "Work on everyday vocabulary: what common words mean in context.",
-          "vocabB1": "Work on academic vocabulary: what subject words mean in context.",
+          "vocabB1": "Work on classroom vocabulary: what subject words mean in context.",
           "grammar": "Work on grammar: sentence-level structure and word forms.",
           "gist": "Work on gist: grasping the main idea and purpose of a text.",
           "detail": "Work on detail: locating specific facts and stated information.",
@@ -5129,9 +5126,9 @@
         "improved": "Improved",
         "held": "Held steady",
         "slipped": "Slipped",
-        "vocabulary": "Academic vocabulary",
-        "everyday": "Everyday (A2)",
-        "academic": "Academic (B1)",
+        "vocabulary": "Vocabulary",
+        "everyday": "Everyday Vocabulary",
+        "academic": "Classroom Vocabulary",
         "footer": "Generated from {name} reading diagnostics on {date}. For teacher and school use."
       },
       "soonValue": "–"
@@ -5233,8 +5230,8 @@
         "strength": "Strength",
         "focusArea": "Focus area",
         "vocabulary": "Vocabulary",
-        "everyday": "Everyday (A2)",
-        "academic": "Academic (B1)",
+        "everyday": "Everyday Vocabulary",
+        "academic": "Classroom Vocabulary",
         "canDo": "What they can do",
         "next": "What to work on next",
         "footer": "Generated from {name} reading diagnostics on {date}. For teacher and family use.",
@@ -5321,7 +5318,7 @@
         "growth": "Growth",
         "growthText": "{improved} improved · {held} held · {slipped} slipped",
         "vocab": "Vocab",
-        "vocabText": "Everyday A2 {a2} · Academic B1 {b1}"
+        "vocabText": "Everyday {a2} · Classroom {b1}"
       },
       "activity": {
         "title": "Recent activity"
@@ -6159,7 +6156,7 @@
         "sittingsSince": "{count} since {month}"
       },
       "subskillsTitle": "Reading subskills",
-      "subskillsDescription": "How {first} performed across the seven components of reading on the latest form",
+      "subskillsDescription": "How {first} performed across the eight components of reading on the latest form",
       "subskills": {
         "deltaUp": "↑ +{points}",
         "deltaDown": "↓ −{points}",
@@ -6185,10 +6182,10 @@
         "growthSteady": "Their reading has held steady since the first sitting, within measurement error.",
         "strengthFocus": "{first}’s strongest area is {strongest} ({strongestScore}%), while {weakest} ({weakestScore}%) is the clearest focus.",
         "focusNext": "Targeted work on {weakest} — with texts pitched just beyond {first}’s current level — is likely to move the overall score most.",
-        "vocabBoth": "Everyday vocabulary is at A2 {a2}% and academic vocabulary at B1 {b1}%.",
+        "vocabBoth": "Everyday vocabulary is at {a2}% and classroom vocabulary at {b1}%.",
         "vocabAcademicNext": "Short, explicit work on academic word families — paired with reading-for-meaning tasks that push beyond the literal — is the most direct way to lift {first}’s comprehension.",
-        "vocabA2Only": "Only everyday vocabulary was measured on this form: A2 {a2}%.",
-        "vocabB1Only": "Only academic vocabulary was measured on this form: B1 {b1}%."
+        "vocabA2Only": "Only everyday vocabulary was measured on this form: {a2}%.",
+        "vocabB1Only": "Only classroom vocabulary was measured on this form: {b1}%."
       },
       "hideAi": "Hide AI",
       "exported": "De-identified profile downloaded.",

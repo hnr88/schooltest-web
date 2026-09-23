@@ -75,9 +75,9 @@ test.describe('journey 06 — scoring to teacher report', () => {
       await expect(headline).toBeInViewport();
       await expect(headline).toHaveText(`${overall}%`);
 
-      // …and each of the seven subskill cards carries ITS OWN server value: the
-      // blend for Vocabulary, the gate score for Critical, the attribute
-      // elsewhere — and an absence renders as the kit dash, never as 0.
+      // …and each of the eight subskill cards carries ITS OWN server value: the
+      // gate score for Critical, the attribute elsewhere (Everyday and Classroom
+      // Vocabulary each their own) — and an absence renders as the kit dash, never as 0.
       for (const tile of displaySkills(view)) {
         const card = page.locator(`[data-slot="student-subskill"][data-skill="${tile.skill}"]`);
         await expect(card).toHaveAttribute('data-assessed', String(tile.domain_score !== null));

@@ -46,8 +46,8 @@ const pct = (value: number) => icu(insights('percent'), { value: String(value) }
 const note = (type: string, value: unknown) => test.info().annotations.push({ type, description: JSON.stringify(value) });
 /** The seven teach reading areas, in the order the mastery table columns and the drill-down list them. */
 const AREA_CODES = ['R1', 'R2', 'R3', 'R4', 'R5', 'R6', 'R7'] as const;
-/** The six skills the Progress panel renders a movement row for — Critical reading is the gate, not a skill. */
-const MOVEMENT_SKILLS = ['Decoding', 'Vocabulary', 'Grammar', 'Gist', 'Detail', 'Inference'] as const;
+/** The seven skills the Progress panel renders a movement row for — Critical reading is the gate, not a skill. */
+const MOVEMENT_SKILLS = ['Decoding', 'Vocab_A2', 'Grammar', 'Vocab_B1', 'Gist', 'Detail', 'Inference'] as const;
 
 test.use({ viewport: { width: 1440, height: 900 } });
 
@@ -267,7 +267,6 @@ test.describe('S5 — Teaching insights tab', () => {
       .flatMap((row) => (row.result === null ? [] : [row.result]))
       .flatMap((result) =>
         MOVEMENT_SKILLS.map((skill) => {
-          if (skill === 'Vocabulary') return result.vocab.delta_display;
           const entry = result.attributes[skill];
           return entry === undefined || entry.status === 'not_assessed' ? null : entry.delta_display;
         }),

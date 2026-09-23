@@ -5,7 +5,8 @@ import { type ResultView } from '@schooltest/scoring-contracts';
  * student's latest official ResultView (the canonical `GET /results/{id}`
  * read). Everything on it is the server's own judgement, carried verbatim:
  *
- *  - `skills` covers the SIX CDM-and-blend skills. Critical Reading is NOT a
+ *  - `skills` covers the SEVEN CDM skills — Everyday (Vocab_A2) and Classroom
+ *    (Vocab_B1) Vocabulary as two rows, never blended. Critical Reading is NOT a
  *    skill row — it is Rasch-scored outside the CDM, so it has no posterior,
  *    no band and no delta; the view carries it as `gate` (score + pass/fail
  *    state) only.
@@ -47,44 +48,35 @@ export interface StudentDrillDownViewModel {
   tests: DrillDownTest[];
 }
 
-/** i18n KEY for the label, not a data key: the areas map is presentation
- * vocabulary (labels only), which the stored-codes ruling explicitly allows. */
-const LABEL_AREAS_KEY: Record<string, string> = {
-  Decoding: 'R1',
-  Vocabulary: 'R2',
-  Grammar: 'R3',
-  Gist: 'R4',
-  Detail: 'R5',
-  Inference: 'R6',
+/** Full i18n KEY for the label, not a data key: the areas map is presentation
+ * vocabulary (labels only), which the stored-codes ruling explicitly allows. The
+ * two vocabulary strands take the report's own attribute names. */
+const LABEL_KEY: Record<string, string> = {
+  Decoding: 'Teach.diagnostic.areas.R1',
+  Vocab_A2: 'Report.attributes.Vocab_A2',
+  Grammar: 'Teach.diagnostic.areas.R3',
+  Vocab_B1: 'Report.attributes.Vocab_B1',
+  Gist: 'Teach.diagnostic.areas.R4',
+  Detail: 'Teach.diagnostic.areas.R5',
+  Inference: 'Teach.diagnostic.areas.R6',
 };
 
 export function drillDownLabelKey(attribute: string): string {
-  return LABEL_AREAS_KEY[attribute] ?? attribute;
+  return LABEL_KEY[attribute] ?? attribute;
 }
 
 export function buildStudentDrillDownView(view: ResultView): StudentDrillDownViewModel {
   const skills: DrillDownSkill[] = (
     [
       'Decoding',
-      'Vocabulary',
+      'Vocab_A2',
       'Grammar',
+      'Vocab_B1',
       'Gist',
       'Detail',
       'Inference',
     ] as const
   ).map((attribute) => {
-    if (attribute === 'Vocabulary') {
-      const vocab = view.vocab;
-      const assessed = vocab.status !== 'not_assessed' && vocab.blended !== null;
-      return {
-        attribute,
-        score: assessed ? vocab.blended : null,
-        status: vocab.status === 'not_assessed' ? null : vocab.status,
-        deltaDisplay: view.vocab.delta_display,
-        bandBefore: null,
-        bandAfter: null,
-      };
-    }
     const entry = view.attributes[attribute];
     if (entry === undefined || entry.status === 'not_assessed') {
       return {

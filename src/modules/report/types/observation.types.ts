@@ -1,4 +1,4 @@
-import type { AssessedBand, AttributeName } from '@/modules/report/schemas/result-view.schema';
+import type { AttributeName } from '@/modules/report/schemas/result-view.schema';
 
 // E11-06. One teaching observation as a KEY plus the values it names — never a
 // composed sentence. The wording lives in the six message catalogs, so the
@@ -13,9 +13,6 @@ export type Observation =
   | { key: 'foundationBottleneck'; blocked: AttributeName[]; gap: AttributeName[] }
   | { key: 'foundationSecureComprehensionGap'; gap: AttributeName[] }
   | { key: 'allMastered' }
-  | { key: 'vocabularyBandMeasured'; status: AssessedBand; b1: number }
-  | { key: 'vocabularyBandNotAdministered'; status: AssessedBand }
-  | { key: 'vocabularyNotAssessedBandMeasured'; b1: number }
   | {
       key: 'evidenceCaveat';
       assessed: number;

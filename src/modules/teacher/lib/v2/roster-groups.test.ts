@@ -23,7 +23,9 @@ describe('rosterGroups — recorded t2 roster', () => {
           'Farida Baptiste',
         ],
       ],
-      ['Vocabulary', 'skill.vocabulary', 2, ['Amara Baptiste', 'Tenzin Baptiste']],
+      // Everyday and Classroom Vocabulary are separate groups: Tenzin's gap is everyday, Amara's classroom.
+      ['Vocab_A2', 'attribute.vocabA2', 1, ['Tenzin Baptiste']],
+      ['Vocab_B1', 'attribute.vocabB1', 1, ['Amara Baptiste']],
       [
         'not_yet_assessed',
         'attribute.notYetAssessed',

@@ -7,9 +7,9 @@ import type { Band, DisplaySkill } from '@schooltest/scoring-contracts';
 import { cn } from '@/lib/utils';
 
 /**
- * One of the seven subskill cards (dashboard §4.4), driven by the data layer's
+ * One of the eight subskill cards (dashboard §4.4), driven by the data layer's
  * displaySkills() mapping (task 29) plus the view for the per-skill growth and
- * the vocab/critical detail lines.
+ * the critical detail line.
  *
  * Honest-rendering rules (data contract §8): a not-assessed skill is a VISIBLE
  * GAP — grey card, "Not yet assessed", no bar, no percentage, never 0. The
@@ -22,8 +22,9 @@ import { cn } from '@/lib/utils';
  */
 const SKILL_KEY: Record<DisplaySkill, string> = {
   Decoding: 'skillDecoding',
-  Vocabulary: 'skillVocabulary',
+  Vocab_A2: 'skillVocabulary',
   Grammar: 'skillGrammar',
+  Vocab_B1: 'attrVocabularyB1',
   Gist: 'skillGist',
   Detail: 'skillDetail',
   Inference: 'skillInference',
@@ -37,18 +38,16 @@ export function SubskillCard({
   deltaDisplay,
   bandBefore,
   bandAfter,
-  strandLine,
   gatePassed,
   tag,
 }: {
   skill: DisplaySkill;
   domainScore: number | null;
-  /** A real band for the six banded cards; null on the gate-state card (Critical). */
+  /** A real band for the seven banded cards; null on the gate-state card (Critical). */
   status: Band | null;
   deltaDisplay: string | null;
   bandBefore?: string;
   bandAfter?: string;
-  strandLine?: string | null;
   gatePassed?: boolean | null;
   tag?: 'strength' | 'focus';
 }) {
@@ -118,10 +117,6 @@ export function SubskillCard({
         <span data-slot="skill-delta" data-delta={deltaDisplay} className="text-caption font-semibold">
           {t('deltaPts', { arrow: deltaDisplay.startsWith('-') ? '↓' : '↑', growth: deltaDisplay })}
         </span>
-      ) : null}
-
-      {strandLine !== undefined && strandLine !== null ? (
-        <span data-slot="vocab-strand-line" className="text-caption text-muted-foreground">{strandLine}</span>
       ) : null}
 
       {gatePassed !== undefined ? (

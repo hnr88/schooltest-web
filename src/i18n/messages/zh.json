@@ -1758,9 +1758,6 @@
       "foundationBottleneck": "{blockedCount, plural, other {理解层属性 {blocked} 尚不稳固}}，而 {gapCount, plural, other {模型要求先行的基础层属性 {gap} 也不稳固}}——因此瓶颈位于 {gap}，而不在理解层本身。",
       "foundationSecureComprehensionGap": "此处已测的基础层属性全部稳固，因此差距位于理解层：{gapCount, plural, other {属性 {gap} 尚不稳固}}。",
       "allMastered": "本次测评中所有已测属性在基础层与理解层均已稳固，因此本结果不指出瓶颈。",
-      "vocabularyBandMeasured": "建模词汇在 A2 分段的状态为“{status}”，而位于模型之外的补充 B1 分段本次得分为 {b1}。",
-      "vocabularyBandNotAdministered": "建模词汇在 A2 分段的状态为“{status}”；本次未施测 B1 分段题目，因此没有可与之并列的 A2 以上词汇读数。",
-      "vocabularyNotAssessedBandMeasured": "本次未施测任何建模词汇题目，因此此处唯一的词汇读数是补充 B1 分段的得分 {b1}——这是模型外指标，不是掌握结论。",
       "evidenceCaveat": "{spread, select, uniform {以上结论基于 {total} 个属性中的 {assessed} 个，每个属性各有 {maxItems} 道题的证据。} other {以上结论基于 {total} 个属性中的 {assessed} 个，每个属性的证据在 {minItems} 至 {maxItems} 道题之间，证据较薄的属性请更谨慎解读。}}{fieldTest, select, true { 本次考试还包含试测题目，因此上述判断应视为暂定。} other {}}"
     },
     "errorPatternsEyebrow": "错误模式记录",
@@ -1829,9 +1826,9 @@
     "familyPracticeLine": "在家进行短时、规律的阅读练习——亲子共读并谈论所读内容——对各个方面都有帮助。",
     "attributes": {
       "Decoding": "Decoding",
-      "Vocab_A2": "Vocabulary (A2)",
+      "Vocab_A2": "日常词汇",
       "Grammar": "Grammar",
-      "Vocab_B1": "Vocabulary (B1)",
+      "Vocab_B1": "课堂词汇",
       "Gist": "Gist",
       "Detail": "Detail",
       "Inference": "Inference"
@@ -4484,8 +4481,8 @@
         "groupsNone": "服务器未为该班级建议任何分组：目前还没有任何已完成的结果具备完整的子技能数据可供分组。",
         "strandTitle": "词汇分项均值",
         "strandCaption": "A2 与 B1 均值——仅做一个分项的学生只计入该分项",
-        "strandA2": "词汇 A2",
-        "strandB1": "词汇 B1",
+        "strandA2": "日常词汇",
+        "strandB1": "课堂词汇",
         "strandNone": "—",
         "strandAssessed": "{count} 名学生已评估",
         "averageOnly": "均值 {average}",
@@ -4730,7 +4727,7 @@
     "skillSpeaking": "口语",
     "skillWriting": "写作",
     "skillDecoding": "解码",
-    "skillVocabulary": "词汇",
+    "skillVocabulary": "日常词汇",
     "skillGrammar": "语法",
     "skillGist": "主旨理解",
     "skillDetail": "细节把握",
@@ -4756,7 +4753,7 @@
     "withinError": "在误差范围内",
     "trendBestGain": "最大进步：{skill} +{delta} 分",
     "attrDecoding": "解码",
-    "attrVocabularyB1": "词汇 B1",
+    "attrVocabularyB1": "课堂词汇",
     "attrGist": "主旨理解",
     "attrDetail": "细节把握",
     "attrInference": "推理",
@@ -4827,9 +4824,9 @@
     "fallbackGatePassed": "已通过",
     "fallbackGateNotMet": "尚未满足",
     "fallbackCommonSlip": "最常见失误：{label}（占错误答案的 {pct}%）。",
-    "fallbackVocabA2Only": "本次词汇仅评估了 A2 子项（{a2}）；未评估 B1，因此不主张混合分数。教学重点：在 B1 考试前继续巩固 A2 词汇。",
-    "fallbackVocabB1Only": "本次词汇仅评估了 B1 子项（{b1}）；未评估 A2，因此不主张混合分数。教学重点：在已展现的 B1 词汇基础上继续提升。",
-    "fallbackVocabBlend": "词汇综合两个子项为 {blended}（A2 {a2}，B1 {b1}）。教学重点：在下次考试前加强较弱的子项。",
+    "fallbackVocabA2Only": "本次只评估了日常词汇（{a2}）；未评估课堂词汇。教学重点：在下次考试前继续巩固日常词汇。",
+    "fallbackVocabB1Only": "本次只评估了课堂词汇（{b1}）；未评估日常词汇。教学重点：在已展现的课堂词汇基础上继续提升。",
+    "fallbackVocabBlend": "日常词汇 {a2}，课堂词汇 {b1}。教学重点：在下次考试前加强较弱的一项。",
     "fallbackNoScore": "无分数",
     "fallbackNotAssessed": "未评估"
   },
@@ -4943,8 +4940,8 @@
       },
       "attribute": {
         "decoding": "解码",
-        "vocabA2": "日常词汇（A2）",
-        "vocabB1": "学术词汇（B1）",
+        "vocabA2": "日常词汇",
+        "vocabB1": "课堂词汇",
         "grammar": "语法",
         "gist": "主旨理解",
         "detail": "细节把握",
@@ -4996,7 +4993,7 @@
         "can": {
           "decoding": "能准确、流畅地识别单词。",
           "vocabA2": "理解日常词汇在语境中的含义。",
-          "vocabB1": "理解学术词汇在语境中的含义。",
+          "vocabB1": "理解课堂词汇在语境中的含义。",
           "grammar": "掌握句子结构与词形。",
           "gist": "能把握文本的主旨和目的。",
           "detail": "能找到文章中直接陈述的信息。",
@@ -5005,7 +5002,7 @@
         "next": {
           "decoding": "练习解码：准确、流畅地识别单词。",
           "vocabA2": "练习日常词汇：常用词在语境中的含义。",
-          "vocabB1": "练习学术词汇：学科词汇在语境中的含义。",
+          "vocabB1": "练习课堂词汇：学科词汇在语境中的含义。",
           "grammar": "练习语法：句子结构与词形。",
           "gist": "练习主旨理解：把握文本的主旨和目的。",
           "detail": "练习细节把握：查找具体事实和明确陈述的信息。",
@@ -5129,9 +5126,9 @@
         "improved": "进步",
         "held": "保持稳定",
         "slipped": "下滑",
-        "vocabulary": "学术词汇",
-        "everyday": "日常（A2）",
-        "academic": "学术（B1）",
+        "vocabulary": "词汇",
+        "everyday": "日常词汇",
+        "academic": "课堂词汇",
         "footer": "根据 {name} 的阅读诊断于 {date} 生成。供教师和学校使用。"
       },
       "soonValue": "–"
@@ -5233,8 +5230,8 @@
         "strength": "优势",
         "focusArea": "重点领域",
         "vocabulary": "词汇",
-        "everyday": "日常词汇（A2）",
-        "academic": "学术词汇（B1）",
+        "everyday": "日常词汇",
+        "academic": "课堂词汇",
         "canDo": "已经能做到的",
         "next": "下一步要练习的",
         "footer": "根据 {name} 于 {date} 的阅读诊断生成。供教师和家庭使用。",
@@ -5321,7 +5318,7 @@
         "growth": "进步",
         "growthText": "提高 {improved} · 持平 {held} · 下降 {slipped}",
         "vocab": "词汇",
-        "vocabText": "日常 A2 {a2} · 学术 B1 {b1}"
+        "vocabText": "日常 {a2} · 课堂 {b1}"
       },
       "activity": {
         "title": "最近动态"
@@ -6159,7 +6156,7 @@
         "sittingsSince": "自 {month} 起 {count} 次"
       },
       "subskillsTitle": "阅读子技能",
-      "subskillsDescription": "{first} 在最新一次测试中阅读七个组成部分的表现",
+      "subskillsDescription": "{first} 在最新一次测试中阅读八个组成部分的表现",
       "subskills": {
         "deltaUp": "↑ +{points}",
         "deltaDown": "↓ −{points}",
@@ -6185,10 +6182,10 @@
         "growthSteady": "自首次测试以来，其阅读成绩在测量误差范围内保持稳定。",
         "strengthFocus": "{first} 最强的领域是{strongest}（{strongestScore}%），而{weakest}（{weakestScore}%）是最明确的重点。",
         "focusNext": "针对{weakest}进行专项练习，并选用略高于{first}当前水平的文本，最有可能提升总分。",
-        "vocabBoth": "日常词汇为 A2 {a2}%，学术词汇为 B1 {b1}%。",
+        "vocabBoth": "日常词汇为 {a2}%，课堂词汇为 {b1}%。",
         "vocabAcademicNext": "简短、明确地学习学术词族，并结合超越字面理解的阅读任务，是提升{first}理解能力最直接的方法。",
-        "vocabA2Only": "本次测试只测量了日常词汇：A2 {a2}%。",
-        "vocabB1Only": "本次测试只测量了学术词汇：B1 {b1}%。"
+        "vocabA2Only": "本次测试只测量了日常词汇：{a2}%。",
+        "vocabB1Only": "本次测试只测量了课堂词汇：{b1}%。"
       },
       "hideAi": "隐藏 AI",
       "exported": "已下载去标识化档案。",

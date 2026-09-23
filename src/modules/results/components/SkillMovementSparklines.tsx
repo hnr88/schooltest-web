@@ -64,11 +64,8 @@ export function sparklineRows(view: ResultView): MovementRow[] {
 
 type Growth = { reliable: boolean | null; value: number | null; display: string | null } | null;
 
-/** The five attribute-backed skills only — Critical has no growth (ruling 4a), Vocabulary is the blend. */
+/** The seven attribute-backed skills only — Critical has no growth (ruling 4a). */
 function growthOf(view: ResultView, skill: Exclude<DisplaySkill, 'Critical'>): Growth {
-  if (skill === 'Vocabulary') {
-    return { reliable: view.vocab.delta_reliable, value: view.vocab.delta, display: view.vocab.delta_display };
-  }
   const attribute = view.attributes[skill];
   if (attribute === undefined || attribute.status === 'not_assessed') return null;
   return {
@@ -80,8 +77,9 @@ function growthOf(view: ResultView, skill: Exclude<DisplaySkill, 'Critical'>): G
 
 const SKILL_KEY: Record<DisplaySkill, string> = {
   Decoding: 'skillDecoding',
-  Vocabulary: 'skillVocabulary',
+  Vocab_A2: 'skillVocabulary',
   Grammar: 'skillGrammar',
+  Vocab_B1: 'attrVocabularyB1',
   Gist: 'skillGist',
   Detail: 'skillDetail',
   Inference: 'skillInference',

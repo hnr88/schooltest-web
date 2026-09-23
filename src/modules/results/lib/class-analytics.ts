@@ -22,7 +22,7 @@ export interface SubskillAverage {
   excluded: number;
 }
 
-/** Per-skill mean of `domain_score` over students with THAT skill assessed, in canonical order over the seven display tiles. D13 PER-FUNCTION: Critical IS included here (each skill averages within itself, no cross-scale mixing) but counted NOWHERE else (see secureCounts). */
+/** Per-skill mean of `domain_score` over students with THAT skill assessed, in canonical order over the eight display tiles. D13 PER-FUNCTION: Critical IS included here (each skill averages within itself, no cross-scale mixing) but counted NOWHERE else (see secureCounts). */
 export function subskillAverages(rows: readonly ResultView[]): SubskillAverage[] {
   const tallies = new Map<DisplaySkill, { sum: number; assessed: number }>();
   for (const row of rows) {
@@ -56,9 +56,7 @@ export function secureCounts(rows: readonly ResultView[]): SecureCount[] {
   const counts = new Map<DisplaySkill, { secure: number; assessed: number }>();
   for (const row of rows) {
     for (const tile of displaySkills(row)) {
-      // No band on the gate; a gap is not a band either. The Vocabulary tile carries the
-      // blend's own `status`, which is the literal "not_assessed" (not null) when no strand
-      // was assessed — so the score is checked too, or it counts as assessed ("9 of 15").
+      // No band on the gate; a gap is not a band either.
       if (tile.source === 'gate' || tile.status === null || tile.domain_score === null) continue;
       const seen = counts.get(tile.skill) ?? { secure: 0, assessed: 0 };
       counts.set(tile.skill, {
@@ -78,7 +76,7 @@ export interface StrandMean {
   assessed: number;
 }
 
-/** §3/D2 strand means. A `single_strand` student is EXCLUDED from the strand they did not sit — no B1 evidence means no B1 contribution, by any value including a fallback. The counts say so. */
+/** §3/D2 strand means. A student is EXCLUDED from a strand they did not sit (its score is null) — no B1 evidence means no B1 contribution, by any value including a fallback. The counts say so. */
 export function vocabStrandMeans(rows: readonly ResultView[]): { a2: StrandMean; b1: StrandMean } {
   const mean = (scores: Array<number | null>): StrandMean => {
     const sat = scores.filter((score): score is number => score !== null);
@@ -89,9 +87,8 @@ export function vocabStrandMeans(rows: readonly ResultView[]): { a2: StrandMean;
   const a2: Array<number | null> = [];
   const b1: Array<number | null> = [];
   for (const row of rows) {
-    // A row that sat only one strand is absent from the other, whatever rode along.
-    a2.push(row.vocab.single_strand === 'b1' ? null : row.vocab.a2.domain_score);
-    b1.push(row.vocab.single_strand === 'a2' ? null : row.vocab.b1.domain_score);
+    a2.push(row.vocab.a2.domain_score);
+    b1.push(row.vocab.b1.domain_score);
   }
   return { a2: mean(a2), b1: mean(b1) };
 }

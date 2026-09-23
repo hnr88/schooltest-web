@@ -93,10 +93,6 @@ describe('growthFromServer — the server movement claim, never recomputed', () 
     });
   });
 
-  test('recorded Dilnoza vocabulary block: a reliable "-65" is down', () => {
-    expect(growthFromServer(t2ResultDilnoza.vocab)).toMatchObject({ kind: 'down', points: -65, reliable: true });
-  });
-
   test('no source is no movement', () => {
     expect(growthFromServer(null).kind).toBe('none');
   });

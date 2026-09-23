@@ -1758,9 +1758,6 @@
       "foundationBottleneck": "{blockedCount, plural, other {Atribut kefahaman {blocked} belum teguh}}, sementara {gapCount, plural, other {atribut asas {gap} yang dituntut model reseptif terlebih dahulu tidak kukuh}} — jadi halangan itu terletak pada {gap}, bukan pada kefahaman itu sendiri.",
       "foundationSecureComprehensionGap": "Setiap atribut asas yang dinilai di sini teguh, jadi jurangnya terletak dalam kefahaman: {gapCount, plural, other {atribut {gap} belum teguh}}.",
       "allMastered": "Setiap atribut yang dinilai dalam sesi ujian ini teguh, merentas kedua-dua lapisan asas dan kefahaman, jadi keputusan ini tidak menamakan sebarang halangan.",
-      "vocabularyBandMeasured": "Perbendaharaan kata bermodel membawa status “{status}” pada jalur A2, dan jalur B1 tambahan — yang berada di luar model — diskor {b1} dalam sesi ujian ini.",
-      "vocabularyBandNotAdministered": "Perbendaharaan kata bermodel membawa status “{status}” pada jalur A2; tiada item jalur B1 disajikan dalam sesi ujian ini, jadi tiada bacaan perbendaharaan kata melebihi A2 untuk diletakkan di sebelahnya.",
-      "vocabularyNotAssessedBandMeasured": "Tiada item perbendaharaan kata bermodel ditadbir dalam sesi ujian ini, jadi satu-satunya bacaan perbendaharaan kata di sini ialah jalur B1 tambahan pada {b1} — satu penunjuk luar model, bukan dakwaan penguasaan.",
       "evidenceCaveat": "{spread, select, uniform {Pernyataan ini bersandar pada {assessed} daripada {total} atribut, setiap satu dibuktikan oleh {maxItems} item.} other {Pernyataan ini bersandar pada {assessed} daripada {total} atribut, dibuktikan oleh antara {minItems} hingga {maxItems} item setiap satu, jadi bacalah yang lebih nipis buktinya dengan lebih berhati-hati.}}{fieldTest, select, true { Sesi ini turut mengandungi item ujian rintis, jadi anggap pernyataan ini sebagai sementara.} other {}}"
     },
     "errorPatternsEyebrow": "Nota corak kesilapan",
@@ -1829,9 +1826,9 @@
     "familyPracticeLine": "Latihan membaca berkala yang pendek di rumah — membaca bersama dan berbincang tentang apa yang dibaca — menyokong setiap bidang.",
     "attributes": {
       "Decoding": "Decoding",
-      "Vocab_A2": "Vocabulary (A2)",
+      "Vocab_A2": "Kosa kata harian",
       "Grammar": "Grammar",
-      "Vocab_B1": "Vocabulary (B1)",
+      "Vocab_B1": "Kosa kata bilik darjah",
       "Gist": "Gist",
       "Detail": "Detail",
       "Inference": "Inference"
@@ -4494,8 +4491,8 @@
         "groupsNone": "Pelayan tidak menyarankan sebarang kumpulan untuk kelas ini: belum ada keputusan selesai yang membawa profil subkemahiran penuh untuk dikumpulkan.",
         "strandTitle": "Purata strata kosa kata",
         "strandCaption": "Purata A2 dan B1 — murid strata tunggal dikira untuk strata yang mereka duduki sahaja",
-        "strandA2": "Kosa kata A2",
-        "strandB1": "Kosa kata B1",
+        "strandA2": "Kosa kata harian",
+        "strandB1": "Kosa kata bilik darjah",
         "strandNone": "—",
         "strandAssessed": "{count} murid dinilai",
         "averageOnly": "purata {average}",
@@ -4740,7 +4737,7 @@
     "skillSpeaking": "Bercakap",
     "skillWriting": "Menulis",
     "skillDecoding": "Penyahkodan",
-    "skillVocabulary": "Kosa kata",
+    "skillVocabulary": "Kosa kata harian",
     "skillGrammar": "Tatabahasa",
     "skillGist": "Isi utama",
     "skillDetail": "Butiran",
@@ -4766,7 +4763,7 @@
     "withinError": "dalam ralat",
     "trendBestGain": "Penambahbaikan terbesar: {skill} +{delta} mata",
     "attrDecoding": "Penyahkodan",
-    "attrVocabularyB1": "Kosa kata B1",
+    "attrVocabularyB1": "Kosa kata bilik darjah",
     "attrGist": "Isi utama",
     "attrDetail": "Butiran",
     "attrInference": "Simpulan",
@@ -4837,9 +4834,9 @@
     "fallbackGatePassed": "lulus",
     "fallbackGateNotMet": "belum dipenuhi",
     "fallbackCommonSlip": "Kesilapan paling kerap: {label} ({pct}% daripada jawapan salah).",
-    "fallbackVocabA2Only": "Kosa kata sessi ini hanya struktur A2 ({a2}); B1 tidak dinilai, jadi tiada skor gabungan didakwa. Fokus pengajaran: terus mengukuhkan kosa kata A2 sebelum sessi B1.",
-    "fallbackVocabB1Only": "Kosa kata sessi ini hanya struktur B1 ({b1}); A2 tidak dinilai, jadi tiada skor gabungan didakwa. Fokus pengajaran: bina atas kosa kata B1 yang kini jelas.",
-    "fallbackVocabBlend": "Kosa kata menggabungkan kedua-dua struktur pada {blended} (A2 {a2}, B1 {b1}). Fokus pengajaran: kembangkan struktur yang lebih lemah sebelum sessi akan datang.",
+    "fallbackVocabA2Only": "Hanya kosa kata harian dinilai pada sessi ini ({a2}); kosa kata bilik darjah tidak dinilai. Fokus pengajaran: terus mengukuhkan kosa kata harian sebelum sessi akan datang.",
+    "fallbackVocabB1Only": "Hanya kosa kata bilik darjah dinilai pada sessi ini ({b1}); kosa kata harian tidak dinilai. Fokus pengajaran: bina atas kosa kata bilik darjah yang kini jelas.",
+    "fallbackVocabBlend": "Kosa kata harian {a2}, kosa kata bilik darjah {b1}. Fokus pengajaran: kembangkan yang lebih lemah sebelum sessi akan datang.",
     "fallbackNoScore": "tiada skor",
     "fallbackNotAssessed": "tidak dinilai"
   },
@@ -4953,8 +4950,8 @@
       },
       "attribute": {
         "decoding": "Penyahkodan",
-        "vocabA2": "Kosa kata harian (A2)",
-        "vocabB1": "Kosa kata akademik (B1)",
+        "vocabA2": "Kosa kata harian",
+        "vocabB1": "Kosa kata bilik darjah",
         "grammar": "Tatabahasa",
         "gist": "Isi utama",
         "detail": "Butiran",
@@ -5006,7 +5003,7 @@
         "can": {
           "decoding": "Mengenal perkataan dengan tepat dan lancar.",
           "vocabA2": "Mengetahui maksud perkataan harian mengikut konteks.",
-          "vocabB1": "Mengetahui maksud perkataan akademik mengikut konteks.",
+          "vocabB1": "Mengetahui maksud perkataan bilik darjah mengikut konteks.",
           "grammar": "Memahami struktur ayat dan bentuk kata.",
           "gist": "Memahami idea utama dan tujuan sesuatu teks.",
           "detail": "Mencari maklumat yang dinyatakan secara langsung dalam petikan.",
@@ -5015,7 +5012,7 @@
         "next": {
           "decoding": "Latih penyahkodan: mengenal perkataan dengan tepat dan lancar.",
           "vocabA2": "Latih kosa kata harian: maksud perkataan biasa mengikut konteks.",
-          "vocabB1": "Latih kosa kata akademik: maksud perkataan subjek mengikut konteks.",
+          "vocabB1": "Latih kosa kata bilik darjah: maksud perkataan subjek mengikut konteks.",
           "grammar": "Latih tatabahasa: struktur ayat dan bentuk kata.",
           "gist": "Latih isi utama: memahami idea utama dan tujuan sesuatu teks.",
           "detail": "Latih butiran: mencari fakta khusus dan maklumat yang dinyatakan.",
@@ -5139,9 +5136,9 @@
         "improved": "Meningkat",
         "held": "Kekal stabil",
         "slipped": "Menurun",
-        "vocabulary": "Kosa kata akademik",
-        "everyday": "Harian (A2)",
-        "academic": "Akademik (B1)",
+        "vocabulary": "Kosa kata",
+        "everyday": "Kosa kata harian",
+        "academic": "Kosa kata bilik darjah",
         "footer": "Dijana daripada diagnostik membaca {name} pada {date}. Untuk kegunaan guru dan sekolah."
       },
       "soonValue": "–"
@@ -5243,8 +5240,8 @@
         "strength": "Kekuatan",
         "focusArea": "Bidang fokus",
         "vocabulary": "Kosa kata",
-        "everyday": "Harian (A2)",
-        "academic": "Akademik (B1)",
+        "everyday": "Kosa kata harian",
+        "academic": "Kosa kata bilik darjah",
         "canDo": "Perkara yang boleh dilakukan",
         "next": "Perkara untuk diusahakan seterusnya",
         "footer": "Dijana daripada diagnostik bacaan {name} pada {date}. Untuk kegunaan guru dan keluarga.",
@@ -5331,7 +5328,7 @@
         "growth": "Pertumbuhan",
         "growthText": "{improved} meningkat · {held} kekal · {slipped} menurun",
         "vocab": "Kosa kata",
-        "vocabText": "Harian A2 {a2} · Akademik B1 {b1}"
+        "vocabText": "Harian {a2} · Bilik darjah {b1}"
       },
       "activity": {
         "title": "Aktiviti terkini"
@@ -6169,7 +6166,7 @@
         "sittingsSince": "{count} sejak {month}"
       },
       "subskillsTitle": "Subkemahiran membaca",
-      "subskillsDescription": "Prestasi {first} merentas tujuh komponen membaca pada borang terkini",
+      "subskillsDescription": "Prestasi {first} merentas lapan komponen membaca pada borang terkini",
       "subskills": {
         "deltaUp": "↑ +{points}",
         "deltaDown": "↓ −{points}",
@@ -6195,10 +6192,10 @@
         "growthSteady": "Skor membacanya kekal stabil sejak sesi pertama, dalam lingkungan ralat pengukuran.",
         "strengthFocus": "Bidang paling kukuh {first} ialah {strongest} ({strongestScore}%), manakala {weakest} ({weakestScore}%) ialah fokus yang paling jelas.",
         "focusNext": "Latihan bersasar dalam {weakest} — dengan teks yang sedikit melebihi tahap semasa {first} — paling berkemungkinan menaikkan skor keseluruhan.",
-        "vocabBoth": "Kosa kata harian berada pada A2 {a2}% dan kosa kata akademik pada B1 {b1}%.",
+        "vocabBoth": "Kosa kata harian berada pada {a2}% dan kosa kata bilik darjah pada {b1}%.",
         "vocabAcademicNext": "Latihan ringkas dan eksplisit tentang keluarga kata akademik — digabungkan dengan tugasan membaca untuk makna yang melangkaui makna literal — ialah cara paling langsung untuk meningkatkan kefahaman {first}.",
-        "vocabA2Only": "Hanya kosa kata harian diukur pada borang ini: A2 {a2}%.",
-        "vocabB1Only": "Hanya kosa kata akademik diukur pada borang ini: B1 {b1}%."
+        "vocabA2Only": "Hanya kosa kata harian diukur pada borang ini: {a2}%.",
+        "vocabB1Only": "Hanya kosa kata bilik darjah diukur pada borang ini: {b1}%."
       },
       "hideAi": "Sembunyikan AI",
       "exported": "Profil tanpa pengenalan diri telah dimuat turun.",

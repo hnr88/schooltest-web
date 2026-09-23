@@ -1,11 +1,9 @@
 import { buildAttributePanel } from '@/modules/report/lib/attribute-view-model';
 import { getCrosswalkFieldState } from '@/modules/report/lib/display-label';
-import { buildSupplementaryStrand } from '@/modules/report/lib/supplementary-view-model';
 import type { AttributeEvidence } from '@/modules/report/types/attribute.types';
 import type { AssessedRow } from '@/modules/report/types/lib.types';
 import type { Observation, ObservationsView } from '@/modules/report/types/observation.types';
 import type { ResultView } from '@/modules/report/types/report.types';
-import type { SupplementaryStrandView } from '@/modules/report/types/supplementary.types';
 import type { AttributeName } from '@/modules/report/schemas/result-view.schema';
 
 // The two layers of the split Q-matrix, named by contract attribute. Matrix 1
@@ -63,29 +61,7 @@ function contrastObservation(
     : { key: 'foundationSecureComprehensionGap', gap: namesOf(comprehensionGap) };
 }
 
-// Sentence 2 — the B1 band folded in. The band carries a DOMAIN SCORE from the
-// ResultView v2 `vocab` block, stated as the number it is and NEVER classified
-// as low or as a gap — that would be a client-side cut score on an out-of-model
-// indicator. Returns null (the sentence is omitted) when there is nothing
-// measured to fold in.
-function vocabularyObservation(
-  rows: readonly AssessedRow[],
-  strand: SupplementaryStrandView,
-): Observation | null {
-  if (strand.state !== 'bands') return null;
-  const b1 = strand.bands.find((band) => band.code === 'b1');
-  const score = b1 !== undefined && b1.state === 'measured' ? b1.domainScore : null;
-  const vocabulary = rows.find((row) => row.name === 'Vocab_A2');
-
-  if (vocabulary === undefined) {
-    return score === null ? null : { key: 'vocabularyNotAssessedBandMeasured', b1: score };
-  }
-  return score === null
-    ? { key: 'vocabularyBandNotAdministered', status: vocabulary.status }
-    : { key: 'vocabularyBandMeasured', status: vocabulary.status, b1: score };
-}
-
-// Sentence 3 — how thinly the two sentences above are evidenced. Item counts are
+// Sentence 2 — how thinly the sentence above is evidenced. Item counts are
 // never summed across attributes (one item may load several Q-matrix columns).
 // A field-test result is flagged as such; it is never called low-confidence,
 // because the contract's low_confidence rule is unconfigured and always null.
@@ -105,10 +81,11 @@ function evidenceObservation(
 }
 
 // E11-06 — the observation generator. Pure: no I/O, no clock, no randomness. It
-// reasons over the SAME view models the page renders (`buildAttributePanel`,
-// `buildSupplementaryStrand`), so an observation can never disagree with the bar
-// it describes, and it resolves absence through the SAME machine as every other
-// block on this report.
+// reasons over the SAME view model the page renders (`buildAttributePanel`), so an
+// observation can never disagree with the bar it describes, and it resolves
+// absence through the SAME machine as every other block on this report. Both
+// vocabulary attributes run through the contrast like every other modelled
+// attribute: Vocab_A2 in the foundation layer, Vocab_B1 in comprehension.
 export function buildObservations(result: ResultView): ObservationsView {
   // The two-layer model is defined for the receptive skills only (memo s.2-3),
   // so a productive skill or a placement parent is not_applicable rather than
@@ -127,7 +104,6 @@ export function buildObservations(result: ResultView): ObservationsView {
       assessed.filter((row) => FOUNDATION.includes(row.name)),
       assessed.filter((row) => COMPREHENSION.includes(row.name)),
     ),
-    vocabularyObservation(assessed, buildSupplementaryStrand(result)),
     evidenceObservation(panel.evidence, result.provisional),
   ].filter((observation): observation is Observation => observation !== null);
 

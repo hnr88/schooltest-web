@@ -1,5 +1,7 @@
 import type { DiagnosticExport, DiagnosticExportSkill } from '@schooltest/scoring-contracts';
 
+import { resultsSkillLabelKey } from '@/modules/results/lib/display-skills';
+
 /** The translator shape the wiring layer passes in (`useTranslations('Results')`). */
 export type ResultsTranslate = (
   key: string,
@@ -85,9 +87,9 @@ function strengthAndErrorsParagraph(bundle: DiagnosticExport, t: ResultsTranslat
   const parts: string[] = [];
   if (best !== null && worst !== null && best.skill !== worst.skill) {
     parts.push(t('fallbackStrengthNeed', {
-      best: t(`skill${best.skill}`),
+      best: t(resultsSkillLabelKey(best.skill)),
       bestScore: best.score,
-      worst: t(`skill${worst.skill}`),
+      worst: t(resultsSkillLabelKey(worst.skill)),
       worstScore: worst.score,
     }));
   }
@@ -114,21 +116,13 @@ function strengthAndErrorsParagraph(bundle: DiagnosticExport, t: ResultsTranslat
 }
 
 function vocabularyParagraph(bundle: DiagnosticExport, t: ResultsTranslate): string {
-  const vocab = bundle.vocab;
-  if (vocab.single_strand === 'a2') {
-    return t('fallbackVocabA2Only', {
-      a2: vocab.a2.domain_score === null ? t('fallbackNoScore') : t('scorePercent', { score: vocab.a2.domain_score }),
-    });
-  }
-  if (vocab.single_strand === 'b1') {
-    return t('fallbackVocabB1Only', {
-      b1: vocab.b1.domain_score === null ? t('fallbackNoScore') : t('scorePercent', { score: vocab.b1.domain_score }),
-    });
-  }
+  const a2 = bundle.vocab.a2.domain_score;
+  const b1 = bundle.vocab.b1.domain_score;
+  if (a2 !== null && b1 === null) return t('fallbackVocabA2Only', { a2: t('scorePercent', { score: a2 }) });
+  if (b1 !== null && a2 === null) return t('fallbackVocabB1Only', { b1: t('scorePercent', { score: b1 }) });
   return t('fallbackVocabBlend', {
-    blended: vocab.blended === null ? t('fallbackNoScore') : t('scorePercent', { score: vocab.blended }),
-    a2: vocab.a2.domain_score === null ? t('fallbackNotAssessed') : t('scorePercent', { score: vocab.a2.domain_score }),
-    b1: vocab.b1.domain_score === null ? t('fallbackNotAssessed') : t('scorePercent', { score: vocab.b1.domain_score }),
+    a2: a2 === null ? t('fallbackNotAssessed') : t('scorePercent', { score: a2 }),
+    b1: b1 === null ? t('fallbackNotAssessed') : t('scorePercent', { score: b1 }),
   });
 }
 

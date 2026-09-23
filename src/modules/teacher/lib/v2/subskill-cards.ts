@@ -7,7 +7,7 @@ import { SKILL_BLURB_KEY, SKILL_LABEL_KEY, STUDENT_TAG_LABEL_KEY } from '@/modul
 import { BAND_RANK } from '@/modules/teacher/constants/v2-thresholds.constants';
 import { GROWTH_FG, STUDENT_TAG_TONE, UNASSESSED_TONE } from '@/modules/teacher/constants/v2-tones.constants';
 import { sparkline } from '@/modules/teacher/lib/v2/chart-geometry';
-import { growthFromServer, parseSignedDisplay, signedFg } from '@/modules/teacher/lib/v2/growth';
+import { parseSignedDisplay, signedFg } from '@/modules/teacher/lib/v2/growth';
 import { skillOf, studentSeries } from '@/modules/teacher/lib/v2/history-series';
 import { isAttributeName } from '@/modules/teacher/lib/v2/skill-refs';
 import { bandView, gateView } from '@/modules/teacher/lib/v2/tone';
@@ -17,7 +17,6 @@ import type {
   SubskillTag,
   VocabStrands,
 } from '@/modules/teacher/types/v2-student-detail.types';
-import type { GrowthSource } from '@/modules/teacher/types/v2-view-common.types';
 
 function fromAttributeDelta(view: AttributeDeltaView | null): SubskillDelta {
   if (view === null || view.kind === 'band_movement') return { kind: 'none' };
@@ -29,15 +28,7 @@ function fromAttributeDelta(view: AttributeDeltaView | null): SubskillDelta {
   return points === null ? { kind: 'none' } : { kind: 'points', points, fg: signedFg(points) };
 }
 
-function fromGrowth(source: GrowthSource): SubskillDelta {
-  const growth = growthFromServer(source);
-  if (growth.kind === 'steady') return { kind: 'steady', fg: growth.fg };
-  if (growth.kind === 'none' || growth.points === null) return { kind: 'none' };
-  return { kind: 'points', points: growth.points, fg: growth.fg };
-}
-
 function deltaOf(result: ResultView, tile: DisplaySkillReading): SubskillDelta {
-  if (tile.source === 'vocab') return fromGrowth(result.vocab);
   if (tile.source === 'gate' || !isAttributeName(tile.skill)) return { kind: 'none' };
   const entry = result.attributes[tile.skill];
   return entry === undefined ? { kind: 'none' } : fromAttributeDelta(resolveAttributeDelta(entry));
@@ -50,10 +41,7 @@ function tagFor(skill: DisplaySkill, strongest: DisplaySkill | null, weakest: Di
 }
 
 export function vocabStrands(result: ResultView): VocabStrands {
-  return {
-    a2: result.vocab.single_strand === 'b1' ? null : result.vocab.a2.domain_score,
-    b1: result.vocab.single_strand === 'a2' ? null : result.vocab.b1.domain_score,
-  };
+  return { a2: result.vocab.a2.domain_score, b1: result.vocab.b1.domain_score };
 }
 
 export function subskillCards(result: ResultView): SubskillCard[] {
@@ -75,7 +63,6 @@ export function subskillCards(result: ResultView): SubskillCard[] {
       trajectory,
       spark: sparkline(trajectory),
       tag: tagFor(tile.skill, strongest, weakest),
-      strands: tile.source === 'vocab' ? vocabStrands(result) : null,
     };
   });
 }

@@ -55,20 +55,21 @@ describe('profile spaces', () => {
 });
 
 describe('enums', () => {
-  it('the seven display skills include Critical and blend Vocabulary', () => {
+  it('the eight display skills are the seven attributes plus Critical — two vocabulary skills, no blend', () => {
     expect(DISPLAY_SKILLS).toEqual(displaySkillSchema.options);
     expect(DISPLAY_SKILLS).toEqual([
       'Decoding',
-      'Vocabulary',
+      'Vocab_A2',
       'Grammar',
+      'Vocab_B1',
       'Gist',
       'Detail',
       'Inference',
       'Critical',
     ]);
-    // The display list is not the model list: no Vocab_A2/Vocab_B1 on screen.
-    expect(DISPLAY_SKILLS).not.toContain('Vocab_A2');
-    expect(DISPLAY_SKILLS).not.toContain('Vocab_B1');
+    // Everyday (Vocab_A2) and Classroom (Vocab_B1) are separate skills; there
+    // is no single blended vocabulary skill on screen.
+    expect(DISPLAY_SKILLS).not.toContain('Vocabulary');
   });
 
   it('bands are the four plus the not-assessed sentinel — the v1 enums are gone', () => {

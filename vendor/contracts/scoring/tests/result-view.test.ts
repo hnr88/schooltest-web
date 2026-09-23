@@ -112,7 +112,7 @@ describe('ResultView v2', () => {
     }
   });
 
-  it('keys history by all seven display skills, null where not assessed', () => {
+  it('keys history by all eight display skills, null where not assessed', () => {
     const point = broken(resultViewFixture.history[1]);
     expect(resultHistoryPointSchema.safeParse(point).success).toBe(true);
     expect(Object.keys(point.attributes).sort()).toEqual([...displaySkillSchema.options].sort());
@@ -136,20 +136,18 @@ describe('ResultView v2', () => {
     expect(resultViewSchema.safeParse(anonymous).success).toBe(false);
   });
 
-  it('enforces the vocab gap invariant as a biconditional (D20), in both directions', () => {
+  it('carries the two vocabulary strands only — a blended figure is rejected', () => {
     const vocabulary = broken(resultViewFixture.vocab);
+    expect(Object.keys(vocabulary).sort()).toEqual(['a2', 'b1']);
 
-    // Neither strand assessed: no number AND no band — together.
-    const gap = { ...vocabulary, blended: null, status: 'not_assessed' };
+    // Neither strand assessed: both scores null, never a 0.
+    const gap = { a2: { domain_score: null }, b1: { domain_score: null } };
     expect(resultViewVocabSchema.safeParse(gap).success).toBe(true);
 
-    // A blend with no band to name it: rejected.
-    const numberNoBand = { ...vocabulary, status: 'not_assessed' };
-    expect(resultViewVocabSchema.safeParse(numberNoBand).success).toBe(false);
-
-    // A band on an empty blend — the untranslateable chip on a gap card: rejected.
-    const bandNoNumber = { ...vocabulary, blended: null };
-    expect(resultViewVocabSchema.safeParse(bandNoNumber).success).toBe(false);
+    // The retired blend does not come back through the wire.
+    expect(resultViewVocabSchema.safeParse({ ...vocabulary, blended: 76 }).success).toBe(false);
+    expect(resultViewVocabSchema.safeParse({ ...vocabulary, status: 'secure' }).success).toBe(false);
+    expect(resultViewVocabSchema.safeParse({ ...vocabulary, single_strand: null }).success).toBe(false);
   });
 });
 

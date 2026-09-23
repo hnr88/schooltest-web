@@ -4,7 +4,6 @@ import { studentTranslators } from '@/modules/teacher/lib/__fixtures__/student-t
 import {
   overallDeltaText,
   progressTiles,
-  strandsText,
   studentAnalysis,
   subskillDeltaText,
 } from '@/modules/teacher/lib/student-detail-text';
@@ -28,12 +27,12 @@ describe('student page text — recorded Dilnoza, en', () => {
     ]);
   });
 
-  test('overall chip, band movement, points movement and strands', () => {
+  test('overall chip and band movement — Everyday and Classroom Vocabulary each move on their own band', () => {
     const card = (skill: string) => view.subskills.find((entry) => entry.skill === skill);
     expect(text(overallDeltaText(view.overall.growth) ?? { key: 'missing' })).toBe('↓ −45 pts');
     expect(text(subskillDeltaText(card('Decoding')?.delta ?? { kind: 'none' }) ?? { key: 'missing' })).toBe('Secure → Not yet');
-    expect(text(subskillDeltaText(card('Vocabulary')?.delta ?? { kind: 'none' }) ?? { key: 'missing' })).toBe('↓ −65');
-    expect(text(strandsText(card('Vocabulary')?.strands ?? null) ?? { key: 'missing' })).toBe('A2 25% · B1 25%');
+    expect(text(subskillDeltaText(card('Vocab_A2')?.delta ?? { kind: 'none' }) ?? { key: 'missing' })).toBe('Secure → Not yet');
+    expect(text(subskillDeltaText(card('Vocab_B1')?.delta ?? { kind: 'none' }) ?? { key: 'missing' })).toBe('Secure → Not yet');
   });
 
   test('analysis: phase label verbatim, skill labels lower-cased, reliable fall', () => {
@@ -42,7 +41,7 @@ describe('student page text — recorded Dilnoza, en', () => {
         'Since the first sitting their reading has fallen 45 points — a reliable drop that exceeds measurement error.',
       'Dilnoza’s strongest area is inference (49%), while decoding (25%) is the clearest focus. ' +
         'Targeted work on decoding — with texts pitched just beyond Dilnoza’s current level — is likely to move the overall score most.',
-      'Everyday vocabulary is at A2 25% and academic vocabulary at B1 25%.',
+      'Everyday vocabulary is at 25% and classroom vocabulary at 25%.',
     ]);
   });
 });

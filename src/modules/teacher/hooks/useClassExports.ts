@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 
 import { showOpsToast } from '@/modules/ops/actions';
-import { classResultsQueryOptions } from '@/modules/results';
+import { classResultsQueryOptions, resultsSkillLabelKey } from '@/modules/results';
 import { useYearLabel } from '@/modules/teacher/hooks/useClassesDirectory';
 import { summariseClassResults } from '@/modules/teacher/lib/print/class-summary';
 import {
@@ -64,7 +64,7 @@ export function useClassExports(): ClassExportsApi {
     footer: t('print.footer', { name, date }),
     noValue: tKit('noValue'),
     secureOf: (secure, assessed) => t('print.secureOf', { secure, assessed }),
-    skill: (skill) => tResults(`skill${skill}`),
+    skill: (skill) => tResults(resultsSkillLabelKey(skill)),
   });
 
   const printReport = async (row: ClassRowView, target: Window) => {

@@ -74,7 +74,6 @@ export function renderStudentMarkdown(bundle: DiagnosticExport): string {
   lines.push('');
 
   lines.push('## Vocabulary');
-  lines.push(`- Blended: ${bundle.vocab.blended === null ? 'no score' : `${bundle.vocab.blended}%`} (${bundle.vocab.status})${bundle.vocab.delta_display === null ? '' : ` — change: ${renderDelta(bundle.vocab.delta_display)}`}`);
   lines.push(`- A2 strand: ${bundle.vocab.a2.domain_score === null ? 'not assessed' : `${bundle.vocab.a2.domain_score}%`}`);
   lines.push(`- B1 strand: ${bundle.vocab.b1.domain_score === null ? 'not assessed' : `${bundle.vocab.b1.domain_score}%`}`);
   lines.push('');

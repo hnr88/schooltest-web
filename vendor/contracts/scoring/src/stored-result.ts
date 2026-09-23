@@ -22,10 +22,8 @@ import {
 import {
   assessedBandSchema,
   attributeNameSchema,
-  bandSchema,
   errorPatternTypeSchema,
   modelVersionSchema,
-  vocabStrandNameSchema,
 } from './enums';
 
 /**
@@ -100,18 +98,15 @@ export const storedVocabStrandSchema = z.union([
 export type StoredVocabStrand = z.infer<typeof storedVocabStrandSchema>;
 
 /**
- * spec v2 §5.4 — the items-seen-weighted blend of Vocab_A2 and Vocab_B1.
+ * The two vocabulary strands as stored (spec v2 §5.4), Vocab_A2 and Vocab_B1,
+ * side by side — no blended figure.
  *
- * `status` is a `bandSchema` and not the four-band `assessedBandSchema`: a blend
- * has no posterior of its own, so its band is borrowed from the strand with more
- * `items_seen` (tie -> the lower band) and is `not_assessed` when neither strand
- * was reached. `blended` is then null — never 0 (data contract §8).
+ * `z.object`, not `strictObject`, and on purpose: rows written before the blend
+ * was retired still carry `blended`/`blended_se`/`status`/`single_strand` in
+ * their stored `vocab` column. Stripping those keys on read keeps every existing
+ * row valid with no data migration; nothing reads them.
  */
-export const storedVocabSchema = z.strictObject({
-  blended: domainScoreSchema.nullable(),
-  blended_se: standardErrorSchema.nullable(),
-  status: bandSchema,
-  single_strand: vocabStrandNameSchema.nullable(),
+export const storedVocabSchema = z.object({
   a2: storedVocabStrandSchema,
   b1: storedVocabStrandSchema,
 });

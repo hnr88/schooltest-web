@@ -13,7 +13,7 @@ describe('teachingInsights — recorded t2 roster and recorded class diagnostic'
       lastSitting: { satAt: '2026-09-11', formCode: 'SPK-PROG-A-79' },
       classAverage: 41,
       upSinceLast: { value: -9, paired: 4, fg: '#B42318' },
-      topGap: { skill: 'Vocabulary', labelKey: 'skill.vocabulary' },
+      topGap: { skill: 'Vocab_A2', labelKey: 'attribute.vocabA2' },
       participation: { percent: 70, scored: 14, total: 20 },
     });
   });
@@ -26,8 +26,9 @@ describe('teachingInsights — recorded t2 roster and recorded class diagnostic'
 
   test('reading mastery: fewest secure, then lowest class mean; Critical (a gate, no band) after the ranked skills', () => {
     expect(view.mastery.map((row) => [row.skill, row.mean, row.assessed])).toEqual([
-      ['Vocabulary', 25, 12],
+      ['Vocab_A2', 25, 11],
       ['Grammar', 25, 11],
+      ['Vocab_B1', 25, 12],
       ['Detail', 25, 6],
       ['Decoding', 25, 11],
       ['Gist', 28, 12],
@@ -38,19 +39,19 @@ describe('teachingInsights — recorded t2 roster and recorded class diagnostic'
 
   test('class focus and class strength flags; secure counts come from the API status', () => {
     expect(view.mastery[0]).toMatchObject({
-      skill: 'Vocabulary',
-      labelKey: 'skill.vocabulary',
+      skill: 'Vocab_A2',
+      labelKey: 'attribute.vocabA2',
       secure: 0,
       gatePassed: null,
       tone: { fg: '#B42318', bg: '#FDEEEC' },
       flag: { kind: 'focus', labelKey: 'flag.classFocus', tone: { fg: '#B42318', bg: '#FDEEEC' } },
     });
-    expect(view.mastery[5]).toMatchObject({
+    expect(view.mastery[6]).toMatchObject({
       skill: 'Inference',
       flag: { kind: 'strength', labelKey: 'flag.classStrength', tone: { fg: '#1F7A4D', bg: '#E9F6EF' } },
     });
-    expect(view.mastery[6]).toMatchObject({ skill: 'Critical', secure: null, gatePassed: 0, flag: null, tone: { fg: '#92610B' } });
-    expect(view.mastery.slice(1, 5).every((row) => row.flag === null)).toBe(true);
+    expect(view.mastery[7]).toMatchObject({ skill: 'Critical', secure: null, gatePassed: 0, flag: null, tone: { fg: '#92610B' } });
+    expect(view.mastery.slice(1, 6).every((row) => row.flag === null)).toBe(true);
   });
 
   test('cohort at a glance: phase spread, ±5 growth, vocabulary strand means', () => {
@@ -67,8 +68,8 @@ describe('teachingInsights — recorded t2 roster and recorded class diagnostic'
     });
   });
 
-  test('pairings on the class focus: every recorded Vocabulary score is 25, so no pair clears the 12-point gap', () => {
-    expect(view.pairings).toEqual({ skill: { skill: 'Vocabulary', labelKey: 'skill.vocabulary' }, pairs: [] });
+  test('pairings on the class focus: every recorded Everyday Vocabulary score is 25, so no pair clears the 12-point gap', () => {
+    expect(view.pairings).toEqual({ skill: { skill: 'Vocab_A2', labelKey: 'attribute.vocabA2' }, pairs: [] });
   });
 
   test('the pairing rule on recorded Inference scores walks in from both ends, capped at four pairs', () => {
@@ -110,11 +111,12 @@ describe('teachingInsights — empty roster (every recorded row removed): nothin
     });
   });
 
-  test('mastery keeps the seven skills in display order with no mean and no flag', () => {
+  test('mastery keeps the eight skills in display order with no mean and no flag', () => {
     expect(empty.mastery.map((row) => [row.skill, row.mean, row.secure, row.gatePassed, row.flag])).toEqual([
       ['Decoding', null, null, null, null],
-      ['Vocabulary', null, null, null, null],
+      ['Vocab_A2', null, null, null, null],
       ['Grammar', null, null, null, null],
+      ['Vocab_B1', null, null, null, null],
       ['Gist', null, null, null, null],
       ['Detail', null, null, null, null],
       ['Inference', null, null, null, null],

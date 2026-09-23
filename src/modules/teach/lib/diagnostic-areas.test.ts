@@ -1,7 +1,5 @@
-import { ATTRIBUTE_NAMES } from '@schooltest/scoring-contracts';
 import { describe, expect, test } from 'vitest';
 
-import { displaySkillOfAttribute } from '@/modules/results/lib/display-skills';
 import { diagnosticAreaCode } from '@/modules/teach/lib/diagnostic-areas';
 import {
   masteryAreaAttribute,
@@ -17,20 +15,6 @@ import unscoredJson from './__fixtures__/school-a-diagnostic.json';
 // (no student scored: cells named by area code R1..R7).
 const scored = classDiagnosticSchema.parse(scoredJson);
 const unscored = classDiagnosticSchema.parse(unscoredJson.data);
-
-describe('displaySkillOfAttribute', () => {
-  test('each model attribute rolls up to its display skill; both vocabulary strands to Vocabulary', () => {
-    expect(Object.fromEntries(ATTRIBUTE_NAMES.map((name) => [name, displaySkillOfAttribute(name)]))).toEqual({
-      Decoding: 'Decoding',
-      Vocab_A2: 'Vocabulary',
-      Grammar: 'Grammar',
-      Vocab_B1: 'Vocabulary',
-      Gist: 'Gist',
-      Detail: 'Detail',
-      Inference: 'Inference',
-    });
-  });
-});
 
 describe('diagnosticAreaCode — recorded live class diagnostics', () => {
   test('a scored student’s attribute cells land on their teach area; the vocabulary strands on Vocabulary (R2)', () => {

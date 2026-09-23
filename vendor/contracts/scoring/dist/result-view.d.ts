@@ -4,7 +4,7 @@
  * Dashboard D3: every judgment (band, reliable-change gating, band-movement vs
  * point delta, not-assessed) arrives precomputed. The client renders; it never
  * re-derives. Spec v2 §6.1: the only displayed numbers are
- * `overall.domain_score`, per-attribute `domain_score`, `vocab.blended` and
+ * `overall.domain_score`, per-attribute `domain_score` and
  * `gate.domain_score`; `prob`/`prob_se` ride along for audit and no client
  * renders them (dashboard §7 grep guard).
  *
@@ -118,10 +118,15 @@ export declare const resultViewGateSchema: z.ZodObject<{
     provisional_cut: z.ZodBoolean;
 }, z.core.$strict>;
 export type ResultViewGate = z.infer<typeof resultViewGateSchema>;
-/** The strand detail behind the Vocabulary bar (spec v2 §6.3). */
+/** One vocabulary strand's score: `a2` is Vocab_A2, `b1` is Vocab_B1 (spec v2 §6.3). */
 export declare const resultViewVocabStrandSchema: z.ZodObject<{
     domain_score: z.ZodNullable<z.ZodNumber>;
 }, z.core.$strict>;
+/**
+ * The two vocabulary strands, side by side and never blended: each is its own
+ * model attribute, and its band and growth ride on `attributes.Vocab_A2` /
+ * `attributes.Vocab_B1` like every other attribute's.
+ */
 export declare const resultViewVocabSchema: z.ZodObject<{
     a2: z.ZodObject<{
         domain_score: z.ZodNullable<z.ZodNumber>;
@@ -129,42 +134,26 @@ export declare const resultViewVocabSchema: z.ZodObject<{
     b1: z.ZodObject<{
         domain_score: z.ZodNullable<z.ZodNumber>;
     }, z.core.$strict>;
-    single_strand: z.ZodNullable<z.ZodEnum<{
-        a2: "a2";
-        b1: "b1";
-    }>>;
-    delta: z.ZodNullable<z.ZodNumber>;
-    delta_reliable: z.ZodNullable<z.ZodBoolean>;
-    delta_display: z.ZodNullable<z.ZodUnion<readonly [z.ZodEnum<{
-        steady: "steady";
-        band_movement: "band_movement";
-    }>, z.ZodString]>>;
-    blended: z.ZodNullable<z.ZodNumber>;
-    status: z.ZodEnum<{
-        secure: "secure";
-        developing: "developing";
-        emerging: "emerging";
-        not_yet: "not_yet";
-        not_assessed: "not_assessed";
-    }>;
 }, z.core.$strict>;
 export type ResultViewVocab = z.infer<typeof resultViewVocabSchema>;
 /**
- * One point on the trend chart (dashboard §1.1). Keyed by the seven DISPLAY
- * skills — `Vocabulary` already blended, `Critical` the Section 3 graded score —
- * and exhaustive: every sitting reports all seven, `null` where that sitting did
- * not assess the skill. A `null` is an absence; it is never rendered as 0.
+ * One point on the trend chart (dashboard §1.1). Keyed by the eight DISPLAY
+ * skills — `Vocab_A2` and `Vocab_B1` as two lines, `Critical` the Section 3
+ * graded score — and exhaustive: every sitting reports all eight, `null` where
+ * that sitting did not assess the skill. A `null` is an absence; it is never
+ * rendered as 0.
  */
 export declare const resultHistoryPointSchema: z.ZodObject<{
     sat_at: z.ZodISODate;
     overall: z.ZodNullable<z.ZodNumber>;
     attributes: z.ZodRecord<z.ZodEnum<{
         Decoding: "Decoding";
+        Vocab_A2: "Vocab_A2";
         Grammar: "Grammar";
+        Vocab_B1: "Vocab_B1";
         Gist: "Gist";
         Detail: "Detail";
         Inference: "Inference";
-        Vocabulary: "Vocabulary";
         Critical: "Critical";
     }>, z.ZodNullable<z.ZodNumber>>;
 }, z.core.$strict>;
@@ -310,24 +299,6 @@ export declare const resultViewSchema: z.ZodObject<{
         b1: z.ZodObject<{
             domain_score: z.ZodNullable<z.ZodNumber>;
         }, z.core.$strict>;
-        single_strand: z.ZodNullable<z.ZodEnum<{
-            a2: "a2";
-            b1: "b1";
-        }>>;
-        delta: z.ZodNullable<z.ZodNumber>;
-        delta_reliable: z.ZodNullable<z.ZodBoolean>;
-        delta_display: z.ZodNullable<z.ZodUnion<readonly [z.ZodEnum<{
-            steady: "steady";
-            band_movement: "band_movement";
-        }>, z.ZodString]>>;
-        blended: z.ZodNullable<z.ZodNumber>;
-        status: z.ZodEnum<{
-            secure: "secure";
-            developing: "developing";
-            emerging: "emerging";
-            not_yet: "not_yet";
-            not_assessed: "not_assessed";
-        }>;
     }, z.core.$strict>;
     error_patterns: z.ZodArray<z.ZodObject<{
         type: z.ZodEnum<{
@@ -347,11 +318,12 @@ export declare const resultViewSchema: z.ZodObject<{
         overall: z.ZodNullable<z.ZodNumber>;
         attributes: z.ZodRecord<z.ZodEnum<{
             Decoding: "Decoding";
+            Vocab_A2: "Vocab_A2";
             Grammar: "Grammar";
+            Vocab_B1: "Vocab_B1";
             Gist: "Gist";
             Detail: "Detail";
             Inference: "Inference";
-            Vocabulary: "Vocabulary";
             Critical: "Critical";
         }>, z.ZodNullable<z.ZodNumber>>;
     }, z.core.$strict>>>;

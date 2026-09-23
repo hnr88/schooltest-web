@@ -61,10 +61,6 @@
     "provisional_cut": true
   },
   "vocab": {
-    "blended": 76,
-    "blended_se": 3.4,
-    "status": "secure",
-    "single_strand": null,
     "a2": { "domain_score": 90, "se": 3.8, "items_seen": 14, "status": "secure" },
     "b1": { "domain_score": 54, "se": 6.2, "items_seen": 9, "status": "emerging" }
   },

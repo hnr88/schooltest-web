@@ -5,9 +5,8 @@
  * legacy v1 view keeps its own path in `modules/report` until task 23 deletes
  * it.
  */
-export { DISPLAY_SKILL_ORDER, displaySkills } from './lib/display-skills';
+export { DISPLAY_SKILL_ORDER, displaySkills, resultsSkillLabelKey } from './lib/display-skills';
 export type { DisplaySkillReading } from './lib/display-skills';
-export { displaySkillOfAttribute } from './lib/display-skills';
 export { ConfidenceStrip } from './components/ConfidenceStrip';
 export { ConsolidatingChecklist } from './components/ConsolidatingChecklist';
 export { ErrorPatternsPanel } from './components/ErrorPatternsPanel';

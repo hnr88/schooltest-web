@@ -18,11 +18,9 @@ import {
 } from './core';
 import {
   assessedBandSchema,
-  bandSchema,
   displaySkillSchema,
   modelVersionSchema,
   readinessSchema,
-  vocabStrandNameSchema,
 } from './enums';
 import { errorPatternSchema } from './stored-result';
 
@@ -47,7 +45,7 @@ export const diagnosticExportSittingSchema = z.strictObject({
  * OMITTED when the Crosswalk describes no such skill, never synthesised.
  *
  * THREE variants, and do not tidy them back into two:
- * 1. Banded skill — the six CDM display skills: score + posterior band + gated
+ * 1. Banded skill — the seven CDM display skills: score + posterior band + gated
  *    change.
  * 2. GATE skill (Critical Reading) — score + the pass/fail verdict, and
  *    DELIBERATELY no `status` band and no `delta_display` field (D13, task 30/35
@@ -76,14 +74,10 @@ export const diagnosticExportSkillSchema = z.union([
 ]);
 export type DiagnosticExportSkill = z.infer<typeof diagnosticExportSkillSchema>;
 
-/** The Vocabulary bar plus its two strands, scores only. */
+/** The two vocabulary strands (Vocab_A2, Vocab_B1), scores only, never blended. */
 export const diagnosticExportVocabSchema = z.strictObject({
-  blended: domainScoreSchema.nullable(),
-  status: bandSchema,
-  delta_display: deltaDisplaySchema.nullable(),
   a2: z.strictObject({ domain_score: domainScoreSchema.nullable() }),
   b1: z.strictObject({ domain_score: domainScoreSchema.nullable() }),
-  single_strand: vocabStrandNameSchema.nullable(),
 });
 
 /** The exit gate: graded score and boolean, no theta (spec v2 §7). */
@@ -99,7 +93,7 @@ export const diagnosticExportHistoryPointSchema = z.strictObject({
 });
 
 /**
- * The full bundle. `skills` is exhaustive over the seven display skills so an
+ * The full bundle. `skills` is exhaustive over the eight display skills so an
  * unassessed skill is stated as unassessed rather than silently missing —
  * absence of a key reads as an oversight, the not-assessed object reads as a
  * measured fact. `caveats` is `.min(1)`: the single-sitting note is

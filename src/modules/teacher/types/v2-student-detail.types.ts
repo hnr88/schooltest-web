@@ -47,7 +47,6 @@ export interface SubskillCard extends SkillRef {
   trajectory: number[];
   spark: SparklineGeometry;
   tag: SubskillTag | null;
-  strands: VocabStrands | null;
 }
 
 export interface StudentDetailTiles {

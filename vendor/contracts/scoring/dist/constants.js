@@ -15,8 +15,9 @@ exports.ATTRIBUTE_NAMES = [
 /** The bars on screen, dashboard §5 canonical order. */
 exports.DISPLAY_SKILLS = [
     'Decoding',
-    'Vocabulary',
+    'Vocab_A2',
     'Grammar',
+    'Vocab_B1',
     'Gist',
     'Detail',
     'Inference',

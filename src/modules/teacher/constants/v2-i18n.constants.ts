@@ -24,8 +24,9 @@ export const NOT_SAT_LABEL_KEY = 'phase.notSat';
 
 export const SKILL_LABEL_KEY: Readonly<Record<DisplaySkill, string>> = {
   Decoding: 'skill.decoding',
-  Vocabulary: 'skill.vocabulary',
+  Vocab_A2: 'attribute.vocabA2',
   Grammar: 'skill.grammar',
+  Vocab_B1: 'attribute.vocabB1',
   Gist: 'skill.gist',
   Detail: 'skill.detail',
   Inference: 'skill.inference',
@@ -34,8 +35,9 @@ export const SKILL_LABEL_KEY: Readonly<Record<DisplaySkill, string>> = {
 
 export const SKILL_BLURB_KEY: Readonly<Record<DisplaySkill, string>> = {
   Decoding: 'skillBlurb.decoding',
-  Vocabulary: 'skillBlurb.vocabulary',
+  Vocab_A2: 'skillBlurb.vocabulary',
   Grammar: 'skillBlurb.grammar',
+  Vocab_B1: 'skillBlurb.vocabulary',
   Gist: 'skillBlurb.gist',
   Detail: 'skillBlurb.detail',
   Inference: 'skillBlurb.inference',

@@ -109,27 +109,15 @@ export declare const storedVocabStrandSchema: z.ZodUnion<readonly [z.ZodObject<{
 }, z.core.$strict>]>;
 export type StoredVocabStrand = z.infer<typeof storedVocabStrandSchema>;
 /**
- * spec v2 §5.4 — the items-seen-weighted blend of Vocab_A2 and Vocab_B1.
+ * The two vocabulary strands as stored (spec v2 §5.4), Vocab_A2 and Vocab_B1,
+ * side by side — no blended figure.
  *
- * `status` is a `bandSchema` and not the four-band `assessedBandSchema`: a blend
- * has no posterior of its own, so its band is borrowed from the strand with more
- * `items_seen` (tie -> the lower band) and is `not_assessed` when neither strand
- * was reached. `blended` is then null — never 0 (data contract §8).
+ * `z.object`, not `strictObject`, and on purpose: rows written before the blend
+ * was retired still carry `blended`/`blended_se`/`status`/`single_strand` in
+ * their stored `vocab` column. Stripping those keys on read keeps every existing
+ * row valid with no data migration; nothing reads them.
  */
 export declare const storedVocabSchema: z.ZodObject<{
-    blended: z.ZodNullable<z.ZodNumber>;
-    blended_se: z.ZodNullable<z.ZodNumber>;
-    status: z.ZodEnum<{
-        secure: "secure";
-        developing: "developing";
-        emerging: "emerging";
-        not_yet: "not_yet";
-        not_assessed: "not_assessed";
-    }>;
-    single_strand: z.ZodNullable<z.ZodEnum<{
-        a2: "a2";
-        b1: "b1";
-    }>>;
     a2: z.ZodUnion<readonly [z.ZodObject<{
         domain_score: z.ZodNumber;
         se: z.ZodNumber;
@@ -160,7 +148,7 @@ export declare const storedVocabSchema: z.ZodObject<{
         insufficient_evidence: z.ZodOptional<z.ZodBoolean>;
         items_seen: z.ZodNumber;
     }, z.core.$strict>]>;
-}, z.core.$strict>;
+}, z.core.$strip>;
 export type StoredVocab = z.infer<typeof storedVocabSchema>;
 /**
  * spec v2 §5.1. `attributes` is PARTIAL over the seven: a skill whose matrix was
@@ -214,19 +202,6 @@ export declare const storedResultSchema: z.ZodObject<{
         provisional_cut: z.ZodBoolean;
     }, z.core.$strict>]>;
     vocab: z.ZodObject<{
-        blended: z.ZodNullable<z.ZodNumber>;
-        blended_se: z.ZodNullable<z.ZodNumber>;
-        status: z.ZodEnum<{
-            secure: "secure";
-            developing: "developing";
-            emerging: "emerging";
-            not_yet: "not_yet";
-            not_assessed: "not_assessed";
-        }>;
-        single_strand: z.ZodNullable<z.ZodEnum<{
-            a2: "a2";
-            b1: "b1";
-        }>>;
         a2: z.ZodUnion<readonly [z.ZodObject<{
             domain_score: z.ZodNumber;
             se: z.ZodNumber;
@@ -257,7 +232,7 @@ export declare const storedResultSchema: z.ZodObject<{
             insufficient_evidence: z.ZodOptional<z.ZodBoolean>;
             items_seen: z.ZodNumber;
         }, z.core.$strict>]>;
-    }, z.core.$strict>;
+    }, z.core.$strip>;
     error_patterns: z.ZodArray<z.ZodObject<{
         type: z.ZodEnum<{
             literal_match: "literal_match";

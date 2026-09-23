@@ -28,7 +28,7 @@ import type { ProgressPanelProps } from '@/modules/teach/types/components.types'
 // ("not assessed"), never as a zero.
 export function ProgressPanel({ classId }: ProgressPanelProps) {
   const t = useTranslations('Teach.progress');
-  const td = useTranslations('Teach.diagnostic');
+  const tLabel = useTranslations();
   const roster = useClassResultsQuery(classId);
 
   const scored = (roster.data ?? []).filter(
@@ -74,7 +74,7 @@ export function ProgressPanel({ classId }: ProgressPanelProps) {
                     <ProgressMovementRow
                       key={skill.attribute}
                       attribute={skill.attribute}
-                      label={td(`areas.${drillDownLabelKey(skill.attribute)}`)}
+                      label={tLabel(drillDownLabelKey(skill.attribute))}
                       deltaDisplay={skill.deltaDisplay}
                       bandBefore={skill.bandBefore}
                       bandAfter={skill.bandAfter}
