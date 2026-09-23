@@ -1,8 +1,11 @@
 import { AxiosError, AxiosHeaders, type AxiosResponse } from 'axios';
+import { createTranslator } from 'next-intl';
 import { describe, expect, test } from 'vitest';
 
 import fixture from '@/modules/teacher/lib/__fixtures__/start-session.t2.json';
-import { describeStartSessionFailure } from '@/modules/teacher/lib/start-session-errors';
+import { STUDENT_CATALOGS } from '@/modules/teacher/lib/__fixtures__/student-translators';
+import { describeDemoLinkFailure, describeStartSessionFailure } from '@/modules/teacher/lib/start-session-errors';
+import type { DemoLimitTranslate } from '@/modules/teacher/types/start-session-modal.types';
 
 function rejected(status: number, data: unknown): AxiosError {
   const config = { headers: new AxiosHeaders() };
@@ -64,5 +67,69 @@ describe('describeStartSessionFailure', () => {
 
   test('a transport failure keeps its own message', () => {
     expect(describeStartSessionFailure(new Error('Network Error'), 'UTC').message).toBe('Network Error');
+  });
+});
+
+function demoLimit(locale: string): DemoLimitTranslate {
+  const t = createTranslator({
+    locale,
+    messages: STUDENT_CATALOGS[locale],
+    namespace: 'TeacherPortal.startSession.demoLimit',
+    onError: (error) => {
+      throw error;
+    },
+  });
+  return t as unknown as DemoLimitTranslate;
+}
+
+// The API's 429 envelope for a spent per-hour demo-link budget (RateLimitError).
+const spent = (details: Record<string, unknown>) => ({
+  data: null,
+  error: { status: 429, name: 'RateLimitError', message: 'Too many requests', details },
+});
+
+describe('describeDemoLinkFailure', () => {
+  const en = demoLimit('en');
+
+  test('429 with the wait: the budget is named and the wait rounds UP to whole minutes', () => {
+    const failure = describeDemoLinkFailure(rejected(429, spent({ retry_after_seconds: 540 })), 'UTC', en);
+    expect(failure).toEqual({
+      message: "You've opened the maximum number of demo links this hour. Try again in 9 minutes.",
+      scheduleMessages: [],
+      blocked: new Map(),
+    });
+    expect(describeDemoLinkFailure(rejected(429, spent({ retry_after_seconds: 541 })), 'UTC', en).message).toContain(
+      'Try again in 10 minutes.',
+    );
+    expect(describeDemoLinkFailure(rejected(429, spent({ retry_after_seconds: 12 })), 'UTC', en).message).toContain(
+      'Try again in 1 minute.',
+    );
+  });
+
+  test('429 without the wait (or not in the API envelope): never a bare "Too many requests"', () => {
+    const later = "You've opened the maximum number of demo links this hour. Try again later.";
+    expect(describeDemoLinkFailure(rejected(429, spent({})), 'UTC', en).message).toBe(later);
+    expect(describeDemoLinkFailure(rejected(429, '<html>429</html>'), 'UTC', en).message).toBe(later);
+  });
+
+  test('any other refusal keeps the server sentence, as a refused create does', () => {
+    const body = { data: null, error: { status: 403, name: 'ForbiddenError', message: 'Forbidden', details: {} } };
+    expect(describeDemoLinkFailure(rejected(403, body), 'UTC', en)).toEqual({
+      message: 'Forbidden',
+      scheduleMessages: [],
+      blocked: new Map(),
+    });
+    expect(describeDemoLinkFailure(new Error('Network Error'), 'UTC', en).message).toBe('Network Error');
+  });
+
+  test.each(Object.keys(STUDENT_CATALOGS))('%s: both sentences exist and the wait is printed', (locale) => {
+    const t = demoLimit(locale);
+    const withWait = describeDemoLinkFailure(rejected(429, spent({ retry_after_seconds: 720 })), 'UTC', t).message;
+    const without = describeDemoLinkFailure(rejected(429, spent({})), 'UTC', t).message;
+    expect(withWait).toContain('12');
+    expect(withWait).not.toMatch(/[{}]/);
+    expect(without.length).toBeGreaterThan(0);
+    expect(without).not.toBe('Too many requests');
+    expect(withWait).not.toBe(without);
   });
 });

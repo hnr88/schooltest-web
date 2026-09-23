@@ -27,3 +27,8 @@ export const createDemoLinkResponseSchema = z.strictObject({
   skill: z.string().min(1),
   variant: z.string().nullable(),
 });
+
+// A 429's `error.details` when the API names the wait; other detail keys are tolerated.
+export const demoLinkRetryDetailsSchema = z.object({
+  retry_after_seconds: z.number().positive(),
+});

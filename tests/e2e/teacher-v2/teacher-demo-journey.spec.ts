@@ -2,7 +2,9 @@ import { mkdirSync } from 'node:fs';
 import path from 'node:path';
 
 import { expect, test, type Page, type Response } from '@playwright/test';
+import { createTranslator } from 'next-intl';
 
+import enMessages from '@/i18n/messages/en.json';
 import { createDemoLinkResponseSchema } from '@/modules/teacher/schemas/teacher-demo-link.schema';
 
 import { bridgeApiCors } from '../helpers/api-cors-bridge';
@@ -28,13 +30,18 @@ import { ACCOUNTS, en, signIn } from '../helpers/teacher-rail';
 //    rows per teacher email per hour, shared with the emailed trial path. When the budget
 //    is spent the API answers 429 and this test is SKIPPED with that reason (never a silent
 //    pass). Point E2E_TEACHER_EMAIL at another seeded teacher to run it inside the hour.
+// LEAVES NO TRIAL IN PROGRESS: the journey ends its trial from the runner, and afterEach
+// ends any trial it opened that is still in_progress (a failed run included) through
+// C-TT-END as the demo's own teacher — a trial left running is what the next demo link
+// would be offered.
 const PROOFS = process.env.E2E_PROOF_DIR ?? path.resolve(process.cwd(), 'tests', 'e2e', 'proofs', 'teacher-v2');
 const FOLLOWUP_PROOFS = path.join(process.env.BUG_PROOF_DIR ?? '/Users/hunor.nagy/Desktop/live_feedback_1/proof', 'BUG-004');
 const startSession = (key: string) => cat(en, `TeacherPortal.startSession.${key}`);
+const demoLimit = createTranslator({ locale: 'en', messages: enMessages, namespace: 'TeacherPortal.startSession.demoLimit' });
 const DOCUMENT_ID = /^[a-z0-9]{24}$/;
 const RATE_LIMITED = {
   data: null,
-  error: { status: 429, name: 'RateLimitError', message: 'Too many requests', details: {} },
+  error: { status: 429, name: 'RateLimitError', message: 'Too many requests', details: { retry_after_seconds: 1500 } },
 };
 // The student-app renderer's own en catalog (schooltest-app), which this repo cannot import:
 // ReadingRunner.next / nextPassage / finishSection, ReadingRunner.correct,
@@ -94,8 +101,26 @@ async function answerOneQuestion(demo: Page): Promise<Response> {
   return response;
 }
 
+// What afterEach needs to end the trials a run opened: the API the demo tab talked to, the
+// teacher jwt the verify minted for it, and every trial document id the run was handed.
+const opened = { api: '', jwt: '', sessions: new Set<string>() };
+
 test.use({ viewport: { width: 1440, height: 900 } });
 test.beforeEach(async ({ context }) => bridgeApiCors(context));
+test.afterEach(async ({ request }) => {
+  for (const id of opened.sessions) {
+    if (runSql(`select status from sessions where document_id = '${id}'`) !== 'in_progress') continue;
+    const ended = await request.post(`${opened.api}/api/teacher/trial/${id}/end`, {
+      headers: { Authorization: `Bearer ${opened.jwt}` },
+    });
+    expect(ended.status(), `ending trial ${id}, left in progress by this run: ${await ended.text()}`).toBe(200);
+  }
+  expect(
+    [...opened.sessions].filter((id) => runSql(`select status from sessions where document_id = '${id}'`) === 'in_progress'),
+    'no trial this run opened is left in progress',
+  ).toEqual([]);
+  opened.sessions.clear();
+});
 
 test('BUG-004 — Teacher demo mints a link, Open starts the trial in a new tab, nothing is recorded', async ({
   page,
@@ -171,7 +196,12 @@ test('BUG-004 — Teacher demo mints a link, Open starts the trial in a new tab,
   });
   const trialStarts: Response[] = [];
   context.on('response', (response) => {
-    if (isPost('/api/teacher/trial')(response)) trialStarts.push(response);
+    if (!isPost('/api/teacher/trial')(response)) return;
+    trialStarts.push(response);
+    void response
+      .json()
+      .then((body: { session?: { document_id?: string } }) => body.session?.document_id && opened.sessions.add(body.session.document_id))
+      .catch(() => undefined);
   });
   await open.click();
   const demo = await popupPromise;
@@ -182,8 +212,11 @@ test('BUG-004 — Teacher demo mints a link, Open starts the trial in a new tab,
   const verify = await verified;
   expect(verify.status()).toBe(200);
   const offer = (await verify.json()) as {
+    jwt: string;
     trial: { form_document_id: string; session_document_id: string | null } | null;
   };
+  Object.assign(opened, { api: new URL(verify.url()).origin, jwt: offer.jwt });
+  if (offer.trial?.session_document_id) opened.sessions.add(offer.trial.session_document_id);
   expect(offer.trial?.form_document_id).toBe(formId);
 
   await expect(demo.getByText(/Question \d+ of [1-9]\d*/)).toBeVisible({ timeout: 90_000 });
@@ -266,7 +299,7 @@ test('BUG-004 — Teacher demo mints a link, Open starts the trial in a new tab,
   await demo.close();
 });
 
-test('BUG-004 — a refused demo mint shows the server message in the modal', async ({ page }) => {
+test('BUG-004 — a spent demo budget says so in the modal, with the wait the API names', async ({ page }) => {
   test.setTimeout(120_000);
   mkdirSync(PROOFS, { recursive: true });
   const modal = await openDemoMode(page);
@@ -284,7 +317,8 @@ test('BUG-004 — a refused demo mint shows the server message in the modal', as
 
   await modal.locator('[data-slot="start-session-cta"]').click();
   const alert = modal.locator('[data-slot="start-session-error"]');
-  await expect(alert).toHaveText(RATE_LIMITED.error.message);
+  await expect(alert).toHaveText(demoLimit('retryIn', { minutes: 25 }));
+  await expect(alert).not.toHaveText(RATE_LIMITED.error.message);
   await expect(alert).toHaveAttribute('role', 'alert');
   await expect(page.locator('[data-surface="demo-link-dialog"]')).toHaveCount(0);
   await expect(modal).toBeVisible();

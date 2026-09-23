@@ -1,11 +1,12 @@
 'use client';
 
 import { useQueryClient } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import { useRouter } from '@/i18n/navigation';
 import { LIVE_SESSIONS_HREF, LIVE_TAB_HREF } from '@/modules/teacher/constants/start-session.constants';
-import { describeStartSessionFailure } from '@/modules/teacher/lib/start-session-errors';
+import { describeDemoLinkFailure, describeStartSessionFailure } from '@/modules/teacher/lib/start-session-errors';
 import { useCreateTestSessionMutation } from '@/modules/teacher/queries/use-create-test-session.mutation';
 import { useTeacherDemoLinkMutation } from '@/modules/teacher/queries/use-teacher-demo-link.mutation';
 import { useUpdateTestSessionMutation } from '@/modules/teacher/queries/use-update-test-session.mutation';
@@ -25,6 +26,7 @@ import type {
 export function useStartSessionSubmit(timeZone: string) {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const tDemoLimit = useTranslations('TeacherPortal.startSession.demoLimit');
   const close = useStartSessionStore((state) => state.close);
   const showDemoLink = useStartSessionStore((state) => state.showDemoLink);
   const create = useCreateTestSessionMutation();
@@ -62,15 +64,15 @@ export function useStartSessionSubmit(timeZone: string) {
     },
     // C-TT-DEMO (TB-17). Unlike the other three this writes no sitting, so it neither
     // navigates nor invalidates: the minted link replaces the modal with the design's
-    // S29 dialog, and a refusal (403 a non-teacher role, 429 the shared magic-link
-    // budget) stays in the modal in the server's own words.
+    // S29 dialog. A refusal stays in the modal: a 403 (a non-teacher role) in the
+    // server's own words, a 429 (the per-hour demo-link budget) with the wait.
     startDemo: (formDocumentId: string, testLabel: string) => {
       setFailure(null);
       demo.mutate(
         { form_document_id: formDocumentId },
         {
           onSuccess: (link) => showDemoLink({ link, testLabel }),
-          onError: (error) => setFailure(describeStartSessionFailure(error, timeZone)),
+          onError: (error) => setFailure(describeDemoLinkFailure(error, timeZone, tDemoLimit)),
         },
       );
     },

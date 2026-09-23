@@ -6065,6 +6065,10 @@
         "warning": "This link signs in as your own teacher account. It works once and expires at {expires}; students and parents can never use it.",
         "open": "Open the demo",
         "done": "Done"
+      },
+      "demoLimit": {
+        "retryIn": "You've opened the maximum number of demo links this hour. Try again in {minutes, plural, one {# minute} other {# minutes}}.",
+        "later": "You've opened the maximum number of demo links this hour. Try again later."
       }
     },
     "reports": {

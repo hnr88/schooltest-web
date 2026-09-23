@@ -6084,6 +6084,10 @@
         "warning": "Liên kết này đăng nhập bằng chính tài khoản giáo viên của bạn. Nó chỉ dùng được một lần và hết hạn lúc {expires}; học sinh và phụ huynh không bao giờ dùng được.",
         "open": "Mở bản dùng thử",
         "done": "Xong"
+      },
+      "demoLimit": {
+        "retryIn": "Bạn đã mở số liên kết dùng thử tối đa trong giờ này. Hãy thử lại sau {minutes} phút.",
+        "later": "Bạn đã mở số liên kết dùng thử tối đa trong giờ này. Hãy thử lại sau."
       }
     },
     "reports": {

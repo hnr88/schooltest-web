@@ -98,6 +98,9 @@ export interface StartSessionFailure {
   blocked: BlockedMap;
 }
 
+/** `TeacherPortal.startSession.demoLimit` — the spent demo-link budget, with or without the wait. */
+export type DemoLimitTranslate = (key: 'retryIn' | 'later', values?: { minutes: number }) => string;
+
 /** What a screen asked for when it opened the modal (the store's request fields). */
 export interface StartSessionRequest {
   classId: string | null;

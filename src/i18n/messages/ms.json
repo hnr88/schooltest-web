@@ -6075,6 +6075,10 @@
         "warning": "Pautan ini log masuk sebagai akaun guru anda sendiri. Ia berfungsi sekali sahaja dan tamat tempoh pada {expires}; murid dan ibu bapa tidak sekali-kali boleh menggunakannya.",
         "open": "Buka demo",
         "done": "Selesai"
+      },
+      "demoLimit": {
+        "retryIn": "Anda telah membuka bilangan maksimum pautan demo untuk jam ini. Cuba lagi dalam {minutes, plural, other {# minit}}.",
+        "later": "Anda telah membuka bilangan maksimum pautan demo untuk jam ini. Cuba lagi kemudian."
       }
     },
     "reports": {
