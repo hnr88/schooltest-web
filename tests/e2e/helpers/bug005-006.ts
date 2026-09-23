@@ -190,7 +190,20 @@ export async function signOut(page: Page): Promise<void> {
   await page.evaluate(() => window.localStorage.clear());
 }
 
+/**
+ * Deleting a school does not delete its invitation rows, and accepted ones are
+ * immutable — so before the school goes, every still-OPEN invitation is revoked
+ * as the owning admin (C-INV-04), leaving no live token behind.
+ */
 export async function removeSchool(school: FreshSchool | null, staffEmails: string[]): Promise<void> {
   if (!school) return;
+  const auth = { Authorization: `Bearer ${school.adminJwt}` };
+  const listed = await fetch(`${API}/api/schools/me/invitations`, { headers: auth });
+  if (listed.ok) {
+    const rows = ((await listed.json()) as { data: Array<{ documentId: string; status: string }> }).data;
+    for (const row of rows.filter((entry) => entry.status === 'invited' || entry.status === 'expired')) {
+      await fetch(`${API}/api/schools/me/invitations/${row.documentId}`, { method: 'DELETE', headers: auth });
+    }
+  }
   await cleanupSchool(school.documentId, [school.admin.email, ...staffEmails]);
 }

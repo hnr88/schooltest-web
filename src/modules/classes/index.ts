@@ -6,6 +6,7 @@ export { ClassStudentDetailScreen } from './components/ClassStudentDetailScreen'
 export { EditClassDialog } from './components/EditClassDialog';
 export { ClassDeleteDialog } from './components/ClassDeleteDialog';
 export { useSchoolClassesQuery } from './queries/use-school-classes.query';
+export { CLASSES_QUERY_KEY } from './constants/queries.constants';
 export { useClassDetailQuery } from './queries/use-class-detail.query';
 export { useClassStudentQuery } from './queries/use-class-student.query';
 export { useCreateClassMutation } from './queries/use-create-class.mutation';

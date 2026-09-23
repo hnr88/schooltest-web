@@ -21,8 +21,13 @@ const enMessages = JSON.parse(
 (globalThis as Record<string, unknown>).IS_REACT_ACT_ENVIRONMENT = true;
 
 const useTeachersQuery = vi.fn();
+const NO_INVITATIONS = { data: [], isPending: false, isError: false, isSuccess: true, isFetching: false };
+const useInvitationsQuery = vi.fn(() => NO_INVITATIONS);
 
-vi.mock('@/modules/teachers', () => ({ useTeachersQuery: () => useTeachersQuery() }));
+vi.mock('@/modules/teachers', () => ({
+  useTeachersQuery: () => useTeachersQuery(),
+  useInvitationsQuery: () => useInvitationsQuery(),
+}));
 vi.mock('@/modules/auth', async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useAuthStore: (select: (state: { token: string; hydrated: boolean }) => unknown) =>
@@ -71,7 +76,22 @@ afterEach(() => {
   host = null;
   document.body.innerHTML = '';
   useTeachersQuery.mockReset();
+  useInvitationsQuery.mockReset();
+  useInvitationsQuery.mockImplementation(() => NO_INVITATIONS);
 });
+
+function invitation(status: string, expiresAt: string, role = 'teacher') {
+  return {
+    documentId: `inv-${status}`,
+    email: 'ada@school.test',
+    first_name: 'Ada',
+    last_name: 'Lovelace',
+    role,
+    status,
+    expires_at: expiresAt,
+    created_at: '2026-09-23T00:00:00.000Z',
+  };
+}
 
 describe('Classes screen — teacher-required hint (BUG-005)', () => {
   test('no assignable teacher: Add class is disabled and the hint explains the next step', () => {
@@ -104,5 +124,35 @@ describe('Classes screen — teacher-required hint (BUG-005)', () => {
     useTeachersQuery.mockReturnValue({ data: undefined, isPending: true, isError: false, isSuccess: false });
     mount();
     expect(document.querySelector('[data-slot="add-class-blocked-hint"]')).toBeNull();
+  });
+
+  // BUG-006 consistency: an invited (pending) teacher is assignable, so it
+  // suppresses the hint exactly like an active teacher does.
+  test('a pending teacher invitation suppresses the hint and enables Add class', () => {
+    useTeachersQuery.mockReturnValue(teachers([{ blocked: false, role: 'school_admin' }]));
+    useInvitationsQuery.mockImplementation(
+      () => ({ ...NO_INVITATIONS, data: [invitation('invited', '2999-01-01T00:00:00.000Z')] }) as never,
+    );
+    mount();
+    expect(document.querySelector('[data-slot="add-class-blocked-hint"]')).toBeNull();
+    expect(addClassButton().disabled).toBe(false);
+  });
+
+  test('lapsed, revoked and school-admin invitations do not count — the hint stays', () => {
+    useTeachersQuery.mockReturnValue(teachers([]));
+    useInvitationsQuery.mockImplementation(
+      () =>
+        ({
+          ...NO_INVITATIONS,
+          data: [
+            invitation('invited', '2000-01-01T00:00:00.000Z'),
+            invitation('revoked', '2999-01-01T00:00:00.000Z'),
+            invitation('invited', '2999-01-01T00:00:00.000Z', 'school_admin'),
+          ],
+        }) as never,
+    );
+    mount();
+    expect(document.querySelector('[data-slot="add-class-blocked-hint"]')).not.toBeNull();
+    expect(addClassButton().disabled).toBe(true);
   });
 });

@@ -11,15 +11,21 @@ import { TEACHERS_QUERY_KEY } from '@/modules/teachers';
 export interface UpdateClassTeachersInput {
   documentId: string;
   teacherDocumentIds: string[];
+  // BUG-006: an invited teacher picked for the class; omitted = unchanged.
+  pendingTeacherDocumentId?: string;
 }
 
 async function updateClassTeachersRequest({
   documentId,
   teacherDocumentIds,
+  pendingTeacherDocumentId,
 }: UpdateClassTeachersInput): Promise<SchoolClass> {
   const res = await strapi.patch<StrapiSingleResponse<unknown>>(
     `/api/schools/me/classes/${documentId}`,
-    { teacher_documentIds: teacherDocumentIds },
+    {
+      teacher_documentIds: teacherDocumentIds,
+      ...(pendingTeacherDocumentId ? { pending_teacher_documentId: pendingTeacherDocumentId } : {}),
+    },
   );
   return schoolClassSchema.parse(res.data.data);
 }

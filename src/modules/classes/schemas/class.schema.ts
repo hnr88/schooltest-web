@@ -10,11 +10,24 @@ export const classTeacherSchema = z.object({
   last_name: z.string().nullable(),
 });
 
+// BUG-006: the INVITED (not yet activated) teacher a class is waiting on. The
+// state is the server's, derived from the invitation: anything but `pending`
+// means the invitation lapsed and the class needs its teacher reassigned.
+export const classPendingTeacherSchema = z.object({
+  documentId: z.string(),
+  email: z.string().nullable(),
+  first_name: z.string().nullable(),
+  last_name: z.string().nullable(),
+  state: z.enum(['pending', 'expired', 'revoked', 'accepted']),
+});
+
 export const schoolClassSchema = z.object({
   documentId: z.string(),
   name: z.string(),
   year_band: z.string().nullable(),
   teachers: z.array(classTeacherSchema),
+  // Absent from rows the server did not load it for; absent reads as none.
+  pending_teacher: classPendingTeacherSchema.nullable().default(null),
   student_count: z.number(),
 });
 

@@ -7,6 +7,7 @@ import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { showOpsToast } from '@/modules/ops/actions';
+import { assignmentFromPicks, currentTeacherPick } from '@/modules/classes/lib/class-teacher-picker';
 import { useUpdateClassMutation } from '@/modules/classes/queries/use-update-class.mutation';
 import {
   createEditClassFormSchema,
@@ -28,17 +29,24 @@ export function useEditClassForm(schoolClass: EditClassTarget, onClose: () => vo
     resolver: zodResolver(schema),
     defaultValues: {
       name: schoolClass.name ?? '',
-      teacher_documentId: schoolClass.teacher?.documentId ?? '',
+      teacher_documentId: currentTeacherPick(schoolClass.teacher?.documentId, schoolClass.pending_teacher),
     },
   });
 
   const submit = form.handleSubmit(async (values) => {
+    // BUG-006: the single pick IS the class's teacher. An invited pick is sent
+    // as the pending teacher; any other pick clears a pending teacher the class
+    // holds (the reassign path). A class with no known pending teacher never
+    // sends the key, so a plain rename/reassign is unchanged on the wire.
+    const assignment = assignmentFromPicks([values.teacher_documentId]);
+    const touchesPending =
+      assignment.pending_teacher_documentId !== null || Boolean(schoolClass.pending_teacher);
     try {
       await update.mutateAsync({
         documentId: schoolClass.documentId,
         name: values.name,
-        teacher_documentIds:
-          values.teacher_documentId === '' ? [] : [values.teacher_documentId],
+        teacher_documentIds: assignment.teacher_documentIds,
+        ...(touchesPending ? { pending_teacher_documentId: assignment.pending_teacher_documentId } : {}),
       });
       showOpsToast({ tone: 'ok', message: t('savedToast', { name: values.name }) });
       onClose();

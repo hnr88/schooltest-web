@@ -6,7 +6,9 @@ import { useState } from 'react';
 
 import { showOpsToast } from '@/modules/ops/actions';
 import { ClassTeachersPickerDialog } from '@/modules/classes/components/ClassTeachersPickerDialog';
+import { PendingTeacherBadge } from '@/modules/classes/components/PendingTeacherBadge';
 import { teacherDisplayName } from '@/modules/classes/lib/class-detail.helpers';
+import { assignmentFromPicks } from '@/modules/classes/lib/class-teacher-picker';
 import {
   removalAllowed,
   unionTeacherIds,
@@ -18,7 +20,7 @@ import { cn } from '@/lib/utils';
 
 import type { ClassTeacherPanelProps } from '@/modules/classes/types/components.types';
 
-export function ClassTeacherPanel({ schoolClass }: ClassTeacherPanelProps) {
+export function ClassTeacherPanel({ schoolClass, pendingTeacher }: ClassTeacherPanelProps) {
   const t = useTranslations('Classes.detail.teachers');
   const td = useTranslations('Classes.detail');
   const update = useUpdateClassTeachersMutation();
@@ -33,11 +35,19 @@ export function ClassTeacherPanel({ schoolClass }: ClassTeacherPanelProps) {
   const teacher = schoolClass.teacher;
   const teacherName = teacherDisplayName(teacher);
 
-  async function apply(teacherDocumentIds: string[], onRetry: () => void): Promise<boolean> {
+  async function apply(
+    teacherDocumentIds: string[],
+    onRetry: () => void,
+    pendingTeacherDocumentId?: string,
+  ): Promise<boolean> {
     setRetryFn({ run: onRetry });
     setFailed(false);
     try {
-      await update.mutateAsync({ documentId: schoolClass.documentId, teacherDocumentIds });
+      await update.mutateAsync({
+        documentId: schoolClass.documentId,
+        teacherDocumentIds,
+        pendingTeacherDocumentId,
+      });
       showOpsToast({ tone: 'ok', message: t('savedToast') });
       return true;
     } catch {
@@ -47,7 +57,12 @@ export function ClassTeacherPanel({ schoolClass }: ClassTeacherPanelProps) {
   }
 
   function addTeachers(picked: readonly string[]): Promise<boolean> {
-    return apply(unionTeacherIds(teacher, picked), () => addTeachers(picked));
+    const { teacher_documentIds, pending_teacher_documentId } = assignmentFromPicks(picked);
+    return apply(
+      unionTeacherIds(teacher, teacher_documentIds),
+      () => addTeachers(picked),
+      pending_teacher_documentId ?? undefined,
+    );
   }
 
   function removeTeacher(teacherDocumentId: string) {
@@ -68,7 +83,13 @@ export function ClassTeacherPanel({ schoolClass }: ClassTeacherPanelProps) {
         <li className="text-sm font-medium text-body" aria-hidden="true">
           {t('label')}
         </li>
-        {teacher === null || teacherName === null ? (
+        {(teacher === null || teacherName === null) && pendingTeacher ? (
+          // BUG-006: the class is waiting on an invited teacher (or its
+          // invitation lapsed and the teacher must be reassigned).
+          <li className="text-sm text-body" data-slot="class-teacher-pending">
+            <PendingTeacherBadge pending={pendingTeacher} showName />
+          </li>
+        ) : teacher === null || teacherName === null ? (
           <li className="text-sm text-muted-foreground">{td('teacherUnassigned')}</li>
         ) : (
           <li
@@ -120,6 +141,7 @@ export function ClassTeacherPanel({ schoolClass }: ClassTeacherPanelProps) {
         <ClassTeachersPickerDialog
           className={schoolClass.name ?? ''}
           currentTeacher={teacher}
+          allowInvited={teacher === null}
           pending={update.isPending}
           onSubmit={addTeachers}
           onClose={() => setAdding(false)}

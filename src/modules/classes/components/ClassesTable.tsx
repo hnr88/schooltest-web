@@ -18,13 +18,10 @@ import {
 } from '@/modules/directory';
 
 import { ClassDeleteDialog } from '@/modules/classes/components/ClassDeleteDialog';
+import { ClassTeacherCell } from '@/modules/classes/components/ClassTeacherCell';
 import { YEAR_BANDS } from '@/modules/classes/constants/year-bands.constants';
 import { useClassRowActions } from '@/modules/classes/hooks/use-class-row-actions';
-import {
-  classBadge,
-  formatTestsCompleted,
-  teacherNames,
-} from '@/modules/classes/lib/classes-table.helpers';
+import { classBadge, formatTestsCompleted } from '@/modules/classes/lib/classes-table.helpers';
 
 import type { ClassesTableProps } from '@/modules/classes/types/components.types';
 import type { SchoolClass } from '@/modules/classes/types/classes.types';
@@ -177,16 +174,7 @@ export function ClassesTable({ rows, completions, onEdit, query = IDLE_QUERY }: 
         // text (`School Admin Portal.dc.html:263-265`: 13.5px ink, no metric
         // sublabel); the metric arm's "teacher" sublabel was the mismatch.
         grid: 'text',
-        cell: (row) => {
-          const teacher = teacherNames(row.teachers);
-          return teacher === '' ? (
-            <span className="text-[#9AA6B8]">{table('teacherNone')}</span>
-          ) : (
-            <span className="block truncate" title={teacher}>
-              {teacher}
-            </span>
-          );
-        },
+        cell: (row) => <ClassTeacherCell row={row} />,
       },
       {
         key: 'students',

@@ -1,4 +1,5 @@
 import type {
+  ClassPendingTeacherState,
   ClassTeacher,
   ClassTestCompletion,
   ClassTestCompletionDisplay,
@@ -14,6 +15,17 @@ export function teacherNames(teachers: ClassTeacher[]): string {
     .map((teacher) => teacherName(teacher.first_name, teacher.last_name))
     .filter((name) => name !== '')
     .join(', ');
+}
+
+// BUG-006: the Classes.table key that labels a pending teacher's state —
+// "Invited (pending)", or a reassign call once the invitation lapsed.
+export function pendingTeacherLabelKey(
+  state: ClassPendingTeacherState,
+): 'teacherPending' | 'teacherReassignExpired' | 'teacherReassignRevoked' | 'teacherReassign' {
+  if (state === 'pending') return 'teacherPending';
+  if (state === 'expired') return 'teacherReassignExpired';
+  if (state === 'revoked') return 'teacherReassignRevoked';
+  return 'teacherReassign';
 }
 
 /** The badge tile's label: the class name's leading word ("8B" of "8B English"). */

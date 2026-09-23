@@ -2,8 +2,9 @@
 
 import { useTranslations } from 'next-intl';
 
+import { useAssignableTeachers } from '@/modules/classes/hooks/use-assignable-teachers';
 import { useEditClassForm } from '@/modules/classes/hooks/use-edit-class-form';
-import { teacherLabel } from '@/modules/classes/lib/class-form.helpers';
+import { teacherPickOptions } from '@/modules/classes/lib/class-teacher-picker';
 import {
   Alert,
   Input,
@@ -21,7 +22,6 @@ import {
   OpsFieldShell,
   Skeleton,
 } from '@/modules/design-system';
-import { useTeachersQuery } from '@/modules/teachers';
 
 import type { EditClassDialogProps } from '@/modules/classes/types/components.types';
 
@@ -35,7 +35,13 @@ const NATIVE_SELECT_CLASS =
 // checkbox-based assignment panel; the roster is not edited here.
 export function EditClassDialog({ schoolClass, onClose }: EditClassDialogProps) {
   const t = useTranslations('Classes.detail.edit');
-  const teachersQuery = useTeachersQuery(true);
+  const tp = useTranslations('Classes.teacherPicker');
+  const assignable = useAssignableTeachers(true);
+  // BUG-006: every staff row stays listed (as before), plus invited teachers
+  // still pending activation.
+  const options = teacherPickOptions(assignable.allTeachers, assignable.invitations, (name) =>
+    tp('pendingOption', { name }),
+  );
   const { form, submit, pending } = useEditClassForm(schoolClass, onClose);
   const {
     register,
@@ -51,14 +57,14 @@ export function EditClassDialog({ schoolClass, onClose }: EditClassDialogProps) 
     >
       <OpsDialogContent>
         <OpsDialogHeader title={t('title')} sub={t('description')} />
-        {teachersQuery.isPending ? (
+        {assignable.isPending ? (
           <OpsDialogBody>
             <div className="flex flex-col gap-3">
               <Skeleton className="h-10 w-full" />
               <Skeleton className="h-10 w-full" />
             </div>
           </OpsDialogBody>
-        ) : teachersQuery.isError ? (
+        ) : assignable.isError && options.length === 0 ? (
           <OpsDialogBody>
             <Alert variant="error" title={t('loadError')}>
               {t('loadErrorDescription')}
@@ -84,7 +90,7 @@ export function EditClassDialog({ schoolClass, onClose }: EditClassDialogProps) 
                 {/* No dependent dropdown renders empty: zero teachers swaps
                     the picker for the refusal + "Invite a teacher" CTA, while
                     the rename field and save stay usable. */}
-                {(teachersQuery.data ?? []).length === 0 ? (
+                {options.length === 0 ? (
                   <MissingDependencyNotice kind="teachers" ctaHref="/dashboard/school/teachers" />
                 ) : (
                   <NativeSelect
@@ -93,9 +99,9 @@ export function EditClassDialog({ schoolClass, onClose }: EditClassDialogProps) 
                     {...register('teacher_documentId')}
                   >
                     <NativeSelectOption value="">{t('teacherUnassigned')}</NativeSelectOption>
-                    {(teachersQuery.data ?? []).map((teacher) => (
-                      <NativeSelectOption key={teacher.documentId} value={teacher.documentId}>
-                        {teacherLabel(teacher)}
+                    {options.map((option) => (
+                      <NativeSelectOption key={option.value} value={option.value}>
+                        {option.label}
                       </NativeSelectOption>
                     ))}
                   </NativeSelect>

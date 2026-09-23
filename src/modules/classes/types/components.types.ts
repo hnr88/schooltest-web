@@ -9,12 +9,13 @@ import type {
   SubskillVerdict,
 } from '@/modules/classes/types/class-detail.types';
 import type {
+  ClassPendingTeacher,
   ClassTestCompletion,
   ClassTestCompletionDisplay,
   SchoolClass,
 } from '@/modules/classes/types/classes.types';
 import type { SchoolStudent } from '@/modules/school-students';
-import type { SchoolTeacher } from '@/modules/teachers';
+import type { SchoolInvitation, SchoolTeacher } from '@/modules/teachers';
 
 export interface AddClassDialogProps {
   onClose: () => void;
@@ -22,6 +23,8 @@ export interface AddClassDialogProps {
 
 export interface AddClassFormProps {
   teachers: SchoolTeacher[];
+  // BUG-006: invited teachers still pending activation — assignable too.
+  invitations: SchoolInvitation[];
   onClose: () => void;
 }
 
@@ -59,6 +62,9 @@ export interface EditClassTarget {
   documentId: string;
   name: string | null;
   teacher?: { documentId: string } | null;
+  // BUG-006: known only where the read carries it (the classes list); absent
+  // means unknown, and the edit then never touches the pending teacher.
+  pending_teacher?: ClassPendingTeacher | null;
 }
 
 export interface EditClassDialogProps {
@@ -79,19 +85,25 @@ export interface ClassRowActionsProps {
 
 // --- Class detail (spec §1) and student drill-down (spec §2) ---
 
+// BUG-006: `pendingTeacher` is read from the C-CLS-01 row (C-CLS-05 stays
+// strict and unchanged); undefined = not known yet.
 export interface ClassDetailHeaderProps {
   schoolClass: ClassDetail;
+  pendingTeacher?: ClassPendingTeacher | null;
   onEdit: () => void;
   onImport: () => void;
 }
 
 export interface ClassTeacherPanelProps {
   schoolClass: ClassDetail;
+  pendingTeacher?: ClassPendingTeacher | null;
 }
 
 export interface ClassTeachersPickerDialogProps {
   className: string;
   currentTeacher: ClassDetailTeacher | null;
+  // BUG-006: invited teachers are offered only while the class has no teacher.
+  allowInvited: boolean;
   pending: boolean;
   onSubmit: (teacherDocumentIds: string[]) => Promise<boolean>;
   onClose: () => void;

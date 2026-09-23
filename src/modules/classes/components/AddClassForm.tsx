@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { Controller } from 'react-hook-form';
 
 import { useAddClassForm } from '@/modules/classes/hooks/use-add-class-form';
-import { teacherOption } from '@/modules/classes/lib/class-form.helpers';
+import { teacherPickOptions } from '@/modules/classes/lib/class-teacher-picker';
 import {
   Input,
   MissingDependencyNotice,
@@ -23,8 +23,10 @@ import type { AddClassFormProps } from '@/modules/classes/types/components.types
 // nothing else — the CSV import block left this modal, so there is exactly ONE
 // import flow (the shared dialog) and ONE engine behind it. Students join the
 // new class through the class-detail or Students-page import dialog.
-export function AddClassForm({ teachers, onClose }: AddClassFormProps) {
+export function AddClassForm({ teachers, invitations, onClose }: AddClassFormProps) {
   const t = useTranslations('Classes.addForm');
+  const tp = useTranslations('Classes.teacherPicker');
+  const options = teacherPickOptions(teachers, invitations, (name) => tp('pendingOption', { name }));
   const { form, submit, pending } = useAddClassForm(onClose);
   const {
     register,
@@ -55,14 +57,14 @@ export function AddClassForm({ teachers, onClose }: AddClassFormProps) {
               /* Defensive only — the dialog refuses to mount this form without
                  an eligible teacher. If it is ever reached empty, the blocking
                  refusal renders instead of an empty select. */
-              teachers.length === 0 ? (
-                <MissingDependencyNotice kind="eligibleTeachers" ctaHref="/dashboard/school/teachers" />
+              options.length === 0 ? (
+                <MissingDependencyNotice kind="assignableTeachers" ctaHref="/dashboard/school/teachers" />
               ) : (
                 <SelectField
                   id="add-class-teacher"
                   label={t('teacher')}
                   placeholder={t('teacherPlaceholder')}
-                  options={teachers.map(teacherOption)}
+                  options={options}
                   value={field.value}
                   onValueChange={field.onChange}
                   triggerClassName={OPS_CONTROL_CLASS}
@@ -78,7 +80,7 @@ export function AddClassForm({ teachers, onClose }: AddClassFormProps) {
         </OpsDialogCancel>
         {/* Defensive: the dialog gates creation on eligible teachers before
             this form mounts, so a teacherless render must never submit. */}
-        <OpsDialogCta type="submit" loading={pending} disabled={teachers.length === 0}>
+        <OpsDialogCta type="submit" loading={pending} disabled={options.length === 0}>
           {pending ? t('submitting') : t('submit')}
         </OpsDialogCta>
       </OpsDialogFooter>

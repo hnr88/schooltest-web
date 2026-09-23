@@ -2728,6 +2728,10 @@
       "columnTeacher": "Teacher",
       "columnTestsCompleted": "Tests completed",
       "teacherNone": "—",
+      "teacherPending": "เชิญแล้ว (รอเปิดใช้งาน)",
+      "teacherReassignExpired": "คำเชิญหมดอายุ — มอบหมายครูใหม่",
+      "teacherReassignRevoked": "คำเชิญถูกยกเลิก — มอบหมายครูใหม่",
+      "teacherReassign": "มอบหมายครูใหม่",
       "unknown": "—"
     },
     "yearBands": {
@@ -2798,6 +2802,9 @@
       "forbiddenToast": "You do not have permission to add classes.",
       "errorToast": "That did not work. Try again.",
       "retry": "ลองอีกครั้ง"
+    },
+    "teacherPicker": {
+      "pendingOption": "{name} (เชิญแล้ว — รอเปิดใช้งาน)"
     },
     "assignTeachersButton": "มอบหมายครู",
     "assignTeachers": {
@@ -4876,6 +4883,11 @@
       "eligibleTeachers": {
         "title": "ไม่มีครูที่พร้อมใช้งาน",
         "description": "การสร้างชั้นเรียนต้องมีครูอย่างน้อยหนึ่งคน กรุณาเชิญครูก่อนจึงจะสร้างชั้นเรียนได้",
+        "cta": "เชิญครู"
+      },
+      "assignableTeachers": {
+        "title": "ยังไม่มีครูให้มอบหมาย",
+        "description": "เชิญครูก่อน — คุณสามารถมอบหมายครูให้ชั้นเรียนได้ทันทีที่ส่งคำเชิญ",
         "cta": "เชิญครู"
       },
       "forms": {

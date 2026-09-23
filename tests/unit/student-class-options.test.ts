@@ -4,7 +4,7 @@ import type { SchoolClass } from '@/modules/classes';
 import { classAssignOptions } from '@/modules/school-students/lib/class-options';
 
 function klass(documentId: string, name: string): SchoolClass {
-  return { documentId, name, year_band: null, teachers: [], student_count: 0 };
+  return { documentId, name, year_band: null, teachers: [], pending_teacher: null, student_count: 0 };
 }
 
 describe('classAssignOptions', () => {

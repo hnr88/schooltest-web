@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 
 import { showOpsToast } from '@/modules/ops/actions';
 import { CLASSES_QUERY_KEY } from '@/modules/classes/constants/queries.constants';
+import { assignmentFromPicks } from '@/modules/classes/lib/class-teacher-picker';
 import { useCreateClassMutation } from '@/modules/classes/queries/use-create-class.mutation';
 import type { StrapiErrorEnvelope } from '@/modules/classes/types/hooks.types';
 import {
@@ -33,11 +34,16 @@ export function useAddClassForm(onClose: () => void) {
   });
 
   const submit = form.handleSubmit(async (values) => {
+    // BUG-006: an invited teacher is sent as the class's pending teacher; the
+    // key is omitted otherwise, so a plain create is byte-for-byte unchanged.
+    const { teacher_documentIds, pending_teacher_documentId } = assignmentFromPicks([
+      values.teacher_documentId,
+    ]);
     try {
       await create.mutateAsync({
         name: values.name,
-        teacher_documentIds:
-          values.teacher_documentId === '' ? [] : [values.teacher_documentId],
+        teacher_documentIds,
+        ...(pending_teacher_documentId ? { pending_teacher_documentId } : {}),
       });
     } catch (error) {
       // D5: the duplicate-name refusal is a FIELD error — the server answers

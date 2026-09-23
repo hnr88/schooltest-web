@@ -15,6 +15,7 @@ import { ClassSummaryCards } from '@/modules/classes/components/ClassSummaryCard
 import { EditClassDialog } from '@/modules/classes/components/EditClassDialog';
 import { useClassStudentRoster } from '@/modules/classes/hooks/use-class-student-roster';
 import { useClassDetailQuery } from '@/modules/classes/queries/use-class-detail.query';
+import { useSchoolClassesQuery } from '@/modules/classes/queries/use-school-classes.query';
 import { Alert, Button, Skeleton } from '@/modules/design-system';
 import { RecordCrumb } from '@/modules/shell';
 
@@ -31,6 +32,13 @@ export function ClassDetailScreen({ documentId }: ClassDetailScreenProps) {
   const hydrated = useAuthStore((state) => state.hydrated);
   const enabled = hydrated && Boolean(token);
   const detailQuery = useClassDetailQuery(documentId, enabled);
+  // BUG-006: the invited (pending) teacher comes from the C-CLS-01 row — the
+  // strict C-CLS-05 contract is left untouched, so no deploy order can break
+  // this page. Undefined until the list has loaded (unknown, not "none").
+  const classesQuery = useSchoolClassesQuery(enabled);
+  const pendingTeacher = classesQuery.data
+    ? (classesQuery.data.find((row) => row.documentId === documentId)?.pending_teacher ?? null)
+    : undefined;
   const [editing, setEditing] = useState(false);
   const [importing, setImporting] = useState(false);
   const [addingStudents, setAddingStudents] = useState(false);
@@ -85,6 +93,7 @@ export function ClassDetailScreen({ documentId }: ClassDetailScreenProps) {
           <RecordCrumb label={schoolClass.name ?? ''} />
           <ClassDetailHeader
             schoolClass={schoolClass}
+            pendingTeacher={pendingTeacher}
             onEdit={() => setEditing(true)}
             onImport={() => setImporting(true)}
           />
@@ -133,7 +142,10 @@ export function ClassDetailScreen({ documentId }: ClassDetailScreenProps) {
             )}
           </section>
           {editing ? (
-            <EditClassDialog schoolClass={schoolClass} onClose={() => setEditing(false)} />
+            <EditClassDialog
+              schoolClass={{ ...schoolClass, pending_teacher: pendingTeacher }}
+              onClose={() => setEditing(false)}
+            />
           ) : null}
           {importing ? (
             <ClassImportStudentsDialog

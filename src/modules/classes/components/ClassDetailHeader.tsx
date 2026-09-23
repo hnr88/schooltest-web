@@ -15,6 +15,7 @@ import type { ClassDetailHeaderProps } from '@/modules/classes/types/components.
 // Import students). This surface still holds no checkbox and no save button.
 export function ClassDetailHeader({
   schoolClass,
+  pendingTeacher,
   onEdit,
   onImport,
 }: ClassDetailHeaderProps) {
@@ -38,7 +39,7 @@ export function ClassDetailHeader({
         <p className="mt-1 text-body-md text-[#7C8698]">
           {t('studentCount', { count: schoolClass.student_count })}
         </p>
-        <ClassTeacherPanel schoolClass={schoolClass} />
+        <ClassTeacherPanel schoolClass={schoolClass} pendingTeacher={pendingTeacher} />
       </div>
       <div className="flex flex-wrap items-center gap-2.5">
         <Button

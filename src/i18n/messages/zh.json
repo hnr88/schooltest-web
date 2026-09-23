@@ -2718,6 +2718,10 @@
       "columnTeacher": "Teacher",
       "columnTestsCompleted": "Tests completed",
       "teacherNone": "—",
+      "teacherPending": "已邀请（待激活）",
+      "teacherReassignExpired": "邀请已过期 — 请重新分配教师",
+      "teacherReassignRevoked": "邀请已撤销 — 请重新分配教师",
+      "teacherReassign": "请重新分配教师",
       "unknown": "—"
     },
     "yearBands": {
@@ -2788,6 +2792,9 @@
       "forbiddenToast": "You do not have permission to add classes.",
       "errorToast": "That did not work. Try again.",
       "retry": "重试"
+    },
+    "teacherPicker": {
+      "pendingOption": "{name}（已邀请 — 待激活）"
     },
     "studentDetailMeta": {
       "title": "学生成绩 - SchoolTest",
@@ -4866,6 +4873,11 @@
       "eligibleTeachers": {
         "title": "没有可用的教师",
         "description": "创建班级至少需要一名在职教师。请先邀请教师，再创建班级。",
+        "cta": "邀请教师"
+      },
+      "assignableTeachers": {
+        "title": "还没有可分配的教师",
+        "description": "请先邀请一位教师——邀请发出后即可将其分配到班级。",
         "cta": "邀请教师"
       },
       "forms": {

@@ -16,8 +16,9 @@ import {
 } from '@/modules/design-system';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { useAssignableTeachers } from '@/modules/classes/hooks/use-assignable-teachers';
+import { assignmentFromPicks, teacherPickOptions, togglePick } from '@/modules/classes/lib/class-teacher-picker';
 import { useAssignTeachersMutation } from '@/modules/classes/queries/use-assign-teachers.mutation';
-import { useTeachersQuery } from '@/modules/teachers';
 
 // Task 025 multi-picker (School Admin Portal overlays artboard): "multi-picker
 // for bulk teacher assignment or teacher classes". Two multi-choice lists —
@@ -26,15 +27,18 @@ import { useTeachersQuery } from '@/modules/teachers';
 // through one C-CLS-03 PATCH per class (body key teacher_documentIds, the
 // plural the api asserts against the school's own staff). No numbers exist in
 // this dialog other than the two live list lengths.
+// BUG-006: invited teachers still pending activation are listed too (labelled
+// "Invited — pending"); at most one can be picked, sent as the pending teacher.
 export function AssignTeachersDialog({
   classes,
   onClose,
 }: {
-  classes: { documentId: string; name: string }[];
+  classes: { documentId: string; name: string; hasPendingTeacher: boolean }[];
   onClose: () => void;
 }) {
   const t = useTranslations('Classes.assignTeachers');
-  const teachersQuery = useTeachersQuery(true);
+  const tp = useTranslations('Classes.teacherPicker');
+  const teachersQuery = useAssignableTeachers(true);
   const assignMutation = useAssignTeachersMutation();
   const [selectedClasses, setSelectedClasses] = useState<string[]>([]);
   const [selectedTeachers, setSelectedTeachers] = useState<string[]>([]);
@@ -43,7 +47,11 @@ export function AssignTeachersDialog({
     setList(list.includes(id) ? list.filter((entry) => entry !== id) : [...list, id]);
   };
 
-  const teachers = (teachersQuery.data ?? []).filter((row) => !row.blocked);
+  const teachers = teacherPickOptions(
+    teachersQuery.allTeachers.filter((row) => !row.blocked),
+    teachersQuery.invitations,
+    (name) => tp('pendingOption', { name }),
+  );
   const canSubmit =
     selectedClasses.length > 0 && selectedTeachers.length > 0 && !assignMutation.isPending;
 
@@ -59,7 +67,7 @@ export function AssignTeachersDialog({
               <Skeleton className="h-9 w-full" />
             </div>
           </OpsDialogBody>
-        ) : teachersQuery.isError ? (
+        ) : teachersQuery.isError && teachers.length === 0 ? (
           <OpsDialogBody className="py-5">
             <Alert variant="error" title={t('errorTitle')}>
               {t('errorDescription')}
@@ -103,25 +111,20 @@ export function AssignTeachersDialog({
               </legend>
               <div className="max-h-44 overflow-y-auto rounded-[14px] border border-[#EEF1F6] p-2">
                 {teachers.map((teacher) => (
-                  <div key={teacher.documentId} className="flex items-center gap-2 px-2 py-1">
+                  <div key={teacher.value} className="flex items-center gap-2 px-2 py-1">
                     <Checkbox
-                      id={`assign-teacher-${teacher.documentId}`}
-                      checked={selectedTeachers.includes(teacher.documentId)}
-                      onCheckedChange={() =>
-                        toggle(selectedTeachers, setSelectedTeachers, teacher.documentId)
+                      id={`assign-teacher-${teacher.value}`}
+                      checked={selectedTeachers.includes(teacher.value)}
+                      onCheckedChange={(checked) =>
+                        setSelectedTeachers(togglePick(selectedTeachers, teacher.value, checked === true))
                       }
                     />
                     <Label
-                      htmlFor={`assign-teacher-${teacher.documentId}`}
+                      htmlFor={`assign-teacher-${teacher.value}`}
                       className="min-w-0 text-sm font-normal"
                     >
-                      <span
-                        className="block truncate"
-                        title={[teacher.first_name, teacher.last_name].filter(Boolean).join(' ') ||
-                          teacher.email}
-                      >
-                        {[teacher.first_name, teacher.last_name].filter(Boolean).join(' ') ||
-                          teacher.email}
+                      <span className="block truncate" title={teacher.label}>
+                        {teacher.label}
                       </span>
                     </Label>
                   </div>
@@ -139,7 +142,9 @@ export function AssignTeachersDialog({
             <Alert variant="success" title={t('successTitle')}>
               {t('successDescription', {
                 classes: assignMutation.variables?.classDocumentIds.length ?? 0,
-                teachers: assignMutation.variables?.teacherDocumentIds.length ?? 0,
+                teachers:
+                  (assignMutation.variables?.teacherDocumentIds.length ?? 0) +
+                  (assignMutation.variables?.pendingTeacherDocumentId ? 1 : 0),
               })}
             </Alert>
           </div>
@@ -161,7 +166,15 @@ export function AssignTeachersDialog({
             loading={assignMutation.isPending}
             onClick={() =>
               assignMutation.mutate(
-                { classDocumentIds: selectedClasses, teacherDocumentIds: selectedTeachers },
+                {
+                  classDocumentIds: selectedClasses,
+                  teacherDocumentIds: assignmentFromPicks(selectedTeachers).teacher_documentIds,
+                  pendingTeacherDocumentId:
+                    assignmentFromPicks(selectedTeachers).pending_teacher_documentId,
+                  classesWithPendingTeacher: classes
+                    .filter((klass) => klass.hasPendingTeacher)
+                    .map((klass) => klass.documentId),
+                },
                 { onSuccess: () => onClose() },
               )
             }

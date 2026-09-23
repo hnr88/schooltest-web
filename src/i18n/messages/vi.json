@@ -2737,6 +2737,10 @@
       "columnTeacher": "Teacher",
       "columnTestsCompleted": "Tests completed",
       "teacherNone": "—",
+      "teacherPending": "Đã mời (đang chờ)",
+      "teacherReassignExpired": "Lời mời đã hết hạn — hãy phân công lại giáo viên",
+      "teacherReassignRevoked": "Lời mời đã bị thu hồi — hãy phân công lại giáo viên",
+      "teacherReassign": "Hãy phân công lại giáo viên",
       "unknown": "—"
     },
     "yearBands": {
@@ -2807,6 +2811,9 @@
       "forbiddenToast": "You do not have permission to add classes.",
       "errorToast": "That did not work. Try again.",
       "retry": "Thử lại"
+    },
+    "teacherPicker": {
+      "pendingOption": "{name} (Đã mời — đang chờ)"
     },
     "assignTeachersButton": "Phân công giáo viên",
     "assignTeachers": {
@@ -4885,6 +4892,11 @@
       "eligibleTeachers": {
         "title": "Không có giáo viên đủ điều kiện",
         "description": "Việc tạo lớp cần ít nhất một giáo viên đang hoạt động. Hãy mời giáo viên trước rồi tạo lớp.",
+        "cta": "Mời giáo viên"
+      },
+      "assignableTeachers": {
+        "title": "Chưa có giáo viên để phân công",
+        "description": "Hãy mời giáo viên trước — bạn có thể phân công họ vào lớp ngay khi lời mời được gửi.",
         "cta": "Mời giáo viên"
       },
       "forms": {

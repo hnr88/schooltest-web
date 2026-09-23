@@ -14,16 +14,26 @@ import { TEACHERS_QUERY_KEY } from '@/modules/teachers';
 export interface AssignTeachersInput {
   classDocumentIds: string[];
   teacherDocumentIds: string[];
+  // BUG-006: the invited teacher every selected class waits on (null = none).
+  pendingTeacherDocumentId: string | null;
+  // Classes that currently hold a pending teacher: the wholesale set clears it
+  // there when no invited teacher is picked. Other classes never get the key.
+  classesWithPendingTeacher: string[];
 }
 
 async function assignTeachersRequest({
   classDocumentIds,
   teacherDocumentIds,
+  pendingTeacherDocumentId,
+  classesWithPendingTeacher,
 }: AssignTeachersInput): Promise<{ assigned: number; total: number }> {
   const settled = await Promise.allSettled(
     classDocumentIds.map((classDocumentId) =>
       strapi.patch(`/api/schools/me/classes/${classDocumentId}`, {
         teacher_documentIds: teacherDocumentIds,
+        ...(pendingTeacherDocumentId !== null || classesWithPendingTeacher.includes(classDocumentId)
+          ? { pending_teacher_documentId: pendingTeacherDocumentId }
+          : {}),
       }),
     ),
   );

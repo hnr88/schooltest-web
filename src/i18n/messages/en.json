@@ -2718,6 +2718,10 @@
       "columnTeacher": "Teacher",
       "columnTestsCompleted": "Tests completed",
       "teacherNone": "—",
+      "teacherPending": "Invited (pending)",
+      "teacherReassignExpired": "Invite expired — reassign teacher",
+      "teacherReassignRevoked": "Invite revoked — reassign teacher",
+      "teacherReassign": "Reassign teacher",
       "unknown": "—"
     },
     "yearBands": {
@@ -2788,6 +2792,9 @@
       "forbiddenToast": "You do not have permission to add classes.",
       "errorToast": "That did not work. Try again.",
       "retry": "Try again"
+    },
+    "teacherPicker": {
+      "pendingOption": "{name} (Invited — pending)"
     },
     "studentDetailMeta": {
       "title": "Student results - SchoolTest",
@@ -4866,6 +4873,11 @@
       "eligibleTeachers": {
         "title": "No eligible teachers",
         "description": "Creating a class needs at least one active teacher. Invite a teacher first, then create the class.",
+        "cta": "Invite a teacher"
+      },
+      "assignableTeachers": {
+        "title": "No teacher to assign yet",
+        "description": "Invite a teacher first — you can assign them to a class as soon as the invitation is sent.",
         "cta": "Invite a teacher"
       },
       "forms": {

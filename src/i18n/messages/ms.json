@@ -2728,6 +2728,10 @@
       "columnTeacher": "Teacher",
       "columnTestsCompleted": "Tests completed",
       "teacherNone": "—",
+      "teacherPending": "Dijemput (belum aktif)",
+      "teacherReassignExpired": "Jemputan tamat tempoh — tugaskan semula guru",
+      "teacherReassignRevoked": "Jemputan dibatalkan — tugaskan semula guru",
+      "teacherReassign": "Tugaskan semula guru",
       "unknown": "—"
     },
     "yearBands": {
@@ -2798,6 +2802,9 @@
       "forbiddenToast": "You do not have permission to add classes.",
       "errorToast": "That did not work. Try again.",
       "retry": "Cuba lagi"
+    },
+    "teacherPicker": {
+      "pendingOption": "{name} (Dijemput — belum aktif)"
     },
     "assignTeachersButton": "Tugaskan guru",
     "assignTeachers": {
@@ -4876,6 +4883,11 @@
       "eligibleTeachers": {
         "title": "Tiada guru layak",
         "description": "Pembuatan kelas memerlukan sekurang-kurangnya satu guru aktif. Jemput guru dahulu, kemudian cipta kelas.",
+        "cta": "Jemput guru"
+      },
+      "assignableTeachers": {
+        "title": "Belum ada guru untuk ditugaskan",
+        "description": "Jemput guru dahulu — anda boleh menugaskan mereka ke kelas sebaik sahaja jemputan dihantar.",
         "cta": "Jemput guru"
       },
       "forms": {

@@ -3,7 +3,8 @@
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
-import { teacherLabel } from '@/modules/classes/lib/class-form.helpers';
+import { useAssignableTeachers } from '@/modules/classes/hooks/use-assignable-teachers';
+import { pickDocumentId, teacherPickOptions, togglePick } from '@/modules/classes/lib/class-teacher-picker';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
   Alert,
@@ -16,33 +17,37 @@ import {
   OpsDialogHeader,
   Skeleton,
 } from '@/modules/design-system';
-import { useTeachersQuery } from '@/modules/teachers';
 
 import type { ClassTeachersPickerDialogProps } from '@/modules/classes/types/components.types';
 
 export function ClassTeachersPickerDialog({
   className,
   currentTeacher,
+  allowInvited,
   pending,
   onSubmit,
   onClose,
 }: ClassTeachersPickerDialogProps) {
   const t = useTranslations('Classes.detail.teachers');
-  const teachersQuery = useTeachersQuery(true);
-  const [picked, setPicked] = useState<ReadonlySet<string>>(new Set());
+  const tp = useTranslations('Classes.teacherPicker');
+  const teachersQuery = useAssignableTeachers(true);
+  const [picked, setPicked] = useState<readonly string[]>([]);
   const [submitting, setSubmitting] = useState(false);
 
-  const candidates = (teachersQuery.data ?? []).filter(
-    (candidate) => candidate.documentId !== currentTeacher?.documentId,
+  // BUG-006: invited teachers still pending activation are offered only while
+  // the class has no teacher (a class never holds a teacher AND a pending one),
+  // and picking one excludes every other pick.
+  const candidates = teacherPickOptions(
+    teachersQuery.allTeachers.filter((candidate) => candidate.documentId !== currentTeacher?.documentId),
+    allowInvited ? teachersQuery.invitations : [],
+    (name) => tp('pendingOption', { name }),
+  );
+  const emailByValue = new Map(
+    [...teachersQuery.allTeachers, ...teachersQuery.invitations].map((row) => [row.documentId, row.email]),
   );
 
-  function toggle(documentId: string, checked: boolean) {
-    setPicked((current) => {
-      const next = new Set(current);
-      if (checked) next.add(documentId);
-      else next.delete(documentId);
-      return next;
-    });
+  function toggle(value: string, checked: boolean) {
+    setPicked((current) => togglePick(current, value, checked));
   }
 
   async function submit() {
@@ -74,7 +79,7 @@ export function ClassTeachersPickerDialog({
               <Skeleton className="h-11 w-full" />
             </div>
           </OpsDialogBody>
-        ) : teachersQuery.isError ? (
+        ) : teachersQuery.isError && candidates.length === 0 ? (
           <OpsDialogBody className="py-5">
             <Alert variant="error" title={t('pickerLoadError')}>
               {t('pickerLoadErrorDescription')}
@@ -87,25 +92,28 @@ export function ClassTeachersPickerDialog({
         ) : (
           <OpsDialogBody className="py-5">
             <div className="flex max-h-72 flex-col gap-2 overflow-y-auto" data-slot="class-teachers-picker">
-              {candidates.map((candidate) => (
-                <label
-                  key={candidate.documentId}
-                  className="flex min-h-11 items-center gap-3 rounded-lg border border-border px-3 py-2 text-sm"
-                >
-                  <Checkbox
-                    aria-label={teacherLabel(candidate)}
-                    checked={picked.has(candidate.documentId)}
-                    disabled={busy}
-                    onCheckedChange={(checked) => toggle(candidate.documentId, checked === true)}
-                  />
-                  <span className="min-w-0 truncate font-medium text-foreground" title={teacherLabel(candidate)}>
-                    {teacherLabel(candidate)}
-                  </span>
-                  <span className="ml-auto min-w-0 truncate text-xs text-muted-foreground" title={candidate.email}>
-                    {candidate.email}
-                  </span>
-                </label>
-              ))}
+              {candidates.map((candidate) => {
+                const email = emailByValue.get(pickDocumentId(candidate.value)) ?? '';
+                return (
+                  <label
+                    key={candidate.value}
+                    className="flex min-h-11 items-center gap-3 rounded-lg border border-border px-3 py-2 text-sm"
+                  >
+                    <Checkbox
+                      aria-label={candidate.label}
+                      checked={picked.includes(candidate.value)}
+                      disabled={busy}
+                      onCheckedChange={(checked) => toggle(candidate.value, checked === true)}
+                    />
+                    <span className="min-w-0 truncate font-medium text-foreground" title={candidate.label}>
+                      {candidate.label}
+                    </span>
+                    <span className="ml-auto min-w-0 truncate text-xs text-muted-foreground" title={email}>
+                      {email}
+                    </span>
+                  </label>
+                );
+              })}
             </div>
           </OpsDialogBody>
         )}
@@ -116,7 +124,7 @@ export function ClassTeachersPickerDialog({
           <OpsDialogCta
             type="button"
             loading={busy}
-            disabled={picked.size === 0}
+            disabled={picked.length === 0}
             onClick={() => void submit()}
           >
             {busy ? t('saving') : t('save')}

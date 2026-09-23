@@ -1,0 +1,89 @@
+import { INVITED_TEACHER_VALUE_PREFIX } from '@/modules/classes/constants/teacher-picker.constants';
+import { teacherOption } from '@/modules/classes/lib/class-form.helpers';
+import type { ClassMemberOption } from '@/modules/classes/types/components.types';
+import type {
+  ClassPendingTeacher,
+  ClassTeacherAssignment,
+} from '@/modules/classes/types/classes.types';
+import type { SchoolInvitation, SchoolTeacher } from '@/modules/teachers';
+
+// BUG-006: an invitation is assignable while it is a TEACHER invitation that is
+// still `invited` and inside its expiry — the same rule the server enforces,
+// so the picker never offers what the API would refuse.
+export function isAssignableInvitation(invitation: SchoolInvitation, now: number = Date.now()): boolean {
+  return (
+    invitation.role === 'teacher' &&
+    invitation.status === 'invited' &&
+    Date.parse(invitation.expires_at) > now
+  );
+}
+
+export function invitedTeacherValue(invitationDocumentId: string): string {
+  return `${INVITED_TEACHER_VALUE_PREFIX}${invitationDocumentId}`;
+}
+
+export function invitedTeacherName(person: {
+  first_name: string | null;
+  last_name: string | null;
+  email: string | null;
+}): string {
+  const name = `${person.first_name ?? ''} ${person.last_name ?? ''}`.trim();
+  return name || person.email || '';
+}
+
+// Active teachers first, then invited ones labelled "Invited — pending".
+export function teacherPickOptions(
+  teachers: readonly SchoolTeacher[],
+  invitations: readonly SchoolInvitation[],
+  pendingLabel: (name: string) => string,
+): ClassMemberOption[] {
+  return [
+    ...teachers.map(teacherOption),
+    ...invitations.map((invitation) => ({
+      value: invitedTeacherValue(invitation.documentId),
+      label: pendingLabel(invitedTeacherName(invitation)),
+    })),
+  ];
+}
+
+export function isInvitedTeacherValue(value: string): boolean {
+  return value.startsWith(INVITED_TEACHER_VALUE_PREFIX);
+}
+
+// The documentId behind a pick — a user's, or the invitation's.
+export function pickDocumentId(value: string): string {
+  return isInvitedTeacherValue(value) ? value.slice(INVITED_TEACHER_VALUE_PREFIX.length) : value;
+}
+
+// Picks -> wire. Several active teachers may be picked; a class waits on at
+// most ONE invitation, so only the first invited pick is kept. (togglePick
+// never produces both kinds; the server refuses a body that names both.)
+export function assignmentFromPicks(picks: readonly string[]): ClassTeacherAssignment {
+  const invited = picks.find(isInvitedTeacherValue);
+  return {
+    teacher_documentIds: picks.filter((value) => value !== '' && !isInvitedTeacherValue(value)),
+    pending_teacher_documentId: invited ? pickDocumentId(invited) : null,
+  };
+}
+
+// The single-select value a class currently holds: its teacher, else the
+// invitation it is still waiting on, else unassigned. A lapsed invitation is
+// NOT preselected — that class needs a teacher reassigned.
+export function currentTeacherPick(
+  teacherDocumentId: string | null | undefined,
+  pending: ClassPendingTeacher | null | undefined,
+): string {
+  if (teacherDocumentId) return teacherDocumentId;
+  if (pending?.state === 'pending') return invitedTeacherValue(pending.documentId);
+  return '';
+}
+
+// Toggling within a multi-pick keeps the server's invariant — a class holds
+// real teachers OR one invited teacher, never both: checking an invitation
+// replaces every other pick, and checking a teacher drops an invited pick.
+export function togglePick(picks: readonly string[], value: string, checked: boolean): string[] {
+  if (!checked) return picks.filter((entry) => entry !== value);
+  if (isInvitedTeacherValue(value)) return [value];
+  const kept = picks.filter((entry) => !isInvitedTeacherValue(entry));
+  return kept.includes(value) ? kept : [...kept, value];
+}

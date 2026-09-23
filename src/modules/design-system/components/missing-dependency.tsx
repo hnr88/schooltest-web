@@ -14,8 +14,18 @@ import type { AlertVariant } from '@/modules/design-system/types/design-system.t
  * key (destinationClasses, forms) must not receive `ctaHref`/`onCta`.
  * `teachers` is the informational kind (the action continues without one);
  * `eligibleTeachers` is the BLOCKING kind — the action cannot start at all.
+ * `assignableTeachers` is its school-admin twin (BUG-005/006): there an INVITED
+ * teacher is already assignable, so the copy says "invite first" instead of
+ * "needs an active teacher". Ops keeps `eligibleTeachers`.
  */
-const KINDS = ['classes', 'destinationClasses', 'teachers', 'eligibleTeachers', 'forms'] as const;
+const KINDS = [
+  'classes',
+  'destinationClasses',
+  'teachers',
+  'eligibleTeachers',
+  'assignableTeachers',
+  'forms',
+] as const;
 
 export type MissingDependencyKind = (typeof KINDS)[number];
 

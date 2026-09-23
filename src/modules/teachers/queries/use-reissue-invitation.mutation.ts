@@ -3,6 +3,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { strapi, type StrapiSingleResponse } from '@/lib/axios/strapi';
+import { CLASSES_QUERY_KEY } from '@/modules/classes';
 import { INVITATIONS_QUERY_KEY } from '@/modules/teachers/constants/queries.constants';
 import { reissueInvitationResponseSchema } from '@/modules/teachers/schemas/teachers.schema';
 
@@ -19,6 +20,12 @@ export function useReissueInvitationMutation() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: reissueInvitationRequest,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: INVITATIONS_QUERY_KEY }),
+    // BUG-006: a class waiting on this invitation changes state with it
+    // (pending <-> reassign), so the classes list refreshes too.
+    onSuccess: () =>
+      Promise.all([
+        queryClient.invalidateQueries({ queryKey: INVITATIONS_QUERY_KEY }),
+        queryClient.invalidateQueries({ queryKey: CLASSES_QUERY_KEY }),
+      ]),
   });
 }

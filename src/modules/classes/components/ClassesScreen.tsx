@@ -9,13 +9,12 @@ import { AddClassDialog } from '@/modules/classes/components/AddClassDialog';
 import { AssignTeachersDialog } from '@/modules/classes/components/AssignTeachersDialog';
 import { EditClassDialog } from '@/modules/classes/components/EditClassDialog';
 import { ClassesTable } from '@/modules/classes/components/ClassesTable';
+import { useAssignableTeachers } from '@/modules/classes/hooks/use-assignable-teachers';
 import { testsCompletedByClass } from '@/modules/classes/lib/classes-table.helpers';
-import { isEligibleClassTeacher } from '@/modules/classes/lib/class-form.helpers';
 import { useSchoolClassesQuery } from '@/modules/classes/queries/use-school-classes.query';
 import type { SchoolClass } from '@/modules/classes/types/classes.types';
 import { Alert, Button, Skeleton } from '@/modules/design-system';
 import { useParticipationQuery } from '@/modules/school-admin';
-import { useTeachersQuery } from '@/modules/teachers';
 
 // School admin Classes screen (spec §2): the C-CLS-01 roster joined with the
 // C-RPT-04 per-test completion, plus create (the add-class modal), edit
@@ -30,13 +29,13 @@ export function ClassesScreen() {
   const classesQuery = useSchoolClassesQuery(enabled);
   const participationQuery = useParticipationQuery(enabled);
   // Eligibility for "Add class" is judged BEFORE the dialog opens: creation
-  // needs at least one eligible teacher (an active staff row that is not the
-  // admin), so the trigger carries the refusal instead of letting the admin
-  // fill a form they cannot submit.
-  const teachersQuery = useTeachersQuery(enabled);
-  const eligibleTeacherCount = (teachersQuery.data ?? []).filter(isEligibleClassTeacher).length;
-  const canAddClass = !teachersQuery.isPending && !teachersQuery.isError && eligibleTeacherCount > 0;
-  const showTeacherRequiredHint = teachersQuery.isSuccess && eligibleTeacherCount === 0;
+  // needs at least one assignable teacher — an eligible active teacher or, per
+  // BUG-006, an invited teacher still pending activation — so the trigger
+  // carries the refusal instead of letting the admin fill a form they cannot
+  // submit.
+  const assignable = useAssignableTeachers(enabled);
+  const canAddClass = assignable.hasAssignable;
+  const showTeacherRequiredHint = assignable.isSuccess && !assignable.hasAssignable;
   const [addOpen, setAddOpen] = useState(false);
   const [assignOpen, setAssignOpen] = useState(false);
   const [editTarget, setEditTarget] = useState<SchoolClass | null>(null);
@@ -125,6 +124,7 @@ export function ClassesScreen() {
           classes={(classesQuery.data ?? []).map((row) => ({
             documentId: row.documentId,
             name: row.name,
+            hasPendingTeacher: row.pending_teacher !== null,
           }))}
           onClose={() => setAssignOpen(false)}
         />
@@ -137,6 +137,7 @@ export function ClassesScreen() {
             // One teacher per class (spec §1): the list row's first assigned
             // teacher seeds the single dropdown.
             teacher: editTarget.teachers[0] ?? null,
+            pending_teacher: editTarget.pending_teacher,
           }}
           onClose={() => setEditTarget(null)}
         />

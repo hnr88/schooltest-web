@@ -5,6 +5,8 @@ export interface CreateClassInput {
   name: string;
   year_band?: string;
   teacher_documentIds: string[];
+  // BUG-006: an invitation documentId — sent only when an invited teacher is picked.
+  pending_teacher_documentId?: string;
 }
 
 // C-CLS-03 body. Every field is optional server-side except the class itself,
@@ -17,4 +19,6 @@ export interface UpdateClassInput {
   name: string;
   year_band?: string;
   teacher_documentIds?: string[];
+  // BUG-006: set (invitation documentId) or clear (null); omitted = unchanged.
+  pending_teacher_documentId?: string | null;
 }

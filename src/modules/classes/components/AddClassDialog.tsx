@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 
 import { AddClassForm } from '@/modules/classes/components/AddClassForm';
-import { isEligibleClassTeacher } from '@/modules/classes/lib/class-form.helpers';
+import { useAssignableTeachers } from '@/modules/classes/hooks/use-assignable-teachers';
 import {
   Alert,
   Button,
@@ -16,13 +16,13 @@ import {
   OpsDialogHeader,
   Skeleton,
 } from '@/modules/design-system';
-import { useTeachersQuery } from '@/modules/teachers';
 
 import type { AddClassDialogProps } from '@/modules/classes/types/components.types';
 
 // Spec §2 "Add class modal". The teacher list (C-TCH-01) is a PREREQUISITE of
-// creation, not decoration: a class needs at least one eligible teacher (an
-// active staff row that is not the admin), so eligibility is checked BEFORE
+// creation, not decoration: a class needs at least one assignable teacher (an
+// active staff row that is not the admin, or — BUG-006 — an invited teacher
+// still pending activation), so eligibility is checked BEFORE
 // the form renders — a school with none gets the refusal + "Invite a teacher"
 // CTA instead of a form they can fill and only then discover they cannot
 // submit. A failed load blocks too: eligibility cannot be verified, so the
@@ -30,12 +30,10 @@ import type { AddClassDialogProps } from '@/modules/classes/types/components.typ
 // Modal chrome on the OpsDialog kit (School Admin design: class modal, 520px).
 export function AddClassDialog({ onClose }: AddClassDialogProps) {
   const t = useTranslations('Classes.addForm');
-  const teachersQuery = useTeachersQuery(true);
-
-  const eligibleTeachers = (teachersQuery.data ?? []).filter(isEligibleClassTeacher);
+  const assignable = useAssignableTeachers(true);
 
   let body: React.ReactNode;
-  if (teachersQuery.isPending) {
+  if (assignable.isPending) {
     body = (
       <div className="flex flex-col gap-3" data-slot="add-class-pending">
         <Skeleton className="h-10 w-full" />
@@ -43,7 +41,7 @@ export function AddClassDialog({ onClose }: AddClassDialogProps) {
         <Skeleton className="h-10 w-full" />
       </div>
     );
-  } else if (teachersQuery.isError) {
+  } else if (assignable.isError && !assignable.hasAssignable) {
     body = (
       <Alert
         variant="error"
@@ -53,8 +51,8 @@ export function AddClassDialog({ onClose }: AddClassDialogProps) {
             type="button"
             variant="outline"
             size="sm"
-            loading={teachersQuery.isFetching}
-            onClick={() => void teachersQuery.refetch()}
+            loading={assignable.isFetching}
+            onClick={assignable.refetch}
           >
             {t('retry')}
           </Button>
@@ -63,18 +61,23 @@ export function AddClassDialog({ onClose }: AddClassDialogProps) {
         {t('teacherLoadErrorDescription')}
       </Alert>
     );
-  } else if (eligibleTeachers.length === 0) {
+  } else if (!assignable.hasAssignable) {
     body = (
       <div data-slot="add-class-ineligible">
-        <MissingDependencyNotice kind="eligibleTeachers" ctaHref="/dashboard/school/teachers" />
+        <MissingDependencyNotice kind="assignableTeachers" ctaHref="/dashboard/school/teachers" />
       </div>
     );
   } else {
-    body = <AddClassForm teachers={eligibleTeachers} onClose={onClose} />;
+    body = (
+      <AddClassForm
+        teachers={assignable.teachers}
+        invitations={assignable.invitations}
+        onClose={onClose}
+      />
+    );
   }
 
-  const canAct =
-    !teachersQuery.isPending && !teachersQuery.isError && eligibleTeachers.length > 0;
+  const canAct = !assignable.isPending && assignable.hasAssignable;
 
   return (
     <OpsDialog

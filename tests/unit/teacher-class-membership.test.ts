@@ -15,6 +15,7 @@ function klass(documentId: string, teacherDocumentIds: string[]): SchoolClass {
     name: `Class ${documentId}`,
     year_band: null,
     student_count: 0,
+    pending_teacher: null,
     teachers: teacherDocumentIds.map((id) => ({
       documentId: id,
       first_name: null,
