@@ -1726,7 +1726,7 @@
     },
     "attributeNotAssessedNote": "Không có câu hỏi nào cho thuộc tính này trong lượt làm bài này.",
     "attributeScoreLabel": "Điểm miền",
-    "attributeLadderLabel": "{skill}: {phase}, bậc {step} trên 4 của thang giai đoạn ACARA",
+    "attributeLadderLabel": "{skill}: {phase}, bậc {step} trong 4 bậc của thang giai đoạn ACARA",
     "evidenceItems": "{count, plural, other {# câu}}",
     "evidenceLabel": "Bằng chứng cho nhận định này",
     "evidenceSummaryAssessed": "{assessed} trên {total} thuộc tính được đánh giá; bằng chứng dao động từ {min} đến {max} câu mỗi thuộc tính.",
@@ -1830,7 +1830,7 @@
     "parentPhaseLabel": "Giai đoạn ACARA: {phase}",
     "parentFamilySummaryAria": "Tóm tắt đọc hiểu cho gia đình",
     "familyStrengthLine": "{skill} — {phrase}",
-    "familyFocusLine": "Tập trung tiếp theo: {skill} — {phrase}",
+    "familyFocusLine": "Trọng tâm tiếp theo: {skill} — {phrase}",
     "familyPracticeLine": "Luyện đọc ngắn, thường xuyên ở nhà — đọc cùng nhau và trò chuyện về nội dung đã đọc — hỗ trợ mọi mảng.",
     "attributes": {
       "Decoding": "Decoding",
@@ -2841,7 +2841,7 @@
       "submit": "Phân công",
       "noClasses": "Chưa có lớp nào để phân công.",
       "skippedTitle": "{count, plural, other {# lớp giữ nguyên giáo viên}}",
-      "skippedDescription": "Giáo viên được mời chỉ chờ ở lớp chưa có giáo viên, nên {classes} sẽ không bị thay đổi. Để thay giáo viên của một lớp, hãy chỉnh sửa lớp đó."
+      "skippedDescription": "Giáo viên được mời chỉ có thể được phân công vào lớp chưa có giáo viên, nên {classes} sẽ không thay đổi. Để thay giáo viên của một lớp, hãy chỉnh sửa lớp đó."
     },
     "studentDetailMeta": {
       "title": "Kết quả học sinh - SchoolTest",
@@ -4153,7 +4153,7 @@
       "phone": "Số điện thoại",
       "timezone": "Múi giờ",
       "timezonePlaceholder": "Chọn múi giờ",
-      "timezoneHelper": "Theo tiểu bang trừ khi bạn chọn ở đây. Giờ phiên kiểm tra được xét theo múi giờ này.",
+      "timezoneHelper": "Mặc định theo múi giờ của tiểu bang, trừ khi bạn chọn múi giờ khác ở đây. Giờ phiên kiểm tra được xét theo múi giờ này.",
       "sectorOptions": {
         "government": "Công lập",
         "catholic": "Công giáo",
@@ -4970,7 +4970,7 @@
       "skillBlurb": {
         "decoding": "Nhận biết từ chính xác và trôi chảy",
         "vocabulary": "Hiểu nghĩa của từ thông dụng trong ngữ cảnh",
-        "vocabB1": "Hiểu nghĩa của từ dùng trong lớp học và môn học trong ngữ cảnh",
+        "vocabB1": "Hiểu nghĩa của từ vựng lớp học và môn học trong ngữ cảnh",
         "grammar": "Cấu trúc câu và hình thái từ",
         "gist": "Nắm được ý chính và mục đích của văn bản",
         "detail": "Tìm các sự kiện cụ thể và thông tin được nêu",
@@ -5032,7 +5032,7 @@
         "can": {
           "decoding": "Nhận biết từ chính xác và trôi chảy.",
           "vocabA2": "Hiểu nghĩa của từ thông dụng trong ngữ cảnh.",
-          "vocabB1": "Hiểu nghĩa của từ dùng trong lớp học trong ngữ cảnh.",
+          "vocabB1": "Hiểu nghĩa của từ vựng lớp học trong ngữ cảnh.",
           "grammar": "Nắm được cấu trúc câu và hình thái từ.",
           "gist": "Nắm được ý chính và mục đích của văn bản.",
           "detail": "Tìm được thông tin được nêu trực tiếp trong đoạn văn.",
@@ -5041,7 +5041,7 @@
         "next": {
           "decoding": "Luyện giải mã: nhận biết từ chính xác và trôi chảy.",
           "vocabA2": "Luyện từ vựng thông dụng: nghĩa của từ thường gặp trong ngữ cảnh.",
-          "vocabB1": "Luyện từ vựng lớp học: nghĩa của từ chuyên môn trong ngữ cảnh.",
+          "vocabB1": "Luyện từ vựng lớp học: nghĩa của từ ngữ các môn học trong ngữ cảnh.",
           "grammar": "Luyện ngữ pháp: cấu trúc câu và hình thái từ.",
           "gist": "Luyện nắm ý chính: hiểu ý chính và mục đích của văn bản.",
           "detail": "Luyện đọc chi tiết: tìm sự kiện cụ thể và thông tin được nêu.",
@@ -6201,7 +6201,7 @@
         "deltaDown": "↓ −{points}",
         "deltaFlat": "±0",
         "deltaBands": "{before} → {after}",
-        "ladderLabel": "{skill}: {phase}, bậc {step} trên 4 của thang giai đoạn ACARA"
+        "ladderLabel": "{skill}: {phase}, bậc {step} trong 4 bậc của thang giai đoạn ACARA"
       },
       "analysisTitle": "Phân tích học sinh",
       "analysisBadge": "Tóm tắt tự động",

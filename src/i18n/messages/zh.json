@@ -4134,7 +4134,7 @@
       "phone": "电话",
       "timezone": "时区",
       "timezonePlaceholder": "请选择时区",
-      "timezoneHelper": "除非在此选择，否则跟随所在州。测试时段按此时区校验。",
+      "timezoneHelper": "默认使用所在州的时区，除非在此另行选择。测试时段按此时区核对。",
       "sectorOptions": {
         "government": "公立",
         "catholic": "天主教",
@@ -6198,7 +6198,7 @@
         "growthDown": "自首次测试以来，其阅读成绩下降了 {points} 分。",
         "growthFlat": "其阅读成绩与首次测试持平。",
         "growthSteady": "自首次测试以来，其阅读成绩在测量误差范围内保持稳定。",
-        "strengthFocus": "{first} 最强的领域是{strongest}（{strongestPhase}），而{weakest}（{weakestPhase}）是最明确的重点。",
+        "strengthFocus": "{first} 最强的领域是{strongest}（{strongestPhase}），而{weakest}（{weakestPhase}）最需要重点关注。",
         "focusNext": "针对{weakest}进行专项练习，并选用略高于{first}当前水平的文本，最有可能提升总分。",
         "vocabBoth": "日常词汇处于{a2}阶段，课堂词汇处于{b1}阶段。",
         "vocabAcademicNext": "简短、明确地学习课堂和学科词汇，并结合超越字面理解的阅读任务，是提升{first}理解能力最直接的方法。",

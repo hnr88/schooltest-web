@@ -1731,7 +1731,7 @@
     "evidenceLabel": "Bukti di sebalik dakwaan ini",
     "evidenceSummaryAssessed": "{assessed} daripada {total} atribut dinilai; bukti antara {min} hingga {max} item bagi setiap atribut.",
     "evidenceSummaryNoneAssessed": "Tiada satu pun daripada {total} atribut ditadbir dalam sesi ini.",
-    "attributesSource": "Langkah setiap atribut ialah status paparan yang diterbitkan oleh enjin pemarkahan bersama keputusan ini. Tiada peratusan dipaparkan, tiada skor potong digunakan di sini dan tiada komposit merentas kemahiran.",
+    "attributesSource": "Langkah setiap atribut ialah status paparan yang diterbitkan oleh enjin pemarkahan bersama keputusan ini. Tiada peratusan dipaparkan, tiada skor potong digunakan di sini dan tiada skor gabungan merentas kemahiran digunakan.",
     "supplementaryEyebrow": "Untaian kosa kata tambahan",
     "supplementaryOutOfModel": "Luar model",
     "supplementaryDescription": "Skor domain daripada tugasan kosa kata tambahan. Ia dilaporkan bersebelahan model, bukan di dalamnya: ia bukan atribut yang dimodelkan, tidak masuk ke dalam model penguasaan, dan tiada skor potong dikenakan padanya.",
@@ -2813,7 +2813,7 @@
     },
     "teacherPicker": {
       "pendingOption": "{name} (Dijemput — belum aktif)",
-      "picksCleared": "Guru yang dijemput ditugaskan secara bersendirian, jadi {names} telah dinyahtanda."
+      "picksCleared": "Guru yang dijemput mesti ditugaskan tanpa guru lain, jadi {names} telah dinyahtanda."
     },
     "assignTeachersButton": "Tugaskan guru",
     "assignTeachers": {
@@ -2832,7 +2832,7 @@
       "submit": "Tugaskan",
       "noClasses": "Tiada kelas untuk ditugaskan lagi.",
       "skippedTitle": "{count, plural, other {# kelas mengekalkan guru mereka}}",
-      "skippedDescription": "Guru yang dijemput hanya menunggu di kelas tanpa guru, jadi {classes} tidak akan diubah. Untuk menggantikan guru sesebuah kelas, edit kelas itu."
+      "skippedDescription": "Guru yang dijemput hanya boleh ditugaskan ke kelas yang belum mempunyai guru, jadi {classes} tidak akan diubah. Untuk menukar guru sesebuah kelas, edit kelas itu."
     },
     "studentDetailMeta": {
       "title": "Keputusan murid - SchoolTest",
@@ -4144,7 +4144,7 @@
       "phone": "Telefon",
       "timezone": "Zon waktu",
       "timezonePlaceholder": "Pilih zon waktu",
-      "timezoneHelper": "Mengikut negeri melainkan anda memilihnya di sini. Masa sesi disemak dalam zon ini.",
+      "timezoneHelper": "Mengikut zon waktu negeri melainkan anda memilih zon lain di sini. Masa sesi disemak mengikut zon ini.",
       "sectorOptions": {
         "government": "Kerajaan",
         "catholic": "Katolik",
@@ -4851,9 +4851,9 @@
     "fallbackGatePassed": "lulus",
     "fallbackGateNotMet": "belum dipenuhi",
     "fallbackCommonSlip": "Kesilapan paling kerap: {label} ({pct}% daripada jawapan salah).",
-    "fallbackVocabA2Only": "Hanya kosa kata harian dinilai pada sessi ini ({a2}); kosa kata bilik darjah tidak dinilai. Fokus pengajaran: terus mengukuhkan kosa kata harian sebelum sessi akan datang.",
-    "fallbackVocabB1Only": "Hanya kosa kata bilik darjah dinilai pada sessi ini ({b1}); kosa kata harian tidak dinilai. Fokus pengajaran: bina atas kosa kata bilik darjah yang kini jelas.",
-    "fallbackVocabBlend": "Kosa kata harian {a2}, kosa kata bilik darjah {b1}. Fokus pengajaran: kembangkan yang lebih lemah sebelum sessi akan datang."
+    "fallbackVocabA2Only": "Hanya kosa kata harian dinilai pada sesi ini ({a2}); kosa kata bilik darjah tidak dinilai. Fokus pengajaran: terus mengukuhkan kosa kata harian sebelum sesi akan datang.",
+    "fallbackVocabB1Only": "Hanya kosa kata bilik darjah dinilai pada sesi ini ({b1}); kosa kata harian tidak dinilai. Fokus pengajaran: kembangkan lagi kosa kata bilik darjah yang sudah ditunjukkan.",
+    "fallbackVocabBlend": "Kosa kata harian {a2}, kosa kata bilik darjah {b1}. Fokus pengajaran: kukuhkan yang lebih lemah antara kedua-duanya sebelum sesi akan datang."
   },
   "Components": {
     "pagination": "paginasi",
@@ -5358,7 +5358,7 @@
         "intro": "Pasangkan rakan yang kuat dalam {skill} dengan rakan yang memerlukan sokongan dalamnya.",
         "none": "Tiada pasangan yang jelas untuk {skill} — kelas ini setara dalam kemahiran ini.",
         "strong": "{phase} · kuat",
-        "support": "{phase} · sokongan"
+        "support": "{phase} · perlu sokongan"
       },
       "groups": {
         "title": "Kumpulan dicadangkan",
