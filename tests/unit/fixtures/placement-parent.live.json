@@ -1,0 +1,307 @@
+{
+ "recordedAt": "2026-09-23T18:01:58.000Z",
+ "source": {
+  "current": "GET /api/results/hd1b5exabll5wf6vzvcqc6sd as teacher@schooltest.local, after the API fix (it answered 400 before)",
+  "preRewrite": "GET /api/results/gldqbpxowrtwy1m6evnpkw2i as teacher@schooltest.local (a pre-rewrite reading child, 200 before and after)"
+ },
+ "current": {
+  "document_id": "hd1b5exabll5wf6vzvcqc6sd",
+  "scope": "combined",
+  "skill": null,
+  "status": "complete",
+  "attributes": null,
+  "provisional": null,
+  "display_label": null,
+  "acara_phase": null,
+  "cefr_band": null,
+  "readiness": null,
+  "low_confidence": null,
+  "effort_valid": null,
+  "productive_scores": null,
+  "supplementary": null,
+  "destination": "official",
+  "published_at": null,
+  "recalled_at": null,
+  "release_state": "held",
+  "previous_result_document_id": null,
+  "session_document_id": "sfq38zovi6q0zd3lkj1158ei",
+  "model_version": null,
+  "legacy_caveat": null,
+  "combined_children": [
+   {
+    "document_id": "eaqschgjk8ayeojv4otnkbna",
+    "session_document_id": "bpl4rqy4fddita5sddbhbmpe",
+    "student_document_id": "mbc4pbjtx02k0zmfso1nbk4q",
+    "skill": "reading",
+    "scope": "receptive",
+    "status": "complete",
+    "destination": "official",
+    "published_at": "2026-09-23T08:46:34.018Z",
+    "recalled_at": null,
+    "release_state": "released",
+    "provisional": "field_test",
+    "model_version": "reading-3model/1",
+    "overall": {
+     "domain_score": 52,
+     "provisional_transform": true,
+     "delta": null,
+     "delta_reliable": null,
+     "delta_display": null
+    },
+    "acara_phase": "developing",
+    "transitioning_attribute": null,
+    "readiness": "not_yet",
+    "gate": {
+     "passed": false,
+     "domain_score": 14,
+     "provisional_cut": true
+    },
+    "academic_vocab": {
+     "domain_score": null,
+     "se": null,
+     "band": null,
+     "items_seen": 0,
+     "provisional_cut": true
+    },
+    "effort_valid": true,
+    "low_confidence": null,
+    "items_answered": 94,
+    "items_total": 94,
+    "duration_minutes": 0,
+    "attributes": {
+     "Gist": {
+      "domain_score": 25,
+      "se": 0.8,
+      "status": "not_yet",
+      "prob": 0.000151680577192379,
+      "prob_se": 0.0123149328132508,
+      "items_seen": 14,
+      "delta": null,
+      "delta_reliable": null,
+      "delta_display": null
+     },
+     "Detail": {
+      "domain_score": 25,
+      "se": 0,
+      "status": "not_yet",
+      "prob": 1.58897589813771e-08,
+      "prob_se": 0.00012605458630646,
+      "items_seen": 13,
+      "delta": null,
+      "delta_reliable": null,
+      "delta_display": null
+     },
+     "Grammar": {
+      "domain_score": 90,
+      "se": 0,
+      "status": "secure",
+      "prob": 0.999999999992519,
+      "prob_se": 2.73512427221749e-06,
+      "items_seen": 20,
+      "delta": null,
+      "delta_reliable": null,
+      "delta_display": null
+     },
+     "Decoding": {
+      "domain_score": 90,
+      "se": 0,
+      "status": "secure",
+      "prob": 1,
+      "prob_se": 1.05367121277235e-08,
+      "items_seen": 42,
+      "delta": null,
+      "delta_reliable": null,
+      "delta_display": null
+     },
+     "Vocab_A2": {
+      "domain_score": 90,
+      "se": 0,
+      "status": "secure",
+      "prob": 1,
+      "prob_se": 1.05367121277235e-08,
+      "items_seen": 16,
+      "delta": null,
+      "delta_reliable": null,
+      "delta_display": null
+     },
+     "Vocab_B1": {
+      "domain_score": 90,
+      "se": 1.4,
+      "status": "secure",
+      "prob": 0.999540814715326,
+      "prob_se": 0.0214236886074306,
+      "items_seen": 9,
+      "delta": null,
+      "delta_reliable": null,
+      "delta_display": null
+     },
+     "Inference": {
+      "domain_score": 25,
+      "se": 0.1,
+      "status": "not_yet",
+      "prob": 7.49039935005889e-07,
+      "prob_se": 0.000865470608365798,
+      "items_seen": 11,
+      "delta": null,
+      "delta_reliable": null,
+      "delta_display": null
+     }
+    },
+    "vocab": {
+     "a2": {
+      "domain_score": 90
+     },
+     "b1": {
+      "domain_score": 90
+     }
+    },
+    "error_patterns": [
+     {
+      "type": "literal_match",
+      "count": 17,
+      "pct": 38
+     },
+     {
+      "type": "overinference",
+      "count": 14,
+      "pct": 31
+     },
+     {
+      "type": "semantic_neighbour",
+      "count": 10,
+      "pct": 22
+     },
+     {
+      "type": "world_knowledge",
+      "count": 4,
+      "pct": 9
+     }
+    ],
+    "history": [
+     {
+      "sat_at": "2026-09-23",
+      "overall": 52,
+      "attributes": {
+       "Decoding": 90,
+       "Vocab_A2": 90,
+       "Grammar": 90,
+       "Vocab_B1": 90,
+       "Gist": 25,
+       "Detail": 25,
+       "Inference": 25,
+       "Vocab_B2": null,
+       "Critical": 14
+      }
+     }
+    ],
+    "previous_result_document_id": null,
+    "narrative": null,
+    "cefr_band": "B1",
+    "display_label": "Developing English",
+    "supplementary": {
+     "vocab_band_a2_accuracy": 1,
+     "vocab_band_b1_accuracy": null,
+     "vocab_band_b2_accuracy": 0
+    },
+    "productive_scores": null
+   }
+  ]
+ },
+ "preRewrite": {
+  "document_id": "gldqbpxowrtwy1m6evnpkw2i",
+  "scope": "combined",
+  "skill": null,
+  "status": "complete",
+  "attributes": null,
+  "provisional": null,
+  "display_label": null,
+  "acara_phase": null,
+  "cefr_band": null,
+  "readiness": null,
+  "low_confidence": null,
+  "effort_valid": null,
+  "productive_scores": null,
+  "supplementary": null,
+  "destination": "official",
+  "published_at": "2026-09-02T14:36:19.647Z",
+  "recalled_at": null,
+  "release_state": "released",
+  "previous_result_document_id": null,
+  "session_document_id": "d3derpadp5jzpkb1fk09i22w",
+  "model_version": null,
+  "legacy_caveat": null,
+  "combined_children": [
+   {
+    "document_id": "qkgxtfh1cmzaxqy568baekca",
+    "scope": "skill",
+    "skill": "reading",
+    "status": "complete",
+    "attributes": {
+     "R1": {
+      "status": "mastered",
+      "prob": 1,
+      "items": 90,
+      "delta": null
+     },
+     "R2": {
+      "status": "mastered",
+      "prob": 1,
+      "items": 61,
+      "delta": null
+     },
+     "R3": {
+      "status": "mastered",
+      "prob": 1,
+      "items": 59,
+      "delta": null
+     },
+     "R4": {
+      "status": "mastered",
+      "prob": 0.999999999998845,
+      "items": 22,
+      "delta": null
+     },
+     "R5": {
+      "status": "mastered",
+      "prob": 0.999999999643539,
+      "items": 17,
+      "delta": null
+     },
+     "R6": {
+      "status": "mastered",
+      "prob": 0.99987240692519,
+      "items": 7,
+      "delta": null
+     },
+     "R7": {
+      "status": "mastered",
+      "prob": 0.999999788956934,
+      "items": 12,
+      "delta": null
+     }
+    },
+    "provisional": "field_test",
+    "display_label": "Critical Reader",
+    "acara_phase": "Consolidating",
+    "cefr_band": "B2",
+    "readiness": "met",
+    "low_confidence": false,
+    "effort_valid": true,
+    "productive_scores": null,
+    "supplementary": {
+     "vocab_band_a2_accuracy": 1,
+     "vocab_band_b1_accuracy": null,
+     "vocab_band_b2_accuracy": 1
+    },
+    "destination": "official",
+    "published_at": "2026-09-02T14:36:19.605Z",
+    "recalled_at": null,
+    "release_state": "released",
+    "previous_result_document_id": null,
+    "session_document_id": "xp0eypdfb7iwrq3rgmrpg94v",
+    "model_version": null,
+    "legacy_caveat": null
+   }
+  ]
+ }
+}

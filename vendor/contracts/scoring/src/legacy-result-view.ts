@@ -27,7 +27,7 @@ import {
   resultStatusSchema,
   skillSchema,
 } from './enums';
-import { resultViewReleaseStateSchema } from './result-view';
+import { resultViewReleaseStateSchema, resultViewSchema } from './result-view';
 
 const str = z.string().min(1);
 
@@ -164,8 +164,26 @@ export const legacyResultViewBaseSchema = z.strictObject({
 });
 export type LegacyResultViewBase = z.infer<typeof legacyResultViewBaseSchema>;
 
+/**
+ * A placement parent's child is the view that child's own C-4 read serves: the
+ * v2 `resultViewSchema` for a current-model reading child, this v1 base for the
+ * rest (server: `resultViewChildSchema`). Both members are strict and their
+ * `scope` vocabularies are disjoint, so no child satisfies both. The explicit
+ * annotation keeps the emitted .d.ts referring to `resultViewSchema` by name.
+ */
+export const legacyResultViewChildSchema: z.ZodUnion<
+  readonly [typeof legacyResultViewBaseSchema, typeof resultViewSchema]
+> = z.union([legacyResultViewBaseSchema, resultViewSchema]);
+export type LegacyResultViewChild = z.infer<typeof legacyResultViewChildSchema>;
+
 /** Placement parent (scope=combined) additionally carries its child views. */
-export const legacyResultViewSchema = legacyResultViewBaseSchema.extend({
-  combined_children: z.array(legacyResultViewBaseSchema).optional(),
+export const legacyResultViewSchema: z.ZodObject<
+  z.core.util.Extend<
+    (typeof legacyResultViewBaseSchema)['shape'],
+    { combined_children: z.ZodOptional<z.ZodArray<typeof legacyResultViewChildSchema>> }
+  >,
+  z.core.$strict
+> = legacyResultViewBaseSchema.extend({
+  combined_children: z.array(legacyResultViewChildSchema).optional(),
 });
 export type LegacyResultView = z.infer<typeof legacyResultViewSchema>;

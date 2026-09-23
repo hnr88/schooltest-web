@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.legacyResultViewSchema = exports.legacyResultViewBaseSchema = exports.legacyResultNarrativeSchema = exports.legacyResultSupplementarySchema = exports.legacyAttributeEntrySchema = exports.legacyAttributeFloorEntrySchema = exports.legacyAttributeAssessedEntrySchema = exports.legacyStoredAttributeStatusSchema = exports.legacyListeningStatusSchema = void 0;
+exports.legacyResultViewSchema = exports.legacyResultViewChildSchema = exports.legacyResultViewBaseSchema = exports.legacyResultNarrativeSchema = exports.legacyResultSupplementarySchema = exports.legacyAttributeEntrySchema = exports.legacyAttributeFloorEntrySchema = exports.legacyAttributeAssessedEntrySchema = exports.legacyStoredAttributeStatusSchema = exports.legacyListeningStatusSchema = void 0;
 exports.isLegacyAssessedAttributeEntry = isLegacyAssessedAttributeEntry;
 /**
  * `ResultView` v1 — the LEGACY read model the C-4 route still serves to rows
@@ -139,7 +139,15 @@ exports.legacyResultViewBaseSchema = zod_1.z.strictObject({
     // F-REPORT-NARRATIVE — only on `?include=narrative`.
     narrative: exports.legacyResultNarrativeSchema.nullable().optional(),
 });
+/**
+ * A placement parent's child is the view that child's own C-4 read serves: the
+ * v2 `resultViewSchema` for a current-model reading child, this v1 base for the
+ * rest (server: `resultViewChildSchema`). Both members are strict and their
+ * `scope` vocabularies are disjoint, so no child satisfies both. The explicit
+ * annotation keeps the emitted .d.ts referring to `resultViewSchema` by name.
+ */
+exports.legacyResultViewChildSchema = zod_1.z.union([exports.legacyResultViewBaseSchema, result_view_1.resultViewSchema]);
 /** Placement parent (scope=combined) additionally carries its child views. */
 exports.legacyResultViewSchema = exports.legacyResultViewBaseSchema.extend({
-    combined_children: zod_1.z.array(exports.legacyResultViewBaseSchema).optional(),
+    combined_children: zod_1.z.array(exports.legacyResultViewChildSchema).optional(),
 });

@@ -18,6 +18,7 @@
  * one vocabulary the v2 read model has no use for.
  */
 import { z } from 'zod';
+import { resultViewSchema } from './result-view';
 /**
  * LISTENING's own three-band vocabulary, cut from Config's
  * `status_bands.mastered_cut`/`emerging_cut` (Doc 2a s.9) — a genuinely
@@ -240,191 +241,17 @@ export declare const legacyResultViewBaseSchema: z.ZodObject<{
     }, z.core.$strict>>>;
 }, z.core.$strict>;
 export type LegacyResultViewBase = z.infer<typeof legacyResultViewBaseSchema>;
+/**
+ * A placement parent's child is the view that child's own C-4 read serves: the
+ * v2 `resultViewSchema` for a current-model reading child, this v1 base for the
+ * rest (server: `resultViewChildSchema`). Both members are strict and their
+ * `scope` vocabularies are disjoint, so no child satisfies both. The explicit
+ * annotation keeps the emitted .d.ts referring to `resultViewSchema` by name.
+ */
+export declare const legacyResultViewChildSchema: z.ZodUnion<readonly [typeof legacyResultViewBaseSchema, typeof resultViewSchema]>;
+export type LegacyResultViewChild = z.infer<typeof legacyResultViewChildSchema>;
 /** Placement parent (scope=combined) additionally carries its child views. */
-export declare const legacyResultViewSchema: z.ZodObject<{
-    document_id: z.ZodString;
-    scope: z.ZodEnum<{
-        skill: "skill";
-        combined: "combined";
-    }>;
-    skill: z.ZodNullable<z.ZodEnum<{
-        reading: "reading";
-        listening: "listening";
-        speaking: "speaking";
-        writing: "writing";
-    }>>;
-    status: z.ZodEnum<{
-        scoring: "scoring";
-        partial_pending: "partial_pending";
-        complete: "complete";
-        scoring_failed: "scoring_failed";
-        manual_scoring: "manual_scoring";
-    }>;
-    attributes: z.ZodNullable<z.ZodRecord<z.ZodString, z.ZodUnion<readonly [z.ZodObject<{
-        status: z.ZodUnion<readonly [z.ZodEnum<{
-            secure: "secure";
-            developing: "developing";
-            emerging: "emerging";
-            not_yet: "not_yet";
-            not_assessed: "not_assessed";
-        }>, z.ZodEnum<{
-            emerging: "emerging";
-            not_assessed: "not_assessed";
-            mastered: "mastered";
-            not_mastered: "not_mastered";
-        }>]>;
-        prob: z.ZodNullable<z.ZodNumber>;
-        prob_se: z.ZodOptional<z.ZodNumber>;
-        items: z.ZodNumber;
-        delta: z.ZodNullable<z.ZodNumber>;
-    }, z.core.$strict>, z.ZodObject<{
-        status: z.ZodLiteral<"not_assessed">;
-        insufficient_evidence: z.ZodLiteral<true>;
-        items_seen: z.ZodNumber;
-    }, z.core.$strict>, z.ZodLiteral<"not_assessed">]>>>;
-    provisional: z.ZodOptional<z.ZodNullable<z.ZodLiteral<"field_test">>>;
-    display_label: z.ZodNullable<z.ZodString>;
-    acara_phase: z.ZodNullable<z.ZodString>;
-    cefr_band: z.ZodNullable<z.ZodEnum<{
-        pre_A1: "pre_A1";
-        A1: "A1";
-        A2: "A2";
-        B1: "B1";
-        B2: "B2";
-        C1: "C1";
-    }>>;
-    readiness: z.ZodNullable<z.ZodEnum<{
-        not_yet: "not_yet";
-        not_assessed: "not_assessed";
-        met: "met";
-        approaching: "approaching";
-    }>>;
-    low_confidence: z.ZodNullable<z.ZodBoolean>;
-    effort_valid: z.ZodNullable<z.ZodBoolean>;
-    productive_scores: z.ZodNullable<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
-    supplementary: z.ZodNullable<z.ZodObject<{
-        vocab_band_a2_accuracy: z.ZodNullable<z.ZodNumber>;
-        vocab_band_b1_accuracy: z.ZodNullable<z.ZodNumber>;
-        vocab_band_b2_accuracy: z.ZodDefault<z.ZodNullable<z.ZodNumber>>;
-        dprime: z.ZodOptional<z.ZodNullable<z.ZodNumber>>;
-    }, z.core.$strict>>;
-    destination: z.ZodEnum<{
-        transient: "transient";
-        official: "official";
-    }>;
-    published_at: z.ZodNullable<z.ZodISODateTime>;
-    recalled_at: z.ZodNullable<z.ZodISODateTime>;
-    release_state: z.ZodEnum<{
-        held: "held";
-        released: "released";
-        recalled: "recalled";
-        manual: "manual";
-    }>;
-    previous_result_document_id: z.ZodNullable<z.ZodString>;
-    session_document_id: z.ZodNullable<z.ZodString>;
-    model_version: z.ZodOptional<z.ZodNullable<z.ZodString>>;
-    legacy_caveat: z.ZodOptional<z.ZodNullable<z.ZodLiteral<"pilot_diagnostic_earlier_model">>>;
-    narrative: z.ZodOptional<z.ZodNullable<z.ZodObject<{
-        attribute_labels: z.ZodRecord<z.ZodString, z.ZodObject<{
-            name: z.ZodString;
-            descriptor: z.ZodString;
-        }, z.core.$strict>>;
-        change_since_last: z.ZodArray<z.ZodString>;
-        weeks_since_previous: z.ZodNullable<z.ZodNumber>;
-        plain_language: z.ZodArray<z.ZodString>;
-    }, z.core.$strict>>>;
-    combined_children: z.ZodOptional<z.ZodArray<z.ZodObject<{
-        document_id: z.ZodString;
-        scope: z.ZodEnum<{
-            skill: "skill";
-            combined: "combined";
-        }>;
-        skill: z.ZodNullable<z.ZodEnum<{
-            reading: "reading";
-            listening: "listening";
-            speaking: "speaking";
-            writing: "writing";
-        }>>;
-        status: z.ZodEnum<{
-            scoring: "scoring";
-            partial_pending: "partial_pending";
-            complete: "complete";
-            scoring_failed: "scoring_failed";
-            manual_scoring: "manual_scoring";
-        }>;
-        attributes: z.ZodNullable<z.ZodRecord<z.ZodString, z.ZodUnion<readonly [z.ZodObject<{
-            status: z.ZodUnion<readonly [z.ZodEnum<{
-                secure: "secure";
-                developing: "developing";
-                emerging: "emerging";
-                not_yet: "not_yet";
-                not_assessed: "not_assessed";
-            }>, z.ZodEnum<{
-                emerging: "emerging";
-                not_assessed: "not_assessed";
-                mastered: "mastered";
-                not_mastered: "not_mastered";
-            }>]>;
-            prob: z.ZodNullable<z.ZodNumber>;
-            prob_se: z.ZodOptional<z.ZodNumber>;
-            items: z.ZodNumber;
-            delta: z.ZodNullable<z.ZodNumber>;
-        }, z.core.$strict>, z.ZodObject<{
-            status: z.ZodLiteral<"not_assessed">;
-            insufficient_evidence: z.ZodLiteral<true>;
-            items_seen: z.ZodNumber;
-        }, z.core.$strict>, z.ZodLiteral<"not_assessed">]>>>;
-        provisional: z.ZodOptional<z.ZodNullable<z.ZodLiteral<"field_test">>>;
-        display_label: z.ZodNullable<z.ZodString>;
-        acara_phase: z.ZodNullable<z.ZodString>;
-        cefr_band: z.ZodNullable<z.ZodEnum<{
-            pre_A1: "pre_A1";
-            A1: "A1";
-            A2: "A2";
-            B1: "B1";
-            B2: "B2";
-            C1: "C1";
-        }>>;
-        readiness: z.ZodNullable<z.ZodEnum<{
-            not_yet: "not_yet";
-            not_assessed: "not_assessed";
-            met: "met";
-            approaching: "approaching";
-        }>>;
-        low_confidence: z.ZodNullable<z.ZodBoolean>;
-        effort_valid: z.ZodNullable<z.ZodBoolean>;
-        productive_scores: z.ZodNullable<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
-        supplementary: z.ZodNullable<z.ZodObject<{
-            vocab_band_a2_accuracy: z.ZodNullable<z.ZodNumber>;
-            vocab_band_b1_accuracy: z.ZodNullable<z.ZodNumber>;
-            vocab_band_b2_accuracy: z.ZodDefault<z.ZodNullable<z.ZodNumber>>;
-            dprime: z.ZodOptional<z.ZodNullable<z.ZodNumber>>;
-        }, z.core.$strict>>;
-        destination: z.ZodEnum<{
-            transient: "transient";
-            official: "official";
-        }>;
-        published_at: z.ZodNullable<z.ZodISODateTime>;
-        recalled_at: z.ZodNullable<z.ZodISODateTime>;
-        release_state: z.ZodEnum<{
-            held: "held";
-            released: "released";
-            recalled: "recalled";
-            manual: "manual";
-        }>;
-        previous_result_document_id: z.ZodNullable<z.ZodString>;
-        session_document_id: z.ZodNullable<z.ZodString>;
-        model_version: z.ZodOptional<z.ZodNullable<z.ZodString>>;
-        legacy_caveat: z.ZodOptional<z.ZodNullable<z.ZodLiteral<"pilot_diagnostic_earlier_model">>>;
-        narrative: z.ZodOptional<z.ZodNullable<z.ZodObject<{
-            attribute_labels: z.ZodRecord<z.ZodString, z.ZodObject<{
-                name: z.ZodString;
-                descriptor: z.ZodString;
-            }, z.core.$strict>>;
-            change_since_last: z.ZodArray<z.ZodString>;
-            weeks_since_previous: z.ZodNullable<z.ZodNumber>;
-            plain_language: z.ZodArray<z.ZodString>;
-        }, z.core.$strict>>>;
-    }, z.core.$strict>>>;
-}, z.core.$strict>;
+export declare const legacyResultViewSchema: z.ZodObject<z.core.util.Extend<(typeof legacyResultViewBaseSchema)['shape'], {
+    combined_children: z.ZodOptional<z.ZodArray<typeof legacyResultViewChildSchema>>;
+}>, z.core.$strict>;
 export type LegacyResultView = z.infer<typeof legacyResultViewSchema>;

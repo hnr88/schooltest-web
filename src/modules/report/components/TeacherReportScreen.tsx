@@ -9,6 +9,7 @@ import { parentViewsEnabled } from '@/modules/flags';
 import { QueryErrorFallback } from '@/modules/query-errors';
 import { LegacyReportBody } from '@/modules/report/components/LegacyReportBody';
 import { ParentReportView } from '@/modules/report/components/ParentReportView';
+import { PlacementReportBody } from '@/modules/report/components/PlacementReportBody';
 import { ReportSkeleton } from '@/modules/report/components/ReportSkeleton';
 import { ReviewSubmissionLauncher } from '@/modules/report/components/ReviewSubmissionLauncher';
 import { TeacherReportBody } from '@/modules/report/components/TeacherReportBody';
@@ -72,7 +73,10 @@ export function TeacherReportScreen({ resultDocumentId }: { resultDocumentId: st
   // they render their stored statements as text via `LegacyReportBody`. With no
   // stored label the trail ends at Reports — a raw documentId is never a crumb.
   if (data.kind === 'legacy') {
-    const legacyCrumb = data.view.display_label ?? phaseText(data.view.acara_phase);
+    const placement = data.view.scope === 'combined';
+    const legacyCrumb = placement
+      ? t('skillCombined')
+      : data.view.display_label ?? phaseText(data.view.acara_phase);
     return (
       <main
         data-surface="teacher-report"
@@ -80,7 +84,7 @@ export function TeacherReportScreen({ resultDocumentId }: { resultDocumentId: st
       >
         {legacyCrumb ? <RecordCrumb label={legacyCrumb} /> : null}
         <ReviewSubmissionLauncher resultDocumentId={resultDocumentId} view={data.view} />
-        <LegacyReportBody view={data.view} />
+        {placement ? <PlacementReportBody view={data.view} /> : <LegacyReportBody view={data.view} />}
       </main>
     );
   }
