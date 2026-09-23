@@ -69,6 +69,29 @@ describe('the allow-list view model (task 35)', () => {
     expect(nextSteps.map((s) => (s.kind === 'focus' ? s.skill : ''))).not.toContain('Gist');
   });
 
+  test('with every assessed skill secure there is no focus skill: the next step is to keep extending', () => {
+    const attributes = Object.fromEntries(
+      Object.entries(view.attributes).map(([key, attribute]) => [
+        key,
+        attribute.status === 'not_assessed' ? attribute : { ...attribute, status: 'secure' as const },
+      ]),
+    );
+    const academic_vocab = { ...view.academic_vocab, band: 'secure' as const };
+    const { nextSteps, strengths } = buildFamilyPreview({ ...view, attributes, academic_vocab });
+    expect(nextSteps).toEqual([{ kind: 'extend' }, { kind: 'practice' }]);
+    expect(strengths.every((strength) => strength.state === 'secure')).toBe(true);
+  });
+
+  test('the focus is the lowest-scoring skill BELOW secure, even when a secure skill scored lower', () => {
+    const attributes = {
+      ...view.attributes,
+      Inference: { ...view.attributes.Inference, status: 'secure' as const, domain_score: 20 },
+    };
+    const { nextSteps } = buildFamilyPreview({ ...view, attributes });
+    // Inference (20, secure) is the lowest score but uses the skill reliably; Vocab_B1 (54) is the gap.
+    expect(nextSteps[0]).toEqual({ kind: 'focus', skill: 'Vocab_B1', score: 54, state: 'getting_there' });
+  });
+
   test('with nothing assessed there are no strengths and NO invented advice', () => {
     const attributes = Object.fromEntries(
       Object.keys(view.attributes).map((key) => [key, { status: 'not_assessed' as const, items_seen: 0 }]),

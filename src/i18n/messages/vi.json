@@ -1837,6 +1837,7 @@
     "parentFamilySummaryAria": "Tóm tắt đọc hiểu cho gia đình",
     "familyStrengthLine": "{skill} — {phrase}",
     "familyFocusLine": "Trọng tâm tiếp theo: {skill} — {phrase}",
+    "familyExtendLine": "Tiếp tục mở rộng: mọi kỹ năng được xem xét trong lượt làm bài này đều đã vững vàng. Những văn bản dài hơn, thử thách hơn sẽ giúp con tiếp tục phát triển.",
     "familyPracticeLine": "Luyện đọc ngắn, thường xuyên ở nhà — đọc cùng nhau và trò chuyện về nội dung đã đọc — hỗ trợ mọi mảng.",
     "attributes": {
       "Decoding": "Giải mã từ",

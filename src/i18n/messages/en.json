@@ -1837,6 +1837,7 @@
     "parentFamilySummaryAria": "Family reading summary",
     "familyStrengthLine": "{skill} — {phrase}",
     "familyFocusLine": "Focus next: {skill} — {phrase}",
+    "familyExtendLine": "Keep extending: every skill looked at in this sitting is secure. Longer, more challenging texts will keep stretching them.",
     "familyPracticeLine": "Short, regular reading practice at home — shared reading and talking about what was read — supports every strand.",
     "attributes": {
       "Decoding": "Decoding",

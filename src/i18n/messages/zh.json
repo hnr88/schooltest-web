@@ -1837,6 +1837,7 @@
     "parentFamilySummaryAria": "家庭阅读摘要",
     "familyStrengthLine": "{skill} — {phrase}",
     "familyFocusLine": "下一步重点：{skill} — {phrase}",
+    "familyExtendLine": "继续拓展：本次作答考察的每项技能都已稳固。阅读更长、更有挑战性的文本，能让这些技能继续提升。",
     "familyPracticeLine": "在家进行短时、规律的阅读练习——亲子共读并谈论所读内容——对各个方面都有帮助。",
     "attributes": {
       "Decoding": "解码",

@@ -1837,6 +1837,7 @@
     "parentFamilySummaryAria": "Ringkasan bacaan untuk keluarga",
     "familyStrengthLine": "{skill} — {phrase}",
     "familyFocusLine": "Fokus seterusnya: {skill} — {phrase}",
+    "familyExtendLine": "Terus kembangkan: setiap kemahiran yang dinilai dalam sesi ini sudah teguh. Teks yang lebih panjang dan lebih mencabar akan terus mengembangkannya.",
     "familyPracticeLine": "Latihan membaca berkala yang pendek di rumah — membaca bersama dan berbincang tentang apa yang dibaca — menyokong setiap bidang.",
     "attributes": {
       "Decoding": "Penyahkodan",

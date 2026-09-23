@@ -76,16 +76,17 @@ export function ParentReportView({ view }: { view: FamilyPreviewView }) {
             <ul className="flex flex-col gap-1">
               {view.nextSteps.map((step) => (
                 <li
-                  key={step.kind === 'focus' ? `focus-${step.skill}` : 'practice'}
+                  key={step.kind === 'focus' ? `focus-${step.skill}` : step.kind}
                   data-slot="report-family-next-step"
+                  data-kind={step.kind}
                   className="text-body-md"
                 >
-                  {step.kind === 'practice'
-                    ? t('familyPracticeLine')
-                    : t('familyFocusLine', {
+                  {step.kind === 'focus'
+                    ? t('familyFocusLine', {
                         skill: t(`attributes.${step.skill}`),
                         phrase: t(familyPhraseKey(step)),
-                      })}
+                      })
+                    : t(step.kind === 'extend' ? 'familyExtendLine' : 'familyPracticeLine')}
                 </li>
               ))}
             </ul>

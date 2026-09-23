@@ -1837,6 +1837,7 @@
     "parentFamilySummaryAria": "가족용 읽기 요약",
     "familyStrengthLine": "{skill} — {phrase}",
     "familyFocusLine": "다음에 집중할 영역: {skill} — {phrase}",
+    "familyExtendLine": "계속 넓혀 가기: 이번 응시에서 살펴본 모든 기술이 안정적입니다. 더 길고 도전적인 글을 읽으면 계속 실력을 키울 수 있습니다.",
     "familyPracticeLine": "집에서 짧고 규칙적인 독서 연습 — 함께 책을 읽고 읽은 내용에 대해 이야기하기 — 이 모든 영역을 뒷받침합니다.",
     "attributes": {
       "Decoding": "단어 해독",

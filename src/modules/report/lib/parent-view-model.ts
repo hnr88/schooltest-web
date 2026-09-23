@@ -13,6 +13,9 @@ import { bandToParentState } from '@/modules/report/lib/parent-tone';
  * - A not-assessed skill is NEVER a strength and never a focus: it is an
  *   absence of evidence, so a family "next step" for it would invent both the
  *   finding and the advice.
+ * - A SECURE skill is never the focus either: "Focus next" names the
+ *   lowest-scoring skill below secure. With nothing below secure the next step
+ *   is to keep extending, not a strength presented as a gap.
  * - Critical Reading is not comparable with the banded skills (no posterior,
  *   no band — the Screen C ruling 4a) and in the v2 view it is not an
  *   attribute at all, so it cannot reach these lists.
@@ -42,6 +45,7 @@ export type FamilyNextStep =
       state: FamilyStrength['state'];
       academicBand?: AssessedBand;
     }
+  | { kind: 'extend' }
   | { kind: 'practice' };
 
 export interface FamilySubskillGroup {
@@ -117,9 +121,9 @@ export function buildFamilyPreview(view: FamilyPreviewInput): FamilyPreviewView 
   const byScore = [...assessed].sort((a, b) => b.score - a.score);
   const strengths = byScore.slice(0, 2).map(familyEntry);
 
-  const focus = byScore.at(-1);
-  const nextSteps: FamilyNextStep[] =
-    focus === undefined ? [] : [{ kind: 'focus', ...familyEntry(focus) }, { kind: 'practice' }];
+  const focus = byScore.filter((entry) => entry.state !== 'secure').at(-1);
+  const first: FamilyNextStep = focus === undefined ? { kind: 'extend' } : { kind: 'focus', ...familyEntry(focus) };
+  const nextSteps: FamilyNextStep[] = assessed.length === 0 ? [] : [first, { kind: 'practice' }];
 
   const counts = new Map<FamilySubskillGroup['state'], number>();
   const states = Object.values(view.attributes).map((attribute) => familyStateFor(attribute.status));
