@@ -2743,7 +2743,7 @@
       "columnTeacher": "Teacher",
       "columnTestsCompleted": "Tests completed",
       "teacherNone": "—",
-      "teacherPending": "Dijemput (belum aktif)",
+      "teacherPending": "Guru: dijemput (belum aktif)",
       "teacherReassignExpired": "Jemputan tamat tempoh — tugaskan semula guru",
       "teacherReassignRevoked": "Jemputan dibatalkan — tugaskan semula guru",
       "teacherReassign": "Tugaskan semula guru",

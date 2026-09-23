@@ -2752,7 +2752,7 @@
       "columnTeacher": "Teacher",
       "columnTestsCompleted": "Tests completed",
       "teacherNone": "—",
-      "teacherPending": "Đã mời (đang chờ)",
+      "teacherPending": "Giáo viên: đã mời (đang chờ)",
       "teacherReassignExpired": "Lời mời đã hết hạn — hãy phân công lại giáo viên",
       "teacherReassignRevoked": "Lời mời đã bị thu hồi — hãy phân công lại giáo viên",
       "teacherReassign": "Hãy phân công lại giáo viên",

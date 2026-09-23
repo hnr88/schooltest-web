@@ -2733,7 +2733,7 @@
       "columnTeacher": "Teacher",
       "columnTestsCompleted": "Tests completed",
       "teacherNone": "—",
-      "teacherPending": "已邀请（待激活）",
+      "teacherPending": "教师：已邀请（待激活）",
       "teacherReassignExpired": "邀请已过期 — 请重新分配教师",
       "teacherReassignRevoked": "邀请已撤销 — 请重新分配教师",
       "teacherReassign": "请重新分配教师",

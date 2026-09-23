@@ -2743,7 +2743,7 @@
       "columnTeacher": "Teacher",
       "columnTestsCompleted": "Tests completed",
       "teacherNone": "—",
-      "teacherPending": "เชิญแล้ว (รอเปิดใช้งาน)",
+      "teacherPending": "ครู: เชิญแล้ว (รอเปิดใช้งาน)",
       "teacherReassignExpired": "คำเชิญหมดอายุ — มอบหมายครูใหม่",
       "teacherReassignRevoked": "คำเชิญถูกยกเลิก — มอบหมายครูใหม่",
       "teacherReassign": "มอบหมายครูใหม่",

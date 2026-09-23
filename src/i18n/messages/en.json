@@ -2733,7 +2733,7 @@
       "columnTeacher": "Teacher",
       "columnTestsCompleted": "Tests completed",
       "teacherNone": "—",
-      "teacherPending": "Invited (pending)",
+      "teacherPending": "Teacher: invited (pending)",
       "teacherReassignExpired": "Invite expired — reassign teacher",
       "teacherReassignRevoked": "Invite revoked — reassign teacher",
       "teacherReassign": "Reassign teacher",

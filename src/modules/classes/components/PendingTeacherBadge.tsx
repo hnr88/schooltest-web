@@ -8,7 +8,7 @@ import type { ClassPendingTeacher } from '@/modules/classes/types/classes.types'
 
 // BUG-006: the ONE rendering of a class's invited teacher — the classes row and
 // the class detail header both use it, so the two can never word it
-// differently. "Invited (pending)" while the invitation is open; a reassign
+// differently. "Teacher: invited (pending)" while the invitation is open; a reassign
 // call once it expired or was revoked.
 export function PendingTeacherBadge({
   pending,

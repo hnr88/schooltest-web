@@ -2743,7 +2743,7 @@
       "columnTeacher": "Teacher",
       "columnTestsCompleted": "Tests completed",
       "teacherNone": "—",
-      "teacherPending": "초대됨 (대기 중)",
+      "teacherPending": "교사: 초대됨 (대기 중)",
       "teacherReassignExpired": "초대 만료 — 교사를 다시 배정하세요",
       "teacherReassignRevoked": "초대 취소됨 — 교사를 다시 배정하세요",
       "teacherReassign": "교사를 다시 배정하세요",
