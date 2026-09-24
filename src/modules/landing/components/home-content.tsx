@@ -104,7 +104,7 @@ export function LandingHomeContent({ aeo, footer }: { aeo?: ReactNode; footer?: 
 <section id="what-you-get" data-screen-label="Five programme components" style={{ background: '#FFFFFF', borderTop: '1px solid #E3E8F0', scrollMarginTop: '20px' }}>
   <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '80px 32px 88px' }}>
     <div style={{ maxWidth: '680px' }}>
-      <span style={{ display: 'inline-block', fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0D9488', background: '#F0FDFA', border: '1px solid #CCFBF1', padding: '7px 14px', borderRadius: '999px' }}>HOW IT WORKS</span>
+      <span style={{ display: 'inline-block', fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0F766E', background: '#F0FDFA', border: '1px solid #CCFBF1', padding: '7px 14px', borderRadius: '999px' }}>HOW IT WORKS</span>
       <h2 style={{ margin: '18px 0 0', fontSize: '40px', lineHeight: '1.12', fontWeight: '700', letterSpacing: '-0.025em', color: '#0E2350', textWrap: 'balance' }}>A different type of English test</h2>
       <p style={{ margin: '16px 0 0', fontSize: '17px', lineHeight: '1.7', color: '#5F6B7A', maxWidth: '56ch' }}>Delivered in-class whenever you want: diagnose every skill, personalize content, track growth, predict readiness, and report to families and leadership before the kettle boils.</p>
     </div>
@@ -112,9 +112,9 @@ export function LandingHomeContent({ aeo, footer }: { aeo?: ReactNode; footer?: 
     <div style={{ marginTop: '48px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,300px),1fr))', gap: '20px' }}>
       {[
         { num: '01', tag: 'Diagnose', title: 'Diagnose strengths and weaknesses', desc: 'Four macro skills and 27 subskills. The detail that used to take weeks of watching, visible on day one.', href: '/diagnose', chipBg: '#EFF5FF', chipFg: '#2563EB', linkBg: '#EFF5FF', linkFg: '#1D4ED8' },
-        { num: '02', tag: 'Teach', title: 'Plan and teach', desc: 'Drag and drop diagnostic data into your favourite LLM. Personalization and differentiation is no longer a Sunday night job.', href: '/teach', chipBg: '#F0FDFA', chipFg: '#0D9488', linkBg: '#F0FDFA', linkFg: '#0D9488' },
+        { num: '02', tag: 'Teach', title: 'Plan and teach', desc: 'Drag and drop diagnostic data into your favourite LLM. Personalization and differentiation is no longer a Sunday night job.', href: '/teach', chipBg: '#F0FDFA', chipFg: '#0F766E', linkBg: '#F0FDFA', linkFg: '#0F766E' },
         { num: '03', tag: 'Track', title: 'Track progress over time', desc: 'Retest whenever you want and watch them grow on the ACARA scale. Make empirical teaching decisions that truly move the needle.', href: '/track', chipBg: '#EFF5FF', chipFg: '#2563EB', linkBg: '#EFF5FF', linkFg: '#1D4ED8' },
-        { num: '04', tag: 'Predict', title: 'Predict mainstream readiness', desc: 'One readiness indicator across all four skills, aligned to ACARA. Exit calls you can defend.', href: '/predict', chipBg: '#F0FDFA', chipFg: '#0D9488', linkBg: '#F0FDFA', linkFg: '#0D9488' },
+        { num: '04', tag: 'Predict', title: 'Predict mainstream readiness', desc: 'One readiness indicator across all four skills, aligned to ACARA. Exit calls you can defend.', href: '/predict', chipBg: '#F0FDFA', chipFg: '#0F766E', linkBg: '#F0FDFA', linkFg: '#0F766E' },
         { num: '05', tag: 'Report', title: 'Report to leadership and families', desc: 'A profile a family can read and evidence leadership can trust. Keep everyone informed.', href: '#evidence', chipBg: '#EFF5FF', chipFg: '#2563EB', linkBg: '#EFF5FF', linkFg: '#1D4ED8' },
       ].map((usp) => (
         <a
@@ -172,7 +172,7 @@ export function LandingHomeContent({ aeo, footer }: { aeo?: ReactNode; footer?: 
 <section id="evidence" data-screen-label="Progress chart" style={{ background: '#FFFFFF', scrollMarginTop: '20px' }}>
   <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '72px 32px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,340px),1fr))', gap: '56px', alignItems: 'center' }}>
     <div>
-      <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0D9488' }}>DIAGNOSTIC TESTING</span>
+      <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0F766E' }}>DIAGNOSTIC TESTING</span>
       <h2 style={{ margin: '14px 0 0', fontSize: '32px', lineHeight: '1.16', fontWeight: '700', letterSpacing: '-0.024em', color: '#0E2350', textWrap: 'balance', maxWidth: '18ch' }}>See beneath the score</h2>
       <p style={{ margin: '20px 0 0', fontSize: '16.5px', lineHeight: '1.7', color: '#475569', textWrap: 'pretty', maxWidth: '52ch' }}>Reading, listening, speaking, writing - each score hides a spread of sub-skills underneath.</p>
       <p style={{ margin: '14px 0 0', fontSize: '16.5px', lineHeight: '1.7', color: '#475569', textWrap: 'pretty', maxWidth: '52ch' }}>See the sub-scores so you know precisely where to aim the next lesson.</p>
@@ -181,7 +181,7 @@ export function LandingHomeContent({ aeo, footer }: { aeo?: ReactNode; footer?: 
     <figure style={{ margin: '0', border: '1px solid #E3E8F0', borderRadius: '16px', overflow: 'hidden', background: '#FFFFFF' }}>
       <figcaption style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '20px', flexWrap: 'wrap', padding: '18px 24px', borderBottom: '1px solid #E3E8F0', background: '#F7F9FC' }}>
         <span style={{ fontSize: '15px', fontWeight: '700', color: '#0E2350' }}>READING: Score 58 / CEFR B1</span>
-        <span style={{ fontSize: '11px', fontWeight: '700', letterSpacing: '.08em', color: '#0D9488', background: '#CCFBF1', padding: '5px 10px', borderRadius: '6px' }}>SUBSKILL PROFILE</span>
+        <span style={{ fontSize: '11px', fontWeight: '700', letterSpacing: '.08em', color: '#0F766E', background: '#CCFBF1', padding: '5px 10px', borderRadius: '6px' }}>SUBSKILL PROFILE</span>
       </figcaption>
       <div style={{ padding: '24px 20px 12px' }}>
         <svg viewBox="0 0 760 404" role="img" aria-label="Column chart ranking seven reading subskills by score on the ACARA phase scale, Decoding highest at 72" style={{ width: '100%', height: 'auto', display: 'block' }}>
@@ -250,7 +250,7 @@ export function LandingHomeContent({ aeo, footer }: { aeo?: ReactNode; footer?: 
 <section id="register" data-screen-label="Register" style={{ background: '#F7F9FC', borderBottom: '1px solid #E3E8F0', scrollMarginTop: '20px' }}>
   <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '72px 32px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,360px),1fr))', gap: '48px', alignItems: 'stretch' }}>
     <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0D9488' }}>BECOME A FOUNDING SCHOOL</span>
+      <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0F766E' }}>BECOME A FOUNDING SCHOOL</span>
       <h2 style={{ margin: '14px 0 0', fontSize: '32px', lineHeight: '1.16', fontWeight: '700', letterSpacing: '-0.024em', color: '#0E2350', textWrap: 'balance', maxWidth: '20ch' }}>We’re building this with founding schools.</h2>
       <p style={{ margin: '20px 0 0', maxWidth: '54ch', fontSize: '16.5px', lineHeight: '1.7', color: '#475569', textWrap: 'pretty' }}>We need schools willing to try SchoolTest with real students and provide us with feedback.</p>
       <ul style={{ listStyle: 'none', margin: '24px 0 0', padding: '0', maxWidth: '52ch', background: '#FFFFFF', border: '1px solid #E3E8F0', borderRadius: '14px', overflow: 'hidden' }}>
@@ -279,7 +279,7 @@ export function LandingHomeContent({ aeo, footer }: { aeo?: ReactNode; footer?: 
             </label>
             <button type="submit" style={{ marginTop: '4px', height: '50px', border: 'none', borderRadius: '12px', background: '#2563EB', color: '#FFFFFF', fontSize: '15px', fontWeight: '600', cursor: 'pointer' }} data-index-h="16">Submit expression of interest</button>
           </form>
-          <p style={{ margin: '16px 0 0', fontSize: '12.5px', lineHeight: '1.6', color: '#94A3B8' }}>Pseudonymised data handling. No student names appear in any export. Read the <a href="#register" style={{ color: '#1D4ED8' }}>privacy statement</a>.</p>
+          <p style={{ margin: '16px 0 0', fontSize: '12.5px', lineHeight: '1.6', color: '#64748B' }}>Pseudonymised data handling. No student names appear in any export. Read the <a href="/privacy-policy" style={{ color: '#1D4ED8', textDecoration: 'underline' }}>privacy statement</a>.</p>
         </div>
       </div>)}
       {submitted && (<div id="eoi-success-wrap">

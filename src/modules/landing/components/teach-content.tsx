@@ -57,10 +57,10 @@ export function LandingTeachContent({ aeo, footer }: { aeo?: ReactNode; footer?:
   </div>
   <div style={{ background: '#F7F9FC', borderTop: '1px solid #E3E8F0', borderBottom: '1px solid #E3E8F0' }}>
     <dl style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 32px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(50%,190px),1fr))' }}>
-      <div style={{ padding: '22px 24px 22px 0' }}><dt style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.09em', textTransform: 'uppercase', color: '#94A3B8' }}>Class set export</dt><dd style={{ margin: '8px 0 0', fontSize: '20px', fontWeight: '700', color: '#0E2350' }}>Pseudonymised</dd></div>
-      <div style={{ padding: '22px 24px', borderLeft: '1px solid #E3E8F0' }}><dt style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.09em', textTransform: 'uppercase', color: '#94A3B8' }}>Student names in export</dt><dd style={{ margin: '8px 0 0', fontSize: '20px', fontWeight: '700', color: '#0E2350' }}>None</dd></div>
-      <div style={{ padding: '22px 24px', borderLeft: '1px solid #E3E8F0' }}><dt style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.09em', textTransform: 'uppercase', color: '#94A3B8' }}>Grouping views</dt><dd style={{ margin: '8px 0 0', fontSize: '20px', fontWeight: '700', color: '#0E2350' }}>Built in</dd></div>
-      <div style={{ padding: '22px 0 22px 24px', borderLeft: '1px solid #E3E8F0' }}><dt style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.09em', textTransform: 'uppercase', color: '#94A3B8' }}>Works without AI</dt><dd style={{ margin: '8px 0 0', fontSize: '20px', fontWeight: '700', color: '#0E2350' }}>Yes</dd></div>
+      <div style={{ padding: '22px 24px 22px 0' }}><dt style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.09em', textTransform: 'uppercase', color: '#64748B' }}>Class set export</dt><dd style={{ margin: '8px 0 0', fontSize: '20px', fontWeight: '700', color: '#0E2350' }}>Pseudonymised</dd></div>
+      <div style={{ padding: '22px 24px', borderLeft: '1px solid #E3E8F0' }}><dt style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.09em', textTransform: 'uppercase', color: '#64748B' }}>Student names in export</dt><dd style={{ margin: '8px 0 0', fontSize: '20px', fontWeight: '700', color: '#0E2350' }}>None</dd></div>
+      <div style={{ padding: '22px 24px', borderLeft: '1px solid #E3E8F0' }}><dt style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.09em', textTransform: 'uppercase', color: '#64748B' }}>Grouping views</dt><dd style={{ margin: '8px 0 0', fontSize: '20px', fontWeight: '700', color: '#0E2350' }}>Built in</dd></div>
+      <div style={{ padding: '22px 0 22px 24px', borderLeft: '1px solid #E3E8F0' }}><dt style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.09em', textTransform: 'uppercase', color: '#64748B' }}>Works without AI</dt><dd style={{ margin: '8px 0 0', fontSize: '20px', fontWeight: '700', color: '#0E2350' }}>Yes</dd></div>
     </dl>
   </div>
 </section>
@@ -68,7 +68,7 @@ export function LandingTeachContent({ aeo, footer }: { aeo?: ReactNode; footer?:
 <section data-screen-label="Generate the materials" style={{ background: '#FFFFFF' }}>
   <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '72px 32px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,400px),1fr))', gap: '56px', alignItems: 'center' }}>
     <div>
-      <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0D9488' }}>Generate the materials</span>
+      <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0F766E' }}>Generate the materials</span>
       <h2 style={{ margin: '14px 0 0', fontSize: '32px', lineHeight: '1.16', fontWeight: '700', letterSpacing: '-0.024em', color: '#0E2350', textWrap: 'balance', maxWidth: '20ch' }}>Generate data-driven teaching materials</h2>
       <div style={{ width: '56px', height: '3px', background: '#0D9488', marginTop: '18px', borderRadius: '2px' }}></div>
       <p style={{ margin: '22px 0 0', fontSize: '16.5px', lineHeight: '1.7', color: '#475569', textWrap: 'pretty', maxWidth: '56ch' }}>Ask AI for a reading passage with question sets matched to each student’s area of need, and you’ll have it before the kettle boils.</p>
@@ -77,7 +77,7 @@ export function LandingTeachContent({ aeo, footer }: { aeo?: ReactNode; footer?:
     <div style={{ border: '1px solid #E3E8F0', borderRadius: '16px', overflow: 'hidden', background: '#FFFFFF' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '18px 24px', borderBottom: '1px solid #E3E8F0', background: '#F7F9FC' }}>
         <span style={{ fontSize: '15px', fontWeight: '700', color: '#0E2350' }}>Class set · 22 profiles</span>
-        <span style={{ marginLeft: 'auto', fontSize: '11px', fontWeight: '700', letterSpacing: '.08em', color: '#0D9488', background: '#CCFBF1', padding: '5px 10px', borderRadius: '6px' }}>EXPORT</span>
+        <span style={{ marginLeft: 'auto', fontSize: '11px', fontWeight: '700', letterSpacing: '.08em', color: '#0F766E', background: '#CCFBF1', padding: '5px 10px', borderRadius: '6px' }}>EXPORT</span>
       </div>
       <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
         <div style={{ background: '#F7F9FC', border: '1px solid #EEF2F7', borderRadius: '12px', padding: '16px 18px', fontSize: '14.5px', lineHeight: '1.6', color: '#475569' }}>“Write one passage at the class’s vocabulary band, with question sets matched to their gaps.”</div>
@@ -91,7 +91,7 @@ export function LandingTeachContent({ aeo, footer }: { aeo?: ReactNode; footer?:
           <span style={{ display: 'inline-block', marginTop: '16px', fontSize: '11.5px', fontWeight: '600', color: '#16326E', background: '#EFF5FF', border: '1px solid #DBEAFE', padding: '5px 11px', borderRadius: '6px' }}>Targets: inference, vocabulary</span>
         </div>
       </div>
-      <div style={{ padding: '14px 24px', borderTop: '1px solid #E3E8F0', fontSize: '12.5px', color: '#94A3B8' }}>No student names appear in any export.</div>
+      <div style={{ padding: '14px 24px', borderTop: '1px solid #E3E8F0', fontSize: '12.5px', color: '#64748B' }}>No student names appear in any export.</div>
     </div>
   </div>
 </section>
@@ -114,7 +114,7 @@ export function LandingTeachContent({ aeo, footer }: { aeo?: ReactNode; footer?:
 <section data-screen-label="Ask AI" style={{ background: '#FFFFFF' }}>
   <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '72px 32px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,340px),1fr))', gap: '56px', alignItems: 'center' }}>
     <div>
-      <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0D9488' }}>Ask AI</span>
+      <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0F766E' }}>Ask AI</span>
       <h2 style={{ margin: '14px 0 0', fontSize: '32px', lineHeight: '1.16', fontWeight: '700', letterSpacing: '-0.024em', color: '#0E2350', textWrap: 'balance', maxWidth: '18ch' }}>Ask the data anything.</h2>
       <p style={{ margin: '20px 0 0', fontSize: '16.5px', lineHeight: '1.7', color: '#475569', textWrap: 'pretty', maxWidth: '52ch' }}>Every subskill score is loaded in, so you can query it in plain English - the full profile for one student, the shared gap across a group, or who to pull for a small-group lesson. You get a specific answer, not a spreadsheet to sift.</p>
       <p style={{ margin: '22px 0 0', background: '#F0FDFA', border: '1px solid #CCFBF1', borderRadius: '14px', padding: '16px 18px', fontSize: '15px', lineHeight: '1.6', color: '#0E2350' }}><strong style={{ fontWeight: '700' }}>What this means for you:</strong> the analysis you would have done by hand, answered in an instant.</p>
@@ -123,7 +123,7 @@ export function LandingTeachContent({ aeo, footer }: { aeo?: ReactNode; footer?:
       <figcaption style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '16px 22px', borderBottom: '1px solid #E3E8F0', background: '#F7F9FC' }}>
         <span style={{ display: 'grid', placeItems: 'center', width: '28px', height: '28px', borderRadius: '8px', background: '#0E2350', color: '#FFFFFF', fontSize: '14px', fontWeight: '700', flex: '0 0 auto' }}>S</span>
         <span style={{ fontSize: '15px', fontWeight: '700', color: '#0E2350' }}>Ask SchoolTest</span>
-        <span style={{ marginLeft: 'auto', fontSize: '12.5px', color: '#94A3B8' }}>9 English · 22 students</span>
+        <span style={{ marginLeft: 'auto', fontSize: '12.5px', color: '#64748B' }}>9 English · 22 students</span>
       </figcaption>
       <div style={{ padding: '22px 22px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
         <div style={{ alignSelf: 'flex-end', maxWidth: '82%', background: '#2563EB', color: '#FFFFFF', fontSize: '14.5px', lineHeight: '1.55', padding: '12px 16px', borderRadius: '14px 14px 4px 14px' }}>Which students need work on inference?</div>
@@ -136,7 +136,7 @@ export function LandingTeachContent({ aeo, footer }: { aeo?: ReactNode; footer?:
           Inference passage · Year 9.docx
         </div>
       </div>
-      <div style={{ padding: '14px 22px', borderTop: '1px solid #E3E8F0', fontSize: '12.5px', color: '#94A3B8' }}>Illustrative exchange. Names are sample data; the diagnostic data is exported de-identified.</div>
+      <div style={{ padding: '14px 22px', borderTop: '1px solid #E3E8F0', fontSize: '12.5px', color: '#64748B' }}>Illustrative exchange. Names are sample data; the diagnostic data is exported de-identified.</div>
     </figure>
   </div>
 </section>
@@ -158,7 +158,7 @@ export function LandingTeachContent({ aeo, footer }: { aeo?: ReactNode; footer?:
 
 <section data-screen-label="Next" style={{ background: '#F7F9FC', borderTop: '1px solid #E3E8F0', borderBottom: '1px solid #E3E8F0' }}>
   <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '64px 32px' }}>
-    <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0D9488' }}>After teaching</span>
+    <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0F766E' }}>After teaching</span>
     <h2 style={{ margin: '14px 0 0', fontSize: '30px', lineHeight: '1.16', fontWeight: '700', letterSpacing: '-0.024em', color: '#0E2350', maxWidth: '24ch' }}>Then you watch it move.</h2>
     <ol style={{ listStyle: 'none', margin: '32px 0 0', padding: '0', background: '#FFFFFF', border: '1px solid #E3E8F0', borderRadius: '16px', overflow: 'hidden' }}>
       <li style={{ display: 'grid', gridTemplateColumns: '96px minmax(0,1fr) auto', gap: '28px', alignItems: 'center', padding: '26px 32px', borderBottom: '1px solid #EEF2F7' }}>

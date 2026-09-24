@@ -65,7 +65,7 @@ export function LandingTrackContent({ aeo, footer }: { aeo?: ReactNode; footer?:
 <section data-screen-label="Evidence trail" style={{ background: '#FFFFFF' }}>
   <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '72px 32px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,400px),1fr))', gap: '56px', alignItems: 'center' }}>
     <div>
-      <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0D9488' }}>Individual students</span>
+      <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0F766E' }}>Individual students</span>
       <h2 style={{ margin: '14px 0 0', fontSize: '32px', lineHeight: '1.16', fontWeight: '700', letterSpacing: '-0.024em', color: '#0E2350', textWrap: 'balance', maxWidth: '20ch' }}>Every student&apos;s own progress line.</h2>
       <div style={{ width: '56px', height: '3px', background: '#0D9488', marginTop: '18px', borderRadius: '2px' }}></div>
       <p style={{ margin: '22px 0 0', fontSize: '16.5px', lineHeight: '1.7', color: '#475569', textWrap: 'pretty', maxWidth: '56ch' }}>Every student&apos;s journey is their own. Track it subskill by subskill and watch their ACARA phase climb.</p>
@@ -74,11 +74,11 @@ export function LandingTrackContent({ aeo, footer }: { aeo?: ReactNode; footer?:
     <div style={{ border: '1px solid #E3E8F0', borderRadius: '16px', overflow: 'hidden', background: '#FFFFFF' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '18px 24px', borderBottom: '1px solid #E3E8F0', background: '#F7F9FC' }}>
         <span style={{ fontSize: '15px', fontWeight: '700', color: '#0E2350' }}>Reading</span>
-        <span style={{ marginLeft: 'auto', fontSize: '11px', fontWeight: '700', letterSpacing: '.08em', color: '#0D9488', background: '#CCFBF1', padding: '5px 10px', borderRadius: '6px' }}>CONSOLIDATING</span>
+        <span style={{ marginLeft: 'auto', fontSize: '11px', fontWeight: '700', letterSpacing: '.08em', color: '#0F766E', background: '#CCFBF1', padding: '5px 10px', borderRadius: '6px' }}>CONSOLIDATING</span>
       </div>
       <ol style={{ listStyle: 'none', margin: '0', padding: '0' }}>
-        <li style={{ display: 'flex', alignItems: 'center', gap: '18px', padding: '18px 24px', borderBottom: '1px solid #EEF2F7' }}><span style={{ fontSize: '12.5px', fontWeight: '700', color: '#94A3B8', width: '56px' }}>Term 1</span><span style={{ fontSize: '15.5px', fontWeight: '600', color: '#0E2350' }}>Emerging</span></li>
-        <li style={{ display: 'flex', alignItems: 'center', gap: '18px', padding: '18px 24px', borderBottom: '1px solid #EEF2F7' }}><span style={{ fontSize: '12.5px', fontWeight: '700', color: '#94A3B8', width: '56px' }}>Term 2</span><span style={{ fontSize: '15.5px', fontWeight: '600', color: '#0E2350' }}>Emerging</span></li>
+        <li style={{ display: 'flex', alignItems: 'center', gap: '18px', padding: '18px 24px', borderBottom: '1px solid #EEF2F7' }}><span style={{ fontSize: '12.5px', fontWeight: '700', color: '#64748B', width: '56px' }}>Term 1</span><span style={{ fontSize: '15.5px', fontWeight: '600', color: '#0E2350' }}>Emerging</span></li>
+        <li style={{ display: 'flex', alignItems: 'center', gap: '18px', padding: '18px 24px', borderBottom: '1px solid #EEF2F7' }}><span style={{ fontSize: '12.5px', fontWeight: '700', color: '#64748B', width: '56px' }}>Term 2</span><span style={{ fontSize: '15.5px', fontWeight: '600', color: '#0E2350' }}>Emerging</span></li>
         <li style={{ display: 'flex', alignItems: 'center', gap: '18px', padding: '18px 24px', borderBottom: '1px solid #EEF2F7', background: '#F7FAFF' }}><span style={{ fontSize: '12.5px', fontWeight: '700', color: '#2563EB', width: '56px' }}>Term 3</span><span style={{ fontSize: '15.5px', fontWeight: '600', color: '#0E2350' }}>Developing</span></li>
         <li style={{ display: 'flex', alignItems: 'center', gap: '18px', padding: '18px 24px', background: '#0E2350' }}><span style={{ fontSize: '12.5px', fontWeight: '700', color: '#8FA3C7', width: '56px' }}>Term 4</span><span style={{ fontSize: '15.5px', fontWeight: '600', color: '#FFFFFF' }}>Consolidating</span></li>
       </ol>
@@ -90,7 +90,7 @@ export function LandingTrackContent({ aeo, footer }: { aeo?: ReactNode; footer?:
 <section data-screen-label="Progress chart" style={{ background: '#F7F9FC', borderTop: '1px solid #E3E8F0', borderBottom: '1px solid #E3E8F0' }}>
   <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '72px 32px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,340px),1fr))', gap: '56px', alignItems: 'center' }}>
     <div>
-      <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0D9488' }}>CLASS PROGRESSION</span>
+      <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0F766E' }}>CLASS PROGRESSION</span>
       <h2 style={{ margin: '14px 0 0', fontSize: '32px', lineHeight: '1.16', fontWeight: '700', letterSpacing: '-0.024em', color: '#0E2350', textWrap: 'balance', maxWidth: '18ch' }}>Class progression you can point at.</h2>
       <p style={{ margin: '20px 0 0', fontSize: '16.5px', lineHeight: '1.7', color: '#475569', textWrap: 'pretty', maxWidth: '52ch' }}>Personalized and differentiated learning means everyone is on the right track. Now you have class-level analytics to how how quickly they&apos;re moving.</p>
       <p style={{ margin: '22px 0 0', background: '#F0FDFA', border: '1px solid #CCFBF1', borderRadius: '14px', padding: '16px 18px', fontSize: '15px', lineHeight: '1.6', color: '#0E2350' }}><strong style={{ fontWeight: '700' }}>What this means for you:</strong> you can see the whole class moving, not just one student at a time.</p>
@@ -176,10 +176,10 @@ export function LandingTrackContent({ aeo, footer }: { aeo?: ReactNode; footer?:
   <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '72px 32px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,400px),1fr))', gap: '56px', alignItems: 'center' }}>
     <figure style={{ margin: '0', alignSelf: 'stretch', display: 'flex', flexDirection: 'column' }}>
       <img src="/images/landing/photo-d.webp" alt="A teacher working with a small group of secondary students" style={{ display: 'block', width: '100%', flex: '1', minHeight: '380px', objectFit: 'cover', borderRadius: '14px' }} />
-      <figcaption style={{ marginTop: '10px', fontSize: '12.5px', lineHeight: '1.5', color: '#94A3B8' }}>Six weeks of vocabulary work, measured at the end of the six weeks.</figcaption>
+      <figcaption style={{ marginTop: '10px', fontSize: '12.5px', lineHeight: '1.5', color: '#64748B' }}>Six weeks of vocabulary work, measured at the end of the six weeks.</figcaption>
     </figure>
     <div>
-      <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0D9488' }}>Feedback on your teaching</span>
+      <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0F766E' }}>Feedback on your teaching</span>
       <h2 style={{ margin: '14px 0 0', fontSize: '32px', lineHeight: '1.16', fontWeight: '700', letterSpacing: '-0.024em', color: '#0E2350', textWrap: 'balance', maxWidth: '20ch' }}>Teach empirically</h2>
       <div style={{ width: '56px', height: '3px', background: '#0D9488', marginTop: '18px', borderRadius: '2px' }}></div>
       <p style={{ margin: '22px 0 0', fontSize: '16.5px', lineHeight: '1.7', color: '#475569', textWrap: 'pretty', maxWidth: '56ch' }}>Six weeks of targeted vocabulary work either shows up in the vocabulary line or it doesn&apos;t. You find out sooner rather than later.</p>
@@ -209,7 +209,7 @@ export function LandingTrackContent({ aeo, footer }: { aeo?: ReactNode; footer?:
 
 <section data-screen-label="Next" style={{ background: '#F7F9FC', borderTop: '1px solid #E3E8F0', borderBottom: '1px solid #E3E8F0' }}>
   <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '64px 32px' }}>
-    <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0D9488' }}>After tracking growth</span>
+    <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0F766E' }}>After tracking growth</span>
     <h2 style={{ margin: '14px 0 0', fontSize: '30px', lineHeight: '1.16', fontWeight: '700', letterSpacing: '-0.024em', color: '#0E2350', maxWidth: '24ch' }}>Make informed exit decisions</h2>
     <ol style={{ listStyle: 'none', margin: '32px 0 0', padding: '0', background: '#FFFFFF', border: '1px solid #E3E8F0', borderRadius: '16px', overflow: 'hidden' }}>
       <li style={{ display: 'grid', gridTemplateColumns: '96px minmax(0,1fr) auto', gap: '28px', alignItems: 'center', padding: '26px 32px', borderBottom: '1px solid #EEF2F7' }}>

@@ -41,7 +41,7 @@ export function LandingReportContent({ aeo, footer }: { aeo?: ReactNode; footer?
 <section data-screen-label="Hero" style={{ background: '#FFFFFF', borderBottom: '1px solid #E3E8F0' }}>
   <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '36px 32px 56px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,400px),1fr))', gap: '56px', alignItems: 'center' }}>
     <div>
-      <span style={{ display: 'inline-block', fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0D9488' }}>05 · Report to everyone who needs it</span>
+      <span style={{ display: 'inline-block', fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0F766E' }}>05 · Report to everyone who needs it</span>
       <h1 style={{ margin: '16px 0 0', fontSize: '46px', lineHeight: '1.07', fontWeight: '700', letterSpacing: '-0.03em', color: '#0E2350', textWrap: 'balance', maxWidth: '16ch' }}>Instant reporting in everyone&apos;s language.</h1>
       <div style={{ width: '56px', height: '3px', background: '#0D9488', marginTop: '20px', borderRadius: '2px' }}></div>
       <p data-speakable="summary" style={{ margin: '22px 0 0', fontSize: '18px', lineHeight: '1.6', color: '#475569', textWrap: 'pretty', maxWidth: '54ch' }}>Send instant reports straight to students, parents, leaders and mainstream teachers.</p>
@@ -64,7 +64,7 @@ export function LandingReportContent({ aeo, footer }: { aeo?: ReactNode; footer?
 <section data-screen-label="USP instant reports" style={{ background: '#F7F9FC', borderTop: '1px solid #E3E8F0', borderBottom: '1px solid #E3E8F0' }}>
   <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '72px 32px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,400px),1fr))', gap: '56px', alignItems: 'center' }}>
     <div>
-      <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0D9488' }}>Instant, shareable reports</span>
+      <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0F766E' }}>Instant, shareable reports</span>
       <h2 style={{ margin: '14px 0 0', fontSize: '32px', lineHeight: '1.16', fontWeight: '700', letterSpacing: '-0.024em', color: '#0E2350', textWrap: 'balance', maxWidth: '20ch' }}>One click turns a sitting into a report.</h2>
       <div style={{ width: '56px', height: '3px', background: '#0D9488', marginTop: '18px', borderRadius: '2px' }}></div>
       <p style={{ margin: '22px 0 0', fontSize: '16.5px', lineHeight: '1.7', color: '#475569', textWrap: 'pretty', maxWidth: '56ch' }}>No marking, no formatting, no waiting. Download a report as a PDF or send it straight to the right inbox - a single student, a whole class, or the leadership team in one go.</p>
@@ -73,23 +73,23 @@ export function LandingReportContent({ aeo, footer }: { aeo?: ReactNode; footer?
     <figure style={{ margin: '0', border: '1px solid #E3E8F0', borderRadius: '16px', overflow: 'hidden', background: '#FFFFFF' }}>
       <figcaption style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: '20px', flexWrap: 'wrap', padding: '18px 24px', borderBottom: '1px solid #E3E8F0', background: '#F7F9FC' }}>
         <span style={{ fontSize: '15px', fontWeight: '700', color: '#0E2350' }}>Send this report</span>
-        <span style={{ fontSize: '12.5px', color: '#94A3B8' }}>Term 2 · Reading</span>
+        <span style={{ fontSize: '12.5px', color: '#64748B' }}>Term 2 · Reading</span>
       </figcaption>
       <div style={{ padding: '22px 24px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '14px 16px', border: '1px solid #E3E8F0', borderRadius: '12px' }}>
           <span style={{ display: 'grid', placeItems: 'center', width: '38px', height: '38px', borderRadius: '10px', background: '#EFF5FF', color: '#2563EB', flex: '0 0 auto' }}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z" /></svg></span>
-          <div style={{ flex: '1 1 auto', minWidth: '0' }}><div style={{ fontSize: '14.5px', fontWeight: '600', color: '#0E2350' }}>Student report</div><div style={{ fontSize: '12.5px', color: '#94A3B8' }}>Plain-language · 1 page</div></div>
-          <span style={{ fontSize: '12px', fontWeight: '700', color: '#0D9488', whiteSpace: 'nowrap' }}>Download</span>
+          <div style={{ flex: '1 1 auto', minWidth: '0' }}><div style={{ fontSize: '14.5px', fontWeight: '600', color: '#0E2350' }}>Student report</div><div style={{ fontSize: '12.5px', color: '#64748B' }}>Plain-language · 1 page</div></div>
+          <span style={{ fontSize: '12px', fontWeight: '700', color: '#0F766E', whiteSpace: 'nowrap' }}>Download</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '14px 16px', border: '1px solid #E3E8F0', borderRadius: '12px' }}>
           <span style={{ display: 'grid', placeItems: 'center', width: '38px', height: '38px', borderRadius: '10px', background: '#EFF5FF', color: '#2563EB', flex: '0 0 auto' }}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 6l-10 7L2 6" /><rect x="2" y="4" width="20" height="16" rx="2" /></svg></span>
-          <div style={{ flex: '1 1 auto', minWidth: '0' }}><div style={{ fontSize: '14.5px', fontWeight: '600', color: '#0E2350' }}>Parent summary</div><div style={{ fontSize: '12.5px', color: '#94A3B8' }}>Emailed to carer on file</div></div>
-          <span style={{ fontSize: '12px', fontWeight: '700', color: '#0D9488', whiteSpace: 'nowrap' }}>Send</span>
+          <div style={{ flex: '1 1 auto', minWidth: '0' }}><div style={{ fontSize: '14.5px', fontWeight: '600', color: '#0E2350' }}>Parent summary</div><div style={{ fontSize: '12.5px', color: '#64748B' }}>Emailed to carer on file</div></div>
+          <span style={{ fontSize: '12px', fontWeight: '700', color: '#0F766E', whiteSpace: 'nowrap' }}>Send</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '14px 16px', border: '1px solid #E3E8F0', borderRadius: '12px' }}>
           <span style={{ display: 'grid', placeItems: 'center', width: '38px', height: '38px', borderRadius: '10px', background: '#EFF5FF', color: '#2563EB', flex: '0 0 auto' }}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18" /><rect x="7" y="12" width="3" height="6" /><rect x="12" y="8" width="3" height="10" /><rect x="17" y="4" width="3" height="14" /></svg></span>
-          <div style={{ flex: '1 1 auto', minWidth: '0' }}><div style={{ fontSize: '14.5px', fontWeight: '600', color: '#0E2350' }}>Leadership summary</div><div style={{ fontSize: '12.5px', color: '#94A3B8' }}>Whole cohort · band spread</div></div>
-          <span style={{ fontSize: '12px', fontWeight: '700', color: '#0D9488', whiteSpace: 'nowrap' }}>Download</span>
+          <div style={{ flex: '1 1 auto', minWidth: '0' }}><div style={{ fontSize: '14.5px', fontWeight: '600', color: '#0E2350' }}>Leadership summary</div><div style={{ fontSize: '12.5px', color: '#64748B' }}>Whole cohort · band spread</div></div>
+          <span style={{ fontSize: '12px', fontWeight: '700', color: '#0F766E', whiteSpace: 'nowrap' }}>Download</span>
         </div>
       </div>
     </figure>
@@ -102,7 +102,7 @@ export function LandingReportContent({ aeo, footer }: { aeo?: ReactNode; footer?
       <img src="/images/landing/parents-report.png" alt="Two parents reading their child's report on a laptop at home" style={{ display: 'block', width: '100%', flex: '1', minHeight: '380px', objectFit: 'cover', borderRadius: '14px' }} />
     </figure>
     <div>
-      <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0D9488' }}>Reports students and families understand</span>
+      <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0F766E' }}>Reports students and families understand</span>
       <h2 style={{ margin: '14px 0 0', fontSize: '32px', lineHeight: '1.16', fontWeight: '700', letterSpacing: '-0.024em', color: '#0E2350', textWrap: 'balance', maxWidth: '20ch' }}>Not just for the staffroom.</h2>
       <div style={{ width: '56px', height: '3px', background: '#0D9488', marginTop: '18px', borderRadius: '2px' }}></div>
       <p style={{ margin: '22px 0 0', fontSize: '16.5px', lineHeight: '1.7', color: '#475569', textWrap: 'pretty', maxWidth: '56ch' }}>Students and parents get their own version - the strengths and next steps in plain English, or their native language, without the jargon.</p>
@@ -138,7 +138,7 @@ export function LandingReportContent({ aeo, footer }: { aeo?: ReactNode; footer?
 
 <section data-screen-label="Next" style={{ background: '#F7F9FC', borderTop: '1px solid #E3E8F0', borderBottom: '1px solid #E3E8F0' }}>
   <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '64px 32px' }}>
-    <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0D9488' }}>The whole story</span>
+    <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0F766E' }}>The whole story</span>
     <h2 style={{ margin: '14px 0 0', fontSize: '30px', lineHeight: '1.16', fontWeight: '700', letterSpacing: '-0.024em', color: '#0E2350', maxWidth: '26ch' }}>One sitting, start to finish.</h2>
     <p style={{ margin: '18px 0 0', fontSize: '16.5px', lineHeight: '1.7', color: '#475569', textWrap: 'pretty', maxWidth: '60ch' }}>Diagnose, teach, track, predict, report - every stage runs off on-demand 40-minute tests.</p>
   </div>

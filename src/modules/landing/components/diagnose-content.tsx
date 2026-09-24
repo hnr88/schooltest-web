@@ -41,7 +41,7 @@ export function LandingDiagnoseContent({ aeo, footer }: { aeo?: ReactNode; foote
 <section data-screen-label="Hero" style={{ background: '#FFFFFF', borderBottom: '1px solid #E3E8F0' }}>
   <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '36px 32px 56px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,400px),1fr))', gap: '56px', alignItems: 'center' }}>
     <div>
-      <span style={{ display: 'inline-block', fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0D9488' }}>01 · SEE STRENGTHS AND WEAKNESSES</span>
+      <span style={{ display: 'inline-block', fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0F766E' }}>01 · SEE STRENGTHS AND WEAKNESSES</span>
       <h1 style={{ margin: '16px 0 0', fontSize: '46px', lineHeight: '1.07', fontWeight: '700', letterSpacing: '-0.03em', color: '#0E2350', textWrap: 'balance', maxWidth: '16ch' }}>One 40-minute sitting. All is revealed.</h1>
       <div style={{ width: '56px', height: '3px', background: '#0D9488', marginTop: '20px', borderRadius: '2px' }}></div>
       <p data-speakable="summary" style={{ margin: '22px 0 0', fontSize: '18px', lineHeight: '1.6', color: '#475569', textWrap: 'pretty', maxWidth: '54ch' }}>SchoolTest breaks placement test scores into 27 subskill scores - so you know exactly what they need before you’ve even met them.</p>
@@ -64,7 +64,7 @@ export function LandingDiagnoseContent({ aeo, footer }: { aeo?: ReactNode; foote
 <section data-screen-label="Unpack the placement score" style={{ background: '#FFFFFF' }}>
   <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '72px 32px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,400px),1fr))', gap: '56px', alignItems: 'center' }}>
     <div>
-      <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0D9488' }}>Unpack the placement score</span>
+      <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0F766E' }}>Unpack the placement score</span>
       <h2 style={{ margin: '14px 0 0', fontSize: '32px', lineHeight: '1.16', fontWeight: '700', letterSpacing: '-0.024em', color: '#0E2350', textWrap: 'balance', maxWidth: '20ch' }}>Unpack placement test scores</h2>
       <div style={{ width: '56px', height: '3px', background: '#0D9488', marginTop: '18px', borderRadius: '2px' }}></div>
       <p style={{ margin: '22px 0 0', fontSize: '16.5px', lineHeight: '1.7', color: '#475569', textWrap: 'pretty', maxWidth: '56ch' }}>A placement score tells you roughly where a student sits and nothing about what’s underneath. SchoolTest reports each subskill on the ACARA phase scale, so the gaps are evident.</p>
@@ -129,10 +129,10 @@ export function LandingDiagnoseContent({ aeo, footer }: { aeo?: ReactNode; foote
   <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '72px 32px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,400px),1fr))', gap: '56px', alignItems: 'center' }}>
     <figure style={{ margin: '0', alignSelf: 'stretch', display: 'flex', flexDirection: 'column' }}>
       <img src="/images/landing/students-walking.png" alt="Four secondary students in uniform walking together at school" style={{ display: 'block', width: '100%', flex: '1', minHeight: '380px', objectFit: 'cover', borderRadius: '14px' }} />
-      <figcaption style={{ marginTop: '10px', fontSize: '12.5px', lineHeight: '1.5', color: '#94A3B8' }}>Two students on the same band, sitting in the same class, needing different lessons.</figcaption>
+      <figcaption style={{ marginTop: '10px', fontSize: '12.5px', lineHeight: '1.5', color: '#64748B' }}>Two students on the same band, sitting in the same class, needing different lessons.</figcaption>
     </figure>
     <div>
-      <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0D9488' }}>Two students, one score</span>
+      <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0F766E' }}>Two students, one score</span>
       <h2 style={{ margin: '14px 0 0', fontSize: '32px', lineHeight: '1.16', fontWeight: '700', letterSpacing: '-0.024em', color: '#0E2350', textWrap: 'balance', maxWidth: '20ch' }}>Same score. Different abilities.</h2>
       <div style={{ width: '56px', height: '3px', background: '#0D9488', marginTop: '18px', borderRadius: '2px' }}></div>
       <p style={{ margin: '22px 0 0', fontSize: '16.5px', lineHeight: '1.7', color: '#475569', textWrap: 'pretty', maxWidth: '56ch' }}>Two students arrive with the same CEFR B1. Are they the same? No. One is strong on decoding and lost on vocabulary; the other is the reverse. Each student has a unique linguistic profile - now you can see it.</p>
@@ -158,7 +158,7 @@ export function LandingDiagnoseContent({ aeo, footer }: { aeo?: ReactNode; foote
 
 <section data-screen-label="Next" style={{ background: '#F7F9FC', borderTop: '1px solid #E3E8F0', borderBottom: '1px solid #E3E8F0' }}>
   <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '64px 32px' }}>
-    <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0D9488' }}>After the diagnostic</span>
+    <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0F766E' }}>After the diagnostic</span>
     <h2 style={{ margin: '14px 0 0', fontSize: '30px', lineHeight: '1.16', fontWeight: '700', letterSpacing: '-0.024em', color: '#0E2350', maxWidth: '24ch' }}>Where the profile goes next.</h2>
     <ol style={{ listStyle: 'none', margin: '32px 0 0', padding: '0', background: '#FFFFFF', border: '1px solid #E3E8F0', borderRadius: '16px', overflow: 'hidden' }}>
       <li style={{ display: 'grid', gridTemplateColumns: '96px minmax(0,1fr) auto', gap: '28px', alignItems: 'center', padding: '26px 32px', borderBottom: '1px solid #EEF2F7' }}>

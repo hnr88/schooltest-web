@@ -43,7 +43,7 @@ export function LandingPredictContent({ aeo, footer }: { aeo?: ReactNode; footer
 <section data-screen-label="Hero" style={{ background: '#F7F9FC', borderBottom: '1px solid #E3E8F0' }}>
   <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 32px 60px' }}>
     <div>
-      <span style={{ display: 'inline-block', fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0D9488' }}>04 · Predict mainstream readiness</span>
+      <span style={{ display: 'inline-block', fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0F766E' }}>04 · Predict mainstream readiness</span>
       <h1 style={{ margin: '16px 0 0', fontSize: '46px', lineHeight: '1.07', fontWeight: '700', letterSpacing: '-0.03em', color: '#0E2350', textWrap: 'balance', maxWidth: '16ch' }}>Know when a student is ready, and prove it.</h1>
       <div style={{ width: '56px', height: '3px', background: '#0D9488', marginTop: '20px', borderRadius: '2px' }}></div>
       <p data-speakable="summary" style={{ margin: '22px 0 0', fontSize: '18px', lineHeight: '1.6', color: '#475569', textWrap: 'pretty', maxWidth: '52ch' }}>One readiness indicator, aggregated from every subskill across all four domains. The exit call stays yours - the evidence behind it stops being a hunch.</p>
@@ -58,7 +58,7 @@ export function LandingPredictContent({ aeo, footer }: { aeo?: ReactNode; footer
 <section data-screen-label="The individual" style={{ background: '#FFFFFF' }}>
   <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '72px 32px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,400px),1fr))', gap: '56px', alignItems: 'center' }}>
     <div>
-      <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0D9488' }}>The individual</span>
+      <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0F766E' }}>The individual</span>
       <h2 style={{ margin: '14px 0 0', fontSize: '32px', lineHeight: '1.16', fontWeight: '700', letterSpacing: '-0.024em', color: '#0E2350', textWrap: 'balance', maxWidth: '20ch' }}>Data-informed exit decisions</h2>
       <div style={{ width: '56px', height: '3px', background: '#0D9488', marginTop: '18px', borderRadius: '2px' }}></div>
       <p style={{ margin: '22px 0 0', fontSize: '16.5px', lineHeight: '1.7', color: '#475569', textWrap: 'pretty', maxWidth: '56ch' }}>See how close a student actually is, and what is still standing in the way - not a gut feel formed across a busy term.</p>
@@ -67,14 +67,14 @@ export function LandingPredictContent({ aeo, footer }: { aeo?: ReactNode; footer
     <div style={{ border: '1px solid #E3E8F0', borderRadius: '16px', overflow: 'hidden', background: '#FFFFFF' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '18px 24px', borderBottom: '1px solid #E3E8F0', background: '#F7F9FC' }}>
         <span style={{ fontSize: '15px', fontWeight: '700', color: '#0E2350' }}>Mainstream readiness · one student</span>
-        <span style={{ marginLeft: 'auto', fontSize: '12.5px', color: '#94A3B8' }}>Year 9</span>
+        <span style={{ marginLeft: 'auto', fontSize: '12.5px', color: '#64748B' }}>Year 9</span>
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,150px),1fr))', gap: '1px', background: '#E3E8F0' }}>
-        <div style={{ background: '#FFFFFF', padding: '26px 24px' }}><div style={{ fontSize: '12.5px', fontWeight: '600', color: '#94A3B8' }}>Term 1</div><div style={{ fontSize: '38px', fontWeight: '700', letterSpacing: '-0.03em', color: '#94A3B8', marginTop: '4px' }}>34%</div></div>
+        <div style={{ background: '#FFFFFF', padding: '26px 24px' }}><div style={{ fontSize: '12.5px', fontWeight: '600', color: '#64748B' }}>Term 1</div><div style={{ fontSize: '38px', fontWeight: '700', letterSpacing: '-0.03em', color: '#64748B', marginTop: '4px' }}>34%</div></div>
         <div style={{ background: '#FFFFFF', padding: '26px 24px' }}><div style={{ fontSize: '12.5px', fontWeight: '600', color: '#2563EB' }}>Term 3</div><div style={{ fontSize: '38px', fontWeight: '700', letterSpacing: '-0.03em', color: '#0E2350', marginTop: '4px' }}>81%</div></div>
       </div>
       <div style={{ padding: '20px 24px', borderTop: '1px solid #E3E8F0' }}>
-        <div style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.09em', textTransform: 'uppercase', color: '#94A3B8' }}>Still holding her back</div>
+        <div style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.09em', textTransform: 'uppercase', color: '#64748B' }}>Still holding her back</div>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '12px' }}>
           <span style={{ fontSize: '13.5px', fontWeight: '600', color: '#16326E', background: '#EFF5FF', border: '1px solid #DBEAFE', padding: '7px 13px', borderRadius: '8px' }}>Vocabulary</span>
           <span style={{ fontSize: '13.5px', fontWeight: '600', color: '#16326E', background: '#EFF5FF', border: '1px solid #DBEAFE', padding: '7px 13px', borderRadius: '8px' }}>Syntax</span>
@@ -88,19 +88,19 @@ export function LandingPredictContent({ aeo, footer }: { aeo?: ReactNode; footer
 <section data-screen-label="Cohort chart" style={{ background: '#F7F9FC', borderTop: '1px solid #E3E8F0', borderBottom: '1px solid #E3E8F0' }}>
   <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '72px 32px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,340px),1fr))', gap: '56px', alignItems: 'center' }}>
     <div>
-      <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0D9488' }}>The cohort</span>
+      <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0F766E' }}>The cohort</span>
       <h2 style={{ margin: '14px 0 0', fontSize: '32px', lineHeight: '1.16', fontWeight: '700', letterSpacing: '-0.024em', color: '#0E2350', textWrap: 'balance', maxWidth: '18ch' }}>Plan the program</h2>
       <p style={{ margin: '20px 0 0', fontSize: '16.5px', lineHeight: '1.7', color: '#475569', textWrap: 'pretty', maxWidth: '52ch' }}>See the whole cohort’s readiness in one view and forecast next term’s exits and intakes before you set the timetable.</p>
       <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginTop: '22px' }}>
         <span style={{ fontSize: '13.5px', fontWeight: '600', color: '#0E2350', background: '#FFFFFF', border: '1px solid #E3E8F0', padding: '8px 14px', borderRadius: '8px' }}>Cohort readiness · 22 students</span>
-        <span style={{ fontSize: '13.5px', fontWeight: '700', color: '#0D9488', background: '#F0FDFA', border: '1px solid #CCFBF1', padding: '8px 14px', borderRadius: '8px' }}>4 projected to exit next term</span>
+        <span style={{ fontSize: '13.5px', fontWeight: '700', color: '#0F766E', background: '#F0FDFA', border: '1px solid #CCFBF1', padding: '8px 14px', borderRadius: '8px' }}>4 projected to exit next term</span>
       </div>
       <p style={{ margin: '22px 0 0', background: '#F0FDFA', border: '1px solid #CCFBF1', borderRadius: '14px', padding: '16px 18px', fontSize: '15px', lineHeight: '1.6', color: '#0E2350' }}><strong style={{ fontWeight: '700' }}>What this means for you:</strong> answer “how many are leaving us next term” with a number instead of an estimate.</p>
     </div>
     <figure style={{ margin: '0', border: '1px solid #E3E8F0', borderRadius: '16px', overflow: 'hidden', background: '#FFFFFF' }}>
       <figcaption style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: '20px', flexWrap: 'wrap', padding: '18px 24px', borderBottom: '1px solid #E3E8F0', background: '#F7F9FC' }}>
         <span style={{ fontSize: '15px', fontWeight: '700', color: '#0E2350' }}>Figure 1 - Cohort readiness distribution</span>
-        <span style={{ fontSize: '12.5px', color: '#94A3B8' }}>Year 9 · 22 students</span>
+        <span style={{ fontSize: '12.5px', color: '#64748B' }}>Year 9 · 22 students</span>
       </figcaption>
       <div style={{ padding: '22px 24px 8px' }}>
         <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', padding: '0 0 16px' }}>
@@ -163,7 +163,7 @@ export function LandingPredictContent({ aeo, footer }: { aeo?: ReactNode; footer
       <img src="/images/landing/class-assessment.png" alt="A teacher supervising secondary students sitting an assessment on laptops" style={{ display: 'block', width: '100%', flex: '1', minHeight: '360px', objectFit: 'cover', borderRadius: '14px' }} />
     </figure>
     <div>
-      <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0D9488' }}>Defensible decisions</span>
+      <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0F766E' }}>Defensible decisions</span>
       <h2 style={{ margin: '14px 0 0', fontSize: '32px', lineHeight: '1.16', fontWeight: '700', letterSpacing: '-0.024em', color: '#0E2350', textWrap: 'balance', maxWidth: '20ch' }}>The call stays yours. The evidence is on the page.</h2>
       <div style={{ width: '56px', height: '3px', background: '#0D9488', marginTop: '18px', borderRadius: '2px' }}></div>
       <p style={{ margin: '22px 0 0', fontSize: '16.5px', lineHeight: '1.7', color: '#475569', textWrap: 'pretty', maxWidth: '56ch' }}>A readiness score is the evidence you take into a panel, a parent or staff meeting, with the scores and subskills to back it up.</p>
@@ -190,7 +190,7 @@ export function LandingPredictContent({ aeo, footer }: { aeo?: ReactNode; footer
 
 <section data-screen-label="Next" style={{ background: '#F7F9FC', borderTop: '1px solid #E3E8F0', borderBottom: '1px solid #E3E8F0' }}>
   <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '64px 32px' }}>
-    <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0D9488' }}>After the prediction</span>
+    <span style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0F766E' }}>After the prediction</span>
     <h2 style={{ margin: '14px 0 0', fontSize: '30px', lineHeight: '1.16', fontWeight: '700', letterSpacing: '-0.024em', color: '#0E2350', maxWidth: '24ch' }}>One thing left to do.</h2>
     <ol style={{ listStyle: 'none', margin: '32px 0 0', padding: '0', background: '#FFFFFF', border: '1px solid #E3E8F0', borderRadius: '16px', overflow: 'hidden' }}>
       <li style={{ display: 'grid', gridTemplateColumns: '96px minmax(0,1fr) auto', gap: '28px', alignItems: 'center', padding: '26px 32px' }}>

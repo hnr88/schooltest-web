@@ -24,7 +24,7 @@ function HowToSection({ heading, intro, steps }: HowToSectionProps) {
               id={`step-${step.key}`}
               className="scroll-mt-24 rounded-2xl border border-surface-inset bg-surface-hover p-6"
             >
-              <span aria-hidden="true" className="text-[13px] font-bold tracking-[.12em] text-teal-600">
+              <span aria-hidden="true" className="text-[13px] font-bold tracking-[.12em] text-teal-700">
                 {String(index + 1).padStart(2, '0')}
               </span>
               <h3 className="mt-2 text-[18px] leading-[1.35] font-semibold text-navy-900">

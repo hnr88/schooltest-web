@@ -13,7 +13,7 @@ function CmsTableOfContents({ entries, title, label }: CmsTableOfContentsProps) 
               href={`#${entry.id}`}
               className="inline-flex min-h-11 items-center gap-3 rounded-sm text-body-md text-body transition-colors duration-200 ease-out hover:text-primary focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none"
             >
-              <span aria-hidden="true" className="tabular-nums text-body-sm text-muted-foreground">
+              <span aria-hidden="true" className="tabular-nums text-body-sm text-body">
                 {String(index + 1).padStart(2, '0')}
               </span>
               {entry.text}
