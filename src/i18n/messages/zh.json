@@ -4347,6 +4347,16 @@
     "effectiveDate": "生效日期",
     "version": "版本"
   },
+  "OgImage": {
+    "homeTitle": "面向澳大利亚学校的 EAL/D 评估项目",
+    "diagnoseTitle": "一次 40 分钟测试，全面揭示学习需求。",
+    "teachTitle": "把学生画像交给 AI，一周教学材料即刻生成。",
+    "trackTitle": "每次测试，都能看到每项子技能的变化。",
+    "predictTitle": "判断学生何时准备就绪，并拿出证据。",
+    "reportTitle": "即时报告，用每个人都懂的语言。",
+    "articlesTitle": "EAL/D 教学文章与指南",
+    "reportEyebrow": "报告"
+  },
   "Seo": {
     "llmsArticles": "文章",
     "llmsFullDescription": "在一个纯文本文件中包含所有公开页面、文章和法律文件的全文。",

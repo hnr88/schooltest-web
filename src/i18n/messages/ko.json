@@ -4357,6 +4357,16 @@
     "effectiveDate": "시행일",
     "version": "버전"
   },
+  "OgImage": {
+    "homeTitle": "호주 학교를 위한 EAL/D 평가 프로그램",
+    "diagnoseTitle": "40분 한 번의 응시로 모든 것이 드러납니다.",
+    "teachTitle": "프로필을 AI에 붙여 넣으면 일주일치 수업 자료가 나옵니다.",
+    "trackTitle": "테스트할 때마다 모든 하위 기술의 변화를 확인하세요.",
+    "predictTitle": "학생이 준비된 때를 알고, 그것을 증명하세요.",
+    "reportTitle": "모두의 언어로 즉시 보고합니다.",
+    "articlesTitle": "EAL/D 교육을 위한 아티클과 가이드",
+    "reportEyebrow": "보고"
+  },
   "Seo": {
     "llmsArticles": "아티클",
     "llmsFullDescription": "모든 공개 페이지, 아티클, 법률 문서의 전체 내용을 하나의 텍스트 파일로 제공합니다.",

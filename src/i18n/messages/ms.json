@@ -4357,6 +4357,16 @@
     "effectiveDate": "Berkuat kuasa",
     "version": "Versi"
   },
+  "OgImage": {
+    "homeTitle": "Program penilaian EAL/D untuk sekolah Australia",
+    "diagnoseTitle": "Satu sesi 40 minit. Semuanya terserlah.",
+    "teachTitle": "Tampal profil ke dalam AI. Dapatkan bahan pengajaran untuk seminggu.",
+    "trackTitle": "Lihat setiap subkemahiran berubah setiap kali anda menguji.",
+    "predictTitle": "Ketahui bila pelajar bersedia, dan buktikannya.",
+    "reportTitle": "Laporan segera dalam bahasa semua orang.",
+    "articlesTitle": "Artikel dan panduan untuk pengajaran EAL/D",
+    "reportEyebrow": "Laporan"
+  },
   "Seo": {
     "llmsArticles": "Artikel",
     "llmsFullDescription": "Setiap halaman awam, artikel dan dokumen undang-undang secara penuh dalam satu fail teks biasa.",

@@ -4347,6 +4347,16 @@
     "effectiveDate": "Effective",
     "version": "Version"
   },
+  "OgImage": {
+    "homeTitle": "EAL/D assessment programme for Australian schools",
+    "diagnoseTitle": "One 40-minute sitting. All is revealed.",
+    "teachTitle": "Paste the profile into AI. Get a week of teaching materials out.",
+    "trackTitle": "Watch every subskill move every time you test.",
+    "predictTitle": "Know when a student is ready, and prove it.",
+    "reportTitle": "Instant reporting in everyone’s language.",
+    "articlesTitle": "Articles and guides for EAL/D teaching",
+    "reportEyebrow": "Report"
+  },
   "Seo": {
     "llmsArticles": "Articles",
     "llmsFullDescription": "Every public page, article and legal document in full, in one plain-text file.",

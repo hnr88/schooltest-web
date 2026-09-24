@@ -4366,6 +4366,16 @@
     "effectiveDate": "Hiệu lực",
     "version": "Phiên bản"
   },
+  "OgImage": {
+    "homeTitle": "Chương trình đánh giá EAL/D cho các trường học tại Úc",
+    "diagnoseTitle": "Một buổi làm bài 40 phút. Mọi điều được làm rõ.",
+    "teachTitle": "Dán hồ sơ vào AI. Nhận tài liệu giảng dạy cho cả tuần.",
+    "trackTitle": "Theo dõi từng kỹ năng con thay đổi sau mỗi lần kiểm tra.",
+    "predictTitle": "Biết khi nào học sinh sẵn sàng, và chứng minh điều đó.",
+    "reportTitle": "Báo cáo tức thì bằng ngôn ngữ của mọi người.",
+    "articlesTitle": "Bài viết và hướng dẫn giảng dạy EAL/D",
+    "reportEyebrow": "Báo cáo"
+  },
   "Seo": {
     "llmsArticles": "Bài viết",
     "llmsFullDescription": "Toàn bộ nội dung mọi trang công khai, bài viết và văn bản pháp lý trong một tệp văn bản thuần.",
