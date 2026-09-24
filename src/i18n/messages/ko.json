@@ -6581,5 +6581,21 @@
         }
       }
     }
+  },
+  "Cms": {
+    "author": "작성자",
+    "published": "게시일",
+    "updated": "최종 업데이트",
+    "readingTimeLabel": "읽는 시간",
+    "readingTime": "{minutes, plural, other {#분 분량}}",
+    "fallbackNotice": "이 페이지는 아직 귀하의 언어로 제공되지 않아 영어로 표시됩니다.",
+    "articlesTitle": "아티클",
+    "articlesDescription": "SchoolTest 팀이 전하는 EAL/D 평가 가이드, 연구 및 제품 소식.",
+    "articlesEmpty": "아직 게시된 아티클이 없습니다.",
+    "rssFeed": "RSS 피드",
+    "paginationLabel": "아티클 페이지",
+    "previousPage": "이전",
+    "nextPage": "다음",
+    "pageOf": "{pageCount}페이지 중 {page}페이지"
   }
 }

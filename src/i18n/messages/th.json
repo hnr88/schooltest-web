@@ -6581,5 +6581,21 @@
         }
       }
     }
+  },
+  "Cms": {
+    "author": "โดย",
+    "published": "เผยแพร่เมื่อ",
+    "updated": "อัปเดตล่าสุด",
+    "readingTimeLabel": "เวลาอ่าน",
+    "readingTime": "{minutes, plural, other {อ่าน # นาที}}",
+    "fallbackNotice": "หน้านี้ยังไม่มีในภาษาของคุณ จึงแสดงเป็นภาษาอังกฤษ",
+    "articlesTitle": "บทความ",
+    "articlesDescription": "คู่มือ งานวิจัย และข่าวผลิตภัณฑ์เกี่ยวกับการประเมิน EAL/D จากทีม SchoolTest",
+    "articlesEmpty": "ยังไม่มีบทความที่เผยแพร่",
+    "rssFeed": "ฟีด RSS",
+    "paginationLabel": "หน้าบทความ",
+    "previousPage": "ก่อนหน้า",
+    "nextPage": "ถัดไป",
+    "pageOf": "หน้า {page} จาก {pageCount}"
   }
 }

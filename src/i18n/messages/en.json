@@ -6571,5 +6571,21 @@
         }
       }
     }
+  },
+  "Cms": {
+    "author": "By",
+    "published": "Published",
+    "updated": "Last updated",
+    "readingTimeLabel": "Reading time",
+    "readingTime": "{minutes, plural, one {# min read} other {# min read}}",
+    "fallbackNotice": "This page is not yet available in your language, so it is shown in English.",
+    "articlesTitle": "Articles",
+    "articlesDescription": "Guides, research and product news on EAL/D assessment from the SchoolTest team.",
+    "articlesEmpty": "No articles have been published yet.",
+    "rssFeed": "RSS feed",
+    "paginationLabel": "Article pages",
+    "previousPage": "Previous",
+    "nextPage": "Next",
+    "pageOf": "Page {page} of {pageCount}"
   }
 }

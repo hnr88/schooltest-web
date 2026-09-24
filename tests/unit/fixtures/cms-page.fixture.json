@@ -1,0 +1,40 @@
+{
+  "data": {
+    "documentId": "p1",
+    "title": "Articles coming soon",
+    "slug": "articles-coming-soon",
+    "summary": "Placeholder article.",
+    "pageType": "article",
+    "publishedDate": "2026-09-24",
+    "updatedDate": "2026-09-24",
+    "locale": "en",
+    "updatedAt": "2026-09-24T10:00:00.000Z",
+    "publishedAt": "2026-09-24T10:00:00.000Z",
+    "version": null,
+    "showTableOfContents": true,
+    "author": { "name": "SchoolTest Team", "slug": "schooltest-team", "jobTitle": "Editorial", "bio": null, "url": null, "avatar": null },
+    "coverImage": null,
+    "seo": { "metaTitle": "Articles coming soon", "metaDescription": null, "canonicalUrl": null, "noindex": true, "keywords": "eald, assessment", "ogImage": null },
+    "sections": [
+      { "id": 1, "__component": "sections.key-takeaways", "title": "Key takeaways", "items": [{ "id": 1, "text": "First takeaway." }] },
+      {
+        "id": 2,
+        "__component": "sections.heading-text",
+        "heading": "Who this applies to",
+        "anchor": "who",
+        "body": [
+          { "type": "paragraph", "children": [{ "type": "text", "text": "Plain " }, { "type": "text", "text": "bold", "bold": true }, { "type": "link", "url": "https://example.test", "children": [{ "type": "text", "text": "a link" }] }] },
+          { "type": "list", "format": "unordered", "children": [{ "type": "list-item", "children": [{ "type": "text", "text": "Item one." }] }] }
+        ]
+      },
+      { "id": 3, "__component": "sections.faq-list", "title": "Questions", "faqs": [{ "question": "Is it free?", "answer": [{ "type": "paragraph", "children": [{ "type": "text", "text": "TODO answer." }] }] }] },
+      { "id": 4, "__component": "sections.callout", "tone": "warning", "title": "Content coming soon", "body": [{ "type": "paragraph", "children": [{ "type": "text", "text": "Placeholder." }] }] },
+      { "id": 5, "__component": "sections.contact-block", "heading": "Support", "text": null, "email": "support@schooltest.com.au", "phone": "+61 2 0000 0000", "note": "Weekdays." },
+      { "id": 6, "__component": "sections.cta", "heading": "Join the pilot", "text": "Talk to us.", "primaryLink": { "label": "Contact", "href": "/contact", "openInNewTab": false }, "secondaryLink": null },
+      { "id": 7, "__component": "sections.media", "caption": "A caption", "image": { "url": "/uploads/a.png", "alternativeText": "Alt text", "width": 10, "height": 5, "mime": "image/png" } },
+      { "id": 8, "__component": "sections.rich-text", "body": [{ "type": "heading", "level": 2, "children": [{ "type": "text", "text": "Sub heading" }] }, { "type": "some-future-block" }] },
+      { "id": 9, "__component": "sections.future-thing", "whatever": true }
+    ]
+  },
+  "meta": {}
+}

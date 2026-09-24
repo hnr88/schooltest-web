@@ -6581,5 +6581,21 @@
         }
       }
     }
+  },
+  "Cms": {
+    "author": "Oleh",
+    "published": "Diterbitkan",
+    "updated": "Kemas kini terakhir",
+    "readingTimeLabel": "Masa membaca",
+    "readingTime": "{minutes, plural, other {# min bacaan}}",
+    "fallbackNotice": "Halaman ini belum tersedia dalam bahasa anda, jadi ia dipaparkan dalam bahasa Inggeris.",
+    "articlesTitle": "Artikel",
+    "articlesDescription": "Panduan, kajian dan berita produk tentang penilaian EAL/D daripada pasukan SchoolTest.",
+    "articlesEmpty": "Belum ada artikel yang diterbitkan.",
+    "rssFeed": "Suapan RSS",
+    "paginationLabel": "Halaman artikel",
+    "previousPage": "Sebelumnya",
+    "nextPage": "Seterusnya",
+    "pageOf": "Halaman {page} daripada {pageCount}"
   }
 }

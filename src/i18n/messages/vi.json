@@ -6590,5 +6590,21 @@
         }
       }
     }
+  },
+  "Cms": {
+    "author": "Tác giả",
+    "published": "Ngày đăng",
+    "updated": "Cập nhật lần cuối",
+    "readingTimeLabel": "Thời gian đọc",
+    "readingTime": "{minutes, plural, other {# phút đọc}}",
+    "fallbackNotice": "Trang này chưa có bằng ngôn ngữ của bạn nên được hiển thị bằng tiếng Anh.",
+    "articlesTitle": "Bài viết",
+    "articlesDescription": "Hướng dẫn, nghiên cứu và tin tức sản phẩm về đánh giá EAL/D từ đội ngũ SchoolTest.",
+    "articlesEmpty": "Chưa có bài viết nào được đăng.",
+    "rssFeed": "Nguồn cấp RSS",
+    "paginationLabel": "Trang bài viết",
+    "previousPage": "Trước",
+    "nextPage": "Tiếp",
+    "pageOf": "Trang {page} / {pageCount}"
   }
 }

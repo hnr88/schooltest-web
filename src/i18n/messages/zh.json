@@ -6571,5 +6571,21 @@
         }
       }
     }
+  },
+  "Cms": {
+    "author": "作者",
+    "published": "发布日期",
+    "updated": "最后更新",
+    "readingTimeLabel": "阅读时间",
+    "readingTime": "{minutes, plural, other {约 # 分钟}}",
+    "fallbackNotice": "此页面尚无您的语言版本，因此以英文显示。",
+    "articlesTitle": "文章",
+    "articlesDescription": "SchoolTest 团队关于 EAL/D 评估的指南、研究和产品动态。",
+    "articlesEmpty": "尚未发布任何文章。",
+    "rssFeed": "RSS 订阅",
+    "paginationLabel": "文章分页",
+    "previousPage": "上一页",
+    "nextPage": "下一页",
+    "pageOf": "第 {page} 页，共 {pageCount} 页"
   }
 }
