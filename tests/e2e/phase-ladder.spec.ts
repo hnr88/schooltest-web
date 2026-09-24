@@ -180,7 +180,8 @@ test.describe('Phase Model (spec 3) — ACARA phase ladder rows and family lines
     await page.goto(`/dashboard/results/${target.classId}/students/${target.studentId}`);
     const cards = page.locator('[data-slot="student-subskill"]');
     await expect(cards.first()).toBeVisible({ timeout: 90_000 });
-    await expect(cards).toHaveCount(8);
+    // 9 since spec 4 (af388f51) added Academic Vocabulary as its own card.
+    await expect(cards).toHaveCount(9);
 
     for (const [name, status] of Object.entries(target.statuses)) {
       const card = page.locator(`[data-slot="student-subskill"][data-skill="${name}"]`);
