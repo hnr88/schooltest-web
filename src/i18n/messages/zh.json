@@ -4348,6 +4348,9 @@
     "version": "版本"
   },
   "Seo": {
+    "llmsArticles": "文章",
+    "llmsFullDescription": "在一个纯文本文件中包含所有公开页面、文章和法律文件的全文。",
+    "llmsFullLabel": "全文（llms-full.txt）",
     "llmsIntro": "SchoolTest 是面向澳大利亚学校的英语诊断评估平台。学校获得授权后邀请本校教职工并录入本校学生；教师开展评估并查看生成的技能画像。以下页面为可公开索引的部分，其余内容均需登录账户。",
     "llmsLegal": "法律条款",
     "llmsNoteLocales": "每个页面均以下列语言发布：{locales}。默认语言的网址不带前缀。",
@@ -4355,6 +4358,35 @@
     "llmsNoteSitemap": "所有公开网址的机器可读索引位于 {url}。",
     "llmsNotes": "说明",
     "llmsPages": "页面",
+    "llmsSitemapLabel": "XML 站点地图",
+    "llmsUpdatedLabel": "最后更新",
+    "llmsUrlLabel": "网址",
+    "pages": {
+      "home": {
+        "title": "SchoolTest：面向澳大利亚学校的 EAL/D 评估",
+        "description": "面向澳大利亚中学的 EAL/D 英语诊断评估：精准定位需求、个性化教学、追踪进步，并生成符合 ACARA 标准的报告。"
+      },
+      "diagnose": {
+        "title": "按子技能诊断 EAL/D 学习需求",
+        "description": "将分级测试成绩拆分为 27 项子技能分数，让您在见到学生之前就清楚了解每位 EAL/D 学生的需求。"
+      },
+      "teach": {
+        "title": "用可供 AI 使用的 EAL/D 班级数据教学",
+        "description": "导出保护隐私的班级数据集，交给 ChatGPT、Gemini 或 Claude。真实的子技能数据让通用提示生成真正适合您班级的教学材料。"
+      },
+      "track": {
+        "title": "逐项技能追踪 EAL/D 进步",
+        "description": "随时重新测试，每次 40 分钟。按技能、按子技能查看每位学生和每个班级的 EAL/D 成长。"
+      },
+      "predict": {
+        "title": "预测 EAL/D 结业准备度",
+        "description": "一个由四大语言领域全部子技能汇总而成的准备度指标。结业判断仍由您做出，但如今有证据支撑。"
+      },
+      "report": {
+        "title": "面向各方的即时 EAL/D 报告",
+        "description": "将符合 ACARA 标准的 EAL/D 报告即时发送给学生、家长、学校领导和主流课程教师。"
+      }
+    },
     "siteDescription": "面向澳大利亚 EAL/D 课堂的英语诊断测评。"
   },
   "StudentImport": {

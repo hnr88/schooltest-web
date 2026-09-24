@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
 import { LandingTeachContent } from '@/modules/landing';
-import { LandingPageAeo, buildPageMetadata } from '@/modules/seo';
+import { LandingPageAeo, buildPublicPageMetadata } from '@/modules/seo';
 import { getPublicSettings, PublicSiteBanner } from '@/modules/settings';
 
 interface TeachPageProps {
@@ -11,15 +11,8 @@ interface TeachPageProps {
 
 export async function generateMetadata({ params }: TeachPageProps): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations('Landing.meta');
   const settings = await getPublicSettings();
-  return buildPageMetadata({
-    title: t('teachTitle'),
-    description: t('teachDescription'),
-    pathname: '/teach',
-    locale,
-    siteName: settings.site_name,
-  });
+  return buildPublicPageMetadata({ pathname: '/teach', locale, siteName: settings.site_name });
 }
 
 export default async function TeachPage({ params }: TeachPageProps) {

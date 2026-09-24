@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
 import { LandingPredictContent } from '@/modules/landing';
-import { LandingPageAeo, buildPageMetadata } from '@/modules/seo';
+import { LandingPageAeo, buildPublicPageMetadata } from '@/modules/seo';
 import { getPublicSettings, PublicSiteBanner } from '@/modules/settings';
 
 interface PredictPageProps {
@@ -11,15 +11,8 @@ interface PredictPageProps {
 
 export async function generateMetadata({ params }: PredictPageProps): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations('Landing.meta');
   const settings = await getPublicSettings();
-  return buildPageMetadata({
-    title: t('predictTitle'),
-    description: t('predictDescription'),
-    pathname: '/predict',
-    locale,
-    siteName: settings.site_name,
-  });
+  return buildPublicPageMetadata({ pathname: '/predict', locale, siteName: settings.site_name });
 }
 
 export default async function PredictPage({ params }: PredictPageProps) {

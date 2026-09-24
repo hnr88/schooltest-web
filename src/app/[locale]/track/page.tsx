@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
 import { LandingTrackContent } from '@/modules/landing';
-import { LandingPageAeo, buildPageMetadata } from '@/modules/seo';
+import { LandingPageAeo, buildPublicPageMetadata } from '@/modules/seo';
 import { getPublicSettings, PublicSiteBanner } from '@/modules/settings';
 
 interface TrackPageProps {
@@ -11,15 +11,8 @@ interface TrackPageProps {
 
 export async function generateMetadata({ params }: TrackPageProps): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations('Landing.meta');
   const settings = await getPublicSettings();
-  return buildPageMetadata({
-    title: t('trackTitle'),
-    description: t('trackDescription'),
-    pathname: '/track',
-    locale,
-    siteName: settings.site_name,
-  });
+  return buildPublicPageMetadata({ pathname: '/track', locale, siteName: settings.site_name });
 }
 
 export default async function TrackPage({ params }: TrackPageProps) {

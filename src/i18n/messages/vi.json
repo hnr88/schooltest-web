@@ -4367,6 +4367,9 @@
     "version": "Phiên bản"
   },
   "Seo": {
+    "llmsArticles": "Bài viết",
+    "llmsFullDescription": "Toàn bộ nội dung mọi trang công khai, bài viết và văn bản pháp lý trong một tệp văn bản thuần.",
+    "llmsFullLabel": "Toàn văn (llms-full.txt)",
     "llmsIntro": "SchoolTest là nền tảng đánh giá chẩn đoán tiếng Anh dành cho các trường học tại Úc. Nhà trường cấp phép nền tảng, mời nhân sự của mình và ghi danh học sinh của mình; giáo viên tổ chức đánh giá và đọc hồ sơ kỹ năng thu được. Các trang dưới đây là phần công khai được lập chỉ mục — mọi nội dung khác đều cần tài khoản.",
     "llmsLegal": "Pháp lý",
     "llmsNoteLocales": "Mỗi trang được xuất bản bằng các ngôn ngữ: {locales}. Ngôn ngữ mặc định không có tiền tố URL.",
@@ -4374,6 +4377,35 @@
     "llmsNoteSitemap": "Chỉ mục máy đọc được của mọi URL công khai nằm tại {url}.",
     "llmsNotes": "Ghi chú",
     "llmsPages": "Trang",
+    "llmsSitemapLabel": "Sơ đồ trang XML",
+    "llmsUpdatedLabel": "Cập nhật lần cuối",
+    "llmsUrlLabel": "URL",
+    "pages": {
+      "home": {
+        "title": "SchoolTest: Đánh giá EAL/D cho trường học tại Úc",
+        "description": "Đánh giá chẩn đoán EAL/D cho trường trung học tại Úc: xác định nhu cầu, cá nhân hóa giảng dạy, theo dõi tiến bộ và báo cáo theo chuẩn ACARA."
+      },
+      "diagnose": {
+        "title": "Chẩn đoán nhu cầu EAL/D theo kỹ năng con",
+        "description": "Tách điểm kiểm tra xếp lớp thành 27 điểm kỹ năng con để bạn biết chính xác mỗi học sinh EAL/D cần gì trước cả khi gặp các em."
+      },
+      "teach": {
+        "title": "Dạy học với dữ liệu lớp EAL/D sẵn cho AI",
+        "description": "Xuất bộ dữ liệu lớp bảo mật cho ChatGPT, Gemini hoặc Claude. Dữ liệu kỹ năng con thực tế biến lời nhắc chung thành tài liệu phù hợp với lớp của bạn."
+      },
+      "track": {
+        "title": "Theo dõi tiến bộ EAL/D theo từng kỹ năng",
+        "description": "Kiểm tra lại bất cứ lúc nào trong 40 phút và xem sự tiến bộ EAL/D theo từng kỹ năng, kỹ năng con cho mọi học sinh và lớp học."
+      },
+      "predict": {
+        "title": "Dự đoán mức sẵn sàng hoàn thành EAL/D",
+        "description": "Một chỉ số sẵn sàng tổng hợp từ mọi kỹ năng con trong cả bốn lĩnh vực ngôn ngữ. Quyết định vẫn là của bạn, nay có bằng chứng hỗ trợ."
+      },
+      "report": {
+        "title": "Báo cáo EAL/D tức thì cho mọi đối tượng",
+        "description": "Gửi ngay báo cáo EAL/D theo chuẩn ACARA đến học sinh, phụ huynh, lãnh đạo nhà trường và giáo viên các môn học chính."
+      }
+    },
     "siteDescription": "Đánh giá chẩn đoán tiếng Anh cho các lớp EAL/D tại Úc."
   },
   "StudentImport": {

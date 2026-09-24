@@ -4358,6 +4358,9 @@
     "version": "Versi"
   },
   "Seo": {
+    "llmsArticles": "Artikel",
+    "llmsFullDescription": "Setiap halaman awam, artikel dan dokumen undang-undang secara penuh dalam satu fail teks biasa.",
+    "llmsFullLabel": "Teks penuh (llms-full.txt)",
     "llmsIntro": "SchoolTest ialah platform pentaksiran diagnostik Bahasa Inggeris untuk sekolah di Australia. Sekolah melesenkan platform ini, menjemput kakitangan sendiri dan mendaftarkan pelajar sendiri; guru menjalankan pentaksiran dan membaca profil kemahiran yang terhasil. Halaman di bawah ialah permukaan awam yang boleh diindeks — selebihnya memerlukan akaun.",
     "llmsLegal": "Undang-undang",
     "llmsNoteLocales": "Setiap halaman diterbitkan dalam bahasa berikut: {locales}. Bahasa lalai tidak membawa awalan URL.",
@@ -4365,6 +4368,35 @@
     "llmsNoteSitemap": "Indeks boleh baca mesin bagi setiap URL awam berada di {url}.",
     "llmsNotes": "Nota",
     "llmsPages": "Halaman",
+    "llmsSitemapLabel": "Peta laman XML",
+    "llmsUpdatedLabel": "Kemas kini terakhir",
+    "llmsUrlLabel": "URL",
+    "pages": {
+      "home": {
+        "title": "SchoolTest: Pentaksiran EAL/D untuk sekolah Australia",
+        "description": "Pentaksiran diagnostik EAL/D untuk sekolah menengah Australia: kenal pasti keperluan, peribadikan pengajaran, jejak kemajuan dan lapor selaras ACARA."
+      },
+      "diagnose": {
+        "title": "Diagnosis keperluan EAL/D ikut subkemahiran",
+        "description": "Pecahkan skor ujian penempatan kepada 27 skor subkemahiran supaya anda tahu keperluan setiap pelajar EAL/D sebelum bertemu mereka."
+      },
+      "teach": {
+        "title": "Mengajar dengan data kelas EAL/D sedia AI",
+        "description": "Eksport set kelas yang selamat privasi untuk ChatGPT, Gemini atau Claude. Data subkemahiran sebenar menghasilkan bahan yang sesuai untuk kelas anda."
+      },
+      "track": {
+        "title": "Jejak kemajuan EAL/D kemahiran demi kemahiran",
+        "description": "Uji semula bila-bila masa dalam 40 minit dan lihat pertumbuhan EAL/D mengikut kemahiran dan subkemahiran bagi setiap pelajar dan kelas."
+      },
+      "predict": {
+        "title": "Ramal kesediaan keluar EAL/D",
+        "description": "Satu penunjuk kesediaan daripada setiap subkemahiran merentas empat domain bahasa. Keputusan keluar kekal milik anda, kini disokong bukti."
+      },
+      "report": {
+        "title": "Laporan EAL/D segera untuk semua pihak",
+        "description": "Hantar laporan EAL/D selaras ACARA dengan segera kepada pelajar, ibu bapa, pemimpin sekolah dan guru aliran perdana."
+      }
+    },
     "siteDescription": "Penilaian diagnostik bahasa Inggeris untuk kelas EAL/D Australia."
   },
   "StudentImport": {

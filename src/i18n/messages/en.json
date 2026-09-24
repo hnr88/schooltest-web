@@ -4348,6 +4348,9 @@
     "version": "Version"
   },
   "Seo": {
+    "llmsArticles": "Articles",
+    "llmsFullDescription": "Every public page, article and legal document in full, in one plain-text file.",
+    "llmsFullLabel": "Full text (llms-full.txt)",
     "llmsIntro": "SchoolTest is a diagnostic English assessment platform for Australian schools. Schools license the platform, invite their own staff and enrol their own students; teachers run assessments and read the resulting skill profiles. The pages below are the public, indexable surface — everything else requires an account.",
     "llmsLegal": "Legal",
     "llmsNoteLocales": "Every page is published in these locales: {locales}. The default locale carries no URL prefix.",
@@ -4355,6 +4358,35 @@
     "llmsNoteSitemap": "The machine-readable index of every public URL is at {url}.",
     "llmsNotes": "Notes",
     "llmsPages": "Pages",
+    "llmsSitemapLabel": "XML sitemap",
+    "llmsUpdatedLabel": "Last updated",
+    "llmsUrlLabel": "URL",
+    "pages": {
+      "home": {
+        "title": "SchoolTest: EAL/D assessment for Australian schools",
+        "description": "Diagnostic EAL/D assessment for Australian secondary schools: pinpoint needs, personalise teaching, track progress and report against ACARA."
+      },
+      "diagnose": {
+        "title": "Diagnose EAL/D needs by subskill",
+        "description": "Break placement scores into 27 subskill scores, so you know exactly what each EAL/D student needs before you have even met them."
+      },
+      "teach": {
+        "title": "Teach with AI-ready EAL/D class data",
+        "description": "Export a privacy-safe class set for ChatGPT, Gemini or Claude. Real subskill data turns a generic prompt into materials your class can use."
+      },
+      "track": {
+        "title": "Track EAL/D progress skill by skill",
+        "description": "Retest at any point in 40 minutes and see EAL/D growth skill by skill and subskill by subskill, for every student and class."
+      },
+      "predict": {
+        "title": "Predict EAL/D exit readiness",
+        "description": "One readiness indicator built from every subskill across all four language domains. The exit call stays yours, now backed by evidence."
+      },
+      "report": {
+        "title": "Instant EAL/D reports for every audience",
+        "description": "Send instant ACARA-aligned EAL/D reports straight to students, parents, school leaders and mainstream teachers."
+      }
+    },
     "siteDescription": "Diagnostic English assessment for Australian EAL/D classrooms."
   },
   "StudentImport": {

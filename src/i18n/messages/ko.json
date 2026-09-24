@@ -4358,6 +4358,9 @@
     "version": "버전"
   },
   "Seo": {
+    "llmsArticles": "아티클",
+    "llmsFullDescription": "모든 공개 페이지, 아티클, 법률 문서의 전체 내용을 하나의 텍스트 파일로 제공합니다.",
+    "llmsFullLabel": "전체 텍스트 (llms-full.txt)",
     "llmsIntro": "SchoolTest는 호주 학교를 위한 영어 진단 평가 플랫폼입니다. 학교가 플랫폼을 라이선스하여 교직원을 초대하고 학생을 등록하며, 교사는 평가를 실시하고 생성된 역량 프로파일을 확인합니다. 아래 페이지는 공개적으로 색인되는 영역이며 그 외에는 계정이 필요합니다.",
     "llmsLegal": "법적 고지",
     "llmsNoteLocales": "모든 페이지는 다음 언어로 제공됩니다: {locales}. 기본 언어에는 URL 접두사가 없습니다.",
@@ -4365,6 +4368,35 @@
     "llmsNoteSitemap": "모든 공개 URL의 기계 판독용 색인은 {url}에 있습니다.",
     "llmsNotes": "참고",
     "llmsPages": "페이지",
+    "llmsSitemapLabel": "XML 사이트맵",
+    "llmsUpdatedLabel": "최종 업데이트",
+    "llmsUrlLabel": "URL",
+    "pages": {
+      "home": {
+        "title": "SchoolTest: 호주 학교를 위한 EAL/D 평가",
+        "description": "호주 중등학교를 위한 EAL/D 진단 평가: 필요를 정확히 파악하고, 수업을 맞춤화하며, 성장을 추적하고, ACARA 기준에 맞춘 보고서를 만듭니다."
+      },
+      "diagnose": {
+        "title": "하위 기능별 EAL/D 요구 진단",
+        "description": "배치 시험 점수를 27개 하위 기능 점수로 나누어, 학생을 만나기 전에 각 EAL/D 학생에게 무엇이 필요한지 정확히 알 수 있습니다."
+      },
+      "teach": {
+        "title": "AI에 바로 쓰는 EAL/D 학급 데이터로 수업",
+        "description": "개인정보를 보호한 학급 데이터를 ChatGPT, Gemini 또는 Claude에 전달하세요. 실제 하위 기능 데이터가 일반 프롬프트를 학급에 맞는 자료로 바꿉니다."
+      },
+      "track": {
+        "title": "기능별 EAL/D 성장 추적",
+        "description": "언제든 40분 만에 재평가하고, 모든 학생과 학급의 EAL/D 성장을 기능별·하위 기능별로 확인하세요."
+      },
+      "predict": {
+        "title": "EAL/D 졸업 준비도 예측",
+        "description": "네 가지 언어 영역의 모든 하위 기능을 종합한 하나의 준비도 지표. 졸업 판단은 여전히 선생님의 몫이며, 이제 근거가 뒷받침합니다."
+      },
+      "report": {
+        "title": "모두를 위한 즉시 EAL/D 보고서",
+        "description": "ACARA 기준에 맞춘 EAL/D 보고서를 학생, 학부모, 학교 관리자, 일반 교과 교사에게 즉시 보내세요."
+      }
+    },
     "siteDescription": "호주 EAL/D 교실을 위한 영어 진단 평가."
   },
   "StudentImport": {
