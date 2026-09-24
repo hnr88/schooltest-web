@@ -20,8 +20,6 @@ export const PHASE_SUB_LABEL_KEY: Readonly<Record<AcaraPhaseName, string>> = {
   Consolidating: 'phaseSub.consolidating',
 };
 
-export const NOT_SAT_LABEL_KEY = 'phase.notSat';
-
 export const SKILL_LABEL_KEY: Readonly<Record<DisplaySkill, string>> = {
   Decoding: 'skill.decoding',
   Vocab_A2: 'attribute.vocabA2',

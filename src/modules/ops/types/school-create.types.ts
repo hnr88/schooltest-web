@@ -10,13 +10,6 @@ export interface SchoolCreateInput {
   idempotencyKey: string;
 }
 
-/** What the C-OPS-PORTAL-004 mutation needs: the patch, the version, the id. */
-export interface SchoolEditInput {
-  documentId: string;
-  patch: Record<string, unknown>;
-  ifMatch: string;
-}
-
 /** The loaded school the EDIT modal prefills from and guards with. */
 export interface SchoolEditDraft {
   documentId: string;
@@ -43,17 +36,6 @@ export interface UseSchoolCreateFormInput {
   onDone: () => void;
   /** Present = EDIT mode: the dialog prefills from it and writes with If-Match. */
   school?: SchoolEditDraft;
-}
-
-/**
- * The dialog mounts SELF-MANAGED (create, own open state + trigger button) or
- * CONTROLLED (edit, opened by its parent with the loaded school draft).
- */
-export interface OpsCreateSchoolDialogProps {
-  editSchool?: SchoolEditDraft;
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-  onDone?: () => void;
 }
 
 /** The controlled EDIT modal: opened by the school detail with the loaded draft. */

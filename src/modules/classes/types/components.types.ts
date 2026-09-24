@@ -1,5 +1,3 @@
-import type { DirectoryQueryStatus } from '@/modules/directory';
-
 import type {
   ClassDetail,
   ClassDetailStudent,
@@ -13,9 +11,9 @@ import type {
 import type {
   ClassPendingTeacher,
   ClassTestCompletion,
-  ClassTestCompletionDisplay,
   SchoolClass,
 } from '@/modules/classes/types/classes.types';
+import type { DirectoryQueryStatus } from '@/modules/directory';
 import type { SchoolStudent } from '@/modules/school-students';
 import type { SchoolInvitation, SchoolTeacher } from '@/modules/teachers';
 
@@ -57,12 +55,6 @@ export interface ClassesTableKitProps extends ClassesTableProps {
   query?: DirectoryQueryStatus;
 }
 
-export interface ClassesTableRowProps {
-  row: SchoolClass;
-  testsCompleted: ClassTestCompletionDisplay | null;
-  onEdit: () => void;
-}
-
 // Spec §1 Edit Class modal target: the minimal shape both entry points can
 // supply — the class-detail screen passes its full C-CLS-05 payload, the
 // classes list passes its roster row with the single assigned teacher.
@@ -84,11 +76,6 @@ export interface ClassMemberOption {
   value: string;
   label: string;
   hint?: string;
-}
-
-export interface ClassRowActionsProps {
-  schoolClass: SchoolClass;
-  onEdit: () => void;
 }
 
 // --- Class detail (spec §1) and student drill-down (spec §2) ---
@@ -139,11 +126,6 @@ export interface ClassSummaryCardsProps {
 export interface ClassStudentsTableProps {
   classDocumentId: string;
   students: ClassDetailStudent[];
-}
-
-export interface ClassStudentsTableRowProps {
-  classDocumentId: string;
-  student: ClassDetailStudent;
 }
 
 export interface ClassStudentsEmptyProps {
