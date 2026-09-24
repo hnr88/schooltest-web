@@ -21,6 +21,9 @@ export const PUBLIC_ROUTES: readonly PublicRoute[] = [
   { pathname: '/report', changeFrequency: 'monthly', priority: 0.8, llmsLabelKey: 'Landing.nav.report', seoKey: 'report', lastModified: '2026-09-24' },
 ];
 
+/** Sitemap lastmod of the /articles index until its first indexable article is published. */
+export const ARTICLES_INDEX_LAST_MODIFIED = '2026-09-25';
+
 /**
  * Everything a crawler must stay out of. These are the app's real private and
  * transactional surfaces plus `/design-system`, an internal component gallery
