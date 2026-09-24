@@ -74,7 +74,7 @@ function ReviewDrawerHeader({
         ) : null}
         <div className="min-w-0 flex-1">
           <SheetTitle
-            className="truncate text-[19px] leading-[normal] font-semibold tracking-[-0.01em] text-[#0E2350]"
+            className="truncate text-[19px] leading-[normal] font-semibold tracking-[-0.01em] text-navy-900"
             title={name ?? t('title')}
           >
             {name ?? t('title')}
@@ -86,7 +86,7 @@ function ReviewDrawerHeader({
         <SheetClose
           aria-label={t('close')}
           className={cn(
-            'grid size-9 shrink-0 cursor-pointer place-items-center rounded-[8px] border border-[#ECEEF2] bg-white text-[#6B7280] transition-colors hover:border-[#0E2350]',
+            'grid size-9 shrink-0 cursor-pointer place-items-center rounded-[8px] border border-[#ECEEF2] bg-white text-[#6B7280] transition-colors hover:border-navy-900',
             REVIEW_FOCUS,
           )}
         >
@@ -173,7 +173,7 @@ function ReviewDrawerFooter({
         disabled={!canSave || pending}
         onClick={onSave}
         className={cn(
-          'inline-flex h-[46px] cursor-pointer items-center rounded-[8px] bg-[#0E2350] px-[22px] text-sm leading-[normal] font-semibold text-white transition-colors hover:bg-[#16326E] disabled:cursor-not-allowed disabled:opacity-60',
+          'inline-flex h-[46px] cursor-pointer items-center rounded-[8px] bg-navy-900 px-[22px] text-sm leading-[normal] font-semibold text-white transition-colors hover:bg-navy-800 disabled:cursor-not-allowed disabled:opacity-60',
           REVIEW_FOCUS,
         )}
       >
@@ -183,7 +183,7 @@ function ReviewDrawerFooter({
         type="button"
         onClick={onClose}
         className={cn(
-          'inline-flex h-[46px] cursor-pointer items-center rounded-[8px] border border-[#E5E7EB] bg-white px-5 text-sm leading-[normal] font-semibold text-[#0E2350] transition-colors hover:border-[#0E2350]',
+          'inline-flex h-[46px] cursor-pointer items-center rounded-[8px] border border-[#E5E7EB] bg-white px-5 text-sm leading-[normal] font-semibold text-navy-900 transition-colors hover:border-navy-900',
           REVIEW_FOCUS,
         )}
       >

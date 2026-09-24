@@ -28,7 +28,7 @@ import type { OpsSchool } from '@/modules/ops/types/ops.types';
 // Design statusStyle mapping (`Ops Portal.dc.html:964-977`): fixed fg/bg per status.
 const STATUS_PILL_TONES: Record<PortalStatus, string> = {
   active: 'bg-[#E1F5EF] text-[#0E7C66]',
-  trial: 'bg-[#EEF3FE] text-[#1D4ED8]',
+  trial: 'bg-[#EEF3FE] text-blue-700',
   pending_setup: 'bg-[#FDF3E0] text-[#92610B]',
   suspended: 'bg-[#FDEEEC] text-[#B42318]',
   archived: 'bg-[#F1F3F7] text-[#7C8698]',
@@ -249,7 +249,7 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
               <Button
                 type="button"
                 variant="outline"
-                className="h-11 rounded-full border-[#D8DFEA] px-5 text-[13.5px] font-semibold hover:border-navy-900"
+                className="h-11 rounded-full border-portal-input px-5 text-[13.5px] font-semibold hover:border-navy-900"
                 data-testid="ops-edit-school"
                 disabled={isReadOnly}
                 onClick={isReadOnly ? undefined : openEdit}

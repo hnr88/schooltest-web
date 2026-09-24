@@ -44,7 +44,7 @@ function DemoLinkDialog() {
           <>
             <div className="flex items-start gap-3.5">
               <div className="flex size-[46px] flex-none items-center justify-center rounded-[12px] bg-[#EEF4FF]">
-                <Link2 aria-hidden="true" className="size-6 text-[#2563EB]" strokeWidth={2} />
+                <Link2 aria-hidden="true" className="size-6 text-blue-600" strokeWidth={2} />
               </div>
               <div className="min-w-0">
                 <OpsDialogTitle className="m-0 text-[20px] font-bold text-navy-900">{t('title')}</OpsDialogTitle>
@@ -58,7 +58,7 @@ function DemoLinkDialog() {
               <span
                 data-slot="demo-link-url"
                 title={demoLink.link.url}
-                className="min-w-0 flex-1 truncate font-mono text-[13.5px] font-semibold text-[#16326E]"
+                className="min-w-0 flex-1 truncate font-mono text-[13.5px] font-semibold text-navy-800"
               >
                 {demoLink.link.url}
               </span>
@@ -72,7 +72,7 @@ function DemoLinkDialog() {
                 }}
                 className={cn(
                   FOCUS_RING_CLASS,
-                  'h-[38px] flex-none cursor-pointer rounded-[9px] bg-[#16326E] px-4 text-[13px] font-bold text-white',
+                  'h-[38px] flex-none cursor-pointer rounded-[9px] bg-navy-800 px-4 text-[13px] font-bold text-white',
                 )}
               >
                 {t(copied ? 'copied' : 'copy')}
@@ -81,9 +81,9 @@ function DemoLinkDialog() {
 
             <p
               data-slot="demo-link-app-hint"
-              className="mt-[18px] flex items-start gap-2.5 rounded-[10px] border border-[#DBE3EF] bg-[#F4F7FC] px-3.5 py-[11px] text-[12.5px] leading-[1.5] text-[#16326E]"
+              className="mt-[18px] flex items-start gap-2.5 rounded-[10px] border border-[#DBE3EF] bg-[#F4F7FC] px-3.5 py-[11px] text-[12.5px] leading-[1.5] text-navy-800"
             >
-              <MonitorDown aria-hidden="true" className="mt-px size-4 flex-none text-[#2563EB]" strokeWidth={2.2} />
+              <MonitorDown aria-hidden="true" className="mt-px size-4 flex-none text-blue-600" strokeWidth={2.2} />
               {t('appHint')}
             </p>
 
@@ -100,7 +100,7 @@ function DemoLinkDialog() {
                 data-slot="demo-link-open"
                 className={cn(
                   FOCUS_RING_CLASS,
-                  'flex h-12 items-center rounded-[10px] bg-[#2563EB] px-6 text-[14.5px] font-bold text-white',
+                  'flex h-12 items-center rounded-[10px] bg-blue-600 px-6 text-[14.5px] font-bold text-white',
                 )}
               >
                 {t('open')}

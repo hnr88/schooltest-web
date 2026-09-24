@@ -40,8 +40,8 @@ export function PendingTeacherBadge({
         data-slot="class-pending-teacher-badge"
         className={
           pending.state === 'pending'
-            ? 'max-w-full whitespace-normal rounded-xl bg-[#EEF1F6] px-2 py-0.5 text-[11.5px] font-semibold leading-snug text-[#0E2350]'
-            : 'max-w-full whitespace-normal rounded-xl bg-[#FEF3C7] px-2 py-0.5 text-[11.5px] font-semibold leading-snug text-[#92400E]'
+            ? 'max-w-full whitespace-normal rounded-xl bg-[#EEF1F6] px-2 py-0.5 text-[11.5px] font-semibold leading-snug text-navy-900'
+            : 'max-w-full whitespace-normal rounded-xl bg-warning-soft px-2 py-0.5 text-[11.5px] font-semibold leading-snug text-[#92400E]'
         }
       >
         {label}
