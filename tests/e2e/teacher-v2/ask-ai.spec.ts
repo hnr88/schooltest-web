@@ -148,8 +148,9 @@ test('S11 — Teacher demo mints a real /teacher/demo-link and shows the link an
   await expect(dialog).toBeVisible({ timeout: 30_000 });
   await expect(modal).toHaveCount(0);
   // The link on screen is the token the server minted, not a rebuilt URL.
-  await expect(dialog.locator('[data-slot="demo-link-url"]')).toHaveText(link.web_url);
-  await expect(dialog.locator('[data-slot="demo-link-open"]')).toHaveAttribute('href', link.web_url);
+  // It is the desktop deep link: the demo runs in the installed SchoolTest app.
+  await expect(dialog.locator('[data-slot="demo-link-url"]')).toHaveText(link.url);
+  await expect(dialog.locator('[data-slot="demo-link-open"]')).toHaveAttribute('href', link.url);
   await expect(dialog.getByRole('heading', { name: startSession('demoLink.title') })).toBeVisible();
   // The expiry on screen is the token row's own, printed in the browser's zone.
   const expires = new Date(link.expires_at);
@@ -163,7 +164,7 @@ test('S11 — Teacher demo mints a real /teacher/demo-link and shows the link an
   await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);
   await dialog.locator('[data-slot="demo-link-copy"]').click();
   await expect(dialog.locator('[data-slot="demo-link-copy"]')).toHaveText(startSession('demoLink.copied'));
-  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(link.web_url);
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(link.url);
   await page.screenshot({ path: path.join(PROOFS, 'demo-link.png'), animations: 'disabled' });
 
   await dialog.getByRole('button', { name: startSession('demoLink.done') }).click();

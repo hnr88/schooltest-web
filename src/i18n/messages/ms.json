@@ -6087,7 +6087,8 @@
         "copy": "Salin pautan",
         "copied": "Disalin",
         "warning": "Pautan ini log masuk sebagai akaun guru anda sendiri. Ia berfungsi sekali sahaja dan tamat tempoh pada {expires}; murid dan ibu bapa tidak sekali-kali boleh menggunakannya.",
-        "open": "Buka demo",
+        "open": "Buka dalam aplikasi SchoolTest",
+        "appHint": "Demo ini berjalan dalam aplikasi desktop SchoolTest, sama seperti yang dilihat oleh murid anda. Pasang aplikasi pada komputer ini dahulu. Pautan yang disalin juga boleh dibuka pada komputer lain yang mempunyai aplikasi.",
         "done": "Selesai"
       },
       "demoLimit": {

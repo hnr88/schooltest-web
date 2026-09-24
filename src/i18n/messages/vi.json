@@ -6096,7 +6096,8 @@
         "copy": "Sao chép liên kết",
         "copied": "Đã sao chép",
         "warning": "Liên kết này đăng nhập bằng chính tài khoản giáo viên của bạn. Nó chỉ dùng được một lần và hết hạn lúc {expires}; học sinh và phụ huynh không bao giờ dùng được.",
-        "open": "Mở bản dùng thử",
+        "open": "Mở trong ứng dụng SchoolTest",
+        "appHint": "Bản dùng thử chạy trong ứng dụng SchoolTest trên máy tính, đúng như học sinh của bạn nhìn thấy. Hãy cài ứng dụng trên máy tính này trước. Liên kết đã sao chép cũng mở được trên máy tính khác có cài ứng dụng.",
         "done": "Xong"
       },
       "demoLimit": {

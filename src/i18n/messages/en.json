@@ -6077,7 +6077,8 @@
         "copy": "Copy link",
         "copied": "Copied",
         "warning": "This link signs in as your own teacher account. It works once and expires at {expires}; students and parents can never use it.",
-        "open": "Open the demo",
+        "open": "Open in SchoolTest app",
+        "appHint": "The demo runs in the SchoolTest desktop app, exactly as your students see it. Install the app on this computer first. The copied link also opens on any other computer that has the app.",
         "done": "Done"
       },
       "demoLimit": {

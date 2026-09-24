@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { CircleAlert, Link2 } from 'lucide-react';
+import { CircleAlert, Link2, MonitorDown } from 'lucide-react';
 import { useFormatter, useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
@@ -18,6 +18,10 @@ import { useStartSessionStore } from '@/modules/teacher/stores/use-start-session
 // the URL is the single-use token C-TT-DEMO minted, and the expiry is the token
 // row's own `expires_at` — the design's "expires when you close the demo" is not
 // what the API does, so the dialog says what the API does.
+//
+// The demo runs in the SchoolTest DESKTOP app, exactly as students sit a test:
+// the link is the API's `url` (the `schooltest://` deep link the installed app
+// registers), never `web_url` — there is no browser-hosted student runner.
 function DemoLinkDialog() {
   const t = useTranslations('TeacherPortal.startSession.demoLink');
   const format = useFormatter();
@@ -26,7 +30,7 @@ function DemoLinkDialog() {
   // Keyed by the URL, not a boolean: every mint is a new single-use token, so a
   // second demo link starts on "Copy link" without an effect resetting anything.
   const [copiedUrl, setCopiedUrl] = useState<string | null>(null);
-  const copied = demoLink !== null && copiedUrl === demoLink.link.web_url;
+  const copied = demoLink !== null && copiedUrl === demoLink.link.url;
 
   return (
     <OpsDialog
@@ -53,18 +57,18 @@ function DemoLinkDialog() {
             <div className="mt-[18px] flex items-center gap-2 rounded-[12px] border-[1.5px] border-[#DBE3EF] bg-[#F4F7FC] py-1.5 pr-1.5 pl-3.5">
               <span
                 data-slot="demo-link-url"
-                title={demoLink.link.web_url}
+                title={demoLink.link.url}
                 className="min-w-0 flex-1 truncate font-mono text-[13.5px] font-semibold text-[#16326E]"
               >
-                {demoLink.link.web_url}
+                {demoLink.link.url}
               </span>
               <button
                 type="button"
                 data-slot="demo-link-copy"
                 onClick={() => {
                   void navigator.clipboard
-                    .writeText(demoLink.link.web_url)
-                    .then(() => setCopiedUrl(demoLink.link.web_url));
+                    .writeText(demoLink.link.url)
+                    .then(() => setCopiedUrl(demoLink.link.url));
                 }}
                 className={cn(
                   FOCUS_RING_CLASS,
@@ -75,7 +79,15 @@ function DemoLinkDialog() {
               </button>
             </div>
 
-            <p className="mt-[18px] flex items-start gap-2.5 rounded-[10px] border border-[#FBD9A8] bg-[#FFF7ED] px-3.5 py-[11px] text-[12.5px] leading-[1.5] text-[#9A5B12]">
+            <p
+              data-slot="demo-link-app-hint"
+              className="mt-[18px] flex items-start gap-2.5 rounded-[10px] border border-[#DBE3EF] bg-[#F4F7FC] px-3.5 py-[11px] text-[12.5px] leading-[1.5] text-[#16326E]"
+            >
+              <MonitorDown aria-hidden="true" className="mt-px size-4 flex-none text-[#2563EB]" strokeWidth={2.2} />
+              {t('appHint')}
+            </p>
+
+            <p className="mt-2.5 flex items-start gap-2.5 rounded-[10px] border border-[#FBD9A8] bg-[#FFF7ED] px-3.5 py-[11px] text-[12.5px] leading-[1.5] text-[#9A5B12]">
               <CircleAlert aria-hidden="true" className="mt-px size-4 flex-none text-[#C2740C]" strokeWidth={2.2} />
               {t('warning', {
                 expires: format.dateTime(new Date(demoLink.link.expires_at), DEMO_LINK_EXPIRY_FORMAT),
@@ -84,9 +96,7 @@ function DemoLinkDialog() {
 
             <div className="mt-[18px] flex flex-wrap items-center gap-2.5">
               <a
-                href={demoLink.link.web_url}
-                target="_blank"
-                rel="noreferrer"
+                href={demoLink.link.url}
                 data-slot="demo-link-open"
                 className={cn(
                   FOCUS_RING_CLASS,

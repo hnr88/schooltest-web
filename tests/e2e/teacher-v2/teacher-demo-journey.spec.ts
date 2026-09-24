@@ -13,19 +13,21 @@ import { cat } from '../helpers/i18n';
 import { ACCOUNTS, en, signIn } from '../helpers/teacher-rail';
 
 // BUG-004 — the Teacher demo journey on the REAL API, end to end: mint, the "Your demo
-// link is ready" dialog, Copy, Open in a NEW TAB, and the trial runner that tab lands
-// on serving a question. The teacher then ANSWERS a question and ENDS the trial, and
+// link is ready" dialog, Copy, "Open in SchoolTest app" (the schooltest:// deep link the
+// installed desktop app registers), and the trial runner that link lands on serving a
+// question. A browser cannot hand a schooltest:// link to an app, so this spec opens the
+// renderer route the desktop app's deep-link handler maps it to (useDeepLinkHandler:
+// schooltest://auth/teacher/verify?token=… → /en/auth/teacher/verify?token=…); the
+// Electron journey itself is proven with the real app (proof/BUG-004/desktop-demo). The teacher then ANSWERS a question and ENDS the trial, and
 // the DB proves the demo recorded nothing against a student: no Result, no sitting,
 // no student session, and the stored answer belongs to the teacher's trial only.
 // The one intercepted case is the refused mint, where the budget cannot be spent on
 // purpose without locking the seeded teacher out for an hour.
 //
 // NEEDS, besides the API and this web app:
-//  - the STUDENT-APP RENDERER (schooltest-app `next dev`, :3010 locally). The minted
-//    web_url is `${APP_TEACHER_BASE || APP_STUDENT_BASE || APP_WEB_BASE ||
-//    'http://localhost:3010'}/en/auth/teacher/verify?token=…` as configured on the API
-//    (src/api/teacher/lib/trial-offer.ts), and that renderer runs the trial. The spec
-//    checks the origin answers before opening it and fails naming it if not.
+//  - the STUDENT-APP RENDERER (schooltest-app `next dev`, :3010 locally, or
+//    E2E_STUDENT_RENDERER), the renderer the desktop app loads. The spec checks it
+//    answers before opening the demo and fails naming it if not.
 //  - demo-link budget: a mint spends one of TEACHER_DEMO_LINK_MAX_PER_HOUR = 10 magic-link
 //    rows per teacher email per hour, shared with the emailed trial path. When the budget
 //    is spent the API answers 429 and this test is SKIPPED with that reason (never a silent
@@ -39,6 +41,8 @@ const FOLLOWUP_PROOFS = path.join(process.env.BUG_PROOF_DIR ?? '/Users/hunor.nag
 const startSession = (key: string) => cat(en, `TeacherPortal.startSession.${key}`);
 const demoLimit = createTranslator({ locale: 'en', messages: enMessages, namespace: 'TeacherPortal.startSession.demoLimit' });
 const DOCUMENT_ID = /^[a-z0-9]{24}$/;
+const STUDENT_RENDERER = process.env.E2E_STUDENT_RENDERER ?? 'http://localhost:3010';
+const DEEP_LINK = /^schooltest:\/\/auth\/teacher\/verify\?token=([0-9a-f]{64})$/;
 const RATE_LIMITED = {
   data: null,
   error: { status: 429, name: 'RateLimitError', message: 'Too many requests', details: { retry_after_seconds: 1500 } },
@@ -163,33 +167,34 @@ test('BUG-004 — Teacher demo mints a link, Open starts the trial in a new tab,
   expect(mintResponse.status(), await mintResponse.text()).toBe(201);
   const link = createDemoLinkResponseSchema.parse(await mintResponse.json());
   expect(link.form_document_id).toBe(formId);
-  expect(link.web_url).toMatch(/^https?:\/\/[^/]+\/en\/auth\/teacher\/verify\?token=[0-9a-f]{64}$/);
+  const token = DEEP_LINK.exec(link.url)?.[1] ?? '';
+  expect(link.url, 'the demo link is the desktop deep link').toMatch(DEEP_LINK);
 
   const dialog = page.locator('[data-surface="demo-link-dialog"]');
   await expect(dialog.getByRole('heading', { name: startSession('demoLink.title') })).toBeVisible({ timeout: 30_000 });
-  await expect(dialog.locator('[data-slot="demo-link-url"]')).toHaveText(link.web_url);
+  await expect(dialog.locator('[data-slot="demo-link-url"]')).toHaveText(link.url);
+  await expect(dialog.locator('[data-slot="demo-link-app-hint"]')).toHaveText(startSession('demoLink.appHint'));
   const open = dialog.locator('[data-slot="demo-link-open"]');
-  await expect(open).toHaveAttribute('href', link.web_url);
-  await expect(open).toHaveAttribute('target', '_blank');
+  await expect(open).toHaveText(startSession('demoLink.open'));
+  await expect(open).toHaveAttribute('href', link.url);
+  await expect(open).not.toHaveAttribute('target', /.+/);
 
   await context.grantPermissions(['clipboard-read', 'clipboard-write']);
   await dialog.locator('[data-slot="demo-link-copy"]').click();
   await expect(dialog.locator('[data-slot="demo-link-copy"]')).toHaveText(startSession('demoLink.copied'));
-  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(link.web_url);
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(link.url);
   await page.screenshot({ path: path.join(PROOFS, 'after-01-demo-dialog-copied.png'), animations: 'disabled' });
 
-  const renderer = new URL(link.web_url).origin;
+  const renderer = STUDENT_RENDERER;
   const rendererUp = await request.get(renderer, { maxRedirects: 0, timeout: 15_000 }).then(
     (answer) => answer.status() < 500,
     () => false,
   );
   expect(
     rendererUp,
-    `the demo web_url is served by the student-app renderer at ${renderer} ` +
-      '(API env APP_TEACHER_BASE → APP_STUDENT_BASE → APP_WEB_BASE → http://localhost:3010); start it',
+    `the demo runs on the student-app renderer at ${renderer} (E2E_STUDENT_RENDERER); start it`,
   ).toBe(true);
 
-  const popupPromise = context.waitForEvent('page');
   const verified = context.waitForEvent('response', {
     predicate: isPost('/api/auth/teacher/magic-link/verify'),
     timeout: 90_000,
@@ -203,11 +208,9 @@ test('BUG-004 — Teacher demo mints a link, Open starts the trial in a new tab,
       .then((body: { session?: { document_id?: string } }) => body.session?.document_id && opened.sessions.add(body.session.document_id))
       .catch(() => undefined);
   });
-  await open.click();
-  const demo = await popupPromise;
-  await demo.waitForLoadState('domcontentloaded');
-  expect(new URL(demo.url()).origin).toBe(new URL(link.web_url).origin);
-  expect(demo.url().startsWith('schooltest:')).toBe(false);
+  // What the desktop app does with the deep link: its route on the renderer.
+  const demo = await context.newPage();
+  await demo.goto(`${renderer}/en/auth/teacher/verify?token=${token}`);
 
   const verify = await verified;
   expect(verify.status()).toBe(200);
@@ -290,7 +293,7 @@ test('BUG-004 — Teacher demo mints a link, Open starts the trial in a new tab,
     'no STUDENT session was created on the demo form',
   ).toBe(0);
 
-  const tokenHash = sha256(new URL(link.web_url).searchParams.get('token') ?? '');
+  const tokenHash = sha256(token);
   const tokenRow = runSql(
     `select used::text || '|' || coalesce(demo_form_document_id, '') from teacher_magic_links
       where token = '${tokenHash}'`,
