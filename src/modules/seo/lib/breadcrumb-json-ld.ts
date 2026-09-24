@@ -1,5 +1,6 @@
 import { env } from '@/lib/env';
-import type { BreadcrumbJsonLdItem, JsonLdNode } from '@/modules/seo/types/seo.types';
+import type { BreadcrumbListNode } from '@/modules/seo/types/json-ld.types';
+import type { BreadcrumbJsonLdItem } from '@/modules/seo/types/seo.types';
 
 /**
  * Absolute URL for a locale-less app path. `localePrefix: 'as-needed'` means the
@@ -15,11 +16,15 @@ export function absoluteUrl(pathname: string, locale: string, defaultLocale: str
 /**
  * schema.org BreadcrumbList built from the SAME trail the UI renders, so the
  * structured data can never disagree with the visible crumbs (mission task 211).
+ * Returned without `@context`: it is a node of the page's @graph.
  */
-export function buildBreadcrumbJsonLd(items: readonly BreadcrumbJsonLdItem[]): JsonLdNode {
+export function buildBreadcrumbJsonLd(
+  items: readonly BreadcrumbJsonLdItem[],
+  id?: string,
+): BreadcrumbListNode {
   return {
-    '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
+    ...(id ? { '@id': id } : {}),
     itemListElement: items.map((item, index) => ({
       '@type': 'ListItem',
       position: index + 1,

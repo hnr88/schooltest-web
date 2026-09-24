@@ -1,17 +1,13 @@
-import type { JsonLdNode } from '@/modules/seo/types/seo.types';
+import { serializeJsonLd } from '@/modules/seo/lib/serialize-json-ld';
 
 import type { JsonLdProps } from '@/modules/seo/types/components.types';
 
-// Server Component. Emits one schema.org graph node as a JSON-LD script tag.
-// The payload is a typed object built by `@/modules/seo/lib/json-ld` and
-// serialised with JSON.stringify, so no caller can inject markup here; `<` is
-// escaped because a literal `</script>` inside a JSON string would close the tag.
+// Server Component. Emits one JSON-LD document (normally the page's @graph).
+// serializeJsonLd escapes `<`, `>` and `&`, so no string value — CMS copy
+// included — can close the script tag or open an HTML comment.
 function JsonLd({ data }: JsonLdProps) {
   return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, '\\u003c') }}
-    />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(data) }} />
   );
 }
 

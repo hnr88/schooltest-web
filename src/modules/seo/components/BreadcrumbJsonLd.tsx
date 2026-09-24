@@ -1,15 +1,17 @@
 import { getTranslations } from 'next-intl/server';
 
-import { routing } from '@/i18n/routing';
-import { buildTrail } from '@/modules/navigation';
 import { JsonLd } from '@/modules/seo/components/JsonLd';
-import { absoluteUrl, buildBreadcrumbJsonLd } from '@/modules/seo/lib/breadcrumb-json-ld';
+import { buildBreadcrumbJsonLd } from '@/modules/seo/lib/breadcrumb-json-ld';
+import { buildJsonLdGraph } from '@/modules/seo/lib/json-ld';
+import { pageIds } from '@/modules/seo/lib/json-ld-ids';
+import { resolveBreadcrumbItems } from '@/modules/seo/lib/resolve-breadcrumb';
 
 import type { BreadcrumbJsonLdProps } from '@/modules/seo/types/components.types';
 
 // Server Component. Emits schema.org BreadcrumbList for a public page from the
 // SAME buildTrail derivation that renders <PublicBreadcrumb>, so the structured
-// data and the DOM crumbs always carry identical names in identical order.
+// data and the DOM crumbs always carry identical names in identical order. It
+// carries the page's `#breadcrumb` @id, which the WebPage node references.
 async function BreadcrumbJsonLd({
   pathname,
   locale,
@@ -17,16 +19,19 @@ async function BreadcrumbJsonLd({
   currentLabel = null,
 }: BreadcrumbJsonLdProps) {
   const t = await getTranslations({ locale });
-  const { crumbs } = buildTrail(pathname, { recordLabel, currentLabel, includeRoot: true });
+  const items = resolveBreadcrumbItems({
+    pathname,
+    locale,
+    translate: (key) => t(key),
+    recordLabel,
+    currentLabel,
+  });
 
-  const items = crumbs.map((crumb) => ({
-    name: crumb.isRecord
-      ? (crumb.isCurrent ? (currentLabel ?? recordLabel ?? '') : (recordLabel ?? ''))
-      : t(crumb.labelKey),
-    url: absoluteUrl(crumb.href, locale, routing.defaultLocale),
-  }));
-
-  return <JsonLd data={buildBreadcrumbJsonLd(items)} />;
+  return (
+    <JsonLd
+      data={buildJsonLdGraph([buildBreadcrumbJsonLd(items, pageIds(pathname, locale).breadcrumb)])}
+    />
+  );
 }
 
 export { BreadcrumbJsonLd };

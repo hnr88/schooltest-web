@@ -4,10 +4,26 @@ export { BreadcrumbJsonLd } from '@/modules/seo/components/BreadcrumbJsonLd';
 export { PublicPageJsonLd } from '@/modules/seo/components/PublicPageJsonLd';
 export { absoluteUrl, buildBreadcrumbJsonLd } from '@/modules/seo/lib/breadcrumb-json-ld';
 export {
+  buildJsonLdGraph,
   buildOrganizationJsonLd,
   buildWebPageJsonLd,
   buildWebSiteJsonLd,
 } from '@/modules/seo/lib/json-ld';
+export {
+  buildFaqQuestionNodes,
+  buildHowToJsonLd,
+  buildServiceJsonLd,
+  buildSoftwareApplicationJsonLd,
+} from '@/modules/seo/lib/json-ld-content';
+export {
+  buildArticleJsonLd,
+  buildBlogPostingJsonLd,
+  buildNewsArticleJsonLd,
+  countWords,
+} from '@/modules/seo/lib/json-ld-article';
+export { buildPublicPageGraph } from '@/modules/seo/lib/public-page-graph';
+export { pageIds, siteIds } from '@/modules/seo/lib/json-ld-ids';
+export { serializeJsonLd } from '@/modules/seo/lib/serialize-json-ld';
 export {
   NOINDEX_ROBOTS,
   OG_ACCENT,
@@ -38,3 +54,23 @@ export type {
   WebPageInput,
 } from '@/modules/seo/types/seo.types';
 export type { RevalidateTag } from './types/schemas.types';
+export type {
+  ArticleAuthorInput,
+  ArticleInput,
+  FaqEntry,
+  HowToInput,
+  HowToStepInput,
+  ImageInput,
+  PageNodeInput,
+  PublicPageGraphInput,
+  ServiceInput,
+  SiteNodeInput,
+  SoftwareApplicationInput,
+} from '@/modules/seo/types/json-ld-input.types';
+export type {
+  ArticleNode,
+  ArticleType,
+  GraphNode,
+  JsonLdGraph,
+  WebPageType,
+} from '@/modules/seo/types/json-ld.types';
