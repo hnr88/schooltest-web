@@ -23,6 +23,11 @@ const NOINDEX_PATHS = [
 const nextConfig: NextConfig = {
   output: 'standalone',
   reactCompiler: true,
+  // SEO/AEO: resolve metadata before streaming for EVERY user agent, so canonical,
+  // hreflang, description, og:* and twitter:* always sit in <head>. By default
+  // Next streams them into <body> for Googlebot, AI crawlers (GPTBot, ClaudeBot,
+  // PerplexityBot…) and browsers, and many parsers only read <head>.
+  htmlLimitedBots: /.*/,
   // Dev-only scoping (Next's own recommendation when it warns about multiple
   // lockfiles): without it Turbopack picks the MONOREPO root (a stray
   // pnpm-lock.yaml beside this app) and watches schooltest-api, vendor trees
