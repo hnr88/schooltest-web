@@ -18,7 +18,7 @@ import { useAcaraPhaseText } from '@/modules/report/hooks/useAcaraPhaseText';
 import { buildAttributePanel } from '@/modules/report/lib/attribute-view-model';
 import { buildFamilyPreview } from '@/modules/report/lib/parent-view-model';
 import { reportCrumbLabel } from '@/modules/report/lib/report-crumb';
-import { useResultQuery } from '@/modules/results/queries/use-student-result.query';
+import { useStudentResultQuery } from '@/modules/results';
 import type { ReportViewMode } from '@/modules/report/types/report-view.types';
 import { RecordCrumb } from '@/modules/shell';
 
@@ -34,7 +34,7 @@ export function TeacherReportScreen({ resultDocumentId }: { resultDocumentId: st
   const phaseText = useAcaraPhaseText();
   const format = useFormatter();
   const [view, setView] = useState<ReportViewMode>('teacher');
-  const { data, error, isError, isFetching, isLoading, refetch } = useResultQuery(resultDocumentId);
+  const { data, error, isError, isFetching, isLoading, refetch } = useStudentResultQuery(resultDocumentId);
   // Task 46 (st-mvp-pivot): the parent audience toggle is masked, not deleted,
   // while PARENT_VIEWS_ENABLED is off — the report stays in teacher mode and
   // the toggle leaves the DOM until the flag flips on.

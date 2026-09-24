@@ -81,4 +81,4 @@ export interface RemoveTeacherResult {
 }
 
 // GAP-01 (task 019): parsed shape of the needs-attention response.
-export type { NeedsAttentionStudent, TeacherNeedsAttention } from '../schemas/teachers.schema';
+export type { NeedsAttentionStudent, TeacherNeedsAttention } from '@/modules/teachers/schemas/teachers.schema';
