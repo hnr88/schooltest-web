@@ -11,7 +11,6 @@ import { ReportSkeleton } from '@/modules/report/components/ReportSkeleton';
 import { useRungHeading } from '@/modules/report/hooks/useRungHeading';
 import { familyCommentaryKeys } from '@/modules/report/lib/family-commentary';
 import { buildFamilyPreview } from '@/modules/report/lib/parent-view-model';
-import type { FamilyPreviewView } from '@/modules/report/lib/parent-view-model';
 import { useFamilyReportQuery } from '@/modules/report/queries/use-family-report.query';
 import type { FamilyReportDetail } from '@/modules/report/schemas/family-report.schema';
 
@@ -157,5 +156,3 @@ export function FamilyReportScreen({ resultDocumentId }: { resultDocumentId: str
     </main>
   );
 }
-
-export type { FamilyPreviewView };

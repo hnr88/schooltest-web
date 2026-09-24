@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import type { DisplaySkill, ResultView } from '@schooltest/scoring-contracts';
 
 import { DISPLAY_SKILL_ORDER } from '@/modules/results/lib/display-skills';
+import type { Growth, MovementRow, RowWithSort } from '@/modules/results/types/movement.types';
 
 /**
  * §4.5 movement sparklines — one row per display skill, from
@@ -18,19 +19,6 @@ import { DISPLAY_SKILL_ORDER } from '@/modules/results/lib/display-skills';
  * to chart). Sort: reliable gains desc, then reliable declines (most negative
  * first), then the rest in canonical order.
  */
-export interface MovementRow {
-  skill: DisplaySkill;
-  deltaDisplay: string | null;
-  /** One slot per history point; null where that sitting did not assess the skill. */
-  points: Array<number | null>;
-}
-
-interface RowWithSort extends MovementRow {
-  group: 0 | 1 | 2;
-  value: number; // gains: the delta (desc); declines: the delta (asc); rest: canonical order
-  order: number;
-}
-
 export function sparklineRows(view: ResultView): MovementRow[] {
   const history = view.history ?? [];
   if (history.length < 2) return [];
@@ -61,8 +49,6 @@ export function sparklineRows(view: ResultView): MovementRow[] {
     })
     .map(({ skill, deltaDisplay, points }) => ({ skill, deltaDisplay, points }));
 }
-
-type Growth = { reliable: boolean | null; value: number | null; display: string | null } | null;
 
 /** The seven attribute-backed skills only — Critical (ruling 4a) and Academic Vocabulary have no growth. */
 function growthOf(view: ResultView, skill: Exclude<DisplaySkill, 'Critical' | 'Vocab_B2'>): Growth {

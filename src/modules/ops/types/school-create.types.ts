@@ -63,7 +63,17 @@ export interface OpsEditSchoolDialogProps {
 }
 
 export interface OpsCreateSchoolFieldsProps {
-  form: UseFormReturn<SchoolCreateFormValues | SchoolEditFormValues>;
+  form: UseFormReturn<SchoolCreateFormValues>;
+  /** A valid-but-non-school-domain contact email WARNS without blocking. */
+  emailWarning?: boolean;
+  /** Creating with status Active WARNS without blocking (create only). */
+  statusWarning?: boolean;
+}
+
+export interface OpsEditSchoolFieldsProps {
+  form: UseFormReturn<SchoolEditFormValues>;
   /** A valid-but-non-school-domain email WARNS without blocking (task 10). */
-  emailWarning?: string | null;
+  emailWarning?: boolean;
+  /** The zone the "Automatic (from state)" option stands for, when known. */
+  automaticZone?: string | null;
 }

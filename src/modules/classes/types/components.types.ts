@@ -1,3 +1,5 @@
+import type { DirectoryQueryStatus } from '@/modules/directory';
+
 import type {
   ClassDetail,
   ClassDetailStudent,
@@ -47,6 +49,12 @@ export interface ClassesTableProps {
   rows: SchoolClass[];
   completions: Map<string, ClassTestCompletion> | null;
   onEdit: (schoolClass: SchoolClass) => void;
+}
+
+/** The table's own props: the screen's contract plus the kit's query slot. */
+export interface ClassesTableKitProps extends ClassesTableProps {
+  /** The consumer's query status; the kit's loading/error/stale arms read it. */
+  query?: DirectoryQueryStatus;
 }
 
 export interface ClassesTableRowProps {

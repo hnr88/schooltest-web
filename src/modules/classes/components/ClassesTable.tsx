@@ -23,7 +23,7 @@ import { YEAR_BANDS } from '@/modules/classes/constants/year-bands.constants';
 import { useClassRowActions } from '@/modules/classes/hooks/use-class-row-actions';
 import { classBadge, formatTestsCompleted } from '@/modules/classes/lib/classes-table.helpers';
 
-import type { ClassesTableProps } from '@/modules/classes/types/components.types';
+import type { ClassesTableKitProps } from '@/modules/classes/types/components.types';
 import type { SchoolClass } from '@/modules/classes/types/classes.types';
 
 // ops/30 — the C-CLS-01 roster rendered THROUGH the shared directory kit in
@@ -41,12 +41,6 @@ import type { SchoolClass } from '@/modules/classes/types/classes.types';
 // still guard the header chrome, so the table defaults to the idle status the
 // screen's happy branch implies. A later screen re-parent passes the real
 // query object — no component change.
-
-/** The table's own props: the screen's contract plus the kit's query slot. */
-export interface ClassesTableKitProps extends ClassesTableProps {
-  /** The consumer's query status; the kit's loading/error/stale arms read it. */
-  query?: DirectoryQueryStatus;
-}
 
 const IDLE_QUERY: DirectoryQueryStatus = {
   isPending: false,

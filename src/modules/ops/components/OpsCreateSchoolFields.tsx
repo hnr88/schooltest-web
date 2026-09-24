@@ -11,7 +11,7 @@ import {
   SelectField,
 } from '@/modules/design-system';
 import { SCHOOL_TIMEZONE_AUTOMATIC, SCHOOL_TIMEZONE_OPTIONS } from '@/modules/ops/constants/components.constants';
-import type { SchoolCreateFormValues, SchoolEditFormValues } from '@/modules/ops/schemas/school-create.schema';
+import type { OpsCreateSchoolFieldsProps, OpsEditSchoolFieldsProps } from '@/modules/ops/types/school-create.types';
 
 const STATE_CODES = ['VIC', 'NSW', 'QLD', 'WA', 'SA', 'TAS', 'ACT', 'NT'];
 const SECTOR_KEYS = ['government', 'catholic', 'non-government'] as const;
@@ -24,14 +24,6 @@ const SCHOOL_TYPE_KEYS = ['combined', 'primary', 'secondary'] as const;
  *  `SelectField` has no warning-tone trigger border (only `errorText` reaches
  *  it) — a kit gap, so the status-Active warning below is message-only. */
 const WARNING_INPUT_CLASS = 'border-warning focus-visible:border-warning';
-
-export interface OpsCreateSchoolFieldsProps {
-  form: import('react-hook-form').UseFormReturn<SchoolCreateFormValues>;
-  /** A valid-but-non-school-domain contact email WARNS without blocking. */
-  emailWarning?: boolean;
-  /** Creating with status Active WARNS without blocking (create only). */
-  statusWarning?: boolean;
-}
 
 /**
  * OPS-013 Create School modal body, in the design's field grid
@@ -165,14 +157,6 @@ export function OpsCreateSchoolFields({ form, emailWarning, statusWarning }: Ops
       </div>
     </>
   );
-}
-
-export interface OpsEditSchoolFieldsProps {
-  form: import('react-hook-form').UseFormReturn<SchoolEditFormValues>;
-  /** A valid-but-non-school-domain email WARNS without blocking (task 10). */
-  emailWarning?: boolean;
-  /** The zone the "Automatic (from state)" option stands for, when known. */
-  automaticZone?: string | null;
 }
 
 /**
