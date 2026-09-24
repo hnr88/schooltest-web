@@ -11,7 +11,7 @@ import { expect, test } from '@playwright/test';
 
 import { loadMessages } from './helpers/i18n';
 import { LEGAL_PAGES } from './helpers/legal';
-import { DISALLOWED_IN_ROBOTS, PUBLIC_PATHS, parseJsonLd } from './helpers/seo';
+import { DISALLOWED_IN_ROBOTS, PUBLIC_PATHS, parseJsonLd, typesOf } from './helpers/seo';
 
 const en = loadMessages('en');
 
@@ -107,22 +107,27 @@ test.describe('public SEO', () => {
     }) => {
       await page.goto(path);
       const nodes = await parseJsonLd(page);
-      const types = nodes.map((node) => node['@type']);
+      const types = nodes.flatMap(typesOf);
 
       expect(types, `${path} JSON-LD types`).toContain('WebPage');
-      expect(types, `${path} JSON-LD types`).toContain('BreadcrumbList');
+      // The home page is the root of every trail: a one-item BreadcrumbList
+      // says nothing, so only non-home pages publish one.
+      if (path === '/') {
+        expect(types, 'home JSON-LD types').not.toContain('BreadcrumbList');
+      } else {
+        expect(types, `${path} JSON-LD types`).toContain('BreadcrumbList');
+        const breadcrumb = nodes.find((node) => typesOf(node).includes('BreadcrumbList')) as {
+          itemListElement: { position: number; name: string; item: string }[];
+        };
+        const jsonNames = breadcrumb.itemListElement
+          .sort((a, b) => a.position - b.position)
+          .map((entry) => entry.name);
 
-      const breadcrumb = nodes.find((node) => node['@type'] === 'BreadcrumbList') as {
-        itemListElement: { position: number; name: string; item: string }[];
-      };
-      const jsonNames = breadcrumb.itemListElement
-        .sort((a, b) => a.position - b.position)
-        .map((entry) => entry.name);
-
-      // Flow 20, re-pointed: structured breadcrumbs must EQUAL the registered
-      // trail — same names, same order, same count. A substring check would
-      // pass on a reversed trail or a duplicate.
-      expect(jsonNames, `${path} breadcrumb trail`).toEqual(expectedTrail(path));
+        // Flow 20, re-pointed: structured breadcrumbs must EQUAL the registered
+        // trail — same names, same order, same count. A substring check would
+        // pass on a reversed trail or a duplicate.
+        expect(jsonNames, `${path} breadcrumb trail`).toEqual(expectedTrail(path));
+      }
       // No orphaned visible crumb nav on the redesigned landing pages. The
       // legal documents KEEP their visible breadcrumb (it survives in
       // LegalDocumentScreen) and their visible trail is asserted in
@@ -133,7 +138,7 @@ test.describe('public SEO', () => {
         ).toHaveCount(0);
       }
 
-      const webPage = nodes.find((node) => node['@type'] === 'WebPage') as Record<string, unknown>;
+      const webPage = nodes.find((node) => typesOf(node).includes('WebPage')) as Record<string, unknown>;
       expect(webPage.url).toBeTruthy();
       expect(webPage.inLanguage).toBe('en');
     });
@@ -193,7 +198,7 @@ test.describe('public SEO', () => {
 
   test('flow: the homepage additionally publishes Organization and WebSite', async ({ page }) => {
     await page.goto('/');
-    const types = (await parseJsonLd(page)).map((node) => node['@type']);
+    const types = (await parseJsonLd(page)).flatMap(typesOf);
     expect(types).toContain('Organization');
     expect(types).toContain('WebSite');
   });

@@ -21,16 +21,29 @@ export const PUBLIC_PATHS: readonly string[] = [
 
 export const DISALLOWED_IN_ROBOTS: readonly string[] = [...DISALLOWED_PATHS];
 
-/** Parse every JSON-LD block on the page; a malformed block throws loudly. */
+/**
+ * Parse every JSON-LD block on the page and flatten each `@graph` into its
+ * nodes, so a spec sees one list of typed nodes however the page groups them.
+ * A malformed block throws loudly.
+ */
 export async function parseJsonLd(page: Page): Promise<Record<string, unknown>[]> {
   const blocks = await page.locator('script[type="application/ld+json"]').allTextContents();
-  return blocks.map((raw, index) => {
+  return blocks.flatMap((raw, index) => {
+    let parsed: Record<string, unknown>;
     try {
-      return JSON.parse(raw) as Record<string, unknown>;
+      parsed = JSON.parse(raw) as Record<string, unknown>;
     } catch (error) {
       throw new Error(`[e2e] JSON-LD block ${index} is not valid JSON: ${String(error)}`);
     }
+    const graph = parsed['@graph'];
+    return Array.isArray(graph) ? (graph as Record<string, unknown>[]) : [parsed];
   });
+}
+
+/** A node's `@type` as a list (schema.org allows a single type or several). */
+export function typesOf(node: Record<string, unknown>): string[] {
+  const type = node['@type'];
+  return Array.isArray(type) ? type.map(String) : [String(type)];
 }
 
 /** Whitespace-normalised text of a locator — used to compare crumbs to JSON-LD. */

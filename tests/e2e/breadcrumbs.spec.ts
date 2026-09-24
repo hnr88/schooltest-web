@@ -21,12 +21,11 @@ import { expect, test, type Page } from '@playwright/test';
 
 import { loadMessages } from './helpers/i18n';
 import { loginAs } from './helpers/roles';
-import { parseJsonLd, textOf } from './helpers/seo';
+import { parseJsonLd, textOf, typesOf } from './helpers/seo';
 
 const en = loadMessages('en');
 
 const PUBLIC_TRAILS: readonly { path: string; crumbs: string[] }[] = [
-  { path: '/', crumbs: [en['Navigation.home']] },
   { path: '/diagnose', crumbs: [en['Navigation.home'], en['Landing.nav.diagnose']] },
   { path: '/teach', crumbs: [en['Navigation.home'], en['Landing.nav.teach']] },
   { path: '/track', crumbs: [en['Navigation.home'], en['Landing.nav.track']] },
@@ -44,7 +43,7 @@ interface BreadcrumbList {
 /** The page's BreadcrumbList JSON-LD node, position-sorted. */
 async function jsonTrail(page: Page): Promise<BreadcrumbList> {
   const nodes = await parseJsonLd(page);
-  const list = nodes.find((node) => node['@type'] === 'BreadcrumbList') as unknown as BreadcrumbList;
+  const list = nodes.find((node) => typesOf(node).includes('BreadcrumbList')) as unknown as BreadcrumbList;
   expect(list, 'a BreadcrumbList JSON-LD node renders').toBeTruthy();
   return { itemListElement: [...list.itemListElement].sort((a, b) => a.position - b.position) };
 }
