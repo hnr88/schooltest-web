@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
 import { LandingTeachContent } from '@/modules/landing';
-import { BreadcrumbJsonLd, PublicPageJsonLd, buildPageMetadata } from '@/modules/seo';
+import { LandingPageAeo, buildPageMetadata } from '@/modules/seo';
 import { getPublicSettings, PublicSiteBanner } from '@/modules/settings';
 
 interface TeachPageProps {
@@ -32,14 +32,17 @@ export default async function TeachPage({ params }: TeachPageProps) {
   return (
     <>
       <PublicSiteBanner settings={settings} />
-      <BreadcrumbJsonLd pathname="/teach" locale={locale} />
-      <PublicPageJsonLd
-        pathname="/teach"
-        locale={locale}
-        title={t('teachTitle')}
-        description={t('teachDescription')}
+      <LandingTeachContent
+        aeo={
+          <LandingPageAeo
+            page="teach"
+            pathname="/teach"
+            locale={locale}
+            title={t('teachTitle')}
+            description={t('teachDescription')}
+          />
+        }
       />
-      <LandingTeachContent />
     </>
   );
 }

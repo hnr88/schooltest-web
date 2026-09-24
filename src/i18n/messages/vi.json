@@ -6373,5 +6373,190 @@
       "emptyTitle": "Chưa có gì để xem",
       "emptyDescription": "Lượt thi này không có câu trả lời nào được ghi lại."
     }
+  },
+  "Aeo": {
+    "faqHeading": "Câu hỏi thường gặp",
+    "faqIntro": "Câu trả lời ngắn gọn về những gì SchoolTest làm và cách các trường sử dụng.",
+    "softwareDescription": "Bài đánh giá chẩn đoán và tiến bộ tiếng Anh dành cho học sinh EAL/D tại các trường trung học Úc, lớp 7–12. Kiểm tra đọc, nghe, nói và viết, và báo cáo 27 kỹ năng con theo tiến trình học tập EAL/D của ACARA.",
+    "features": {
+      "diagnose": "Kiểm tra chẩn đoán đọc, nghe, nói và viết",
+      "subskills": "27 điểm kỹ năng con được báo cáo theo tiến trình học tập EAL/D của ACARA",
+      "track": "Theo dõi tiến bộ qua nhiều lần kiểm tra",
+      "predict": "Chỉ số sẵn sàng vào lớp chính khóa",
+      "report": "Báo cáo cho học sinh, gia đình, giáo viên và lãnh đạo nhà trường",
+      "export": "Xuất dữ liệu lớp đã ẩn danh để lập kế hoạch bài học với sự hỗ trợ của AI"
+    },
+    "home": {
+      "faq": {
+        "what": {
+          "q": "SchoolTest là gì?",
+          "a": "SchoolTest là bài đánh giá chẩn đoán và tiến bộ tiếng Anh dành cho học sinh EAL/D tại các trường trung học Úc. Bài kiểm tra đánh giá đọc, nghe, nói và viết, chia mỗi điểm thành các kỹ năng con và báo cáo kết quả theo tiến trình học tập EAL/D của ACARA."
+        },
+        "who": {
+          "q": "SchoolTest dành cho ai?",
+          "a": "Học sinh EAL/D lớp 7–12, cùng giáo viên, điều phối viên và lãnh đạo nhà trường lập kế hoạch học tập cho các em. Nội dung kiểm tra phù hợp lứa tuổi và sử dụng bối cảnh Úc."
+        },
+        "skills": {
+          "q": "SchoolTest đo lường những gì?",
+          "a": "Cả bốn kỹ năng – đọc, nghe, nói và viết – cùng 27 kỹ năng con bên dưới, như từ vựng, ngữ pháp, suy luận và đọc phản biện. Điểm kỹ năng con cho biết cần dạy gì tiếp theo, chứ không chỉ là một mức điểm."
+        },
+        "duration": {
+          "q": "Một bài kiểm tra mất bao lâu?",
+          "a": "Khoảng 40 phút cho mỗi kỹ năng. Bài kiểm tra diễn ra trong lớp vào bất cứ lúc nào nhà trường chọn, và có thể kiểm tra lại riêng từng kỹ năng."
+        },
+        "delivery": {
+          "q": "Học sinh làm bài kiểm tra như thế nào?",
+          "a": "Học sinh làm bài trên máy tính bằng ứng dụng máy tính SchoolTest. Giáo viên mở một buổi kiểm tra trên cổng SchoolTest và cho cả lớp xem mã tham gia; học sinh nhập mã vào ứng dụng để bắt đầu."
+        },
+        "results": {
+          "q": "Kết quả được báo cáo như thế nào?",
+          "a": "Điểm mỗi kỹ năng được chia thành điểm kỹ năng con theo các giai đoạn của tiến trình học tập EAL/D của ACARA, nên giáo viên thấy điểm mạnh và lỗ hổng ngay từ buổi kiểm tra đầu tiên. Báo cáo có thể chia sẻ với học sinh, gia đình, giáo viên và lãnh đạo nhà trường."
+        },
+        "availability": {
+          "q": "Trường tôi có thể dùng SchoolTest ngay bây giờ không?",
+          "a": "SchoolTest đang thí điểm với các trường sáng lập trong Học kỳ 4 năm 2026. Các trường có thể đăng ký quan tâm qua mẫu bày tỏ nguyện vọng trên trang này, và nhóm chương trình sẽ liên hệ."
+        },
+        "privacy": {
+          "q": "Dữ liệu học sinh được xử lý thế nào?",
+          "a": "Dữ liệu lớp khi xuất được ẩn danh và không có tên học sinh trong bất kỳ bản xuất nào. Báo cáo được tạo tự động nhưng không bao giờ được gửi tự động: giáo viên chọn báo cáo nào gửi cho ai và khi nào."
+        }
+      }
+    },
+    "diagnose": {
+      "serviceName": "SchoolTest Chẩn đoán",
+      "serviceType": "Đánh giá chẩn đoán ngôn ngữ tiếng Anh",
+      "faq": {
+        "shows": {
+          "q": "Bài chẩn đoán SchoolTest cho thấy điều gì?",
+          "a": "Bài chẩn đoán chia điểm đọc, nghe, nói và viết của học sinh thành 27 điểm kỹ năng con, mỗi điểm được báo cáo theo các giai đoạn của tiến trình học tập EAL/D của ACARA, để bạn thấy chính xác điểm mạnh và lỗ hổng."
+        },
+        "placement": {
+          "q": "Vì sao điểm kiểm tra xếp lớp là chưa đủ?",
+          "a": "Một mức như CEFR B1 có thể che giấu những năng lực rất khác nhau. Hai học sinh cùng điểm có thể mạnh và yếu ở các kỹ năng con trái ngược nhau; hồ sơ kỹ năng con cho thấy sự khác biệt đó để mỗi em được dạy đúng điều mình cần."
+        },
+        "when": {
+          "q": "Khi nào giáo viên xem được kết quả?",
+          "a": "Ngay từ buổi kiểm tra đầu tiên, không cần giáo viên chấm bài – thay vì mất nhiều tuần để tìm hiểu nhu cầu của học sinh mới."
+        },
+        "length": {
+          "q": "Bài chẩn đoán kéo dài bao lâu?",
+          "a": "Mỗi kỹ năng là một buổi kiểm tra 40 phút trong lớp, vào thời điểm nhà trường chọn."
+        }
+      },
+      "howTo": {
+        "heading": "Trường bắt đầu kiểm tra chẩn đoán như thế nào?",
+        "intro": "Sáu bước từ lần liên hệ đầu tiên đến hồ sơ kỹ năng con đầu tiên của một lớp.",
+        "steps": {
+          "register": {
+            "name": "Đăng ký quan tâm",
+            "text": "Điền mẫu bày tỏ nguyện vọng. Nhóm chương trình sẽ phản hồi trong vòng một tuần kèm một báo cáo mẫu."
+          },
+          "onboard": {
+            "name": "Thiết lập trường",
+            "text": "Nhóm chương trình gửi cho trường một liên kết thiết lập, và quản trị viên của trường dùng liên kết đó để hoàn tất việc thiết lập."
+          },
+          "roster": {
+            "name": "Thêm giáo viên, lớp và học sinh",
+            "text": "Mời giáo viên, tạo lớp và thêm học sinh từng em một hoặc bằng cách nhập tệp CSV."
+          },
+          "sitting": {
+            "name": "Mở buổi kiểm tra",
+            "text": "Giáo viên mở một buổi kiểm tra cho lớp trên cổng SchoolTest và hiển thị mã tham gia gồm sáu chữ số."
+          },
+          "sit": {
+            "name": "Học sinh làm bài",
+            "text": "Học sinh mở ứng dụng máy tính SchoolTest, nhập mã tham gia và hoàn thành bài kiểm tra – khoảng 40 phút cho mỗi kỹ năng."
+          },
+          "results": {
+            "name": "Xem hồ sơ kỹ năng con",
+            "text": "Kết quả hiển thị trong cổng giáo viên dưới dạng hồ sơ kỹ năng con theo các giai đoạn EAL/D của ACARA, sẵn sàng cho việc lập kế hoạch."
+          }
+        }
+      }
+    },
+    "teach": {
+      "serviceName": "SchoolTest Giảng dạy",
+      "serviceType": "Lập kế hoạch bài học dựa trên đánh giá",
+      "faq": {
+        "how": {
+          "q": "SchoolTest giúp tôi lập kế hoạch bài học như thế nào?",
+          "a": "Xuất bộ hồ sơ kỹ năng con của lớp đã ẩn danh và đưa cho trợ lý AI như ChatGPT, Gemini hoặc Claude. Dữ liệu kỹ năng con thực tế biến một câu lệnh chung chung thành tài liệu phù hợp với nhu cầu của từng học sinh."
+        },
+        "names": {
+          "q": "Tên học sinh có được chia sẻ với công cụ AI không?",
+          "a": "Không. Dữ liệu lớp khi xuất được ẩn danh và không có tên học sinh trong bất kỳ bản xuất nào."
+        },
+        "withoutAi": {
+          "q": "Tôi có thể dùng SchoolTest mà không cần AI không?",
+          "a": "Có. Chế độ xem nhóm được tích hợp sẵn, nên bạn có thể biết nên ghép cặp ai và chia lớp theo kỹ năng thế nào mà không cần công cụ AI."
+        },
+        "ask": {
+          "q": "Tôi có thể đặt câu hỏi về kết quả của lớp không?",
+          "a": "Có. Bảng Ask AI cho phép bạn truy vấn dữ liệu kỹ năng con bằng tiếng Anh thông thường – ví dụ, học sinh nào cần luyện suy luận – và đưa ra câu trả lời cụ thể thay vì một bảng tính."
+        }
+      }
+    },
+    "track": {
+      "serviceName": "SchoolTest Theo dõi",
+      "serviceType": "Theo dõi tiến bộ ngôn ngữ tiếng Anh",
+      "faq": {
+        "often": {
+          "q": "Học sinh có thể được kiểm tra lại bao lâu một lần?",
+          "a": "Bất cứ khi nào bạn cần. Kiểm tra lại một kỹ năng mất khoảng 40 phút, nên bạn có thể kiểm tra tiến bộ vào lúc phù hợp với việc giảng dạy."
+        },
+        "scale": {
+          "q": "Tiến bộ được đo như thế nào?",
+          "a": "Mỗi buổi kiểm tra đều được báo cáo trên cùng thang giai đoạn EAL/D của ACARA, nên kết quả có thể so sánh giữa các buổi, theo từng kỹ năng và kỹ năng con."
+        },
+        "class": {
+          "q": "Tôi có xem được tiến bộ của cả lớp không?",
+          "a": "Có. Chế độ xem cấp lớp cho thấy cả lớp tiến triển thế nào ở từng kỹ năng con, cùng với đường tiến bộ riêng của mỗi học sinh."
+        },
+        "teaching": {
+          "q": "Việc theo dõi có cho biết cách dạy của tôi có hiệu quả không?",
+          "a": "Có. Sau vài tuần tập trung vào một kỹ năng con như từ vựng, bài kiểm tra lại cho thấy kỹ năng đó có tiến bộ hay không – phản hồi về việc giảng dạy của bạn cũng như về học sinh."
+        }
+      }
+    },
+    "predict": {
+      "serviceName": "SchoolTest Dự đoán",
+      "serviceType": "Dự đoán mức sẵn sàng vào lớp chính khóa",
+      "faq": {
+        "what": {
+          "q": "Chỉ số sẵn sàng vào lớp chính khóa là gì?",
+          "a": "Một điểm sẵn sàng duy nhất được tổng hợp từ cả 27 kỹ năng con của đọc, nghe, nói và viết, hiển thị cùng các kỹ năng con vẫn đang cản trở học sinh."
+        },
+        "decision": {
+          "q": "SchoolTest có quyết định khi nào học sinh kết thúc hỗ trợ EAL/D không?",
+          "a": "Không. Quyết định vẫn thuộc về giáo viên và nhà trường. SchoolTest cung cấp bằng chứng – điểm sẵn sàng và các kỹ năng con đằng sau – để mang vào hội đồng, buổi họp phụ huynh hoặc họp giáo viên."
+        },
+        "cohort": {
+          "q": "Tôi có thể dự báo mức sẵn sàng của cả khối không?",
+          "a": "Có. Chế độ xem khối hiển thị mức sẵn sàng của mọi học sinh ở một nơi, để bạn ước tính số học sinh có thể kết thúc hỗ trợ vào học kỳ tới trước khi xếp thời khóa biểu."
+        }
+      }
+    },
+    "report": {
+      "serviceName": "SchoolTest Báo cáo",
+      "serviceType": "Báo cáo đánh giá cho học sinh, gia đình và nhà trường",
+      "faq": {
+        "audiences": {
+          "q": "Ai có thể nhận báo cáo SchoolTest?",
+          "a": "Học sinh, cha mẹ và người chăm sóc, hiệu trưởng và lãnh đạo nhà trường, và giáo viên lớp chính khóa. Mỗi đối tượng nhận một phiên bản được viết riêng cho họ."
+        },
+        "sending": {
+          "q": "Báo cáo có được gửi tự động không?",
+          "a": "Không. Báo cáo được tạo tự động nhưng không bao giờ được gửi tự động. Phiên bản cho học sinh và phụ huynh ở dạng bản nháp cho đến khi giáo viên phát hành."
+        },
+        "format": {
+          "q": "Báo cáo được chia sẻ như thế nào?",
+          "a": "Tải báo cáo xuống dưới dạng PDF hoặc gửi qua email – cho gia đình của một học sinh, cả lớp hoặc ban lãnh đạo."
+        },
+        "families": {
+          "q": "Gia đình có hiểu được báo cáo không?",
+          "a": "Báo cáo cho gia đình dùng ngôn ngữ đơn giản, không có thuật ngữ đánh giá, và tập trung vào điểm mạnh cùng các bước tiếp theo của học sinh."
+        }
+      }
+    }
   }
 }

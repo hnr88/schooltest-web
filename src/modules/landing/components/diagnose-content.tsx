@@ -1,7 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
+import type { ReactNode } from 'react';
+
 import '../landing.css';
 
-export function LandingDiagnoseContent() {
+export function LandingDiagnoseContent({ aeo }: { aeo?: ReactNode }) {
   return (
     <div className="st-landing">
 
@@ -42,7 +44,7 @@ export function LandingDiagnoseContent() {
       <span style={{ display: 'inline-block', fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#0D9488' }}>01 · SEE STRENGTHS AND WEAKNESSES</span>
       <h1 style={{ margin: '16px 0 0', fontSize: '46px', lineHeight: '1.07', fontWeight: '700', letterSpacing: '-0.03em', color: '#0E2350', textWrap: 'balance', maxWidth: '16ch' }}>One 40-minute sitting. All is revealed.</h1>
       <div style={{ width: '56px', height: '3px', background: '#0D9488', marginTop: '20px', borderRadius: '2px' }}></div>
-      <p style={{ margin: '22px 0 0', fontSize: '18px', lineHeight: '1.6', color: '#475569', textWrap: 'pretty', maxWidth: '54ch' }}>SchoolTest breaks placement test scores into 27 subskill scores - so you know exactly what they need before you’ve even met them.</p>
+      <p data-speakable="summary" style={{ margin: '22px 0 0', fontSize: '18px', lineHeight: '1.6', color: '#475569', textWrap: 'pretty', maxWidth: '54ch' }}>SchoolTest breaks placement test scores into 27 subskill scores - so you know exactly what they need before you’ve even met them.</p>
       <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginTop: '30px' }}>
         <a href="/#register" style={{ display: 'inline-flex', alignItems: 'center', gap: '9px', background: '#2563EB', color: '#FFFFFF', fontSize: '15px', fontWeight: '600', padding: '15px 26px', borderRadius: '12px', textDecoration: 'none' }} data-diagnose-h="7">Join the pilot<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg></a>
       </div>
@@ -209,6 +211,7 @@ export function LandingDiagnoseContent() {
   </div>
 </section>
 
+{aeo}
 </main>
 
 <footer data-screen-label="Footer" style={{ background: '#0A1A3C' }}>

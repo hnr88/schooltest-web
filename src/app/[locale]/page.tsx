@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
 import { LandingHomeContent } from '@/modules/landing';
-import { BreadcrumbJsonLd, PublicPageJsonLd, buildPageMetadata } from '@/modules/seo';
+import { LandingPageAeo, buildPageMetadata } from '@/modules/seo';
 import { getPublicSettings, PublicSiteBanner } from '@/modules/settings';
 
 interface HomePageProps {
@@ -32,15 +32,17 @@ export default async function HomePage({ params }: HomePageProps) {
   return (
     <>
       <PublicSiteBanner settings={settings} />
-      <BreadcrumbJsonLd pathname="/" locale={locale} />
-      <PublicPageJsonLd
-        pathname="/"
-        locale={locale}
-        isSiteRoot
-        title={t('homeTitle')}
-        description={t('homeDescription')}
+      <LandingHomeContent
+        aeo={
+          <LandingPageAeo
+            page="home"
+            pathname="/"
+            locale={locale}
+            title={t('homeTitle')}
+            description={t('homeDescription')}
+          />
+        }
       />
-      <LandingHomeContent />
     </>
   );
 }

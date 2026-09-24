@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
 import { LandingReportContent } from '@/modules/landing';
-import { BreadcrumbJsonLd, PublicPageJsonLd, buildPageMetadata } from '@/modules/seo';
+import { LandingPageAeo, buildPageMetadata } from '@/modules/seo';
 import { getPublicSettings, PublicSiteBanner } from '@/modules/settings';
 
 interface ReportPageProps {
@@ -32,14 +32,17 @@ export default async function ReportPage({ params }: ReportPageProps) {
   return (
     <>
       <PublicSiteBanner settings={settings} />
-      <BreadcrumbJsonLd pathname="/report" locale={locale} />
-      <PublicPageJsonLd
-        pathname="/report"
-        locale={locale}
-        title={t('reportTitle')}
-        description={t('reportDescription')}
+      <LandingReportContent
+        aeo={
+          <LandingPageAeo
+            page="report"
+            pathname="/report"
+            locale={locale}
+            title={t('reportTitle')}
+            description={t('reportDescription')}
+          />
+        }
       />
-      <LandingReportContent />
     </>
   );
 }

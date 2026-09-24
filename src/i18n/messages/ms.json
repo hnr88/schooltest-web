@@ -6364,5 +6364,190 @@
       "emptyTitle": "Belum ada apa untuk disemak",
       "emptyDescription": "Sesi ini tiada jawapan yang direkodkan."
     }
+  },
+  "Aeo": {
+    "faqHeading": "Soalan lazim",
+    "faqIntro": "Jawapan ringkas tentang apa yang dilakukan SchoolTest dan cara sekolah menggunakannya.",
+    "softwareDescription": "Penilaian diagnostik dan kemajuan bahasa Inggeris untuk pelajar EAL/D di sekolah menengah Australia, Tahun 7–12. Menguji membaca, mendengar, bertutur dan menulis serta melaporkan 27 subkemahiran pada progresi pembelajaran EAL/D ACARA.",
+    "features": {
+      "diagnose": "Ujian diagnostik membaca, mendengar, bertutur dan menulis",
+      "subskills": "27 skor subkemahiran dilaporkan pada progresi pembelajaran EAL/D ACARA",
+      "track": "Penjejakan kemajuan merentas beberapa sesi ujian",
+      "predict": "Penunjuk kesediaan ke kelas arus perdana",
+      "report": "Laporan untuk pelajar, keluarga, guru dan pemimpin sekolah",
+      "export": "Eksport set kelas bernama samaran untuk perancangan pelajaran berbantukan AI"
+    },
+    "home": {
+      "faq": {
+        "what": {
+          "q": "Apakah SchoolTest?",
+          "a": "SchoolTest ialah penilaian diagnostik dan kemajuan bahasa Inggeris untuk pelajar EAL/D di sekolah menengah Australia. Ia menguji membaca, mendengar, bertutur dan menulis, memecahkan setiap skor kepada subkemahiran, dan melaporkan keputusan berdasarkan progresi pembelajaran EAL/D ACARA."
+        },
+        "who": {
+          "q": "Untuk siapakah SchoolTest?",
+          "a": "Pelajar EAL/D Tahun 7–12, serta guru, penyelaras dan pemimpin sekolah yang merancang pembelajaran mereka. Kandungan ujian sesuai dengan umur dan menggunakan konteks Australia."
+        },
+        "skills": {
+          "q": "Apakah yang diukur oleh SchoolTest?",
+          "a": "Keempat-empat kemahiran – membaca, mendengar, bertutur dan menulis – serta 27 subkemahiran di bawahnya, seperti kosa kata, tatabahasa, inferens dan bacaan kritis. Skor subkemahiran menunjukkan apa yang perlu diajar seterusnya, bukan sekadar satu band."
+        },
+        "duration": {
+          "q": "Berapa lamakah satu ujian?",
+          "a": "Kira-kira 40 minit bagi setiap kemahiran. Ujian dijalankan di dalam kelas pada bila-bila masa yang dipilih oleh sekolah, dan satu kemahiran boleh diuji semula secara berasingan."
+        },
+        "delivery": {
+          "q": "Bagaimanakah pelajar menduduki ujian?",
+          "a": "Pelajar menduduki ujian di komputer melalui aplikasi desktop SchoolTest. Guru membuka sesi ujian dalam portal SchoolTest dan memaparkan kod sertai kepada kelas; pelajar memasukkan kod itu dalam aplikasi untuk bermula."
+        },
+        "results": {
+          "q": "Bagaimanakah keputusan dilaporkan?",
+          "a": "Setiap skor kemahiran dipecahkan kepada skor subkemahiran pada fasa progresi pembelajaran EAL/D ACARA, jadi guru nampak kekuatan dan jurang sejak sesi pertama. Laporan boleh dikongsi dengan pelajar, keluarga, guru dan pemimpin sekolah."
+        },
+        "availability": {
+          "q": "Bolehkah sekolah saya menggunakan SchoolTest sekarang?",
+          "a": "SchoolTest menjalankan rintis bersama sekolah pengasas pada Penggal 4, 2026. Sekolah boleh mendaftar minat melalui borang pernyataan minat di halaman ini, dan pasukan program akan menghubungi anda."
+        },
+        "privacy": {
+          "q": "Apakah yang berlaku kepada data pelajar?",
+          "a": "Eksport set kelas menggunakan nama samaran dan tiada nama pelajar dalam mana-mana eksport. Laporan dijana secara automatik tetapi tidak pernah dihantar secara automatik: guru memilih laporan mana dihantar kepada siapa, dan bila."
+        }
+      }
+    },
+    "diagnose": {
+      "serviceName": "SchoolTest Diagnose",
+      "serviceType": "Penilaian diagnostik bahasa Inggeris",
+      "faq": {
+        "shows": {
+          "q": "Apakah yang ditunjukkan oleh diagnostik SchoolTest?",
+          "a": "Ia memecahkan skor membaca, mendengar, bertutur dan menulis pelajar kepada 27 skor subkemahiran, setiap satu dilaporkan pada fasa progresi pembelajaran EAL/D ACARA, supaya anda nampak dengan tepat kekuatan dan jurangnya."
+        },
+        "placement": {
+          "q": "Mengapa skor ujian penempatan tidak mencukupi?",
+          "a": "Satu band seperti CEFR B1 boleh menyembunyikan kebolehan yang sangat berbeza. Dua pelajar dengan skor yang sama mungkin kuat dan lemah dalam subkemahiran yang bertentangan; profil subkemahiran menunjukkan perbezaan itu supaya setiap pelajar diajar mengikut keperluannya."
+        },
+        "when": {
+          "q": "Bilakah guru dapat melihat keputusan?",
+          "a": "Sejak sesi pertama, tanpa pemarkahan oleh guru – bukannya berminggu-minggu untuk memahami keperluan pelajar baharu."
+        },
+        "length": {
+          "q": "Berapa lamakah ujian diagnostik?",
+          "a": "Setiap kemahiran mengambil satu sesi 40 minit di dalam kelas, pada masa yang dipilih oleh sekolah."
+        }
+      },
+      "howTo": {
+        "heading": "Bagaimanakah sekolah memulakan ujian diagnostik?",
+        "intro": "Enam langkah daripada hubungan pertama hingga profil subkemahiran pertama sesebuah kelas.",
+        "steps": {
+          "register": {
+            "name": "Daftar minat",
+            "text": "Lengkapkan borang pernyataan minat. Pasukan program akan membalas dalam masa seminggu dengan contoh laporan."
+          },
+          "onboard": {
+            "name": "Sediakan sekolah",
+            "text": "Pasukan program menghantar pautan pendaftaran kepada sekolah, dan pentadbir sekolah menggunakannya untuk melengkapkan persediaan sekolah."
+          },
+          "roster": {
+            "name": "Tambah guru, kelas dan pelajar",
+            "text": "Jemput guru, cipta kelas dan tambah pelajar satu demi satu atau dengan mengimport fail CSV."
+          },
+          "sitting": {
+            "name": "Buka sesi ujian",
+            "text": "Guru membuka sesi ujian untuk sesebuah kelas dalam portal SchoolTest dan memaparkan kod sertai enam digitnya."
+          },
+          "sit": {
+            "name": "Pelajar menduduki ujian",
+            "text": "Pelajar membuka aplikasi desktop SchoolTest, memasukkan kod sertai dan melengkapkan ujian – kira-kira 40 minit bagi setiap kemahiran."
+          },
+          "results": {
+            "name": "Baca profil subkemahiran",
+            "text": "Keputusan dipaparkan dalam portal guru sebagai profil subkemahiran pada fasa EAL/D ACARA, sedia untuk perancangan."
+          }
+        }
+      }
+    },
+    "teach": {
+      "serviceName": "SchoolTest Teach",
+      "serviceType": "Perancangan pelajaran berasaskan penilaian",
+      "faq": {
+        "how": {
+          "q": "Bagaimanakah SchoolTest membantu saya merancang pelajaran?",
+          "a": "Eksport set kelas profil subkemahiran bernama samaran dan berikan kepada pembantu AI seperti ChatGPT, Gemini atau Claude. Data subkemahiran sebenar menukar gesaan umum kepada bahan yang sepadan dengan keperluan setiap pelajar."
+        },
+        "names": {
+          "q": "Adakah nama pelajar dikongsi dengan alat AI?",
+          "a": "Tidak. Eksport set kelas menggunakan nama samaran dan tiada nama pelajar dalam mana-mana eksport."
+        },
+        "withoutAi": {
+          "q": "Bolehkah saya menggunakan SchoolTest tanpa AI?",
+          "a": "Boleh. Paparan pengumpulan terbina dalam, jadi anda boleh lihat siapa perlu dipasangkan dan cara membahagikan kelas mengikut kemahiran tanpa alat AI."
+        },
+        "ask": {
+          "q": "Bolehkah saya bertanya tentang keputusan kelas saya?",
+          "a": "Boleh. Panel Ask AI membolehkan anda menyoal data subkemahiran dalam bahasa Inggeris biasa – contohnya, pelajar mana perlu berlatih inferens – dan memberikan jawapan khusus, bukan hamparan."
+        }
+      }
+    },
+    "track": {
+      "serviceName": "SchoolTest Track",
+      "serviceType": "Pemantauan kemajuan bahasa Inggeris",
+      "faq": {
+        "often": {
+          "q": "Berapa kerapkah pelajar boleh diuji semula?",
+          "a": "Sekerap yang anda perlukan. Ujian semula satu kemahiran mengambil kira-kira 40 minit, jadi anda boleh menyemak kemajuan bila-bila masa yang sesuai dengan pengajaran anda."
+        },
+        "scale": {
+          "q": "Bagaimanakah kemajuan diukur?",
+          "a": "Setiap sesi dilaporkan pada skala fasa EAL/D ACARA yang sama, jadi keputusan boleh dibandingkan dari satu sesi ke sesi seterusnya, mengikut kemahiran dan subkemahiran."
+        },
+        "class": {
+          "q": "Bolehkah saya melihat kemajuan seluruh kelas?",
+          "a": "Boleh. Paparan peringkat kelas menunjukkan pergerakan seluruh kelas bagi setiap subkemahiran, bersama garis kemajuan setiap pelajar."
+        },
+        "teaching": {
+          "q": "Bolehkah penjejakan menunjukkan sama ada pengajaran saya berkesan?",
+          "a": "Boleh. Selepas beberapa minggu memberi tumpuan kepada subkemahiran seperti kosa kata, ujian semula menunjukkan sama ada subkemahiran itu bertambah baik – maklum balas tentang pengajaran anda dan juga pelajar anda."
+        }
+      }
+    },
+    "predict": {
+      "serviceName": "SchoolTest Predict",
+      "serviceType": "Ramalan kesediaan ke kelas arus perdana",
+      "faq": {
+        "what": {
+          "q": "Apakah penunjuk kesediaan ke kelas arus perdana?",
+          "a": "Satu skor kesediaan yang digabungkan daripada kesemua 27 subkemahiran merentas membaca, mendengar, bertutur dan menulis, dipaparkan bersama subkemahiran yang masih menghalang pelajar."
+        },
+        "decision": {
+          "q": "Adakah SchoolTest memutuskan bila pelajar keluar daripada sokongan EAL/D?",
+          "a": "Tidak. Keputusan itu kekal pada guru dan sekolah. SchoolTest menyediakan bukti – skor kesediaan dan subkemahiran di sebaliknya – untuk dibawa ke mesyuarat panel, ibu bapa atau kakitangan."
+        },
+        "cohort": {
+          "q": "Bolehkah saya meramal kesediaan seluruh kohort?",
+          "a": "Boleh. Paparan kohort menunjukkan kesediaan setiap pelajar di satu tempat, jadi anda boleh menganggarkan bilangan pelajar yang mungkin keluar penggal depan sebelum menyediakan jadual waktu."
+        }
+      }
+    },
+    "report": {
+      "serviceName": "SchoolTest Report",
+      "serviceType": "Laporan penilaian untuk pelajar, keluarga dan sekolah",
+      "faq": {
+        "audiences": {
+          "q": "Siapakah yang boleh menerima laporan SchoolTest?",
+          "a": "Pelajar, ibu bapa dan penjaga, pengetua dan pemimpin sekolah, serta guru kelas arus perdana. Setiap pihak menerima versi yang ditulis untuk mereka."
+        },
+        "sending": {
+          "q": "Adakah laporan dihantar secara automatik?",
+          "a": "Tidak. Laporan dijana secara automatik tetapi tidak pernah dihantar secara automatik. Versi pelajar dan ibu bapa kekal sebagai draf sehingga guru mengeluarkannya."
+        },
+        "format": {
+          "q": "Bagaimanakah laporan dikongsi?",
+          "a": "Muat turun laporan sebagai PDF atau hantar melalui e-mel – kepada keluarga seorang pelajar, seluruh kelas atau pasukan kepimpinan."
+        },
+        "families": {
+          "q": "Adakah keluarga akan memahami laporan itu?",
+          "a": "Laporan keluarga menggunakan bahasa mudah tanpa istilah penilaian dan memberi tumpuan kepada kekuatan serta langkah seterusnya pelajar."
+        }
+      }
+    }
   }
 }

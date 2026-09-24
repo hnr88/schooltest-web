@@ -1,7 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
+import type { ReactNode } from 'react';
+
 import '../landing.css';
 
-export function LandingTrackContent() {
+export function LandingTrackContent({ aeo }: { aeo?: ReactNode }) {
   return (
     <div className="st-landing">
 
@@ -44,7 +46,7 @@ export function LandingTrackContent() {
     <div style={{ maxWidth: '660px' }}>
       <span style={{ display: 'inline-block', fontSize: '11.5px', fontWeight: '700', letterSpacing: '.14em', textTransform: 'uppercase', color: '#5EEAD4' }}>03 · Track progress over time</span>
       <h1 style={{ margin: '16px 0 0', fontSize: '46px', lineHeight: '1.07', fontWeight: '700', letterSpacing: '-0.03em', color: '#FFFFFF', textWrap: 'balance' }}>Watch every subskill move every time you test.</h1>
-      <p style={{ margin: '20px 0 0', fontSize: '18px', lineHeight: '1.6', color: '#C7D6F2', textWrap: 'pretty', maxWidth: '56ch' }}>Retest at any point - 40 minutes each. Growth is visible skill by skill, subskill by subskill.</p>
+      <p data-speakable="summary" style={{ margin: '20px 0 0', fontSize: '18px', lineHeight: '1.6', color: '#C7D6F2', textWrap: 'pretty', maxWidth: '56ch' }}>Retest at any point - 40 minutes each. Growth is visible skill by skill, subskill by subskill.</p>
       <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginTop: '30px' }}>
         <a href="/#register" style={{ display: 'inline-flex', alignItems: 'center', gap: '9px', background: '#2563EB', color: '#FFFFFF', fontSize: '15px', fontWeight: '600', padding: '15px 26px', borderRadius: '12px', textDecoration: 'none' }} data-track-h="7">Join the pilot<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg></a>
       </div>
@@ -244,6 +246,7 @@ export function LandingTrackContent() {
   </div>
 </section>
 
+{aeo}
 </main>
 
 <footer data-screen-label="Footer" style={{ background: '#0A1A3C' }}>

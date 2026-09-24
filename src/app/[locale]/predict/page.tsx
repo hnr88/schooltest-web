@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
 import { LandingPredictContent } from '@/modules/landing';
-import { BreadcrumbJsonLd, PublicPageJsonLd, buildPageMetadata } from '@/modules/seo';
+import { LandingPageAeo, buildPageMetadata } from '@/modules/seo';
 import { getPublicSettings, PublicSiteBanner } from '@/modules/settings';
 
 interface PredictPageProps {
@@ -32,14 +32,17 @@ export default async function PredictPage({ params }: PredictPageProps) {
   return (
     <>
       <PublicSiteBanner settings={settings} />
-      <BreadcrumbJsonLd pathname="/predict" locale={locale} />
-      <PublicPageJsonLd
-        pathname="/predict"
-        locale={locale}
-        title={t('predictTitle')}
-        description={t('predictDescription')}
+      <LandingPredictContent
+        aeo={
+          <LandingPageAeo
+            page="predict"
+            pathname="/predict"
+            locale={locale}
+            title={t('predictTitle')}
+            description={t('predictDescription')}
+          />
+        }
       />
-      <LandingPredictContent />
     </>
   );
 }

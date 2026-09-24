@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
 import { LandingTrackContent } from '@/modules/landing';
-import { BreadcrumbJsonLd, PublicPageJsonLd, buildPageMetadata } from '@/modules/seo';
+import { LandingPageAeo, buildPageMetadata } from '@/modules/seo';
 import { getPublicSettings, PublicSiteBanner } from '@/modules/settings';
 
 interface TrackPageProps {
@@ -32,14 +32,17 @@ export default async function TrackPage({ params }: TrackPageProps) {
   return (
     <>
       <PublicSiteBanner settings={settings} />
-      <BreadcrumbJsonLd pathname="/track" locale={locale} />
-      <PublicPageJsonLd
-        pathname="/track"
-        locale={locale}
-        title={t('trackTitle')}
-        description={t('trackDescription')}
+      <LandingTrackContent
+        aeo={
+          <LandingPageAeo
+            page="track"
+            pathname="/track"
+            locale={locale}
+            title={t('trackTitle')}
+            description={t('trackDescription')}
+          />
+        }
       />
-      <LandingTrackContent />
     </>
   );
 }

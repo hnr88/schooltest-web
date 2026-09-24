@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
 import { notFound } from 'next/navigation';
 import { NextIntlClientProvider } from 'next-intl';
@@ -8,8 +8,7 @@ import '../globals.css';
 import { Providers } from '@/modules/providers';
 import { Toaster } from '@/components/ui/sonner';
 import { isLocale } from '@/i18n/routing';
-import { env } from '@/lib/env';
-import { SITE_NAME } from '@/modules/seo';
+import { SITE_VIEWPORT, buildRootMetadata } from '@/modules/seo';
 
 const googleSans = localFont({
   src: [
@@ -37,14 +36,7 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'Seo' });
   return {
-    metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
-    // The brand is `SchoolTest` (see SITE_NAME) — the lowercase `Schooltest` here
-    // disagreed with `og:site_name` and the generated card on every page.
-    title: {
-      default: SITE_NAME,
-      template: `%s · ${SITE_NAME}`,
-    },
-    description: t('siteDescription'),
+    ...buildRootMetadata({ locale, description: t('siteDescription') }),
     icons: {
       icon: [
         { url: '/icons/icon.svg', type: 'image/svg+xml' },
@@ -75,14 +67,10 @@ export async function generateMetadata({
       ],
       apple: [{ url: '/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
     },
-    openGraph: {
-      type: 'website',
-      url: '/',
-      title: SITE_NAME,
-      description: t('siteDescription'),
-    },
   };
 }
+
+export const viewport: Viewport = SITE_VIEWPORT;
 
 export default async function RootLayout({
   children,

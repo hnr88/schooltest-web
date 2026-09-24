@@ -6354,5 +6354,190 @@
       "emptyTitle": "Nothing to review yet",
       "emptyDescription": "This sitting has no recorded responses."
     }
+  },
+  "Aeo": {
+    "faqHeading": "Frequently asked questions",
+    "faqIntro": "Short, direct answers about what SchoolTest does and how schools use it.",
+    "softwareDescription": "Diagnostic and progress English assessment for EAL/D students in Australian high schools, Years 7–12. Tests reading, listening, speaking and writing and reports 27 subskills on the ACARA EAL/D learning progression.",
+    "features": {
+      "diagnose": "Diagnostic testing of reading, listening, speaking and writing",
+      "subskills": "27 subskill scores reported on the ACARA EAL/D learning progression",
+      "track": "Progress tracking across repeated sittings",
+      "predict": "Mainstream readiness indicator",
+      "report": "Reports for students, families, teachers and school leaders",
+      "export": "Pseudonymised class-set export for AI-assisted lesson planning"
+    },
+    "home": {
+      "faq": {
+        "what": {
+          "q": "What is SchoolTest?",
+          "a": "SchoolTest is a diagnostic and progress English assessment for EAL/D students in Australian high schools. It tests reading, listening, speaking and writing, breaks each score into subskills, and reports results against the ACARA EAL/D learning progression."
+        },
+        "who": {
+          "q": "Who is SchoolTest for?",
+          "a": "EAL/D students in Years 7–12, and the teachers, coordinators and school leaders who plan their learning. Test content is age-appropriate and uses Australian contexts."
+        },
+        "skills": {
+          "q": "What does SchoolTest measure?",
+          "a": "All four skills – reading, listening, speaking and writing – and 27 subskills underneath them, such as vocabulary, grammar, inference and critical reading. Subskill scores show what to teach next, not just a single band."
+        },
+        "duration": {
+          "q": "How long does a test take?",
+          "a": "About 40 minutes per skill. Tests run in class whenever the school chooses, and a single skill can be retested on its own."
+        },
+        "delivery": {
+          "q": "How do students sit the test?",
+          "a": "Students sit the test on a computer in the SchoolTest desktop app. The teacher opens a sitting in the SchoolTest portal and shows the class a join code; students enter the code in the app to begin."
+        },
+        "results": {
+          "q": "How are results reported?",
+          "a": "Each skill score is broken into subskill scores on the ACARA EAL/D learning progression phases, so teachers see strengths and gaps from the first sitting. Reports can be shared with students, families, teachers and school leaders."
+        },
+        "availability": {
+          "q": "Can my school use SchoolTest now?",
+          "a": "SchoolTest is piloting with founding schools in Term 4, 2026. Schools can register interest with the expression-of-interest form on this page, and the programme team will be in touch."
+        },
+        "privacy": {
+          "q": "What happens to student data?",
+          "a": "Class-set exports are pseudonymised and no student names appear in any export. Reports are generated automatically but never sent automatically: a teacher chooses which report goes to which audience, and when."
+        }
+      }
+    },
+    "diagnose": {
+      "serviceName": "SchoolTest Diagnose",
+      "serviceType": "Diagnostic English language assessment",
+      "faq": {
+        "shows": {
+          "q": "What does the SchoolTest diagnostic show?",
+          "a": "It breaks a student's reading, listening, speaking and writing scores into 27 subskill scores, each reported on the ACARA EAL/D learning progression phases, so you can see exactly where the strengths and gaps are."
+        },
+        "placement": {
+          "q": "Why isn't a placement score enough?",
+          "a": "A single band such as CEFR B1 can hide very different abilities. Two students with the same score can be strong and weak in opposite subskills; the subskill profile shows the difference so each student can be taught what they need."
+        },
+        "when": {
+          "q": "When do teachers see the results?",
+          "a": "From the first sitting, with no teacher marking – instead of the weeks it usually takes to work out a new student's needs."
+        },
+        "length": {
+          "q": "How long is the diagnostic?",
+          "a": "Each skill takes one 40-minute sitting in class, at a time the school chooses."
+        }
+      },
+      "howTo": {
+        "heading": "How does a school start a diagnostic?",
+        "intro": "Six steps from first contact to a class's first subskill profiles.",
+        "steps": {
+          "register": {
+            "name": "Register interest",
+            "text": "Complete the expression-of-interest form. The programme team replies within a week with a sample report."
+          },
+          "onboard": {
+            "name": "Set up the school",
+            "text": "The programme team sends the school an onboarding link, and a school administrator uses it to complete the school's setup."
+          },
+          "roster": {
+            "name": "Add teachers, classes and students",
+            "text": "Invite teachers, create classes and add students one at a time or by importing a CSV file."
+          },
+          "sitting": {
+            "name": "Open a sitting",
+            "text": "A teacher opens a test sitting for a class in the SchoolTest portal and displays its six-digit join code."
+          },
+          "sit": {
+            "name": "Students sit the test",
+            "text": "Students open the SchoolTest desktop app, enter the join code and complete the test – about 40 minutes per skill."
+          },
+          "results": {
+            "name": "Read the subskill profiles",
+            "text": "Results appear in the teacher portal as subskill profiles on the ACARA EAL/D phases, ready for planning."
+          }
+        }
+      }
+    },
+    "teach": {
+      "serviceName": "SchoolTest Teach",
+      "serviceType": "Assessment-informed lesson planning",
+      "faq": {
+        "how": {
+          "q": "How does SchoolTest help me plan lessons?",
+          "a": "Export a pseudonymised class set of subskill profiles and give it to an AI assistant such as ChatGPT, Gemini or Claude. Real subskill data turns a generic prompt into materials matched to each student's area of need."
+        },
+        "names": {
+          "q": "Are student names shared with AI tools?",
+          "a": "No. The class-set export is pseudonymised and no student names appear in any export."
+        },
+        "withoutAi": {
+          "q": "Can I use SchoolTest without AI?",
+          "a": "Yes. Grouping views are built in, so you can see who to pair and how to split the class by skill without using an AI tool."
+        },
+        "ask": {
+          "q": "Can I ask questions about my class's results?",
+          "a": "Yes. The Ask AI panel lets you query the subskill data in plain English – for example, which students need work on inference – and gives a specific answer instead of a spreadsheet."
+        }
+      }
+    },
+    "track": {
+      "serviceName": "SchoolTest Track",
+      "serviceType": "English language progress monitoring",
+      "faq": {
+        "often": {
+          "q": "How often can students be retested?",
+          "a": "As often as you need. A single-skill retest takes about 40 minutes, so you can check progress whenever it suits your teaching."
+        },
+        "scale": {
+          "q": "How is progress measured?",
+          "a": "Every sitting is reported on the same ACARA EAL/D phase scale, so results are comparable from one sitting to the next, skill by skill and subskill by subskill."
+        },
+        "class": {
+          "q": "Can I see progress for a whole class?",
+          "a": "Yes. Class-level views show how the whole class is moving on each subskill, alongside each student's own progress line."
+        },
+        "teaching": {
+          "q": "Can tracking show whether my teaching worked?",
+          "a": "Yes. After several weeks of work on a subskill such as vocabulary, a retest shows whether that subskill moved – feedback on your teaching as well as on your students."
+        }
+      }
+    },
+    "predict": {
+      "serviceName": "SchoolTest Predict",
+      "serviceType": "Mainstream readiness prediction",
+      "faq": {
+        "what": {
+          "q": "What is the mainstream readiness indicator?",
+          "a": "A single readiness score aggregated from all 27 subskills across reading, listening, speaking and writing, shown with the subskills that are still holding a student back."
+        },
+        "decision": {
+          "q": "Does SchoolTest decide when a student exits EAL/D support?",
+          "a": "No. The exit decision stays with the teacher and the school. SchoolTest provides the evidence – the readiness score and the subskills behind it – to take into a panel, parent or staff meeting."
+        },
+        "cohort": {
+          "q": "Can I forecast readiness for a whole cohort?",
+          "a": "Yes. The cohort view shows every student's readiness in one place, so you can estimate how many students are likely to exit next term before you set the timetable."
+        }
+      }
+    },
+    "report": {
+      "serviceName": "SchoolTest Report",
+      "serviceType": "Assessment reporting for students, families and schools",
+      "faq": {
+        "audiences": {
+          "q": "Who can receive a SchoolTest report?",
+          "a": "Students, parents and carers, principals and school leaders, and mainstream teachers. Each audience gets a version written for them."
+        },
+        "sending": {
+          "q": "Are reports sent automatically?",
+          "a": "No. Reports are generated automatically but never sent automatically. Student and parent versions stay in draft until a teacher releases them."
+        },
+        "format": {
+          "q": "How are reports shared?",
+          "a": "Download a report as a PDF or send it by email – to one student's family, a whole class or the leadership team."
+        },
+        "families": {
+          "q": "Will families understand the report?",
+          "a": "Family reports use plain language without assessment jargon and focus on the student's strengths and next steps."
+        }
+      }
+    }
   }
 }

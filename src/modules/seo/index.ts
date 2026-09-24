@@ -24,6 +24,9 @@ export {
 export { buildPublicPageGraph } from '@/modules/seo/lib/public-page-graph';
 export { pageIds, siteIds } from '@/modules/seo/lib/json-ld-ids';
 export { serializeJsonLd } from '@/modules/seo/lib/serialize-json-ld';
+export { FaqSection } from '@/modules/seo/components/FaqSection';
+export { HowToSection } from '@/modules/seo/components/HowToSection';
+export { LandingPageAeo } from '@/modules/seo/components/LandingPageAeo';
 export {
   NOINDEX_ROBOTS,
   OG_ACCENT,

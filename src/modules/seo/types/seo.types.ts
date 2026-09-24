@@ -1,3 +1,5 @@
+import type { PublicEntry } from '@/modules/seo/types/metadata.types';
+
 /** A serialisable schema.org node. `@context` is present on top-level nodes only. */
 export type JsonLdValue = string | number | boolean | null | JsonLdNode | JsonLdValue[];
 
@@ -39,12 +41,16 @@ export interface PublicRoute {
   readonly priority: number;
   /** Full next-intl key for the llms.txt label. */
   readonly llmsLabelKey: string;
+  /** `Seo.pages.<seoKey>` holds the page's search title + description. */
+  readonly seoKey: string;
+  /** ISO date the page's copy last changed (git history), never "now". */
+  readonly lastModified: string;
 }
 
-/** Input for the llms.txt generator: the live legal index plus the locale. */
+/** Input for the llms.txt generators: the public surface for one locale. */
 export interface BuildLlmsTxtInput {
   readonly locale: string;
-  readonly legal: readonly { path: string; title: string; summary: string | null }[];
+  readonly entries: readonly PublicEntry[];
 }
 
 /** Publisher-level facts shared by the Organization and WebSite nodes. */

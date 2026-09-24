@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
 import { LandingDiagnoseContent } from '@/modules/landing';
-import { BreadcrumbJsonLd, PublicPageJsonLd, buildPageMetadata } from '@/modules/seo';
+import { LandingPageAeo, buildPageMetadata } from '@/modules/seo';
 import { getPublicSettings, PublicSiteBanner } from '@/modules/settings';
 
 interface DiagnosePageProps {
@@ -32,14 +32,17 @@ export default async function DiagnosePage({ params }: DiagnosePageProps) {
   return (
     <>
       <PublicSiteBanner settings={settings} />
-      <BreadcrumbJsonLd pathname="/diagnose" locale={locale} />
-      <PublicPageJsonLd
-        pathname="/diagnose"
-        locale={locale}
-        title={t('diagnoseTitle')}
-        description={t('diagnoseDescription')}
+      <LandingDiagnoseContent
+        aeo={
+          <LandingPageAeo
+            page="diagnose"
+            pathname="/diagnose"
+            locale={locale}
+            title={t('diagnoseTitle')}
+            description={t('diagnoseDescription')}
+          />
+        }
       />
-      <LandingDiagnoseContent />
     </>
   );
 }

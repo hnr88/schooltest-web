@@ -3,6 +3,24 @@ import createNextIntlPlugin from 'next-intl/plugin';
 
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
+// Mirrors DISALLOWED_PATHS in src/modules/seo/constants/public-routes.ts (a
+// unit test keeps the two identical). Inlined because Next's config loader
+// cannot resolve TypeScript modules imported from next.config.ts.
+const NOINDEX_PATHS = [
+  '/dashboard',
+  '/api',
+  '/auth',
+  '/sign-in',
+  '/sign-up',
+  '/forgot-password',
+  '/reset-password',
+  '/onboarding',
+  '/school-onboarding',
+  '/invite',
+  '/articles',
+  '/design-system',
+];
+
 const nextConfig: NextConfig = {
   output: 'standalone',
   reactCompiler: true,
@@ -25,6 +43,14 @@ const nextConfig: NextConfig = {
         has: [{ type: 'header', key: 'accept', value: '(.*text/html.*)' }],
         headers: [{ key: 'Cache-Control', value: 'no-cache, must-revalidate' }],
       },
+      // Private surfaces and the API stay out of every index even when a
+      // crawler reaches them by a link robots.txt cannot see (the HTML pages
+      // also say noindex in <meta>; this covers JSON, files and redirects).
+      ...NOINDEX_PATHS.flatMap((path) =>
+        [path, `${path}/:rest*`, `/:locale([a-z]{2})${path}`, `/:locale([a-z]{2})${path}/:rest*`].map(
+          (source) => ({ source, headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] }),
+        ),
+      ),
     ];
   },
 };
