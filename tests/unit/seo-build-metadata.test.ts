@@ -40,7 +40,10 @@ describe('buildMetadata', () => {
     expect(og.locale).toBe('zh_CN');
     expect(og.alternateLocale).toEqual(['en_AU', 'ko_KR', 'ms_MY', 'vi_VN', 'th_TH']);
     expect(og.images).toEqual([
-      { url: '/zh/opengraph-image', width: 1200, height: 630, alt: input.title, type: 'image/png' },
+      { url: `${BASE}/zh/diagnose/opengraph-image`, width: 1200, height: 630, alt: input.title, type: 'image/png' },
+    ]);
+    expect((meta.twitter as { images: unknown }).images).toEqual([
+      { url: `${BASE}/zh/diagnose/twitter-image`, alt: input.title },
     ]);
   });
 

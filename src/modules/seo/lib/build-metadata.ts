@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { routing } from '@/i18n/routing';
 import { env } from '@/lib/env';
 import { absoluteUrl } from '@/modules/seo/lib/breadcrumb-json-ld';
+import { buildOgImageSet } from '@/modules/seo/lib/og-image-url';
 import { clampDescription, clampText, composeDocumentTitle } from '@/modules/seo/lib/seo-text';
 import {
   INDEX_ROBOTS,
@@ -83,13 +84,7 @@ export function buildMetadata(input: BuildMetadataInput): Metadata {
   const canonical = absoluteUrl(canonicalTarget, locale, routing.defaultLocale);
   const pageTitle = clampText(title, TITLE_MAX_LENGTH);
   const summary = clampDescription(description);
-  const card = {
-    url: image?.url ?? ogImagePath(locale),
-    width: image?.width ?? OG_IMAGE_WIDTH,
-    height: image?.height ?? OG_IMAGE_HEIGHT,
-    alt: image?.alt ?? pageTitle,
-    type: image?.type ?? 'image/png',
-  };
+  const cards = buildOgImageSet({ pathname, locale, alt: pageTitle, override: image ?? null });
 
   const sharedOpenGraph = {
     title: pageTitle,
@@ -98,7 +93,7 @@ export function buildMetadata(input: BuildMetadataInput): Metadata {
     siteName,
     locale: ogLocale(locale),
     alternateLocale: routing.locales.filter((l) => l !== locale).map(ogLocale),
-    images: [card],
+    images: [cards.openGraph],
   };
 
   return {
@@ -124,7 +119,7 @@ export function buildMetadata(input: BuildMetadataInput): Metadata {
       card: 'summary_large_image',
       title: pageTitle,
       description: summary,
-      images: [{ url: card.url, alt: card.alt }],
+      images: [{ url: cards.twitter.url, alt: cards.twitter.alt }],
       ...twitterHandles(),
     },
     robots: noindex ? NOINDEX_ROBOTS : INDEX_ROBOTS,
