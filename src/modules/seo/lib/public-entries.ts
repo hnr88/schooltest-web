@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
-import { LEGAL_ROUTES, getLegalDocument, getLegalDocuments } from '@/modules/legal';
-import type { LegalSection } from '@/modules/legal';
 import { PUBLIC_ROUTES, isDisallowed } from '@/modules/seo/constants/public-routes';
 import { buildMetadata } from '@/modules/seo/lib/build-metadata';
 import { loadCmsContent } from '@/modules/seo/lib/cms-content';
@@ -49,35 +47,6 @@ export async function loadOrEmpty<T>(label: string, load: () => Promise<readonly
   }
 }
 
-function legalBody(sections: readonly LegalSection[]): string {
-  return sections
-    .map((section) =>
-      [
-        `### ${section.heading}`,
-        ...section.paragraphs,
-        ...(section.list ?? []).map((item) => `- ${item}`),
-      ].join('\n\n'),
-    )
-    .join('\n\n');
-}
-
-async function legalEntries(locale: string, withBody: boolean): Promise<readonly PublicContentInput[]> {
-  const summaries = await getLegalDocuments(locale);
-  return Promise.all(
-    summaries.map(async (document): Promise<PublicContentInput> => {
-      const full = withBody ? await getLegalDocument(document.slug, locale) : null;
-      return {
-        pathname: LEGAL_ROUTES[document.slug],
-        title: document.title,
-        description: document.summary ?? document.title,
-        updatedAt: document.updatedAt,
-        section: 'legal',
-        ...(full ? { body: legalBody(full.sections) } : {}),
-      };
-    }),
-  );
-}
-
 const SECTION_DEFAULTS = {
   pages: { changeFrequency: 'monthly', priority: 0.7 },
   articles: { changeFrequency: 'monthly', priority: 0.6 },
@@ -85,10 +54,10 @@ const SECTION_DEFAULTS = {
 } as const;
 
 /**
- * Every indexable URL for one locale: the static registry, the published legal
- * documents (C-LEG-01) and the CMS pages/articles — one list the sitemap,
+ * Every indexable URL for one locale: the static registry and the CMS pages
+ * (legal, info, articles) — one list the sitemap,
  * llms.txt and llms-full.txt all consume. A CMS record that shares a pathname
- * with the registry or a legal document replaces it.
+ * with the registry replaces it.
  */
 export async function getPublicEntries({
   locale,
@@ -112,11 +81,8 @@ export async function getPublicEntries({
     });
   }
 
-  const [legal, cms] = await Promise.all([
-    loadOrEmpty('legal documents', () => legalEntries(locale, withBody)),
-    loadOrEmpty('CMS content', () => loadCmsContent(locale)),
-  ]);
-  for (const item of [...legal, ...cms]) {
+  const cms = await loadOrEmpty('CMS content', () => loadCmsContent(locale, withBody));
+  for (const item of cms) {
     const existing = byPath.get(item.pathname);
     byPath.set(item.pathname, {
       ...SECTION_DEFAULTS[item.section],

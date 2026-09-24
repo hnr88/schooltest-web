@@ -6,7 +6,9 @@ import { ArticleCard } from '@/modules/cms/components/ArticleCard';
 import { CmsBreadcrumb } from '@/modules/cms/components/CmsBreadcrumb';
 import { CmsPublicShell } from '@/modules/cms/components/CmsPublicShell';
 import { ARTICLES_FEED_PATH, ARTICLES_PATH } from '@/modules/cms/constants/cms.constants';
+import { buildArticlesIndexJsonLd } from '@/modules/cms/lib/cms-json-ld';
 import type { ArticlesIndexScreenProps } from '@/modules/cms/types/components.types';
+import { JsonLd } from '@/modules/seo';
 
 const DATE = { year: 'numeric', month: 'long', day: 'numeric' } as const;
 
@@ -15,10 +17,21 @@ const DATE = { year: 'numeric', month: 'long', day: 'numeric' } as const;
 async function ArticlesIndexScreen({ locale, list }: ArticlesIndexScreenProps) {
   const t = await getTranslations();
   const format = await getFormatter({ locale });
+  const graph = buildArticlesIndexJsonLd({
+    locale,
+    title: t('Cms.articlesTitle'),
+    description: t('Cms.articlesDescription'),
+    siteDescription: t('Seo.siteDescription'),
+    crumbs: [
+      { label: t('Navigation.home'), href: '/' },
+      { label: t('Cms.articlesTitle'), href: ARTICLES_PATH },
+    ],
+  });
   const pageHref = (page: number) => (page <= 1 ? ARTICLES_PATH : `${ARTICLES_PATH}?page=${page}`);
 
   return (
     <CmsPublicShell locale={locale}>
+      <JsonLd data={graph} />
       <CmsBreadcrumb
         label={t('Navigation.breadcrumbLabel')}
         items={[{ label: t('Navigation.home'), href: '/' }, { label: t('Cms.articlesTitle') }]}

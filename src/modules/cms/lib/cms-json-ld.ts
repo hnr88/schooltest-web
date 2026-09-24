@@ -1,4 +1,5 @@
 import { toAbsoluteStrapiMediaUrl } from '@/lib/strapi-media';
+import { ARTICLES_PATH } from '@/modules/cms/constants/cms.constants';
 import { cmsPagePath } from '@/modules/cms/lib/cms-paths';
 import { blocksToText, countWords, pageToText } from '@/modules/cms/lib/cms-text';
 import type { CmsPage } from '@/modules/cms/types/cms.types';
@@ -92,5 +93,29 @@ export function buildCmsJsonLd({
     breadcrumb,
     faq,
     nodes,
+  });
+}
+
+/** The /articles index: a CollectionPage with its breadcrumb. */
+export function buildArticlesIndexJsonLd({
+  locale,
+  title,
+  description,
+  siteDescription,
+  crumbs,
+}: {
+  locale: string;
+  title: string;
+  description: string;
+  siteDescription: string;
+  crumbs: readonly { label: string; href: string }[];
+}): JsonLdGraph {
+  return buildPublicPageGraph({
+    site: { siteName: SITE_NAME, description: siteDescription },
+    page: { pathname: ARTICLES_PATH, locale, title, description, pageType: 'CollectionPage' },
+    breadcrumb: crumbs.map((crumb) => ({
+      name: crumb.label,
+      url: absoluteUrl(crumb.href, locale, routing.defaultLocale),
+    })),
   });
 }

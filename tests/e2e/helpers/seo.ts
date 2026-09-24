@@ -11,12 +11,13 @@ import type { Locator, Page } from '@playwright/test';
 // navigation in with them. `.claude/rules/module-pattern.md` scopes the
 // barrel-only rule to `src/modules/**`; these are route and test files.
 import { DISALLOWED_PATHS, PUBLIC_ROUTES } from '@/modules/seo/constants/public-routes';
-import { LEGAL_ROUTES } from '@/modules/legal/constants/legal.constants';
 
-/** Every indexable public path: the registry plus the four legal routes. */
+/** Every indexable public path: the registry plus the four legal CMS pages. */
+const LEGAL_PATHS = ['/privacy-policy', '/terms-of-service', '/cookie-policy', '/gdpr'] as const;
+
 export const PUBLIC_PATHS: readonly string[] = [
   ...PUBLIC_ROUTES.map((route) => route.pathname),
-  ...Object.values(LEGAL_ROUTES),
+  ...LEGAL_PATHS,
 ];
 
 export const DISALLOWED_IN_ROBOTS: readonly string[] = [...DISALLOWED_PATHS];

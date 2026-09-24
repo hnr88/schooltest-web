@@ -13,6 +13,7 @@ function toPublicContent(page: CmsPageSummary, body?: string): PublicContentInpu
     description: page.seo?.metaDescription || page.summary || page.title,
     updatedAt: page.updatedDate ?? page.updatedAt,
     section: SECTION_BY_TYPE[page.pageType],
+    locales: [page.locale],
     ...(body ? { body } : {}),
   };
 }

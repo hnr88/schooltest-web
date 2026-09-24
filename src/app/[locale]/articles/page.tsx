@@ -1,32 +1,40 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
-import { NOINDEX_ROBOTS } from '@/modules/seo';
+import { ARTICLES_FEED_PATH, ARTICLES_PAGE_SIZE, ARTICLES_PATH, ArticlesIndexScreen, listCmsPages } from '@/modules/cms';
+import { buildMetadata } from '@/modules/seo';
 
-import { ArticlesList, ArticleStatsCards, CreateArticleForm } from '@/modules/articles';
+interface ArticlesPageProps {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ page?: string }>;
+}
 
-// Not a public product page (.qa/DECISIONS.md D-27): robots.txt disallows it,
-// and this declaration keeps it out of the index under EVERY locale prefix,
-// which a bare robots Disallow line cannot express.
-export const metadata: Metadata = { robots: NOINDEX_ROBOTS };
+function pageNumber(value: string | undefined): number {
+  const parsed = Number.parseInt(value ?? '1', 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
+}
 
-export default async function ArticlesPage() {
-  const t = await getTranslations('Articles');
-  return (
-    <main className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-6 py-12">
-      <header className="flex flex-col gap-1">
-        <h1 className="text-2xl font-semibold tracking-tight">{t('title')}</h1>
-        <p className="text-sm text-muted-foreground">
-          {t('description')}
-        </p>
-      </header>
+export async function generateMetadata({ params, searchParams }: ArticlesPageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const page = pageNumber((await searchParams).page);
+  const t = await getTranslations({ locale, namespace: 'Cms' });
+  const metadata = buildMetadata({
+    title: t('articlesTitle'),
+    description: t('articlesDescription'),
+    pathname: ARTICLES_PATH,
+    locale,
+    noindex: page > 1,
+  });
+  return {
+    ...metadata,
+    alternates: { ...metadata.alternates, types: { 'application/rss+xml': ARTICLES_FEED_PATH } },
+  };
+}
 
-      <ArticleStatsCards />
-
-      <section className="grid gap-8 lg:grid-cols-[1fr_360px]">
-        <ArticlesList />
-        <CreateArticleForm />
-      </section>
-    </main>
-  );
+// The article index: published CMS pages of type `article` (newest first).
+export default async function ArticlesPage({ params, searchParams }: ArticlesPageProps) {
+  const { locale } = await params;
+  const page = pageNumber((await searchParams).page);
+  const list = await listCmsPages({ locale, type: 'article', page, pageSize: ARTICLES_PAGE_SIZE });
+  return <ArticlesIndexScreen locale={locale} list={list} />;
 }

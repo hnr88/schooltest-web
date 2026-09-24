@@ -23,10 +23,9 @@ export const PUBLIC_ROUTES: readonly PublicRoute[] = [
 
 /**
  * Everything a crawler must stay out of. These are the app's real private and
- * transactional surfaces plus two non-product routes:
- * `/articles` is the boilerplate kit's demo page (its content-type does not
- * exist in this backend) and `/design-system` is an internal component gallery
- * — see .qa/DECISIONS.md D-27.
+ * transactional surfaces plus `/design-system`, an internal component gallery
+ * (.qa/DECISIONS.md D-27). `/articles` is public again: it is now the CMS
+ * article index, no longer the boilerplate demo page.
  */
 export const DISALLOWED_PATHS: readonly string[] = [
   '/dashboard',
@@ -39,7 +38,6 @@ export const DISALLOWED_PATHS: readonly string[] = [
   '/onboarding',
   '/school-onboarding',
   '/invite',
-  '/articles',
   '/design-system',
 ];
 

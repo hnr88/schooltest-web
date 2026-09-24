@@ -1,11 +1,9 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import { LegalDocumentScreen, getLegalDocument } from '@/modules/legal';
-import { buildPageMetadata } from '@/modules/seo';
+import { CmsPageScreen, buildCmsMetadata, getCmsPage } from '@/modules/cms';
 
-const SLUG = 'cookie-policy' as const;
-const PATHNAME = '/cookie-policy' as const;
+const SLUG = 'cookie-policy';
 
 interface CookiePolicyPageProps {
   params: Promise<{ locale: string }>;
@@ -13,23 +11,13 @@ interface CookiePolicyPageProps {
 
 export async function generateMetadata({ params }: CookiePolicyPageProps): Promise<Metadata> {
   const { locale } = await params;
-  const document = await getLegalDocument(SLUG, locale);
-  if (!document) return {};
-  return buildPageMetadata({
-    title: document.title,
-    description: document.summary ?? document.title,
-    pathname: PATHNAME,
-    locale,
-  });
+  return buildCmsMetadata(await getCmsPage(SLUG, locale));
 }
 
-// C-LEG-02 public legal page. A Server Component: the document is fetched on
-// the server and rendered as typed data, so no legal copy ever ships in a
-// client bundle and none is hardcoded in the repo.
+// Public legal page, rendered from the Strapi CMS page 'cookie-policy'.
 export default async function CookiePolicyPage({ params }: CookiePolicyPageProps) {
   const { locale } = await params;
-  const document = await getLegalDocument(SLUG, locale);
-  if (!document) notFound();
-
-  return <LegalDocumentScreen document={document} pathname={PATHNAME} locale={locale} />;
+  const resolved = await getCmsPage(SLUG, locale);
+  if (!resolved || resolved.page.pageType === 'article') notFound();
+  return <CmsPageScreen resolved={resolved} />;
 }

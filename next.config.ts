@@ -17,7 +17,6 @@ const NOINDEX_PATHS = [
   '/onboarding',
   '/school-onboarding',
   '/invite',
-  '/articles',
   '/design-system',
 ];
 
