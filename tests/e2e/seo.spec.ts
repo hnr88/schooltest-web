@@ -268,14 +268,18 @@ test.describe('public SEO', () => {
       expect(leaked, `sitemap leaks ${blocked}`).toEqual([]);
     }
 
-    // EVERY <url> must carry the full alternate set (6 locales + x-default) —
-    // asserting one `xhtml:link` exists anywhere would pass with 59 of 60
-    // entries missing theirs.
+    // EVERY <url> must carry its full alternate set — asserting one
+    // `xhtml:link` exists anywhere would pass with 59 of 60 entries missing
+    // theirs. Localised pages list 6 locales + x-default; the English-only CMS
+    // pages (legal, info, articles) list en + x-default, because their other
+    // locale URLs are noindex fallbacks.
     const urlBlocks = body.split('<url>').slice(1);
     expect(urlBlocks.length).toBe(locs.length);
+    const englishOnly = new Set(LEGAL_PAGES.map((legal) => legal.path));
     for (const block of urlBlocks) {
+      const loc = new URL(block.match(/<loc>([^<]+)<\/loc>/)?.[1] ?? '').pathname;
       const alternates = [...block.matchAll(/hreflang="([^"]+)"/g)].map((m) => m[1]);
-      expect(new Set(alternates).size, 'alternates per url').toBe(7);
+      expect(new Set(alternates).size, `alternates for ${loc}`).toBe(englishOnly.has(loc) ? 2 : 7);
       expect(alternates, 'x-default alternate').toContain('x-default');
     }
   });
@@ -288,11 +292,12 @@ test.describe('public SEO', () => {
   });
 
   test('flow: every disallowed route is noindex — in EVERY locale', async ({ page }) => {
-    // 10 page loads, one of them the heavy design-system gallery.
+    // 8 page loads, one of them the heavy design-system gallery.
     test.setTimeout(120_000);
     // A missing robots meta must FAIL, not pass vacuously: that hole let
-    // /articles and /design-system stay indexable under a locale prefix.
-    const probes = ['/sign-in', '/sign-up', '/dashboard', '/articles', '/design-system'];
+    // /design-system stay indexable under a locale prefix. (/articles is the
+    // public CMS article index now, indexable and in the sitemap.)
+    const probes = ['/sign-in', '/sign-up', '/dashboard', '/design-system'];
     for (const path of probes) {
       for (const prefix of ['', '/zh']) {
         await page.goto(`${prefix}${path}`);
