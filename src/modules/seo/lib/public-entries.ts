@@ -11,6 +11,20 @@ import type {
 } from '@/modules/seo/types/metadata.types';
 
 /**
+ * A registry page's search title and description (`Seo.pages.<seoKey>`): the
+ * ONE source for its <title>, meta description and JSON-LD WebPage name.
+ */
+export async function getPublicPageCopy(
+  pathname: string,
+  locale: string,
+): Promise<{ title: string; description: string }> {
+  const route = PUBLIC_ROUTES.find((entry) => entry.pathname === pathname);
+  if (!route) throw new Error(`[seo] ${pathname} is not in PUBLIC_ROUTES`);
+  const t = await getTranslations({ locale, namespace: 'Seo.pages' });
+  return { title: t(`${route.seoKey}.title`), description: t(`${route.seoKey}.description`) };
+}
+
+/**
  * Metadata for a registry page, with its search title and description read
  * from `Seo.pages.<seoKey>` in the page's own locale, so a marketing page
  * cannot ship without a localised, length-checked title.
@@ -20,12 +34,10 @@ export async function buildPublicPageMetadata({
   locale,
   siteName,
 }: PublicPageMetadataInput): Promise<Metadata> {
-  const route = PUBLIC_ROUTES.find((entry) => entry.pathname === pathname);
-  if (!route) throw new Error(`[seo] ${pathname} is not in PUBLIC_ROUTES`);
-  const t = await getTranslations({ locale, namespace: 'Seo.pages' });
+  const { title, description } = await getPublicPageCopy(pathname, locale);
   return buildMetadata({
-    title: t(`${route.seoKey}.title`),
-    description: t(`${route.seoKey}.description`),
+    title,
+    description,
     pathname,
     locale,
     siteName,

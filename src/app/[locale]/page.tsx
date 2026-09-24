@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
 
 import { LandingHomeContent } from '@/modules/landing';
 import { LandingPageAeo, buildPublicPageMetadata } from '@/modules/seo';
@@ -17,7 +16,6 @@ export async function generateMetadata({ params }: HomePageProps): Promise<Metad
 
 export default async function HomePage({ params }: HomePageProps) {
   const { locale } = await params;
-  const t = await getTranslations('Landing.meta');
   // C-SET-01: the ops-authored announcement/maintenance banner rides ABOVE the
   // public masthead on every marketing page (renders null while both are off).
   const settings = await getPublicSettings();
@@ -31,8 +29,6 @@ export default async function HomePage({ params }: HomePageProps) {
             page="home"
             pathname="/"
             locale={locale}
-            title={t('homeTitle')}
-            description={t('homeDescription')}
           />
         }
       />

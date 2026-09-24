@@ -4,13 +4,16 @@ import { PublicPageJsonLd } from '@/modules/seo/components/PublicPageJsonLd';
 import { LANDING_LAST_UPDATED } from '@/modules/seo/constants/json-ld.constants';
 import { getAeoFaq } from '@/modules/seo/lib/aeo-content';
 import { getLandingAeoNodes } from '@/modules/seo/lib/landing-aeo-nodes';
+import { getPublicPageCopy } from '@/modules/seo/lib/public-entries';
 
 import type { LandingPageAeoProps } from '@/modules/seo/types/components.types';
 
 // Server Component, mounted inside a landing page's <main>. Renders the page's
 // single JSON-LD @graph together with the visible sections it describes (the
 // FAQ everywhere, the HowTo step flow on /diagnose), all from the same copy.
-async function LandingPageAeo({ page, pathname, locale, title, description }: LandingPageAeoProps) {
+// The WebPage name/description come from `Seo.pages`, the source of <title>.
+async function LandingPageAeo({ page, pathname, locale }: LandingPageAeoProps) {
+  const { title, description } = await getPublicPageCopy(pathname, locale);
   const faq = await getAeoFaq(locale, page);
   const { nodes, aboutId, howTo } = await getLandingAeoNodes(page, pathname, locale, description);
 

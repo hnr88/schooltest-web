@@ -83,7 +83,7 @@ export function buildCmsJsonLd({
     page: {
       pathname,
       locale,
-      title: page.title,
+      title: page.seo?.metaTitle || page.title,
       description,
       pageType: faq.length > 0 ? 'FAQPage' : (WEB_PAGE_TYPE[page.slug] ?? 'WebPage'),
       datePublished,

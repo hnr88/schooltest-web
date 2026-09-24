@@ -63,6 +63,4 @@ export interface LandingPageAeoProps {
   /** Locale-less pathname, e.g. `/diagnose`. */
   readonly pathname: string;
   readonly locale: string;
-  readonly title: string;
-  readonly description: string;
 }

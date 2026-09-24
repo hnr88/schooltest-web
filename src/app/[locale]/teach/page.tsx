@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
 
 import { LandingTeachContent } from '@/modules/landing';
 import { LandingPageAeo, buildPublicPageMetadata } from '@/modules/seo';
@@ -17,7 +16,6 @@ export async function generateMetadata({ params }: TeachPageProps): Promise<Meta
 
 export default async function TeachPage({ params }: TeachPageProps) {
   const { locale } = await params;
-  const t = await getTranslations('Landing.meta');
   // C-SET-01: the ops-authored announcement/maintenance banner rides ABOVE the
   // public masthead on every marketing page (renders null while both are off).
   const settings = await getPublicSettings();
@@ -31,8 +29,6 @@ export default async function TeachPage({ params }: TeachPageProps) {
             page="teach"
             pathname="/teach"
             locale={locale}
-            title={t('teachTitle')}
-            description={t('teachDescription')}
           />
         }
       />
