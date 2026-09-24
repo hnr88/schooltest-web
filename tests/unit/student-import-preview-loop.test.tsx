@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { act } from 'react';
+import { act, useEffect } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
@@ -70,7 +70,9 @@ let postSpy: ReturnType<typeof vi.spyOn>;
 
 function Harness({ initialClass }: { initialClass: string }) {
   const api = useStudentImport('school-1', { initialClassDocumentId: initialClass });
-  latest = api;
+  useEffect(() => {
+    latest = api;
+  });
   return (
     <div>
       <p data-testid="card">{api.card}</p>
@@ -123,7 +125,6 @@ async function click(testId: string) {
 /** Drain every pending microtask and let react-query settle across renders. */
 async function settle() {
   for (let i = 0; i < 10; i += 1) {
-    // eslint-disable-next-line no-await-in-loop
     await act(async () => {
       await Promise.resolve();
     });

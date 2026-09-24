@@ -2,7 +2,7 @@
 
 import { isAxiosError } from 'axios';
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { useSchoolEntitlementQuery } from '@/modules/ops/queries/use-school-entitlement.query';
@@ -20,10 +20,12 @@ export function useSchoolSeats(schoolDocumentId: string, enabled: boolean) {
 
   const savedTotal = entitlement.data?.seats_total ?? null;
   const [draft, setDraft] = useState('');
+  const [seededFrom, setSeededFrom] = useState<number | null>(null);
 
-  useEffect(() => {
+  if (savedTotal !== seededFrom) {
+    setSeededFrom(savedTotal);
     if (savedTotal !== null) setDraft(String(savedTotal));
-  }, [savedTotal]);
+  }
 
   const parsed = Number(draft);
   const isValid = draft.trim() !== '' && Number.isInteger(parsed) && parsed >= 0;
