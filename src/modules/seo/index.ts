@@ -36,6 +36,7 @@ export {
   countWords,
 } from '@/modules/seo/lib/json-ld-article';
 export { buildPublicPageGraph } from '@/modules/seo/lib/public-page-graph';
+export { ogImagePathFor } from '@/modules/seo/lib/og-image-url';
 export { pageIds, siteIds } from '@/modules/seo/lib/json-ld-ids';
 export { serializeJsonLd } from '@/modules/seo/lib/serialize-json-ld';
 export { FaqSection } from '@/modules/seo/components/FaqSection';

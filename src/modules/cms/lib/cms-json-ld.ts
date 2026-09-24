@@ -1,11 +1,15 @@
+import { env } from '@/lib/env';
 import { toAbsoluteStrapiMediaUrl } from '@/lib/strapi-media';
 import { ARTICLES_PATH } from '@/modules/cms/constants/cms.constants';
 import { cmsPagePath } from '@/modules/cms/lib/cms-paths';
 import { blocksToText, countWords, pageToText } from '@/modules/cms/lib/cms-text';
 import type { CmsPage } from '@/modules/cms/types/cms.types';
 import {
+  OG_IMAGE_HEIGHT,
+  OG_IMAGE_WIDTH,
   SITE_NAME,
   absoluteUrl,
+  ogImagePathFor,
   buildBlogPostingJsonLd,
   buildPublicPageGraph,
 } from '@/modules/seo';
@@ -57,6 +61,15 @@ export function buildCmsJsonLd({
     name: crumb.label,
     url: absoluteUrl(crumb.href, locale, routing.defaultLocale),
   }));
+  // An article always carries an image (Article rich results): its own cover,
+  // else the generated 1200x630 share card of its URL.
+  const articleImages = images ?? [
+    {
+      url: new URL(ogImagePathFor(pathname, locale), env.NEXT_PUBLIC_APP_URL).toString(),
+      width: OG_IMAGE_WIDTH,
+      height: OG_IMAGE_HEIGHT,
+    },
+  ];
   const datePublished = page.publishedDate ?? page.publishedAt ?? page.updatedAt;
   const dateModified = page.updatedDate ?? page.updatedAt;
 
@@ -70,7 +83,7 @@ export function buildCmsJsonLd({
             description,
             datePublished,
             dateModified,
-            images,
+            images: articleImages,
             authors: page.author ? [{ name: page.author.name, ...(page.author.url ? { url: page.author.url } : {}) }] : [],
             wordCount: countWords(pageToText(page)),
             articleSection: 'Articles',
