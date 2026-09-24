@@ -1,11 +1,12 @@
 import { Link } from '@/i18n/navigation';
+import { LandingFooter } from '@/modules/landing';
 import { isExternalHref } from '@/modules/cms/lib/cms-paths';
 import type { CmsFooterProps } from '@/modules/cms/types/components.types';
 
 // Footer navigation from the CMS Layout single type. With no layout (CMS down
-// or not yet published) it renders nothing rather than failing the page.
+// or not yet published) it falls back to the design's static footer.
 function CmsFooter({ layout }: CmsFooterProps) {
-  if (!layout) return null;
+  if (!layout) return <LandingFooter />;
   return (
     <footer data-testid="cms-footer" className="bg-navy-950 text-navy-soft">
       <div className="mx-auto flex max-w-[1200px] flex-wrap gap-12 px-8 pt-14">

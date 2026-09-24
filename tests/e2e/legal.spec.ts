@@ -20,13 +20,6 @@ import {
 
 const en = loadMessages('en');
 
-// The redesigned landing's footer keeps the About column's LEGAL-STYLED
-// labels but points them at the #register anchor (the pilot design has no
-// legal route links yet). The contract asserted now: the legal documents
-// themselves stay published and reachable, the footer still carries the legal
-// labels (as anchors), and no page regresses to the retired short labels.
-const FOOTER_LEGAL_ANCHOR_LABELS = ['Privacy statement', 'Terms of use'] as const;
-
 test.describe('legal pages', () => {
   for (const { slug, path } of LEGAL_PAGES) {
     test(`flow: ${path} is accessible and renders the persisted document`, async ({ page }) => {
@@ -65,28 +58,22 @@ test.describe('legal pages', () => {
     });
   }
 
-  test('flow: every legal page is published and the footer keeps its legal labels', async ({
+  test('flow: every legal page is published and linked from the CMS footer', async ({
     page,
     request,
   }) => {
-    // The redesigned footer points its legal-styled labels at the register
-    // anchor, so the strongest surviving contract is: every document is
-    // directly reachable, and the footer still surfaces the legal labels.
+    // The public footer on every marketing page is the CMS Layout footer, so
+    // each legal document is linked from it by its real route.
     for (const { path } of LEGAL_PAGES) {
       const res = await request.get(path);
       expect(res.status(), `${path} stays published`).toBe(200);
     }
 
     await page.goto('/');
-    const footer = page.locator('footer[data-screen-label="Footer"]');
-    await expect(footer.getByText('About', { exact: true })).toBeVisible();
-    for (const label of FOOTER_LEGAL_ANCHOR_LABELS) {
-      const link = footer.getByRole('link', { name: label, exact: true });
-      await expect(link, `footer legal label "${label}"`).toBeVisible();
-      await expect(link, `footer legal label "${label}" destination`).toHaveAttribute(
-        'href',
-        '#register',
-      );
+    const footer = page.locator('footer[data-testid="cms-footer"]');
+    await expect(footer).toBeVisible();
+    for (const { path } of LEGAL_PAGES) {
+      await expect(footer.locator(`a[href="${path}"]`), `footer links ${path}`).toHaveCount(1);
     }
   });
 
@@ -121,9 +108,9 @@ test.describe('legal pages', () => {
     // retired routes absent.
     await expect(page.locator('a[href="/privacy"]')).toHaveCount(0);
     await expect(page.locator('a[href="/terms"]')).toHaveCount(0);
-    const footer = page.locator('footer[data-screen-label="Footer"]');
-    for (const label of FOOTER_LEGAL_ANCHOR_LABELS) {
-      await expect(footer.getByRole('link', { name: label, exact: true })).toBeVisible();
+    const footer = page.locator('footer[data-testid="cms-footer"]');
+    for (const { path } of LEGAL_PAGES) {
+      await expect(footer.locator(`a[href="${path}"]`)).toBeVisible();
     }
   });
 
@@ -163,10 +150,9 @@ test.describe('legal pages', () => {
     await expect(page.getByRole('navigation', { name: 'Primary', exact: true })).toBeVisible();
 
     // The legal labels are still one scroll away, in the footer, at this width.
-    const footer = page.locator('footer[data-screen-label="Footer"]');
-    for (const label of FOOTER_LEGAL_ANCHOR_LABELS) {
-      await expect(footer.getByRole('link', { name: label, exact: true }), `${label} at 375px`)
-        .toBeVisible();
+    const footer = page.locator('footer[data-testid="cms-footer"]');
+    for (const { path } of LEGAL_PAGES) {
+      await expect(footer.locator(`a[href="${path}"]`), `${path} at 375px`).toBeVisible();
     }
     for (const { path } of LEGAL_PAGES) {
       await expect(

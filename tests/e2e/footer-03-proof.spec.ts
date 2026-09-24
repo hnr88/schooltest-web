@@ -1,12 +1,11 @@
 /**
- * Task 03 (landing-pages) proof tooling — re-pointed at the redesigned footer.
+ * Task 03 (landing-pages) proof tooling — re-pointed at the CMS footer.
  *
- * The footer is now the hardcoded `footer[data-screen-label="Footer"]` (the
- * old `footer.bg-navy-900` and the utility bar's own footer are gone). The
- * acknowledgement line, the "Page last updated" date and the piloting chip are
- * hardcoded English, so they render IDENTICALLY under every locale prefix —
- * the cross-locale assertion flips from "translated copy" to "the same
- * locale-independent copy".
+ * Every marketing page now renders the CMS Layout footer
+ * (`footer[data-testid="cms-footer"]`); the design's static footer
+ * (`footer[data-screen-label="Footer"]`) is only the fallback for a CMS outage.
+ * Expected copy is read from the live layout endpoint, never duplicated here.
+ * The CMS layout is authored in English, so /zh shows the same (en fallback) copy.
  */
 import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
@@ -14,10 +13,19 @@ import path from 'node:path';
 import { expect, test, type Locator } from '@playwright/test';
 
 const SHOTS_DIR = path.resolve(process.cwd(), '..', 'mvp', 'landing-pages', 'proof', 'shots');
+const API = process.env.E2E_API_BASE_URL ?? 'http://127.0.0.1:5500';
 
-const ACKNOWLEDGEMENT =
-  'SchoolTest acknowledges the Traditional Custodians of the lands on which Australian schools stand, and pays respect to Elders past and present.';
-const LAST_UPDATED = 'Page last updated 31 August 2026';
+interface Layout {
+  footerNote: string | null;
+  copyright: string | null;
+  footerGroups: { title: string; links: { label: string; href: string }[] }[];
+}
+
+async function layout(): Promise<Layout> {
+  const res = await fetch(`${API}/api/layout?locale=en`);
+  if (!res.ok) throw new Error(`[e2e] GET /api/layout failed with ${res.status}`);
+  return ((await res.json()) as { data: Layout }).data;
+}
 
 async function shoot(footer: Locator, name: string): Promise<void> {
   const shot = await footer.screenshot({ type: 'png' });
@@ -26,46 +34,45 @@ async function shoot(footer: Locator, name: string): Promise<void> {
   writeFileSync(path.join(SHOTS_DIR, `${name}.png`), shot);
 }
 
+async function expectCmsFooter(footer: Locator, expected: Layout): Promise<void> {
+  await expect(footer).toBeVisible();
+  for (const group of expected.footerGroups) {
+    await expect(footer.getByRole('heading', { name: group.title, exact: true })).toBeVisible();
+    for (const link of group.links) {
+      await expect(footer.locator(`a[href$="${link.href}"]`).filter({ hasText: link.label })).toHaveCount(1);
+    }
+  }
+  if (expected.footerNote) await expect(footer.getByText(expected.footerNote)).toBeVisible();
+  if (expected.copyright) await expect(footer.getByText(expected.copyright)).toBeVisible();
+}
+
 test.describe('task 03 footer proof shots', () => {
-  test('footer on / at 1440×900', async ({ page }) => {
+  test('CMS footer on / at 1440×900', async ({ page }) => {
+    const expected = await layout();
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto('/');
-    const footer = page.locator('footer[data-screen-label="Footer"]');
-    await expect(footer).toBeVisible();
-    // Pin the blocks a stale pre-redesign server cannot pass: the About
-    // column with its "Contact the programme team" quirk, the Acknowledgement
-    // and the last-updated row.
-    await expect(footer.getByText('SCHOOLTEST', { exact: true })).toBeVisible();
-    await expect(footer.getByText('About', { exact: true })).toBeVisible();
-    await expect(
-      footer.getByRole('link', { name: 'Contact the programme team' }),
-    ).toBeVisible();
-    await expect(footer.getByText(ACKNOWLEDGEMENT)).toBeVisible();
-    await expect(footer.getByText(LAST_UPDATED)).toBeVisible();
-    await expect(footer.getByText('© 2026 SchoolTest')).toBeVisible();
-    await expect(footer.getByText('Piloting with founding schools')).toBeVisible();
+    const footer = page.locator('footer[data-testid="cms-footer"]');
+    await expectCmsFooter(footer, expected);
+    await expect(page.locator('footer[data-screen-label="Footer"]')).toHaveCount(0);
     await shoot(footer, '03-landing-footer-1440x900');
   });
 
-  test('footer on / at 375px', async ({ page }) => {
+  test('CMS footer on / at 375px', async ({ page }) => {
+    const expected = await layout();
     await page.setViewportSize({ width: 375, height: 900 });
     await page.goto('/');
-    const footer = page.locator('footer[data-screen-label="Footer"]');
-    await expect(footer).toBeVisible();
-    await expect(footer.getByText(ACKNOWLEDGEMENT)).toBeVisible();
+    const footer = page.locator('footer[data-testid="cms-footer"]');
+    await expectCmsFooter(footer, expected);
     await shoot(footer, '03-landing-footer-375');
   });
 
-  test('footer on /zh shows the locale-independent last-updated line', async ({ page }) => {
+  test('CMS footer on every landing page and on /zh (English layout fallback)', async ({ page }) => {
+    const expected = await layout();
     await page.setViewportSize({ width: 1440, height: 900 });
-    await page.goto('/zh');
-    const footer = page.locator('footer[data-screen-label="Footer"]');
-    await expect(footer).toBeVisible();
-    await expect(footer.getByText(ACKNOWLEDGEMENT)).toBeVisible();
-    // The line is hardcoded English on the redesigned landing — it must NOT
-    // come out translated or locale-reformatted.
-    await expect(footer.getByText(LAST_UPDATED)).toBeVisible();
-    await expect(footer.getByText(/页面最后更新于/)).toHaveCount(0);
-    await shoot(footer, '03-zh-landing-last-updated');
+    for (const target of ['/diagnose', '/teach', '/track', '/predict', '/report', '/zh']) {
+      await page.goto(target);
+      await expectCmsFooter(page.locator('footer[data-testid="cms-footer"]'), expected);
+    }
+    await shoot(page.locator('footer[data-testid="cms-footer"]'), '03-zh-landing-footer');
   });
 });

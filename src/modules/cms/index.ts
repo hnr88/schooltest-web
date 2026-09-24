@@ -2,6 +2,7 @@ export { CmsPageScreen } from '@/modules/cms/components/CmsPageScreen';
 export { ArticlesIndexScreen } from '@/modules/cms/components/ArticlesIndexScreen';
 export { CmsSections } from '@/modules/cms/components/CmsSections';
 export { CmsFooter } from '@/modules/cms/components/CmsFooter';
+export { PublicFooter } from '@/modules/cms/components/PublicFooter';
 export { getCmsPage, getCmsLayout, listCmsPages, listAllCmsPages } from '@/modules/cms/lib/cms-queries';
 export { listPublicCmsPages } from '@/modules/cms/lib/public-cms-pages';
 export { buildCmsMetadata, cmsMetadataInput } from '@/modules/cms/lib/cms-metadata';

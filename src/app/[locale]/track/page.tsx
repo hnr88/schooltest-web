@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 import { LandingTrackContent } from '@/modules/landing';
+import { PublicFooter } from '@/modules/cms';
 import { LandingPageAeo, buildPublicPageMetadata } from '@/modules/seo';
 import { getPublicSettings, PublicSiteBanner } from '@/modules/settings';
 
@@ -24,6 +25,7 @@ export default async function TrackPage({ params }: TrackPageProps) {
     <>
       <PublicSiteBanner settings={settings} />
       <LandingTrackContent
+        footer={<PublicFooter locale={locale} />}
         aeo={
           <LandingPageAeo
             page="track"

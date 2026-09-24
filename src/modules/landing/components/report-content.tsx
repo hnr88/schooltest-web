@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 
 import '../landing.css';
 
-export function LandingReportContent({ aeo }: { aeo?: ReactNode }) {
+export function LandingReportContent({ aeo, footer }: { aeo?: ReactNode; footer?: ReactNode }) {
   return (
     <div className="st-landing">
 
@@ -161,43 +161,7 @@ export function LandingReportContent({ aeo }: { aeo?: ReactNode }) {
 {aeo}
 </main>
 
-<footer data-screen-label="Footer" style={{ background: '#0A1A3C' }}>
-  <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '56px 32px 0', display: 'flex', flexWrap: 'wrap', gap: '48px', justifyContent: 'space-between' }}>
-    
-    <div style={{ flex: '1 1 280px', maxWidth: '360px' }}>
-      <img src="/images/landing/logo.png" alt="SchoolTest" style={{ height: '30px', width: 'auto', filter: 'brightness(0) invert(1)' }} />
-      <p style={{ margin: '14px 0 0', fontSize: '13.5px', lineHeight: '1.65', color: '#8FA3C7', maxWidth: '340px' }}>Diagnostic English assessment for Australian EAL/D classrooms. Years 7–12, reported on ACARA phases.</p>
-    </div><div style={{ display: 'flex', gap: 'clamp(40px,6vw,88px)', flexWrap: 'wrap' }}>
-    <div>
-      <div style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.09em', textTransform: 'uppercase', color: '#8FA3C7' }}>SCHOOLTEST</div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '11px', marginTop: '16px' }}>
-        <a href="/diagnose" style={{ fontSize: '13.5px', color: '#C7D6F2', textDecoration: 'none' }} data-report-h="9">Diagnose</a>
-        <a href="/teach" style={{ fontSize: '13.5px', color: '#C7D6F2', textDecoration: 'none' }} data-report-h="10">Teach</a>
-        <a href="/track" style={{ fontSize: '13.5px', color: '#C7D6F2', textDecoration: 'none' }} data-report-h="11">Track</a>
-        <a href="/predict" style={{ fontSize: '13.5px', color: '#C7D6F2', textDecoration: 'none' }} data-report-h="12">Predict</a>
-        <a href="/report" style={{ fontSize: '13.5px', color: '#C7D6F2', textDecoration: 'none' }} data-report-h="13">Report</a>
-      </div>
-    </div>
-    <div>
-      <div style={{ fontSize: '11.5px', fontWeight: '700', letterSpacing: '.09em', textTransform: 'uppercase', color: '#8FA3C7' }}>About</div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '11px', marginTop: '16px' }}>
-        <a href="/#register" className="scp4" style={{ fontSize: '13.5px', color: 'rgb(199, 214, 242)', textDecoration: 'none' }}>Contact</a>
-        <a href="/#register" className="scp4" style={{ fontSize: '13.5px', color: 'rgb(199, 214, 242)', textDecoration: 'none' }}>Privacy statement</a>
-        <a href="/#register" className="scp4" style={{ fontSize: '13.5px', color: 'rgb(199, 214, 242)', textDecoration: 'none' }}>Accessibility</a>
-        <a href="/#register" className="scp4" style={{ fontSize: '13.5px', color: 'rgb(199, 214, 242)', textDecoration: 'none' }}>Terms of use</a>
-      </div>
-    </div>
-    </div>
-  </div>
-  <div style={{ maxWidth: '1200px', margin: '44px auto 0', padding: '24px 32px', borderTop: '1px solid #1A2A4E' }}>
-    <p style={{ margin: '0', fontSize: '13px', lineHeight: '1.7', color: '#8FA3C7', whiteSpace: 'nowrap' }}>SchoolTest acknowledges the Traditional Custodians of the lands on which Australian schools stand, and pays respect to Elders past and present.</p><span style={{ fontSize: '12.5px', color: '#8FA3C7' }}>© 2026 SchoolTest</span>
-  </div>
-  <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 32px 32px', display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap', rowGap: '8px' }}>
-    
-    
-    
-  </div>
-</footer>
+{footer}
 
     </div>
   );
