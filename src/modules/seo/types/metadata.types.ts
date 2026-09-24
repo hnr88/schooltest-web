@@ -19,6 +19,8 @@ export interface BuildMetadataInput extends BuildPageMetadataInput {
   readonly section?: string;
   readonly tags?: readonly string[];
   readonly keywords?: readonly string[];
+  /** Locales the content exists in (hreflang + og:locale:alternate); omitted means every locale. */
+  readonly alternateLocales?: readonly string[];
 }
 
 /** Input for the registry-driven public page metadata (strings from `Seo.pages`). */

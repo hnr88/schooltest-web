@@ -76,6 +76,7 @@ export function buildMetadata(input: BuildMetadataInput): Metadata {
     section,
     tags,
     keywords,
+    alternateLocales = routing.locales,
   } = input;
 
   // A duplicate route points its canonical at the original; hreflang still
@@ -92,7 +93,7 @@ export function buildMetadata(input: BuildMetadataInput): Metadata {
     url: canonical,
     siteName,
     locale: ogLocale(locale),
-    alternateLocale: routing.locales.filter((l) => l !== locale).map(ogLocale),
+    alternateLocale: alternateLocales.filter((l) => l !== locale).map(ogLocale),
     images: [cards.openGraph],
   };
 
@@ -102,7 +103,7 @@ export function buildMetadata(input: BuildMetadataInput): Metadata {
     ...(keywords?.length ? { keywords: [...keywords] } : {}),
     ...(authors?.length ? { authors: authors.map((a) => ({ ...a })) } : {}),
     category: SITE_CATEGORY,
-    alternates: { canonical, languages: languageAlternates(canonicalTarget) },
+    alternates: { canonical, languages: languageAlternates(canonicalTarget, alternateLocales) },
     openGraph:
       ogType === 'article'
         ? {

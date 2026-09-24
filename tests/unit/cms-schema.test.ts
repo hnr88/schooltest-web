@@ -94,7 +94,11 @@ describe('CMS helpers', () => {
     });
     const indexable = { ...page, seo: { ...page.seo, noindex: false } };
     expect(cmsMetadataInput({ page: indexable, requestedLocale: 'en', isFallback: false }).noindex).toBe(false);
-    expect(cmsMetadataInput({ page: indexable, requestedLocale: 'zh', isFallback: true }).noindex).toBe(true);
+    expect(cmsMetadataInput({ page: indexable, requestedLocale: 'zh', isFallback: true }).noindex).toBe(true);  });
+
+  test('hreflang names only the locale the CMS content exists in (no alternate to a noindex fallback)', () => {
+    const fallback = cmsMetadataInput({ page, requestedLocale: 'zh', isFallback: true });
+    expect(fallback.alternateLocales).toEqual(['en']);
   });
 
   test('FAQ entries for JSON-LD are exactly the visible FAQ', () => {

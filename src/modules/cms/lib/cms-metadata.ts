@@ -10,7 +10,9 @@ import type { BuildMetadataInput } from '@/modules/seo';
 /**
  * Page SEO component → the site's ONE metadata builder. Empty SEO fields fall
  * back to the page title/summary; a page served as the `en` fallback under
- * another locale is noindex, so English copy is never indexed twice.
+ * another locale is noindex, so English copy is never indexed twice. hreflang
+ * names only the locale the content exists in, so no alternate points at a
+ * noindex fallback copy.
  */
 export function cmsMetadataInput({ page, requestedLocale, isFallback }: ResolvedCmsPage): BuildMetadataInput {
   const seo = page.seo;
@@ -29,6 +31,7 @@ export function cmsMetadataInput({ page, requestedLocale, isFallback }: Resolved
     locale: requestedLocale,
     ...(canonicalPath ? { canonicalPath } : {}),
     noindex: Boolean(seo?.noindex) || isFallback,
+    alternateLocales: [page.locale],
     ogType: isArticle ? 'article' : 'website',
     ...(page.publishedDate ? { publishedTime: page.publishedDate } : {}),
     modifiedTime: page.updatedDate ?? page.updatedAt,

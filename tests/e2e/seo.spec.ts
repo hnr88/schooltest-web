@@ -78,9 +78,13 @@ test.describe('public SEO', () => {
       const canonical = await page.locator('link[rel="canonical"]').getAttribute('href');
       expect(new URL(canonical ?? '').pathname, `${path} canonical`).toBe(path);
 
-      // A complete hreflang set (6 locales + x-default). Whether those URLs
-      // RESOLVE is checked once, for the deduplicated set, in its own test.
-      await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(7);
+      // A complete hreflang set (6 locales + x-default) on the localised
+      // registry pages. The CMS legal pages are authored in English only, so
+      // they name just `en` + x-default (their other-locale copies are noindex
+      // fallbacks). Whether those URLs RESOLVE is checked once, for the
+      // deduplicated set, in its own test.
+      const isEnglishOnly = LEGAL_PAGES.some((legal) => legal.path === path);
+      await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(isEnglishOnly ? 2 : 7);
       await expect(page.locator('link[rel="alternate"][hreflang="x-default"]')).toHaveCount(1);
 
       // og:url and og:title must describe THIS page, not another one.

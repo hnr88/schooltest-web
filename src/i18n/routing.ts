@@ -6,6 +6,9 @@ export const routing = defineRouting({
   localePrefix: 'as-needed',
   localeCookie: false,
   localeDetection: false,
+  // Pages publish their own hreflang set in <head>; the middleware's Link header
+  // would claim every locale for every URL (English-only CMS pages included).
+  alternateLinks: false,
 });
 
 export type Locale = (typeof routing.locales)[number];

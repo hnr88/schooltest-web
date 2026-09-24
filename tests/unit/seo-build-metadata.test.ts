@@ -149,4 +149,20 @@ describe('buildRootMetadata', () => {
     const page = fresh.buildMetadata({ title: 'T', description: 'D', pathname: '/', locale: 'en' });
     expect(page.twitter).toMatchObject({ site: '@schooltest', creator: '@schooltest' });
   });
+
+  test('alternateLocales limits hreflang and og:locale:alternate to the locales the content exists in', () => {
+    const metadata = buildMetadata({
+      title: 'Privacy Policy',
+      description: 'How SchoolTest handles personal information.',
+      pathname: '/privacy-policy',
+      locale: 'zh',
+      alternateLocales: ['en'],
+    });
+    expect(metadata.alternates?.languages).toEqual({
+      en: `${BASE}/privacy-policy`,
+      'x-default': `${BASE}/privacy-policy`,
+    });
+    expect(metadata.alternates?.canonical).toBe(`${BASE}/zh/privacy-policy`);
+    expect((metadata.openGraph as { alternateLocale?: string[] }).alternateLocale).toEqual(['en_AU']);
+  });
 });
