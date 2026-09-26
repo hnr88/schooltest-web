@@ -11,7 +11,6 @@ import {
   checkText,
   classAverageText,
   drillDownPhaseText,
-  familyScoreText,
   parseDashboard,
   parseResult,
   parseRoster,
@@ -22,7 +21,7 @@ import {
 } from './helpers/journey-06-chain';
 import { JOURNEY_06_VIEWPORT } from './helpers/journey-06-live';
 import { cat } from './helpers/i18n';
-import { API_BASE, TEACHER_EMAIL, bearer } from './helpers/teacher-results-live';
+import { TEACHER_EMAIL } from './helpers/teacher-results-live';
 import { en, navLink, signInTeacher } from './helpers/teacher-rail';
 import { watchErrors } from './helpers/ui';
 
@@ -30,17 +29,16 @@ import { watchErrors } from './helpers/ui';
  * JOURNEY 06 (part 2) — app → scoring → student result → TEACHER RESULT.
  *
  * Every real result of one teacher's classes, on every teacher results surface:
- * the Classes list average, the Students tab score and ACARA phase, the Family
- * reports release state and score, and the student drill-down headline, phase
- * pill and trend chart. Each expected value is the RAW API body that page load
- * received — no expected number lives in this file.
+ * the Classes list average, the Students tab score and ACARA phase, the Reports
+ * tab's has-result mark with its PDF affordance, and the student drill-down
+ * headline, phase pill and trend chart. Each expected value is the RAW API body
+ * that page load received — no expected number lives in this file.
  *
  * Env: `J06_TEACHER` (default the journey teacher), `J06_SHOTS` (screenshots,
  * outside the tracked tree), `J06_ORDERED=resA,resB,resC` (shown scores must rise
- * in that order), `J06_RELEASE_RESULT=<result documentId>` (releases that HELD
- * result through the real Release button and proves the API then serves it
- * released — deliberately NOT undone: the student's own result screen is checked
- * afterwards).
+ * in that order), `J06_REPORT_RESULT=<result documentId>` (asserts that result's
+ * row on the Reports tab renders has-result with its PDF button — the tab no
+ * longer releases anything, so nothing is written).
  */
 const TEACHER = process.env.J06_TEACHER ?? TEACHER_EMAIL;
 const fr = (key: string) => cat(en, `TeacherPortal.familyReports.${key}`);
@@ -57,7 +55,7 @@ async function openClassTab(page: Page, classId: string, tab: 'students' | 'repo
 }
 
 test.describe('journey 06 — the teacher results chain', () => {
-  test('every real result shows its API value on every teacher results surface', async ({ page, playwright }) => {
+  test('every real result shows its API value on every teacher results surface', async ({ page }) => {
     test.setTimeout(900_000);
     mkdirSync(CHAIN_SHOTS, { recursive: true });
     const errors = watchErrors(page);
@@ -92,14 +90,36 @@ test.describe('journey 06 — the teacher results chain', () => {
       }
       await shot(page, `02-${classId}-students`);
 
-      // ── 3. Family reports: release state and score per result ──
+      // ── 3. Reports tab: has-result and the PDF affordance per roster row ──
       const reportsRoster = await openClassTab(page, classId, 'reports');
-      for (const row of reportsRoster.filter((entry) => entry.result !== null)) {
-        const item = page.locator(`[data-slot="family-report-row"][data-result-id="${row.result!.document_id}"]`);
-        const meta = { resultId: row.result!.document_id, student: row.student.name };
-        await expect(item, `family reports row ${meta.student}`).toHaveAttribute('data-status', row.release_state, { timeout: 30_000 });
-        checks.push({ ...meta, surface: 'family reports · release state', shown: (await item.getAttribute('data-status')) ?? '', api: row.release_state });
-        await checkText(checks, item.locator('[data-slot="family-report-score"]'), { ...meta, surface: 'family reports · score' }, familyScoreText(row));
+      for (const row of reportsRoster) {
+        const item = page.locator(`[data-slot="reports-student-row"][data-student-id="${row.student.document_id}"]`);
+        const meta = { resultId: row.result?.document_id ?? '(none)', student: row.student.name };
+        const hasResult = row.result !== null;
+        await expect(item, `reports row ${meta.student}`).toHaveAttribute(
+          'data-has-result',
+          hasResult ? 'true' : 'false',
+          { timeout: 30_000 },
+        );
+        checks.push({
+          ...meta,
+          surface: 'reports tab · has result',
+          shown: (await item.getAttribute('data-has-result')) ?? '',
+          api: hasResult ? 'true' : 'false',
+        });
+        if (hasResult && row.result?.overall.domain_score !== null) {
+          await expect(item.locator('[data-slot="reports-student-pdf"]'), `PDF button for ${meta.student}`).toBeVisible({
+            timeout: 30_000,
+          });
+          checks.push({ ...meta, surface: 'reports tab · pdf button', shown: 'visible', api: 'result present' });
+        } else {
+          await checkText(
+            checks,
+            item.locator('[data-slot="reports-no-result"]'),
+            { ...meta, surface: 'reports tab · no result yet' },
+            fr('students.noResultYet'),
+          );
+        }
       }
       await shot(page, `03-${classId}-family-reports`);
 
@@ -114,10 +134,17 @@ test.describe('journey 06 — the teacher results chain', () => {
         const headline = page.locator('[data-slot="student-overall-score"]');
         if (score === null) await expect(headline.filter({ hasText: /\d/ }), `no headline score for ${meta.student}`).toHaveCount(0);
         else await checkText(checks, headline, { ...meta, surface: 'drill-down · overall' }, scoreText(score));
-        const pill = page.locator('[data-slot="student-progress"] [data-slot="status-pill"]');
+        // The v2 header's ACARA phase stat card: a large text value (no chip) printing the
+        // phase word; an unplaced result prints the kit dash and carries no data-phase.
+        const phaseValue = page.locator('[data-slot="student-stat-phase-value"]');
         const phase = drillDownPhaseText(view);
-        if (phase === null) await expect(pill).toHaveCount(0);
-        else await checkText(checks, pill, { ...meta, surface: 'drill-down · ACARA phase' }, phase);
+        if (phase === null) {
+          await expect(phaseValue).toHaveText(cat(en, 'TeacherPortal.kit.noValue'));
+          await expect(phaseValue).not.toHaveAttribute('data-phase', /.*/);
+        } else {
+          await checkText(checks, phaseValue, { ...meta, surface: 'drill-down · ACARA phase' }, phase);
+        }
+        await expect(page.locator('[data-slot="student-stat-phase"] [data-slot="status-pill"]')).toHaveCount(0);
         const points = page.locator('[data-slot="student-chart-point"]');
         await expect(points).toHaveCount(chartValues(view).length, { timeout: 30_000 });
         const plotted = (await points.evaluateAll((nodes) => nodes.map((node) => node.getAttribute('data-value') ?? ''))).join(',');
@@ -136,30 +163,18 @@ test.describe('journey 06 — the teacher results chain', () => {
       for (let i = 1; i < scores.length; i += 1) expect(scores[i], `${ordered[i]} above ${ordered[i - 1]}`).toBeGreaterThan(scores[i - 1]);
     }
 
-    // ── 6. Opt-in: release ONE held result through the real button ──
-    const releaseId = process.env.J06_RELEASE_RESULT;
-    if (releaseId) {
-      const card = classes.find((entry) => checks.some((c) => c.resultId === releaseId && c.surface === 'family reports · release state'));
-      expect(card, `${releaseId} is a result of ${TEACHER}'s classes`).toBeDefined();
+    // ── 6. Opt-in: a named result's Reports-tab row renders has-result with its PDF button ──
+    const reportResultId = process.env.J06_REPORT_RESULT;
+    if (reportResultId) {
+      const card = classes.find((entry) => checks.some((c) => c.resultId === reportResultId && c.surface === 'reports tab · has result'));
+      expect(card, `${reportResultId} is a result of ${TEACHER}'s classes`).toBeDefined();
       const roster = await openClassTab(page, card!.class_document_id, 'reports');
-      const row = page.locator(`[data-slot="family-report-row"][data-result-id="${releaseId}"]`);
-      if (roster.find((entry) => entry.result?.document_id === releaseId)?.release_state === 'held') {
-        await shot(page, '05-release-before');
-        await row.getByRole('button', { name: fr('actions.release'), exact: true }).click();
-        await page.getByRole('alertdialog').getByRole('button', { name: fr('release.cta'), exact: true }).click();
-        await expect(row).toHaveAttribute('data-status', 'released', { timeout: 30_000 });
-        test.info().annotations.push({ type: 'released-at', description: `${releaseId} ${new Date().toISOString()}` });
-      }
-      const request = await playwright.request.newContext();
-      try {
-        const jwt = await bearer(request, TEACHER);
-        const served = await request.get(`${API_BASE}/api/results/${releaseId}`, { headers: { Authorization: `Bearer ${jwt}` } });
-        expect(parseResult(await served.json()).release_state, 'the API now serves the result released').toBe('released');
-      } finally {
-        await request.dispose();
-      }
-      await expect(row).toHaveAttribute('data-status', 'released');
-      await shot(page, '05-release-after');
+      const holder = roster.find((entry) => entry.result?.document_id === reportResultId);
+      expect(holder, `${reportResultId} sits on ${card!.class_document_id}'s roster`).toBeDefined();
+      const row = page.locator(`[data-slot="reports-student-row"][data-student-id="${holder?.student.document_id}"]`);
+      await expect(row).toHaveAttribute('data-has-result', 'true', { timeout: 30_000 });
+      await expect(row.locator('[data-slot="reports-student-pdf"]')).toBeVisible();
+      await shot(page, '05-report-result-row');
     }
 
     writeFileSync(path.join(CHAIN_SHOTS, 'checks.json'), JSON.stringify(checks, null, 2));

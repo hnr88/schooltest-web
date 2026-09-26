@@ -180,6 +180,22 @@ export declare const resultHistoryPointSchema: z.ZodObject<{
         Vocab_B2: "Vocab_B2";
         Critical: "Critical";
     }>, z.ZodNullable<z.ZodNumber>>;
+    attribute_bands: z.ZodOptional<z.ZodRecord<z.ZodEnum<{
+        Decoding: "Decoding";
+        Vocab_A2: "Vocab_A2";
+        Grammar: "Grammar";
+        Vocab_B1: "Vocab_B1";
+        Gist: "Gist";
+        Detail: "Detail";
+        Inference: "Inference";
+        Vocab_B2: "Vocab_B2";
+        Critical: "Critical";
+    }>, z.ZodNullable<z.ZodEnum<{
+        secure: "secure";
+        developing: "developing";
+        emerging: "emerging";
+        not_yet: "not_yet";
+    }>>>>;
 }, z.core.$strict>;
 export type ResultHistoryPoint = z.infer<typeof resultHistoryPointSchema>;
 /** Dashboard §1.1 — official, same-model-version sittings, oldest first, last 8. */
@@ -363,6 +379,22 @@ export declare const resultViewSchema: z.ZodObject<{
             Vocab_B2: "Vocab_B2";
             Critical: "Critical";
         }>, z.ZodNullable<z.ZodNumber>>;
+        attribute_bands: z.ZodOptional<z.ZodRecord<z.ZodEnum<{
+            Decoding: "Decoding";
+            Vocab_A2: "Vocab_A2";
+            Grammar: "Grammar";
+            Vocab_B1: "Vocab_B1";
+            Gist: "Gist";
+            Detail: "Detail";
+            Inference: "Inference";
+            Vocab_B2: "Vocab_B2";
+            Critical: "Critical";
+        }>, z.ZodNullable<z.ZodEnum<{
+            secure: "secure";
+            developing: "developing";
+            emerging: "emerging";
+            not_yet: "not_yet";
+        }>>>>;
     }, z.core.$strict>>>;
     previous_result_document_id: z.ZodNullable<z.ZodString>;
     narrative: z.ZodOptional<z.ZodNullable<z.ZodObject<{

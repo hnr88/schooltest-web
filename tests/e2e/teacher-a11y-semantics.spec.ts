@@ -10,7 +10,6 @@ import {
   type A11ySurface,
 } from './helpers/teacher-a11y';
 import { MIN_TARGET_PX, PROJECT_TARGET_PX } from './helpers/teacher-a11y-targets';
-import { sectionTab } from './helpers/teacher-class-detail';
 import { en } from './helpers/teacher-rail';
 
 // TASK 047, the SEMANTICS leg axe cannot fully see, on the Teacher Portal v2 pages: an
@@ -100,9 +99,13 @@ test('EXPORT BUTTONS: named, and a real target on both export surfaces', async (
   // constant and the reasoning live in `helpers/teacher-a11y-targets.ts`, and the
   // MEASURED height of each button is printed on failure so a regression is visible
   // even while both still clear 24.
-  await openReady(page, classUrl(), 'teacher-class-results');
-  await sectionTab(page, 'insights').click();
-  const classExport = page.locator('[data-slot="teacher-export-action"] button[data-export-kind]');
+  // The Teaching-tab export panel retired with the v2 redesign; the class surface's
+  // live export controls are the Classes list row's PDF/LLM pair (ExportButtons,
+  // drawn at 32px). The a11y surface's class carries scored results, so its row has them.
+  await openReady(page, '/dashboard/results', 'teacher-results');
+  const classExport = page.locator(
+    `[data-slot="results-class-row"][data-class-id="${surface.classDocumentId}"] button[data-export="llm"]`,
+  );
   await expect(classExport).toBeVisible();
   await expect(classExport).toHaveAccessibleName(/\S/);
   const classBox = await classExport.boundingBox();
@@ -155,13 +158,13 @@ test('HEADINGS: exactly one h1 per page and no skipped level', async () => {
   }
 });
 
-test('NOT-COLOUR-ALONE: every tinted chip on a subskill card prints its word as text', async () => {
-  // A card whose latest result left its subskill unassessed draws no chip at all, so a
-  // single student can legitimately draw none — the rule is about the chips that ARE
-  // drawn. The subjects therefore come off the REAL Students tab (every scored row the
-  // class serves, in its own order) and the audit walks them until it has seen chips,
-  // so the non-vacuity guard means "this class's chips all print their word", never
-  // "the one student the fixture happened to pick did".
+test('NOT-COLOUR-ALONE: every tinted pill in the breakdown table prints its word as text', async () => {
+  // A row whose latest result left its subskill unassessed draws the kit dash, not a
+  // pill, so a single student can legitimately draw none — the rule is about the
+  // pills that ARE drawn. The subjects therefore come off the REAL Students tab
+  // (every scored row the class serves, in its own order) and the audit walks them
+  // until it has seen pills, so the non-vacuity guard means "this class's pills all
+  // print their word", never "the one student the fixture happened to pick did".
   await openReady(page, classUrl(), 'teacher-class-results');
   const scored = await page
     .locator('[data-slot="student-results-row"][data-scored="true"] a[data-slot="student-name"]')
@@ -171,21 +174,24 @@ test('NOT-COLOUR-ALONE: every tinted chip on a subskill card prints its word as 
   const audited = scored.filter((id) => id !== '').slice(0, 5);
   expect(audited.length, 'the Students tab served no scored student to audit').toBeGreaterThan(0);
 
-  let chipsSeen = 0;
+  let pillsSeen = 0;
   for (const studentDocumentId of audited) {
     await openStudent(studentDocumentId);
-    const cards = page.locator('[data-slot="student-subskill"]');
-    expect(await cards.count(), `${studentDocumentId} rendered no subskill card`).toBeGreaterThan(0);
-    const chips = cards.locator('[data-slot="status-pill"]');
-    const count = await chips.count();
-    chipsSeen += count;
+    const rows = page.locator('[data-slot="student-breakdown-row"]');
+    expect(await rows.count(), `${studentDocumentId} rendered no breakdown row`).toBeGreaterThan(0);
+    // The tinted chip is the phase cell's bordered traffic-light pill (`PhaseChip`
+    // variant="pill"); an unassessed row prints the kit dash as plain text in the
+    // same cell instead, so only the pills carry the word-not-colour rule.
+    const pills = page.locator('[data-slot="student-breakdown-phase"] span[data-tone]');
+    const count = await pills.count();
+    pillsSeen += count;
     for (let index = 0; index < count; index += 1) {
-      await expect(chips.nth(index)).not.toBeEmpty();
+      await expect(pills.nth(index)).not.toBeEmpty();
     }
   }
   expect(
-    chipsSeen,
-    `no tinted chip on any subskill card of ${audited.length} scored students`,
+    pillsSeen,
+    `no tinted pill in the breakdown table of ${audited.length} scored students`,
   ).toBeGreaterThan(0);
 });
 

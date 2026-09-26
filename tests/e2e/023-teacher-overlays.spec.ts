@@ -3,7 +3,6 @@ import path from 'node:path';
 
 import { expect, test, type Page } from '@playwright/test';
 
-import { extractTeacherExportPrompt } from '@/modules/teacher/lib/teacher-overlays';
 import type { DashboardClass } from '@/modules/teacher/types/teacher.types';
 
 import {
@@ -13,9 +12,7 @@ import {
   readTests,
 } from './helpers/teacher-past-sessions-api';
 import { cat } from './helpers/i18n';
-import { sectionTab } from './helpers/teacher-class-detail';
-import { readTeacherExportLive } from './helpers/teacher-export-live';
-import { bearer, openClassResults } from './helpers/teacher-results-live';
+import { bearer } from './helpers/teacher-results-live';
 import { en } from './helpers/teacher-rail';
 import { loginAs } from './helpers/roles';
 
@@ -45,66 +42,11 @@ test.afterAll(async ({ request }) => {
   await page?.close();
 });
 
-test('AI export preview renders the exact live server prompt and handles denied clipboard access', async ({
-  playwright,
-}) => {
-  await page.setViewportSize(DESKTOP);
-  const classDocumentId = classes[0].class_document_id;
-  await openClassResults(page, classDocumentId);
-  await sectionTab(page, 'insights').click();
-  await expect
-    .poll(() => page.locator('[data-slot="teaching-insights"]').getAttribute('data-status'), {
-      timeout: 20_000,
-    })
-    .toMatch(/^(empty|ready)$/);
-
-  const request = { kind: 'insights' as const, classDocumentId };
-  const serverFile = await readTeacherExportLive(playwright, request, teacherJwt);
-  const expectedPrompt = extractTeacherExportPrompt(serverFile.body);
-  await page.locator('button[data-export-kind="insights"]').click();
-
-  const preview = page.locator('[data-slot="teacher-export-preview"]');
-  await expect(preview).toBeVisible({ timeout: 20_000 });
-  const renderedPrompt = (
-    await preview.locator('[data-slot="teacher-export-prompt"]').innerText()
-  ).trim();
-  expect(renderedPrompt).toBe(expectedPrompt);
-  await expect(preview).toContainText(serverFile.filename);
-  console.log(`[023 live prompt]\n${renderedPrompt}`);
-
-  await page.screenshot({
-    path: path.join(CAPTURES, '023-export-preview-desktop.png'),
-    animations: 'disabled',
-  });
-  await page.setViewportSize(MOBILE);
-  await page.screenshot({
-    path: path.join(CAPTURES, '023-export-preview-375.png'),
-    animations: 'disabled',
-  });
-
-  await page.evaluate(() => {
-    Object.defineProperty(navigator, 'clipboard', {
-      configurable: true,
-      value: {
-        writeText: () => Promise.reject(new DOMException('Permission denied', 'NotAllowedError')),
-      },
-    });
-  });
-  let downloads = 0;
-  page.on('download', () => {
-    downloads += 1;
-  });
-  await preview.locator('[data-slot="teacher-export-copy-download"]').click();
-  await expect(preview.getByRole('alert')).toContainText(
-    cat(en, 'Teacher.results.export.copyFailed'),
-  );
-  expect(downloads).toBe(0);
-  await expect(preview).toBeVisible();
-  await preview
-    .getByRole('button', { name: cat(en, 'Teacher.results.export.cancelPreview') })
-    .click();
-  await expect(preview).toBeHidden();
-});
+// The file's other test — the Teaching-tab export panel's preview dialog, its live
+// server prompt and its denied-clipboard alert — retired with the Teacher Portal v2
+// redesign: the panel and preview are gone platform-wide (the C-TR-5 download now
+// hangs off the Classes list's class row and is proven by teacher-results-export.spec.ts
+// and teacher-exports-email-roster.spec.ts).
 
 test('the destructive close confirmation survives a backdrop press', async ({ request }) => {
   const tests = await readTests(request, teacherJwt);

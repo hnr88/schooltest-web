@@ -46,35 +46,36 @@ test.describe(`Spec 4 — Academic Vocabulary as the third vocabulary row (${MOD
     await signIn(page);
   });
 
-  test('student drill-down: Everyday → Classroom → Academic cards, Academic banded, Critical still the gate pill', async ({ page }) => {
+  test('student drill-down: Everyday → Classroom → Academic rows, Academic banded, Critical still the gate pill', async ({ page }) => {
     const target = academicVocabResult(TEACHER);
     test.info().annotations.push({ type: 'result', description: JSON.stringify(target) });
     await page.goto(`/dashboard/results/${target.classId}/students/${target.studentId}`);
 
-    const cards = page.locator('[data-slot="student-subskill"]');
+    const cards = page.locator('[data-slot="student-breakdown-row"]');
     await expect(cards.first()).toBeVisible({ timeout: 90_000 });
     await expect(cards).toHaveCount(9);
     const order = await cards.evaluateAll((nodes) => nodes.map((node) => node.getAttribute('data-skill') ?? ''));
     expect(order.filter((skill) => VOCAB.includes(skill))).toEqual(VOCAB);
     expect(order.indexOf('Vocab_B2')).toBe(order.indexOf('Critical') - 1);
 
-    const academic = page.locator('[data-slot="student-subskill"][data-skill="Vocab_B2"]');
-    await expect(academic).toContainText(cat(en, 'TeacherPortal.viewModel.attribute.vocabB2'));
+    const academic = page.locator('[data-slot="student-breakdown-row"][data-skill="Vocab_B2"]');
+    await expect(academic).toContainText(cat(en, 'TeacherPortal.student.breakdown.vocab.Vocab_B2'));
+    await expect(academic).not.toContainText(cat(en, 'TeacherPortal.viewModel.attribute.vocabB2'));
     for (const gate of GATE_LABELS) await expect(academic).not.toContainText(gate);
+    const academicPhase = academic.locator('[data-slot="student-breakdown-phase"]');
     if (PRE_INTEGRATION) {
-      await expect(academic).toHaveAttribute('data-assessed', 'false');
-      test.info().annotations.push({ type: 'deferred', description: 'the banded Academic card needs the spec-4 API' });
+      await expect(academicPhase).toHaveText(cat(en, 'TeacherPortal.kit.noValue'));
+      test.info().annotations.push({ type: 'deferred', description: 'the banded Academic row needs the spec-4 API' });
     } else {
-      await expect(academic).toHaveAttribute('data-assessed', 'true');
-      await expect(academic.locator('[data-slot="status-pill"]', { hasText: teacherBandLabel(target.band) })).toHaveCount(1);
+      await expect(academicPhase).toHaveText(teacherBandLabel(target.band));
     }
 
-    const critical = page.locator('[data-slot="student-subskill"][data-skill="Critical"]');
-    await expect(critical.locator('[data-slot="status-pill"]', { hasText: GATE_LABELS[target.gatePassed ? 0 : 1] })).toHaveCount(1);
+    const critical = page.locator('[data-slot="student-breakdown-row"][data-skill="Critical"]');
+    await expect(critical.locator('[data-slot="student-breakdown-phase"]')).toHaveText(GATE_LABELS[target.gatePassed ? 0 : 1]);
 
     await academic.scrollIntoViewIfNeeded();
     await attach(page, 'student-page');
-    await attach(page, 'student-subskill-cards', page.locator('[data-slot="student-subskills"]'));
+    await attach(page, 'student-breakdown', page.locator('[data-slot="student-breakdown"]'));
   });
 
   test('teacher report: the Academic banded row follows Classroom Vocabulary in the attribute panel', async ({ page }) => {

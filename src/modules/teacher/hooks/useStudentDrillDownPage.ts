@@ -11,9 +11,8 @@ import { STUDENT_I18N_NAMESPACE } from '@/modules/teacher/constants/student-deta
 import { useTeacherExportDownload } from '@/modules/teacher/hooks/useTeacherExportDownload';
 import { classResultsHref } from '@/modules/teacher/lib/results-shell';
 import { DEFAULT_SKILL_SCOPE } from '@/modules/teacher/lib/skill-scope';
-import { drillDownCrumb } from '@/modules/teacher/lib/student-drill-down-view';
+import { buildStudentDrillDownView, drillDownCrumb } from '@/modules/teacher/lib/student-drill-down-view';
 import { firstNameOf } from '@/modules/teacher/lib/student-text';
-import { studentDetail } from '@/modules/teacher/lib/v2/student-detail';
 import { useStudentDrillDownQuery } from '@/modules/teacher/queries/use-student-drill-down.query';
 import { useTeacherDashboardQuery } from '@/modules/teacher/queries/use-teacher-dashboard.query';
 import { useClassOverlaysStore } from '@/modules/teacher/stores/use-class-overlays-store';
@@ -21,9 +20,11 @@ import type { SkillScopeValue } from '@/modules/teacher/types/results-shell.type
 import type { StudentDrillDownPage } from '@/modules/teacher/types/student-drill-down.types';
 
 /**
- * The student page's data and actions: the canonical drill-down read, the class name
- * from the cached C-TD-1 dashboard, the C-TR-7 export, the Ask AI drawer and the copy.
- * A success waits for the dashboard so the class is never printed as its document id.
+ * The student page's data and actions: the canonical drill-down read mapped
+ * through THE V2 MODEL (`buildStudentDrillDownView`, Spec 02), the class name
+ * from the cached C-TD-1 dashboard, the C-TR-7 export, the Ask AI drawer and the
+ * copy. A success waits for the dashboard so the class is never printed as its
+ * document id.
  */
 export function useStudentDrillDownPage(
   classDocumentId: string,
@@ -72,7 +73,7 @@ export function useStudentDrillDownPage(
     className,
     studentName,
     firstName: studentName === null ? '' : firstNameOf(studentName),
-    view: data === null ? null : studentDetail(data.view),
+    view: data === null ? null : buildStudentDrillDownView(data.view),
     skill,
     setSkill,
     actions: {

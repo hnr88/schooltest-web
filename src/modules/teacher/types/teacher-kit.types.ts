@@ -123,6 +123,13 @@ export interface PhaseChipProps {
   label?: string;
   /** md 5/12 table chip · lg 6/13 header chip. */
   size?: 'md' | 'lg';
+  /**
+   * `pill`: the bordered traffic-light pill the student breakdown table draws
+   * (Spec 02 §3c, `02 Student report.html:294–347`). Default `tint`.
+   */
+  variant?: 'tint' | 'pill';
+  /** Pill-only colour override — the Critical exit gate is green/amber, not a phase. */
+  tone?: 'success' | 'info' | 'warning' | 'danger';
   className?: string;
 }
 

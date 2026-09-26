@@ -40,11 +40,13 @@ export const ANALYSIS_GROWTH_KEY = {
 /** The student chart's strokes and text (`Teacher Portal v2.dc.html:404–425`, design-surfaces §7.1). */
 export const STUDENT_CHART_STYLE = {
   grid: '#EDEFF3',
+  /** The equal-height band edges (Spec 02 §3b, `02 Student report.html:237–239`). */
+  bandBounds: '#C9D4E8',
   axis: '#94A0B2',
   line: '#0E2350',
   phaseLabel: '#5B6472',
   xLabel: '#4B5563',
-  xSub: '#B6BCC7',
+  xSub: '#9AA1AE',
   pointFill: '#FFFFFF',
   axisTopY: 12,
 } as const;

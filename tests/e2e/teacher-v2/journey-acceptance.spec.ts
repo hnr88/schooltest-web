@@ -15,15 +15,6 @@ import { apiLoginRetried } from '../helpers/ops34-api-retry';
 import { API_BASE } from '../helpers/teacher-auth-rail';
 import { READY, frame, header, sectionTab } from '../helpers/teacher-class-detail';
 import {
-  fr,
-  icu,
-  recallReasonOf,
-  restoreResultRow,
-  snapshotResultRow,
-  vm,
-  type ResultRowSnapshot,
-} from '../helpers/teacher-family-reports';
-import {
   capture,
   freeStudentCount,
   liveSittingsOf,
@@ -47,9 +38,9 @@ import { choice, isLiveTab, isSessionWrite, modal, modalTab } from '../helpers/t
 // interception: the teacher opens Classes, opens the class, starts a two-student session
 // from the Start-a-session modal, a student joins the way the DESKTOP app joins
 // (POST /api/sittings/join) and answers a real question, the Live tab is driven (pause,
-// resume, +5, force submit, close), the result lands on the Students and Family reports
-// tabs, one held report is released to its carer and recalled, and the run leaves the
-// class as it found it. Every number and name here is read back off the API or Postgres.
+// resume, +5, force submit, close), the result lands on the Students and Reports tabs and
+// a scored report prints its real per-student PDF, and the run leaves the class as it
+// found it. Every number and name here is read back off the API or Postgres.
 //
 // It also captures the parity set into tests/e2e/proofs/teacher-v2/acceptance/, one file
 // per design shot in $TPV2/design/design-shots/.
@@ -71,7 +62,6 @@ const tClose = createTranslator({
   namespace: 'TeacherPortal.liveSessions.closeConfirm',
 });
 const kit = (key: string) => cat(en, `TeacherPortal.kit.${key}`);
-const RECALL_REASON = 'A1 acceptance journey: released, recalled and restored by the spec';
 const WORKING = new Set(['joined', 'in_progress', 'stalled', 'paused']);
 
 test.describe.configure({ mode: 'serial' });
@@ -84,7 +74,6 @@ let formLabel = '';
 let sittingId = '';
 let code = '';
 let resultId = '';
-let snapshot: ResultRowSnapshot | null = null;
 let startingRoster: RosterRow[] = [];
 let startingResults: Map<string, StoredResult> = new Map();
 let startingClassCount = 0;
@@ -165,7 +154,6 @@ test.beforeAll(async ({ browser, playwright }) => {
 });
 
 test.afterAll(async () => {
-  if (snapshot !== null) restoreResultRow(snapshot);
   if (sittingId !== '' && (await sittingStatusOf(request, jwt, sittingId)) === 'open') {
     await request.post(`${API_BASE}/api/teacher/test-sessions/${sittingId}/close`, { headers: auth() });
   }
@@ -348,7 +336,7 @@ test('4 · parity set: the six class-detail tabs, the student page, Reports and 
   await openTab('exit', '[data-slot="exit-predictions-panel"]');
   await capture(page, 'class-detail-sitting--exit');
   await openTab('reports', '[data-slot="family-reports"]');
-  await expect(page.locator('[data-slot="family-report-row"]')).toHaveCount(startingRoster.length);
+  await expect(page.locator('[data-slot="reports-student-row"]')).toHaveCount(startingRoster.length);
   await capture(page, 'class-detail-sitting--reports');
 
   const scored = startingRoster.find((entry) => (entry.result?.overall.domain_score ?? null) !== null);
@@ -465,7 +453,7 @@ test('6b · Previous sessions lists the sitting just closed', async () => {
   await expect(history).toContainText(t('history.closed'));
 });
 
-test('7 · the Students and Family reports tabs carry the result; release and recall one report', async () => {
+test('7 · the Students and Reports tabs carry the result; a scored report prints its PDF', async () => {
   test.setTimeout(300_000);
   await expect
     .poll(
@@ -488,64 +476,27 @@ test('7 · the Students and Family reports tabs carry the result; release and re
     score === null ? kit('noValue') : `${score}%`,
   );
 
+  // The Reports tab (rebuilt in Spec 06 — the release workflow is gone): the joined
+  // student's row renders what the API holds, and a scored student's row button opens the
+  // real per-student report in its print popup.
   await openTab('reports', '[data-slot="family-reports"]');
-  const familyRow = page.locator(`[data-slot="family-report-row"][data-student-id="${joiner.id}"]`);
-  await expect(familyRow).toHaveAttribute('data-status', mine?.release_state ?? '');
-  await expect(familyRow).toContainText(vm(`release.label.${mine?.release_state}`));
+  const familyRow = page.locator(`[data-slot="reports-student-row"][data-student-id="${joiner.id}"]`);
+  await expect(familyRow).toHaveAttribute('data-has-result', mine?.result == null ? 'false' : 'true');
+  await expect(familyRow).toContainText(joiner.name);
 
-  const target = roster.find(
-    (row) => row.release_state === 'held' && (row.result?.overall.domain_score ?? null) !== null,
-  );
-  expect(target, 'the class holds a scored, held report to release').toBeDefined();
-  const heldId = target?.result?.document_id ?? '';
-  const heldName = target?.student.name ?? '';
-  const row = page.locator(`[data-slot="family-report-row"][data-result-id="${heldId}"]`);
-
-  await row.getByRole('button', { name: fr('actions.preview'), exact: true }).click();
-  const preview = page.locator('[data-slot="carer-report-preview"]');
-  await expect(preview.getByRole('heading', { name: heldName, exact: true })).toBeVisible({ timeout: 30_000 });
-  await expect(preview.locator('[data-slot="carer-report-score"]')).toHaveText(
-    `${target?.result?.overall.domain_score} / 100`,
-  );
-  await capture(page, 'overlay-carer-preview');
-  await preview.getByRole('button', { name: fr('preview.close'), exact: true }).click();
-  await expect(preview).toBeHidden();
-
-  snapshot = snapshotResultRow(heldId);
-  expect(snapshot, 'the release can only be undone with the row snapshot').not.toBeNull();
-
-  await row.getByRole('button', { name: fr('actions.release'), exact: true }).click();
-  const confirm = page.getByRole('alertdialog');
-  await expect(confirm).toContainText(icu(fr('release.title'), { name: heldName }));
-  await confirm.getByRole('button', { name: fr('release.cta'), exact: true }).click();
-  await expect(row).toHaveAttribute('data-status', 'released', { timeout: 30_000 });
-  await expect
-    .poll(async () => (await readRoster(request, jwt, klass.class_document_id)).find((entry) => entry.result?.document_id === heldId)?.release_state, { timeout: 30_000 })
-    .toBe('released');
-
-  await row.getByRole('button', { name: fr('actions.recall'), exact: true }).click();
-  const recall = page.locator('[data-slot="recall-report-dialog"]');
-  await expect(recall).toContainText(icu(fr('recall.title'), { name: heldName }));
-  await recall.getByLabel(fr('recall.reasonLabel')).fill(RECALL_REASON);
-  await recall.getByRole('button', { name: fr('recall.cta'), exact: true }).click();
-  await expect(row).toHaveAttribute('data-status', 'recalled', { timeout: 30_000 });
-  await expect
-    .poll(async () => (await readRoster(request, jwt, klass.class_document_id)).find((entry) => entry.result?.document_id === heldId)?.release_state, { timeout: 30_000 })
-    .toBe('recalled');
-  expect(recallReasonOf(heldId), 'the carer-facing recall reason is the one typed').toBe(RECALL_REASON);
+  const target = roster.find((row) => (row.result?.overall.domain_score ?? null) !== null);
+  expect(target, 'the class holds a scored report to print').toBeDefined();
+  const row = page.locator(`[data-slot="reports-student-row"][data-student-id="${target?.student.document_id}"]`);
+  const [popup] = await Promise.all([
+    page.waitForEvent('popup'),
+    row.locator('[data-slot="reports-student-pdf"]').click(),
+  ]);
+  await expect(popup.locator('h1')).toHaveText(target?.student.name ?? '', { timeout: 30_000 });
+  await popup.close();
 });
 
 test('8 · cleanup: the journey leaves the class as it found it', async () => {
   test.setTimeout(180_000);
-  if (snapshot !== null) {
-    const removed = restoreResultRow(snapshot);
-    test.info().annotations.push({
-      type: 'restored',
-      description: `${snapshot.resultId}; notifications removed: ${removed.join(',') || 'none'}`,
-    });
-    snapshot = null;
-  }
-
   // STORAGE LEVEL — the real "as found" property, and the strict one: every Result the run
   // found still exists, with the release columns it had. Nothing was released, recalled or
   // deleted behind the journey's back.

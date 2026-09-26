@@ -1,7 +1,7 @@
 import type { AssessedBand, Readiness } from '@schooltest/scoring-contracts';
 
 import type { RosterReleaseState } from '@/modules/results';
-import type { ExpectedKind, FamilyFilter } from '@/modules/teacher/types/v2-family.types';
+import type { ExpectedKind } from '@/modules/teacher/types/v2-family.types';
 import type { AcaraPhaseName } from '@/modules/teacher/types/v2-view-common.types';
 
 export const READINESS_EXPECTED: Readonly<Partial<Record<Readiness, ExpectedKind>>> = {
@@ -11,15 +11,6 @@ export const READINESS_EXPECTED: Readonly<Partial<Record<Readiness, ExpectedKind
 };
 
 export const SCORED_RELEASE_KINDS: readonly RosterReleaseState[] = ['held', 'released', 'recalled'];
-
-export const BLOCKED_RELEASE_KINDS: readonly RosterReleaseState[] = ['manual', 'absent', 'nosit'];
-
-export const FILTER_RELEASE_KINDS: Readonly<Record<FamilyFilter, readonly RosterReleaseState[] | null>> = {
-  all: null,
-  held: ['held'],
-  released: ['released'],
-  blocked: ['manual', 'absent', 'nosit', 'open'],
-};
 
 export const PHASE_ORDER: readonly AcaraPhaseName[] = ['Beginning', 'Emerging', 'Developing', 'Consolidating'];
 

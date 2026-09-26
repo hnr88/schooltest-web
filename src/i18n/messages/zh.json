@@ -726,7 +726,7 @@
       "opsSettings": "平台设置",
       "account": "账户",
       "teacherDashboard": "控制面板",
-      "testSessions": "实时场次",
+      "testSessions": "测试场次",
       "results": "班级"
     },
     "sidebar": {
@@ -1950,7 +1950,7 @@
       "recalledTitle": "学校已撤回报告",
       "recalledBody": "学校正在复核该家庭报告，已将其撤回。此处不再显示——更新后学校会重新发布。",
       "recalledAt": "已于 {date} 撤回。",
-      "listHeading": "家庭报告",
+      "listHeading": "报告",
       "listDescription": "您孩子的报告，最新优先。学校发布后即会显示在这里。",
       "listEmptyTitle": "暂无报告",
       "listEmptyBody": "当您的孩子完成测试且学校发布报告后，报告会显示在这里。",
@@ -4424,7 +4424,7 @@
   "Teacher": {
     "testSessions": {
       "meta": {
-        "title": "测验场次 — SchoolTest",
+        "title": "测试场次 — SchoolTest",
         "description": "为班级开启阅读诊断测验，分享加入码，并实时跟进场次进度。"
       },
       "setup": {
@@ -4440,10 +4440,10 @@
     "results": {
       "meta": {
         "title": "成绩 — SchoolTest",
-        "description": "班级成绩、教学洞察，以及测验 A 与测验 B 之间的进步情况。"
+        "description": "班级成绩、教学安排，以及测验 A 与测验 B 之间的进步情况。"
       },
       "title": "成绩",
-      "description": "班级成绩、教学洞察，以及两次测验之间的进步情况。",
+      "description": "班级成绩、教学安排，以及两次测验之间的进步情况。",
       "list": {
         "loading": "正在加载你的班级",
         "students": "{count, plural, other {# 名学生}}",
@@ -4503,7 +4503,7 @@
         "loading": "正在加载该班级",
         "meta": {
           "title": "班级成绩 — SchoolTest",
-          "description": "单个班级：每位学生的阅读诊断结果、其背后的教学洞察，以及测验 A 到测验 B 的进步情况。"
+          "description": "单个班级：每位学生的阅读诊断结果、其背后的教学安排，以及测验 A 到测验 B 的进步情况。"
         },
         "noValue": "—",
         "notYetCount": "{count, plural, other {# 名尚未掌握}}",
@@ -4529,12 +4529,12 @@
       "tabs": {
         "listLabel": "班级成绩视图",
         "students": "学生",
-        "insights": "教学洞察",
+        "insights": "教学",
         "progress": "进步情况",
         "exit": "出口水平预测",
         "comingSoon": "即将推出",
-        "reports": "家长报告",
-        "live": "实时考试"
+        "reports": "报告",
+        "live": "测试场次"
       },
       "insights": {
         "loading": "正在加载教学洞察",
@@ -5013,9 +5013,9 @@
       },
       "attribute": {
         "decoding": "解码",
-        "vocabA2": "日常词汇",
-        "vocabB1": "课堂词汇",
-        "vocabB2": "学术词汇",
+        "vocabA2": "词汇（日常）",
+        "vocabB1": "词汇（课堂）",
+        "vocabB2": "词汇（学术）",
         "grammar": "语法",
         "gist": "主旨理解",
         "detail": "细节把握",
@@ -5238,11 +5238,11 @@
       "tabs": {
         "listLabel": "班级成绩视图",
         "students": "学生",
-        "progress": "班级进步情况",
-        "insights": "教学洞察",
+        "progress": "进步情况",
+        "insights": "教学",
         "exit": "出口水平预测",
-        "reports": "家长报告",
-        "live": "实时考试"
+        "reports": "报告",
+        "live": "测试场次"
       },
       "exit": {
         "title": "出口水平预测",
@@ -5316,24 +5316,65 @@
     },
     "progress": {
       "title": "班级进步情况",
-      "subtitle": "{count, plural, =0 {还没有已评分的测试。} other {班级在 # 次测试中的变化。}}",
-      "tiles": {
-        "meanShift": {
-          "label": "平均变化",
-          "sub": "上一次到最近一次"
+      "subtitle": "{count, plural, =0 {还没有已评分的测试。} other {班级在今年 # 次测试中的变化。}}",
+      "dotMap": {
+        "title": "学生阅读进度",
+        "sub": "每一行是一名学生，按最高分在前排序。圆点是起始位置，箭头尖端是最近一次测试的位置。将鼠标悬停在行上可查看详情。",
+        "modeGrowth": "显示进步",
+        "modeLatest": "仅看最近",
+        "phases": {
+          "beginning": "起步",
+          "emerging": "初显",
+          "developing": "发展中",
+          "consolidating": "巩固"
         },
-        "gained": {
-          "label": "进步",
-          "sub": "{threshold} 分或以上"
+        "studentsCount": "{count, plural, other {# 名学生}}",
+        "tooltip": "{name} · {firstMonth} {firstPct}% ({firstPhase}) → {latestMonth} {latestPct}% ({latestPhase})",
+        "endLabel": "变化不大",
+        "legendUp": "进步",
+        "legendBack": "退步",
+        "classSummary": "自首次测试以来，{total} 名学生中有 {up} 名至少上升了一个 ACARA 阶段；{held} 名保持不变，{down} 名下降。",
+        "empty": "暂无可比较的结果。"
+      },
+      "gains": {
+        "topTitle": "总体进步最大",
+        "lowTitle": "总体进步最小",
+        "empty": "暂无可比较的结果。"
+      },
+      "subMap": {
+        "title": "学生子技能进步",
+        "sub": "选择一项子技能，查看每名学生达到的阶段。圆点是首次测试时的阶段，箭头尖端是最近一次测试时的阶段，这样就能看出谁在前进、谁在后退。",
+        "skills": {
+          "Decoding": "解码",
+          "Vocab_A2": "词汇（日常）",
+          "Grammar": "语法",
+          "Vocab_B1": "词汇（课堂）",
+          "Gist": "主旨理解",
+          "Detail": "细节把握",
+          "Inference": "推理",
+          "Vocab_B2": "词汇（学术）"
         },
-        "held": {
-          "label": "保持稳定",
-          "sub": "{threshold} 分以内"
+        "phases": {
+          "beginning": "起步",
+          "emerging": "初显",
+          "developing": "发展中",
+          "consolidating": "巩固"
         },
-        "slipped": {
-          "label": "退步",
-          "sub": "下降 {threshold} 分或以上"
-        }
+        "studentsCount": "{count, plural, other {# 名学生}}",
+        "tooltip": "{name} · {skill}: {firstPhase} ({firstMonth}) → {latestPhase} ({latestMonth})",
+        "tooltipLatest": "{name} · {skill}: {latestPhase} ({latestMonth})",
+        "moveUp": "↑ {count, plural, other {# 个阶段}}",
+        "moveHeld": "持平",
+        "moveDown": "↓ {count, plural, other {# 个阶段}}",
+        "summary": "{skill}：{up} 人进步 · {held} 人持平 · {down} 人退步",
+        "legendUp": "进步",
+        "legendBack": "退步",
+        "legendHeld": "持平",
+        "empty": "暂无可比较的结果。"
+      },
+      "analysis": {
+        "title": "班级分析",
+        "comingSoon": "自动生成摘要即将推出"
       },
       "points": "{value} 分",
       "percent": "{value}%",
@@ -5345,27 +5386,70 @@
         "summary": "班级平均 {from}% → {to}%，共 {count} 次测试（{difference} 分）。",
         "summarySingle": "班级平均 {value}%，目前只有一次测试。",
         "summaryEmpty": "还没有已评分的测试。"
-      },
-      "top": {
-        "title": "进步最大",
-        "empty": "还没有可靠的进步。"
-      },
-      "watch": {
-        "title": "需关注的学生",
-        "empty": "暂时没有需要关注的学生。"
-      },
-      "subskills": {
-        "title": "子技能变化趋势",
-        "description": "每项阅读子技能在各次测试中的班级平均分，由弱到强",
-        "now": "当前 {value}%"
-      },
-      "footnote": "此处每位学生的变化，都是服务器将其最近一次测试与上一次测试直接比较的结果。无法比较时，不显示任何变化。班级平均分趋势是已记录的已评分测试的简单平均。"
+      }
     },
     "insights": {
-      "title": "教学洞察",
+      "title": "教学",
       "subtitle": "接下来教什么，教给谁。",
       "emptyTitle": "该班级还没有学生完成测验",
       "emptyDescription": "子技能掌握情况与建议分组均来自已完成的阅读结果，因此目前还没有可用于教学的数据。一旦有学生提交测验，这些内容便会出现在此处。",
+      "teaching": {
+        "summary": "{v} 个词汇小组、{c} 个阅读理解小组和 {f} 个基础小组，以及为 {n, plural, other {# 名学生}} 准备的 {p} 对阅读搭档。",
+        "empty": "该班级暂无结果。",
+        "provisional": "暂定",
+        "moreMembers": "+{count}",
+        "section": {
+          "wholeClass": "全班",
+          "wholeClassSub": "分层小组",
+          "individual": "个人",
+          "individualSub": "结对与下一步"
+        },
+        "strands": {
+          "vocabulary": "词汇",
+          "vocabularySub": "词语层面",
+          "comprehension": "阅读理解",
+          "comprehensionSub": "段落层面",
+          "foundations": "基础",
+          "foundationsSub": "解码与语法",
+          "empty": "尚未评估。"
+        },
+        "skills": {
+          "Vocab_A2": "日常词汇",
+          "Vocab_B1": "课堂词汇",
+          "Vocab_B2": "学术词汇",
+          "Gist": "主旨理解",
+          "Detail": "细节把握",
+          "Inference": "推理",
+          "Decoding": "解码",
+          "Grammar": "语法"
+        },
+        "prompt": {
+          "strand": "提示词",
+          "all": "全部提示词",
+          "title": "下载提示词，粘贴到你的 AI 助手中",
+          "student": "下载 {name} 的 AI 提示词",
+          "strandFor": "下载“{strand}”的 AI 提示词"
+        },
+        "gate": {
+          "label": "批判性阅读达标线",
+          "passed": "{count} 人通过",
+          "notYet": "{count} 人未通过"
+        },
+        "pairs": {
+          "title": "阅读结对",
+          "intro": "较强的读者带领，针对{skill}",
+          "empty": "本周暂无合适的结对。"
+        },
+        "nextSteps": {
+          "title": "下一步",
+          "sub": "每人一个词汇重点和一个理解重点",
+          "target": "{skill} → {phase}",
+          "vocabularyTarget": "{skill} → {phase}",
+          "extend": "拓展",
+          "vocabularyPill": "词汇重点：{skill} → {phase}",
+          "comprehensionPill": "理解重点：{skill} → {phase}"
+        }
+      },
       "percent": "{value}%",
       "kpi": {
         "lastSitting": "最近一次测验",
@@ -5418,96 +5502,40 @@
       }
     },
     "familyReports": {
-      "title": "家庭报告",
-      "subtitle": "向 {className} 的家庭发布结果。打开学生即可查看或导出完整报告。",
-      "releaseHeld": "{count, plural, =0 {发布暂存的报告} other {发布 # 份暂存报告}}",
-      "tiles": {
-        "scored": "已评分",
-        "released": "已发布给家长",
-        "held": "为您暂存",
-        "noResult": "尚无结果"
+      "title": "报告",
+      "audiencePrompt": "这份报告给谁看？",
+      "comingSoon": "即将推出",
+      "audiences": {
+        "parents": "家长和监护人",
+        "teachers": "任课教师",
+        "principal": "校长",
+        "admin": "行政人员"
       },
-      "banner": {
-        "open": "{count, plural, other {# 份作答仍未结束。}}",
-        "blocked": "{count, plural, other {# 名学生需要补考或人工评分后才能发布。}}",
-        "gaps": "现在发布，家长看到的班级情况将不完整。",
-        "complete": "本场测试的所有作答均已评分，班级情况完整。",
-        "unscored": "{count, plural, other {# 份作答尚无分数。}}"
+      "notes": {
+        "parents": "为家庭提供的简明英语报告。每名学生一份，不包含班级数据。",
+        "teachers": "面向任课教师的课堂报告。每名学生一份，附教学后续建议。",
+        "principal": "面向管理层的班级概览：一览成绩、阶段和后续步骤。",
+        "admin": "用于学校档案的行政报告。包含班级数据，不含教学说明。"
       },
-      "filters": {
-        "label": "显示报告",
-        "all": "全部",
-        "held": "暂存",
-        "released": "已发布",
-        "blocked": "受阻"
+      "classCard": {
+        "title": "班级摘要",
+        "meta": "{className} · {total} 名学生中 {scored} 名已有成绩 · 面向{audience}",
+        "download": "下载 PDF"
       },
-      "listLabel": "按学生列出的家庭报告",
-      "empty": "此分组中没有内容。",
-      "score": "{score}%",
-      "noResult": "无结果",
-      "actions": {
-        "preview": "预览报告",
-        "release": "发布",
-        "recall": "撤回"
+      "students": {
+        "title": "学生个人报告",
+        "meta": "{total} 名学生中 {scored} 名的报告已就绪 · 面向{audience}",
+        "downloadAll": "全部下载",
+        "pdf": "PDF",
+        "noResultYet": "暂无成绩",
+        "pdfFor": "下载 {name} 的 PDF 报告"
       },
-      "preview": {
-        "eyebrow": "家长报告预览",
-        "meta": "{className} · {date} 参加测试",
-        "score": "{score} / 100",
-        "canDo": "他们能做到的",
-        "next": "接下来要练习的",
-        "release": "发布给家长",
-        "recall": "撤回此报告",
-        "viewAnalysis": "查看完整分析",
-        "close": "关闭"
-      },
-      "release": {
-        "title": "发布给 {name} 的家长？",
-        "body": "发布后，家长可以立即看到等级、子技能明细和下一步建议。",
-        "bodyRecalled": "发布后，家长可以立即看到等级、子技能明细和下一步建议。此报告曾被撤回过，家长将再次看到它。",
-        "cta": "发布报告"
-      },
-      "recall": {
-        "title": "撤回 {name} 的报告？",
-        "body": "撤回后，报告将从家长门户中移除，并发送一条说明结果正在复核的通知。家长已经读过的内容无法收回。",
-        "reasonLabel": "撤回原因",
-        "reasonHint": "与结果一起保存。最多 500 个字符。",
-        "reasonRequired": "请填写撤回原因，最多 500 个字符。",
-        "cta": "撤回报告"
-      },
-      "releaseAll": {
-        "title": "{count, plural, other {发布 # 份暂存报告？}}",
-        "body": "{count, plural, other {# 名学生的家长可以立即看到等级和下一步建议。}}",
-        "open": "{count, plural, other {# 名学生仍在作答，他们的家长将看不到任何内容，可能会来询问原因。}}",
-        "blocked": "{count, plural, other {另有 # 名学生因补考或人工评分而受阻。}}",
-        "tail": "报告可以撤回，但已读内容无法收回。",
-        "cta": "{count, plural, other {发布 # 份报告}}",
-        "unscored": "{count, plural, other {另有 # 名学生尚无分数。}}"
-      },
-      "nothingHeld": {
-        "title": "没有暂存的报告",
-        "body": "{count, plural, =0 {{className} 中所有已评分的报告都已发送给家长。} other {{className} 中所有已评分的报告都已发送给家长。其余 # 名没有报告的学生尚无分数、正在等待补考或人工评分，或仍在作答，无法在此发布。}}",
-        "cta": "知道了"
-      },
-      "cancel": "取消",
-      "toast": {
-        "released": "已将 {name} 的报告发布给家长",
-        "recalled": "已撤回 {name} 已发布的报告",
-        "releasedAll": "{count, plural, other {已向家长发布 # 份报告}}",
-        "releasedSome": "已发布 {total} 份暂存报告中的 {released} 份。",
-        "releasedNone": "没有暂存报告被发布。",
-        "notReleased": "未发布（{reason}）：{names}。"
-      },
-      "errors": {
-        "notReady": "结果尚未完成",
-        "notFound": "未找到该结果",
-        "forbidden": "您无权更改此结果",
-        "rateLimited": "请求过多，请一分钟后重试",
-        "transport": "连接已中断，请刷新查看当前状态",
-        "generic": "服务器未接受此更改"
-      },
-      "failedRelease": "{name} 的报告未能发布：{reason}。",
-      "failedRecall": "{name} 的报告未能撤回：{reason}。"
+      "download": {
+        "popupBlocked": "请允许弹出窗口以下载 PDF 报告。",
+        "allOpened": "学生报告已打开 — 请在打印对话框中另存为 PDF。",
+        "allFailed": "无法准备学生报告，请重试。",
+        "studentsTitle": "学生报告 — {name}"
+      }
     },
     "live": {
       "students": {
@@ -5882,12 +5910,12 @@
       }
     },
     "liveSessions": {
-      "title": "实时场次",
+      "title": "测试场次",
       "summary": "{sessions, plural, other {# 个场次}}正在 {classes, plural, other {# 个班级}}中进行。每名学生同一时间只能参加一场考试。",
       "summaryNone": "当前没有进行中的场次。同一班级的不同学生可以同时参加不同版本。",
       "startSession": "开始新考试",
-      "loading": "正在加载实时场次…",
-      "loadError": "无法加载实时场次。",
+      "loading": "正在加载测试场次…",
+      "loadError": "测试场次无法加载。",
       "retry": "重试",
       "classMeta": "{year} · {count, plural, other {# 名学生}}",
       "classMetaNoYear": "{count, plural, other {# 名学生}}",
@@ -6217,6 +6245,24 @@
       },
       "progressTitle": "阅读进步趋势",
       "progressDescription": "本学年每次测试的总体领域得分，对照 ACARA 熟练度",
+      "statOverall": "阅读总分",
+      "statAcaraPhase": "ACARA 阶段",
+      "statMomentum": "进步势头",
+      "momentum": {
+        "holding": "保持平稳",
+        "steady": "稳步提升",
+        "accelerating": "快速进步",
+        "slipping": "出现下滑"
+      },
+      "momentumNote": {
+        "holding": "与首次测试相比变化不大",
+        "steady": "进步清晰而平稳",
+        "accelerating": "进步显著且可靠",
+        "slipping": "自首次测试以来有所下降",
+        "none": "需要两次测试才能评估势头"
+      },
+      "progressCardTitle": "阅读进步",
+      "progressCardSubtitle": "本学年每次测试的总体领域得分，对照 ACARA 熟练度",
       "phaseChip": "ACARA：{phase}",
       "chartLabel": "每次测试的总体阅读得分，对照 ACARA 阶段绘制",
       "tiles": {
@@ -6234,6 +6280,17 @@
       },
       "subskillsTitle": "阅读子技能",
       "subskillsDescription": "{first} 在最新一次测试中阅读九个组成部分的表现",
+      "breakdown": {
+        "title": "阅读子技能明细",
+        "columnSubskill": "子技能",
+        "columnPhase": "阶段",
+        "provisionalNote": "学术词汇的划分标准为暂定",
+        "vocab": {
+          "Vocab_A2": "日常词汇",
+          "Vocab_B1": "课堂词汇",
+          "Vocab_B2": "学术词汇"
+        }
+      },
       "subskills": {
         "deltaUp": "↑ +{points}",
         "deltaDown": "↓ −{points}",
@@ -6243,6 +6300,7 @@
       },
       "analysisTitle": "学生分析",
       "analysisBadge": "自动生成摘要",
+      "analysisComingSoon": "自动生成摘要即将上线",
       "copy": "复制",
       "copied": "教师评语已复制到剪贴板。",
       "copyFailed": "无法复制到剪贴板。请选中文本后手动复制。",

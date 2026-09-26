@@ -77,14 +77,14 @@ function StudentDrillDownScreen({ classDocumentId, studentDocumentId }: StudentD
           <StudentDrillDownHeader
             studentName={ready.studentName}
             className={page.className}
-            overall={ready.view.overall.score === null ? null : ready.view.overall}
+            view={ready.view}
             actions={page.actions}
             skill={page.skill}
             onValueChange={page.setSkill}
           />
-          <StudentDrillDownBody view={ready.view} firstName={page.firstName} onCopy={page.actions.copy} />
+          <StudentDrillDownBody view={ready.view} />
           <StudentAskAiDrawer
-            view={ready.view}
+            sittingsCount={ready.view.tiles.sittings}
             firstName={page.firstName}
             classDocumentId={classDocumentId}
             studentDocumentId={studentDocumentId}

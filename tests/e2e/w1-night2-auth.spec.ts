@@ -613,8 +613,8 @@ test.describe('W1-N2 role surfaces', () => {
   test('AUTH-012 teacher signs in to the teacher dashboard with teacher rail', async ({ page }) => {
     await uiLogin(page, TEACHER.email, TEACHER.password);
     await page.waitForURL(/\/(en\/)?dashboard/, { timeout: 20_000 });
-    // Teacher rail (Teacher Portal v2): Dashboard / Live sessions / Classes.
-    await expect(page.getByRole('link', { name: 'Live sessions' })).toBeVisible({
+    // Teacher rail (Teacher Portal v2): Dashboard / Test sessions / Classes.
+    await expect(page.getByRole('link', { name: 'Test sessions' })).toBeVisible({
       timeout: 15_000,
     });
     await expect(page.getByRole('link', { name: 'Classes' })).toBeVisible();
@@ -910,9 +910,9 @@ test.describe('W1-N2 role rails', () => {
     await page.getByRole('menuitem', { name: 'Sign out' }).click();
     await page.waitForURL(/sign-in/, { timeout: 15_000 });
 
-    // Teacher: Classes / Live sessions, no admin sections.
+    // Teacher: Classes / Test sessions, no admin sections.
     await uiLogin(page, TEACHER.email, TEACHER.password);
-    await expect(page.getByRole('link', { name: 'Live sessions' })).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByRole('link', { name: 'Test sessions' })).toBeVisible({ timeout: 15_000 });
     await expect(page.getByRole('link', { name: 'Classes' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Students', exact: true })).toHaveCount(0);
     await page.screenshot({ path: '/tmp/w1-auth-019-teacher-rail.png' });
@@ -966,7 +966,7 @@ test.describe('W1-N2 invitations and onboarding', () => {
     await page.screenshot({ path: '/tmp/w1-auth-025-invite-form.png' });
     await page.getByRole('button', { name: 'Activate account' }).click();
     await page.waitForURL(/dashboard/, { timeout: 30_000 });
-    await expect(page.getByRole('link', { name: 'Live sessions' })).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByRole('link', { name: 'Test sessions' })).toBeVisible({ timeout: 15_000 });
     await page.screenshot({ path: '/tmp/w1-auth-025-activated.png' });
   });
 

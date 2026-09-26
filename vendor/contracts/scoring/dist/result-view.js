@@ -110,6 +110,7 @@ exports.resultHistoryPointSchema = zod_1.z.strictObject({
     sat_at: zod_1.z.iso.date(),
     overall: core_1.domainScoreSchema.nullable(),
     attributes: zod_1.z.record(enums_1.displaySkillSchema, core_1.domainScoreSchema.nullable()),
+    attribute_bands: zod_1.z.record(enums_1.displaySkillSchema, enums_1.assessedBandSchema.nullable()).optional(),
 });
 /** Dashboard §1.1 — official, same-model-version sittings, oldest first, last 8. */
 exports.RESULT_HISTORY_MAX_POINTS = 8;

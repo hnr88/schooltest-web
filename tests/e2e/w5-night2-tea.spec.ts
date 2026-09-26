@@ -3,27 +3,15 @@ import path from 'node:path';
 
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
-import {
-  expectedTiles,
-  fr,
-  icu,
-  recallReasonOf,
-  restoreResultRow,
-  snapshotResultRow,
-  teacherApi,
-  vm,
-  type ResultRowSnapshot,
-  type TeacherApi,
-} from './helpers/teacher-family-reports';
-import { runSql } from './helpers/auth-db';
+import { fr, teacherApi, type TeacherApi } from './helpers/teacher-family-reports';
 import { signIn, signInTeacher } from './helpers/teacher-rail';
 
 /**
  * NIGHT-2 W-R5 — the last ten TEA gaps, one serial pass against the LIVE stack
  * (:3001 UI, :5500 API). The dedicated specs (family-reports-tab, live-students)
- * own their deep arms; this file proves the ten catalog lines end to end and
- * puts every write it makes back (release/recall/batch-release are snapshotted
- * and restored; the live sitting is closed at the end).
+ * own their deep arms; this file proves the ten catalog lines end to end. The
+ * family-reports arms only DOWNLOAD (print windows, Spec 06's rebuilt tab) and
+ * write nothing; the live sitting is closed at the end.
  */
 
 const CLASS = 'wmbv852uxduz6g642hs55g21'; // Matrix Ten X (t1) — the W5 matrix class
@@ -31,16 +19,9 @@ const PROOF = 't34tb8ogapnh4halzdn7yy4n'; // Proof 10X (t1) — scored + release
 const FORM = 'zt97lvsa267wvfekfx2zfiew';
 const API_BASE = 'http://127.0.0.1:5500';
 const PROOFS = path.resolve(process.cwd(), 'tests', 'e2e', 'proofs', 'w5-night2');
-const REASON = 'W-R5 night2 check: recalled and restored by the spec';
 
 test.use({ viewport: { width: 1440, height: 900 } });
 test.describe.configure({ mode: 'serial' });
-
-let api: TeacherApi | null = null;
-/** Snapshots of every result row this spec flips, restored in afterAll. */
-const snapshots: ResultRowSnapshot[] = [];
-/** Rows promoted to held for an arm and restored when that arm finishes. */
-const batchSnapshots: ResultRowSnapshot[] = [];
 
 async function teacherJwt(request: APIRequestContext): Promise<string> {
   const login = await request.post(`${API_BASE}/api/auth/local`, {
@@ -152,12 +133,6 @@ async function rowAction(page: Page, row: ReturnType<Page['locator']>, action: s
   }
   throw new Error(`row action ${action} did not land`);
 }
-
-test.afterAll(async () => {
-  for (const snapshot of snapshots.reverse()) {
-    restoreResultRow(snapshot);
-  }
-});
 
 test('TEA-023/026 — live board: mark-absent flags a no-show; batch bar pauses and extends in bulk', async ({ page, request }) => {
   test.setTimeout(240_000);
@@ -335,184 +310,82 @@ test('TEA-053 — the class results page downloads a CSV of scores and bands', a
 
 /**
  * teacherApi signs in as t2 (ACCOUNTS.teacher), so the family-reports arms run
- * against T2's OWN classes: find one whose roster holds scored rows. When the
- * night's fleet has already released every scored row, `promote` flips up to
- * `promoteCount` released rows back to held (snapshot + SQL, the same discipline
- * helpers/teacher-family-reports uses — published_at_field NULL ⇒ held).
+ * against T2's OWN classes: find one whose roster holds scored rows — the only
+ * rows the rebuilt tab's PDF downloads serve.
  */
 async function findClassWithScored(
   live: TeacherApi,
-  promoteCount = 0,
 ): Promise<{
   classDocumentId: string;
   roster: Awaited<ReturnType<TeacherApi['roster']>>;
-  heldScored: Awaited<ReturnType<TeacherApi['roster']>>;
+  scored: Awaited<ReturnType<TeacherApi['roster']>>;
 }> {
   const dashboard = await live.dashboard();
   for (const card of dashboard.classes.filter((c) => c.student_count > 0)) {
     const roster = await withRetry(() => live.roster(card.class_document_id));
-    const heldScored = roster.filter(
-      (entry) => entry.release_state === 'held' && entry.result?.overall.domain_score != null,
-    );
-    if (heldScored.length >= promoteCount) {
-      return { classDocumentId: card.class_document_id, roster, heldScored };
-    }
-    if (promoteCount > 0) {
-      const promotable = roster
-        .filter((entry) => entry.release_state === 'released' && entry.result?.overall.domain_score != null)
-        .slice(0, promoteCount - heldScored.length);
-      if (promotable.length + heldScored.length >= promoteCount) {
-        for (const entry of promotable) {
-          const resultId = entry.result?.document_id as string;
-          batchSnapshots.push(snapshotResultRow(resultId) as ResultRowSnapshot);
-          runSql(
-            `update results set published_at_field = null, recalled_at = null, recall_reason = null
-             where document_id = '${resultId}'`,
-          );
-        }
-        return {
-          classDocumentId: card.class_document_id,
-          roster,
-          heldScored: [
-            ...heldScored,
-            ...promotable.map((entry) => ({ ...entry, release_state: 'held' as const })),
-          ],
-        };
-      }
-    }
+    const scored = roster.filter((entry) => entry.result !== null && entry.result.overall.domain_score != null);
+    if (scored.length > 0) return { classDocumentId: card.class_document_id, roster, scored };
   }
   throw new Error('no t2 class carries a scored result to work with');
 }
 
-test('TEA-057/058/059/061 — family reports: states with counts, carer preview, release, recall', async ({ page, playwright }) => {
+test('TEA-057/058 — family reports: rows carry has-result, PDF and "No result yet"; a PDF prints', async ({ page, playwright }) => {
   test.setTimeout(300_000);
   const live = await teacherApi(playwright);
-  api = live;
-  const { classDocumentId, roster, heldScored } = await withRetry(() => findClassWithScored(live, 1));
-  const tiles = expectedTiles(roster);
+  const { classDocumentId, roster, scored } = await withRetry(() => findClassWithScored(live));
 
   await signIn(page, 'teacher');
   await page.goto(`/dashboard/results/${classDocumentId}?tab=reports`);
   const panel = page.locator('[data-tab-panel="reports"] [data-slot="family-reports"]');
   await expect(panel).toBeVisible({ timeout: 30_000 });
 
-  // TEA-057 — the tiles count the served roster's states, and rows carry their state labels
-  for (const [key, value] of Object.entries(tiles)) {
-    const tile = panel.locator('[data-slot="kpi-card"]', { hasText: fr(`tiles.${key}`) });
-    await expect(tile.locator('div').first(), `tile ${key}`).toHaveText(String(value));
-  }
-  const rows = panel.locator('[data-slot="family-report-row"]');
+  // TEA-057 — every served roster row renders, marked with what it holds: a PDF button
+  // for a scored result, "No result yet" for none or an unscored one (as the Students tab).
+  const rows = panel.locator('[data-slot="reports-student-row"]');
   await expect(rows).toHaveCount(roster.length);
-  const heldRow = panel.locator('[data-slot="family-report-row"][data-status="held"]').first();
-  await expect(heldRow).toContainText(vm('release.label.held'));
+  for (const entry of roster) {
+    const row = panel.locator(`[data-slot="reports-student-row"][data-student-id="${entry.student.document_id}"]`);
+    await expect(row).toContainText(entry.student.name);
+    await expect(row).toHaveAttribute('data-has-result', entry.result === null ? 'false' : 'true');
+    if (entry.result === null || entry.result.overall.domain_score === null) {
+      await expect(row.locator('[data-slot="reports-no-result"]')).toHaveText(fr('students.noResultYet'));
+      await expect(row.locator('[data-slot="reports-student-pdf"]')).toHaveCount(0);
+    } else {
+      await expect(row.locator('[data-slot="reports-student-pdf"]')).toBeEnabled();
+    }
+  }
   await page.screenshot({ path: path.join(PROOFS, 'tea-057-family-states.png'), animations: 'disabled' });
 
-  // TEA-058 — the carer preview matches what the parent sees: name, score, held label
-  const target = heldScored[0];
-  const resultId = target.result?.document_id as string;
+  // TEA-058 — a scored student's row button opens the real per-student report popup
+  // (the print export the carer's copy is built from — the preview dialog is gone).
+  const target = scored[0];
   const name = target.student.name;
-  const row = panel.locator(`[data-slot="family-report-row"][data-result-id="${resultId}"]`);
-
-  await row.getByRole('button', { name: fr('actions.preview'), exact: true }).click();
-  const preview = page.locator('[data-slot="carer-report-preview"]');
-  await expect(preview.getByRole('heading', { name, exact: true })).toBeVisible();
-  await expect(preview.locator('[data-slot="carer-report-score"]')).toHaveText(
-    `${target.result?.overall.domain_score} / 100`,
-  );
-  await expect(preview).toContainText(vm('release.label.held'));
-  await page.screenshot({ path: path.join(PROOFS, 'tea-058-carer-preview.png'), animations: 'disabled' });
-  await preview.getByRole('button', { name: fr('preview.close'), exact: true }).click();
-  await expect(preview).toBeHidden();
-
-  // TEA-059 — release flips the row AND the Released tile count
-  snapshots.push(snapshotResultRow(resultId) as ResultRowSnapshot);
-  await row.getByRole('button', { name: fr('actions.release'), exact: true }).click();
-  const confirm = page.getByRole('alertdialog');
-  await expect(confirm).toContainText(icu(fr('release.title'), { name }));
-  await confirm.getByRole('button', { name: fr('release.cta'), exact: true }).click();
-  await expect(row).toHaveAttribute('data-status', 'released', { timeout: 30_000 });
-  await expect
-    .poll(async () => (await live.result(resultId)).release_state, 'release_state on the API')
-    .toBe('released');
-  await expect(
-    panel.locator('[data-slot="kpi-card"]', { hasText: fr('tiles.released') }).locator('div').first(),
-  ).toHaveText(String(tiles.released + 1));
-
-  // TEA-061 — recall demands a reason, then flips the face back
-  await row.getByRole('button', { name: fr('actions.recall'), exact: true }).click();
-  const recall = page.locator('[data-slot="recall-report-dialog"]');
-  await expect(recall).toContainText(icu(fr('recall.title'), { name }));
-  await recall.getByRole('button', { name: fr('recall.cta'), exact: true }).click();
-  await expect(recall.getByRole('alert')).toHaveText(fr('recall.reasonRequired'));
-  await recall.getByLabel(fr('recall.reasonLabel')).fill(REASON);
-  await recall.getByRole('button', { name: fr('recall.cta'), exact: true }).click();
-  await expect(row).toHaveAttribute('data-status', 'recalled', { timeout: 30_000 });
-  await expect.poll(async () => (await live.result(resultId)).release_state).toBe('recalled');
-  expect(recallReasonOf(resultId)).toBe(REASON);
-  await page.screenshot({ path: path.join(PROOFS, 'tea-061-recalled.png'), animations: 'disabled' });
-
-  // hand the row back: the snapshots restore the pre-spec release columns
-  // (the cycle snapshot + any promotion snapshot), both mechanical SQL write-backs
-  for (const snapshot of [...snapshots.splice(0), ...batchSnapshots.splice(0)]) {
-    restoreResultRow(snapshot);
-  }
+  const row = panel.locator(`[data-slot="reports-student-row"][data-student-id="${target.student.document_id}"]`);
+  const [popup] = await Promise.all([
+    page.waitForEvent('popup'),
+    row.locator('[data-slot="reports-student-pdf"]').click(),
+  ]);
+  await expect(popup.locator('h1')).toHaveText(name, { timeout: 30_000 });
+  await popup.screenshot({ path: path.join(PROOFS, 'tea-058-student-pdf.png'), animations: 'disabled' });
+  await popup.close();
 });
 
-test('TEA-060 — batch release marks every complete (held, scored) result released', async ({ page, playwright }) => {
+test('TEA-060 — Download all opens one print document with a page per scored student', async ({ page, playwright }) => {
   test.setTimeout(300_000);
   const live = await teacherApi(playwright);
-  api = live;
-  const { classDocumentId, roster, heldScored } = await withRetry(() => findClassWithScored(live, 2));
-  test.skip(heldScored.length === 0, 'no scored rows to batch-release');
+  const { classDocumentId, scored } = await withRetry(() => findClassWithScored(live));
   await signIn(page, 'teacher');
   await page.goto(`/dashboard/results/${classDocumentId}?tab=reports`);
-  await page.waitForTimeout(4000);
-  await page.screenshot({ path: path.join(PROOFS, 'tea-060-before-panel.png'), fullPage: true, animations: 'disabled' });
   const panel = page.locator('[data-tab-panel="reports"] [data-slot="family-reports"]');
   await expect(panel).toBeVisible({ timeout: 30_000 });
-  // the held rows (native or promoted) now read held on the board
-  await expect
-    .poll(
-      async () =>
-        page.locator('[data-tab-panel="reports"] [data-slot="family-report-row"][data-status="held"]').count(),
-      { timeout: 30_000, message: 'held rows render held' },
-    )
-    .toBeGreaterThanOrEqual(heldScored.length);
-
-  const heldCount = await panel.locator('[data-slot="family-report-row"][data-status="held"]').count();
-  const releasedBefore = await panel.locator('[data-slot="family-report-row"][data-status="released"]').count();
-  expect(heldCount, 'the held rows are on the board').toBeGreaterThanOrEqual(heldScored.length);
-  await panel.locator('[data-action="release-held"]').click();
-  const releaseAll = page.getByRole('alertdialog');
-  await expect(releaseAll).toContainText(fr('releaseAll.tail'));
-  await releaseAll
-    .getByRole('button', { name: /Release \d+ report/ })
-    .click();
-  await expect
-    .poll(
-      async () =>
-        page.locator('[data-tab-panel="reports"] [data-slot="family-report-row"][data-status="released"]').count(),
-      { timeout: 30_000, message: 'every held, SCORED row flips to released' },
-    )
-    .toBe(releasedBefore + heldScored.length);
-  // the design releases held rows that carry a score; unscored helds stay held
-  // (the CTA counts them out and the banner warns about the gaps)
-  await expect
-    .poll(
-      async () =>
-        page.locator('[data-tab-panel="reports"] [data-slot="family-report-row"][data-status="held"]').count(),
-      { timeout: 30_000, message: 'unscored held rows stay held' },
-    )
-    .toBe(heldCount - heldScored.length);
-  for (const entry of heldScored) {
-    const resultId = entry.result?.document_id ?? '';
-    await expect
-      .poll(async () => (await live.result(resultId)).release_state, { timeout: 30_000 })
-      .toBe('released');
-  }
-  await page.screenshot({ path: path.join(PROOFS, 'tea-060-batch-release.png'), animations: 'disabled' });
-  // hand every promoted row back to its released state
-  for (const snapshot of batchSnapshots.splice(0)) restoreResultRow(snapshot);
+  const downloadAll = panel.locator('[data-slot="reports-download-all"]');
+  await expect(downloadAll).toBeEnabled();
+  const [popup] = await Promise.all([page.waitForEvent('popup'), downloadAll.click()]);
+  await expect(popup.locator('.page'), 'one page per scored student').toHaveCount(scored.length, {
+    timeout: 30_000,
+  });
+  await popup.screenshot({ path: path.join(PROOFS, 'tea-060-download-all.png'), animations: 'disabled' });
+  await popup.close();
 });
 
 test('TEA-064 — /dashboard/reports/:resultDocumentId renders the per-student teacher report', async ({ page }) => {

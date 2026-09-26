@@ -338,7 +338,7 @@ test('ops: import preview table and the other ops modals size to their content',
   await saveFits('ops', fits);
 });
 
-test('teacher: session, reports, export and live-room modals size to their content', async ({ page, request }, testInfo) => {
+test('teacher: session, reports and live-room modals size to their content', async ({ page, request }, testInfo) => {
   const fits: Fits = {};
   const classId = 'qves8wrtl7r9ctw49jivm8gl';
   await page.setViewportSize(VIEWPORTS[0]);
@@ -365,39 +365,15 @@ test('teacher: session, reports, export and live-room modals size to their conte
   await checkModal(page, fits, 'teacher-class-reports', testInfo);
   await closeModal(page);
 
-  await page.goto(`/dashboard/results/${classId}?tab=insights`);
-  await page.locator('button[data-export-kind="insights"]').click({ timeout: 60_000 });
-  await expect(page.locator('[data-slot="teacher-export-preview"]')).toBeVisible({ timeout: 60_000 });
-  await checkModal(page, fits, 'teacher-export-preview', testInfo);
-  await closeModal(page);
-
+  // The Teaching-tab export panel's preview dialog retired with the v2 redesign.
+  // The Reports tab (rebuilt in Spec 06) carries NO dialogs any more: its release
+  // confirm, carer preview and recall dialog are gone, and its per-student / download-all
+  // PDFs are print windows, not in-page modals — there is nothing here for checkModal.
   await page.goto(`/dashboard/results/${classId}?tab=reports`);
-  const reports = page.locator('[data-tab-panel="reports"] [data-slot="family-reports"]');
-  await reports.locator('[data-action="release-held"]').click({ timeout: 60_000 });
-  await expect(page.getByRole('alertdialog')).toBeVisible();
-  const releaseConfirm = await checkModal(page, fits, 'teacher-release-held-confirm', testInfo);
-  await closeModal(page);
-
-  const previewRow = reports
-    .locator('[data-slot="family-report-row"]')
-    .filter({ has: page.getByRole('button', { name: cat(en, 'TeacherPortal.familyReports.actions.preview'), exact: true }) })
-    .first();
-  await previewRow.getByRole('button', { name: cat(en, 'TeacherPortal.familyReports.actions.preview'), exact: true }).click();
-  await expect(page.locator('[data-slot="carer-report-preview"]')).toBeVisible();
-  await checkModal(page, fits, 'teacher-carer-report-preview', testInfo);
-  await closeModal(page);
-
-  const recallButton = reports
-    .getByRole('button', { name: cat(en, 'TeacherPortal.familyReports.actions.recall'), exact: true })
-    .first();
-  if ((await recallButton.count()) > 0) {
-    await recallButton.click();
-    await expect(page.locator('[data-slot="recall-report-dialog"]')).toBeVisible();
-    await checkModal(page, fits, 'teacher-recall-report', testInfo);
-    await closeModal(page);
-  } else {
-    testInfo.annotations.push({ type: 'skipped-modal', description: 'recall: no released family report on t2' });
-  }
+  await expect(page.locator('[data-tab-panel="reports"] [data-slot="family-reports"]')).toBeVisible({
+    timeout: 60_000,
+  });
+  await expect(page.locator('[data-tab-panel="reports"] [data-slot="reports-download-all"]')).toBeVisible();
 
   // A real sitting on the class (closed again below): Test settings, the
   // row action confirm and the Close sitting confirm all live on its Live tab.
@@ -436,6 +412,5 @@ test('teacher: session, reports, export and live-room modals size to their conte
     await closeSession(request, jwt, sittingId);
   }
 
-  expect.soft(releaseConfirm.width, 'a confirm stays compact').toBeLessThanOrEqual(512);
   await saveFits('teacher', fits);
 });

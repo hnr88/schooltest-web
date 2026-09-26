@@ -2,7 +2,9 @@ import type { TestVariant } from '@/modules/teacher/types/teacher.types';
 import type { StudentTestResult } from '@/modules/teacher/types/teacher-result.types';
 import type { SkillScopeValue } from '@/modules/teacher/types/results-shell.types';
 import type { BreadcrumbsProps } from '@/modules/teacher/types/teacher-kit-controls.types';
-import type { StudentChartGeometry } from '@/modules/teacher/types/v2-chart.types';
+import type { DrillDownGrowth } from '@/modules/teacher/types/student-report.types';
+import type { StudentDrillDownViewModel } from '@/modules/teacher/lib/student-drill-down-view';
+import type { StudentBandChartGeometry } from '@/modules/teacher/types/v2-chart.types';
 import type { StudentDetailView, SubskillCard } from '@/modules/teacher/types/v2-student-detail.types';
 
 export interface StudentDrillDownScreenProps {
@@ -12,7 +14,8 @@ export interface StudentDrillDownScreenProps {
 
 /** The student scope of the Ask AI drawer (design S13); the class id scopes C-TA-1. */
 export interface StudentAskAiDrawerProps {
-  view: StudentDetailView;
+  /** The scored sittings the intro sentence counts — the view model's own `tiles.sittings`. */
+  sittingsCount: number;
   firstName: string;
   classDocumentId: string;
   studentDocumentId: string;
@@ -63,22 +66,25 @@ export interface StudentSkillSelectProps {
   onValueChange: (skill: SkillScopeValue) => void;
 }
 
+/** Spec 02 §3a — the banner's three stat cards read the v2 view model directly. */
 export interface StudentDrillDownHeaderProps extends StudentSkillSelectProps {
   studentName: string;
   className: string;
-  /** `null` while the student has no scored result: no chip and no actions. */
-  overall: StudentDetailView['overall'] | null;
+  view: StudentDrillDownViewModel;
   actions: StudentDetailActions | null;
 }
 
 export interface StudentDrillDownBodyProps {
-  view: StudentDetailView;
-  firstName: string;
-  onCopy: (text: string) => void;
+  view: StudentDrillDownViewModel;
 }
 
 export interface StudentProgressChartProps {
-  chart: StudentChartGeometry;
+  chart: StudentBandChartGeometry;
+}
+
+/** The overall stat card's growth pill: the history delta in its direction's colours, absent under two sittings. */
+export interface StudentGrowthPillProps {
+  growth: DrillDownGrowth;
 }
 
 export interface StudentSubskillCardProps {
@@ -86,8 +92,7 @@ export interface StudentSubskillCardProps {
 }
 
 export interface StudentAnalysisCardProps {
-  paragraphs: readonly string[];
-  onCopy: () => void;
+  className?: string;
 }
 
 export interface StudentComingSoonProps extends StudentSkillSelectProps {
@@ -99,7 +104,7 @@ export interface StudentOverallChipProps {
 }
 
 export interface StudentProgressPanelProps {
-  view: StudentDetailView;
+  view: StudentDrillDownViewModel;
 }
 
 export type StudentTranslate = (key: string, values?: Record<string, string | number>) => string;
@@ -128,7 +133,7 @@ export interface StudentDrillDownPage {
   className: string;
   studentName: string | null;
   firstName: string;
-  view: StudentDetailView | null;
+  view: StudentDrillDownViewModel | null;
   skill: SkillScopeValue;
   setSkill: (skill: SkillScopeValue) => void;
   actions: StudentDetailActions;

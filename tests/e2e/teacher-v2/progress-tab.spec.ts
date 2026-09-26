@@ -4,10 +4,8 @@ import path from 'node:path';
 import { AxeBuilder } from '@axe-core/playwright';
 import { expect, test, type Page, type Response } from '@playwright/test';
 
-import { DISPLAY_SKILL_ORDER } from '@/modules/results/lib/display-skills';
 import { classRosterResponseSchema } from '@/modules/results/schemas/roster.schema';
 import type { RosterRow } from '@/modules/results/types/roster.types';
-import { classProgress } from '@/modules/teacher/lib/v2/class-progress';
 
 import { expectNoHorizontalScroll } from '../helpers/teacher-a11y';
 import { READY, expectNoNewErrors, frame, sectionTab, setAsideErrors } from '../helpers/teacher-class-detail';
@@ -15,23 +13,21 @@ import { cat } from '../helpers/i18n';
 import { en, signIn } from '../helpers/teacher-rail';
 import { watchErrors } from '../helpers/ui';
 
-// S4 — Teacher Portal v2 Class progress (Teacher Portal v2.dc.html:873–1002; design shots
-// class-detail-{complete,sitting}--progress*.png at 1440×900). Real sign-in, real API, no
-// interception. Every number is recomputed WITHOUT the view model from the roster body the
-// page itself received; the two lists must name students on it, in the view model's order.
-
-type HistoryPoint = NonNullable<NonNullable<RosterRow['result']>['history']>[number];
+// S4 — Teacher Portal v2 Class progress (spec-teacher-portal-03). Real sign-in, real API, no
+// interception. The rebuilt tab body: heading + sitting-count subtitle, the §3b dot map
+// (one row per scored student, recomputed WITHOUT the view model from the roster body the
+// page itself received), the §3c gains cards, the §3d subskill chips (eight band-carrying
+// skills, Critical absent) and the §3e coming-soon class analysis.
 
 const PROOFS = path.resolve(process.cwd(), 'tests', 'e2e', 'proofs', 'teacher-v2');
-const THRESHOLD = 3;
 const label = (key: string) => cat(en, `TeacherPortal.progress.${key}`);
-const vm = (key: string) => cat(en, `TeacherPortal.viewModel.${key}`);
-const fill = (template: string, values: Record<string, string | number>) =>
-  Object.entries(values).reduce((text, [key, value]) => text.replaceAll(`{${key}}`, String(value)), template);
-const signed = (value: number) => (value < 0 ? `−${Math.abs(value)}` : `+${value}`);
-const mean = (values: readonly number[]) => Math.round(values.reduce((sum, value) => sum + value, 0) / values.length);
-const monthYear = (iso: string) =>
-  new Intl.DateTimeFormat('en', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(iso));
+
+/** The en catalog's own plural ICU, resolved for a count of two or more. */
+function otherBranch(template: string, count: number): string {
+  const match = /other \{([^}]*)\}/.exec(template);
+  if (match === null) throw new Error(`[e2e] no plural "other" branch in ${template}`);
+  return match[1].replace('#', String(count));
+}
 
 /** The roster body the class detail itself received for this class. */
 async function waitForRoster(page: Page, classId: string): Promise<RosterRow[]> {
@@ -50,43 +46,77 @@ async function waitForRoster(page: Page, classId: string): Promise<RosterRow[]> 
   return classRosterResponseSchema.parse(body);
 }
 
-/** The server's own overall deltas: the only input the four tiles may use. */
-function serverDeltas(roster: readonly RosterRow[]): number[] {
-  return roster.flatMap((row) => {
-    const delta = row.result?.overall.delta;
-    return delta === null || delta === undefined ? [] : [delta];
-  });
-}
+type Scored = { sat_at: string; overall: number };
 
-/** The class mean of `read` per sitting: histories right-aligned, unscored slots dropped, dated by their latest `sat_at`. */
-function sittingMeans(roster: readonly RosterRow[], read: (point: HistoryPoint) => number | null) {
-  const histories = roster.flatMap((row) => (row.result?.history ? [row.result.history] : []));
-  const span = Math.max(0, ...histories.map((history) => history.length));
-  const slots = Array.from({ length: span }, () => ({ values: [] as number[], satAt: '' }));
-  for (const history of histories) {
-    history.forEach((point, index) => {
-      const value = read(point);
-      if (value === null) return;
-      const slot = slots[span - history.length + index];
-      slot.values.push(value);
-      if (point.sat_at > slot.satAt) slot.satAt = point.sat_at;
-    });
-  }
-  return slots.flatMap((slot, index) =>
-    slot.values.length === 0 ? [] : [{ n: index + 1, value: mean(slot.values), satAt: slot.satAt }],
+/** A result's SCORED history points (overall present), in server order. */
+function scoredPoints(row: RosterRow): Scored[] {
+  return (row.result?.history ?? []).flatMap((point) =>
+    point.overall === null ? [] : [{ sat_at: point.sat_at, overall: point.overall }],
   );
 }
 
-/** The en catalog's own plural ICU, resolved for a count of two or more. */
-function otherBranch(template: string, count: number): string {
-  const match = /other \{([^}]*)\}/.exec(template);
-  if (match === null) throw new Error(`[e2e] no plural "other" branch in ${template}`);
-  return match[1].replace('#', String(count));
+/** The subtitle's sitting count: the most SCORED history points any row holds (unscored sittings never count). */
+function sittingCount(roster: readonly RosterRow[]): number {
+  return Math.max(0, ...roster.map((row) => scoredPoints(row).length));
+}
+
+/** The dot map's row set: every student whose result holds at least one scored overall point. */
+function dotMapRowCount(roster: readonly RosterRow[]): number {
+  return roster.filter((row) => scoredPoints(row).length > 0).length;
+}
+
+/** Spec 03 band edges (Beginning <45 ≤ Emerging <62 ≤ Developing <80 ≤ Consolidating), as a rank. */
+function bandRank(score: number): number {
+  return score >= 80 ? 3 : score >= 62 ? 2 : score >= 45 ? 1 : 0;
+}
+
+type Movement = 'up' | 'back' | 'held';
+
+/**
+ * Independently re-derived (no app code): a row MOVES only when the server says its delta is
+ * reliable and it has ≥2 scored points; direction is latest vs FIRST scored overall. The summary
+ * counts only moves that CHANGE band; everything else is "held".
+ */
+function expectedMovements(roster: readonly RosterRow[]) {
+  const rows = roster.flatMap((row) => {
+    const points = scoredPoints(row);
+    if (points.length === 0) return [];
+    const first = points[0].overall;
+    const latest = points[points.length - 1].overall;
+    const movement: Movement =
+      row.result?.overall.delta_reliable !== true || points.length < 2 || latest === first
+        ? 'held'
+        : latest > first
+          ? 'up'
+          : 'back';
+    return [{ id: row.student.document_id, movement, firstBand: bandRank(first), latestBand: bandRank(latest) }];
+  });
+  const up = rows.filter((row) => row.movement === 'up' && row.latestBand > row.firstBand).length;
+  const down = rows.filter((row) => row.movement === 'back' && row.latestBand < row.firstBand).length;
+  return { rows, up, down, held: rows.length - up - down };
+}
+
+/** The en classSummary sentence, resolved by hand ({total} pluralised). */
+function summaryText(up: number, total: number, held: number, down: number): string {
+  return `${up} of ${total} ${total === 1 ? 'student' : 'students'} moved up at least one ACARA phase since the first sitting; ${held} held and ${down} slipped.`;
+}
+
+/** Highest gains: reliable positive server deltas, largest first, top 4. Lowest: reliable deltas ascending, never a Highest student, top 4. */
+function expectedGains(roster: readonly RosterRow[]) {
+  const reliable = roster.flatMap((row) =>
+    row.result !== null && row.result.overall.delta_reliable === true && row.result.overall.delta !== null
+      ? [{ id: row.student.document_id, delta: row.result.overall.delta }]
+      : [],
+  );
+  const top = reliable.filter((entry) => entry.delta > 0).sort((a, b) => b.delta - a.delta).slice(0, 4);
+  const topIds = new Set(top.map((entry) => entry.id));
+  const low = reliable.filter((entry) => !topIds.has(entry.id)).sort((a, b) => a.delta - b.delta).slice(0, 4);
+  return { reliable, top, low };
 }
 
 test.use({ viewport: { width: 1440, height: 900 } });
 
-test('S4 — Class progress per design: tiles, chart, lists and subskill trends from the live roster', async ({ page }) => {
+test('S4 — Class progress heading and sitting count from the live roster', async ({ page }) => {
   test.setTimeout(180_000);
   mkdirSync(PROOFS, { recursive: true });
   const errors = watchErrors(page);
@@ -107,85 +137,97 @@ test('S4 — Class progress per design: tiles, chart, lists and subskill trends 
   const tab = page.locator('[data-tab-panel="progress"] [data-slot="class-progress"]');
   await expect(tab).toHaveAttribute('data-status', 'ready');
 
-  const overall = sittingMeans(roster, (point) => point.overall);
-  expect(overall.length, 'the first class’s history spans at least two sittings').toBeGreaterThanOrEqual(2);
+  const sittings = sittingCount(roster);
+  expect(sittings, 'the first class’s history spans at least two sittings').toBeGreaterThanOrEqual(2);
+  await expect(tab).toHaveAttribute('data-sittings', String(sittings));
   await expect(tab.getByRole('heading', { level: 2, name: label('title'), exact: true })).toBeVisible();
-  await expect(tab.getByText(otherBranch(label('subtitle'), overall.length), { exact: true })).toBeVisible();
+  await expect(tab.getByText(otherBranch(label('subtitle'), sittings), { exact: true })).toBeVisible();
 
-  // The four tiles: the server's own deltas against the design's ±3.
-  const deltas = serverDeltas(roster);
-  expect(deltas.length, 'at least one student carries a server comparison').toBeGreaterThan(0);
-  const tile = (id: string) => tab.locator(`[data-slot="progress-tile-value"][data-tile="${id}"]`);
-  await expect(tile('meanShift')).toHaveText(fill(label('points'), { value: signed(mean(deltas)) }));
-  await expect(tile('gained')).toHaveText(String(deltas.filter((delta) => delta >= THRESHOLD).length));
-  await expect(tile('held')).toHaveText(String(deltas.filter((delta) => Math.abs(delta) < THRESHOLD).length));
-  await expect(tile('slipped')).toHaveText(String(deltas.filter((delta) => delta <= -THRESHOLD).length));
-
-  // The chart: one point per sitting the history holds, at that sitting's class average.
-  const chart = tab.locator('[data-slot="class-progress-chart"]');
-  await expect(chart).toHaveAttribute('data-points', String(overall.length));
-  const points = chart.locator('[data-slot="class-chart-point"]');
-  await expect(points).toHaveCount(overall.length);
-  expect(await points.evaluateAll((nodes) => nodes.map((node) => Number(node.getAttribute('data-value'))))).toEqual(
-    overall.map((point) => point.value),
+  // §3b — the dot map: header + sub, the growth/latest toggle, one row per scored student.
+  const dotMap = tab.locator('[data-slot="progress-dot-map"]');
+  await expect(dotMap).toBeVisible();
+  await expect(dotMap.getByRole('heading', { level: 3, name: label('dotMap.title'), exact: true })).toBeVisible();
+  await expect(dotMap.getByText(label('dotMap.sub'), { exact: true })).toBeVisible();
+  await expect(dotMap.getByRole('button', { name: label('dotMap.modeGrowth'), exact: true })).toBeVisible();
+  await expect(dotMap.getByRole('button', { name: label('dotMap.modeLatest'), exact: true })).toBeVisible();
+  await expect(dotMap.getByText(label('dotMap.legendUp'), { exact: true })).toBeVisible();
+  await expect(dotMap.getByText(label('dotMap.endLabel'), { exact: true })).toBeVisible();
+  const expectedRows = dotMapRowCount(roster);
+  expect(expectedRows, 'the first class has scored students to draw').toBeGreaterThanOrEqual(1);
+  await expect(dotMap.locator('[data-slot="progress-dot-row"]')).toHaveCount(expectedRows);
+  // The class summary sentence: the exact en copy with the independently re-derived counts.
+  const moves = expectedMovements(roster);
+  await expect(dotMap.locator('[data-slot="progress-dot-summary"]')).toHaveText(
+    summaryText(moves.up, expectedRows, moves.held, moves.down),
   );
-  for (const [index, point] of overall.entries()) {
-    await expect(points.nth(index).locator('title')).toHaveText(
-      fill(vm('chart.classTip'), { n: point.n, when: monthYear(point.satAt), value: point.value }),
+  // Every dot row carries the re-derived movement.
+  for (const row of moves.rows) {
+    await expect(dotMap.locator(`[data-slot="progress-dot-row"][data-student-id="${row.id}"]`)).toHaveAttribute(
+      'data-movement',
+      row.movement,
     );
   }
-  const [first, last] = [overall[0], overall[overall.length - 1]];
-  const difference = signed(last.value - first.value);
-  await expect(tab.locator('[data-slot="progress-summary"]')).toHaveText(
-    fill(label('chart.summary'), { from: first.value, to: last.value, count: overall.length, difference }),
+  // Growth mode draws exactly one arrowhead per moving row; "Latest only" draws none.
+  const arrowheads = dotMap.locator('[data-slot="progress-dot-row"] div[style*="12px solid"]');
+  await expect(arrowheads).toHaveCount(moves.rows.filter((row) => row.movement !== 'held').length);
+  const latestOnly = dotMap.getByRole('button', { name: label('dotMap.modeLatest'), exact: true });
+  await latestOnly.click();
+  await expect(latestOnly).toHaveAttribute('aria-pressed', 'true');
+  await expect(dotMap.getByRole('button', { name: label('dotMap.modeGrowth'), exact: true })).toHaveAttribute(
+    'aria-pressed',
+    'false',
   );
+  await expect(arrowheads).toHaveCount(0);
+  await expect(dotMap.locator('[data-slot="progress-dot-row"] [data-dot="latest"]')).toHaveCount(expectedRows);
+  await dotMap.getByRole('button', { name: label('dotMap.modeGrowth'), exact: true }).click();
 
-  // Top progress / Students to watch: students on this roster, in the view model's order;
-  // a top-progress student always carries a reliable positive server delta.
-  const view = classProgress(roster);
-  const byId = new Map(roster.map((row) => [row.student.document_id, row]));
-  for (const mover of view.topProgress) {
-    const served = byId.get(mover.studentDocumentId)?.result?.overall;
-    expect(served?.delta_reliable === true && (served.delta ?? 0) > 0, `${mover.name}: reliable gain`).toBe(true);
+  // §3c — the two gains cards, re-derived from the roster's SERVER deltas without the view model.
+  const gains = expectedGains(roster);
+  if (gains.reliable.length === 0) {
+    test.info().annotations.push({
+      type: 'fixture-gap',
+      description: 'no roster row carries a reliable overall delta — the gains ranking is only checked empty',
+    });
   }
-  for (const [variant, movers] of [['gains', view.topProgress], ['support', view.watch]] as const) {
-    const rows = tab.locator(`[data-slot="progress-watch-list"][data-variant="${variant}"] [data-slot="progress-mover"]`);
-    await expect(rows).toHaveCount(movers.length);
-    for (const [index, mover] of movers.entries()) {
-      const row = byId.get(mover.studentDocumentId);
-      if (row === undefined) throw new Error(`[e2e] ${mover.name} is not on the roster`);
-      expect(row.student.name.startsWith(mover.firstName)).toBe(true);
-      const shown = rows.nth(index);
-      await expect(shown).toHaveAttribute('data-student-id', row.student.document_id);
-      await expect(shown.locator('[data-slot="progress-mover-name"]')).toHaveText(mover.firstName);
-      const score = row.result?.overall.domain_score ?? null;
-      await expect(shown.locator('[data-slot="progress-mover-score"]')).toHaveText(
-        score === null ? cat(en, 'TeacherPortal.kit.noValue') : fill(label('percent'), { value: score }),
-      );
-    }
-  }
-
-  // Subskill movement: one card per subskill with a class mean on record, weakest now first.
-  const withData = DISPLAY_SKILL_ORDER.flatMap((skill) => {
-    const means = sittingMeans(roster, (point) => point.attributes[skill]);
-    return means.length === 0 ? [] : [{ skill, now: means[means.length - 1].value }];
-  });
-  const trends = tab.locator('[data-slot="progress-subskill-trend"]');
-  await expect(trends).toHaveCount(withData.length);
-  for (const { skill, now } of withData) {
-    await expect(tab.locator(`[data-slot="progress-subskill-trend"][data-skill="${skill}"]`)).toContainText(
-      fill(label('subskills.now'), { value: now }),
+  const gainIds = (slot: string) =>
+    tab.locator(`[data-slot="${slot}"] [data-slot="progress-gain"]`).evaluateAll((nodes) =>
+      nodes.map((node) => node.getAttribute('data-student-id')),
     );
+  await expect(tab.locator('[data-slot="progress-gains-top"]')).toBeVisible();
+  await expect(tab.locator('[data-slot="progress-gains-low"]')).toBeVisible();
+  const topIds = await gainIds('progress-gains-top');
+  const lowIds = await gainIds('progress-gains-low');
+  expect(topIds).toEqual(gains.top.map((entry) => entry.id));
+  expect(lowIds).toEqual(gains.low.map((entry) => entry.id));
+  expect(lowIds.filter((id) => topIds.includes(id)), 'Lowest never repeats a Highest student').toEqual([]);
+
+  // Retired surfaces stay gone: no tiles, no class line chart, no watch list, no subskill trend sparklines.
+  for (const slot of ['progress-tile-value', 'class-progress-chart', 'progress-watch-list', 'progress-subskill-trend']) {
+    await expect(page.locator(`[data-slot="${slot}"]`), `${slot} is retired`).toHaveCount(0);
   }
-  expect(await trends.evaluateAll((nodes) => nodes.map((node) => Number(node.getAttribute('data-now'))))).toEqual(
-    withData.map((entry) => entry.now).sort((a, b) => a - b),
-  );
-  await expect(tab.getByText(label('footnote'), { exact: true })).toBeVisible();
+
+  // §3d — subskill growth renders only once the roster carries BUG-009 `attribute_bands`; then it
+  // shows exactly the eight band-carrying chips, Critical reading absent.
+  const submap = tab.locator('[data-slot="progress-submap"]');
+  const carriesBands = roster.some((row) => row.result?.history?.some((point) => point.attribute_bands !== undefined));
+  if (carriesBands) {
+    await expect(submap).toBeVisible();
+    await expect(submap.locator('[data-slot="progress-submap-chip"]')).toHaveCount(8);
+    expect(await submap.locator('[data-slot="progress-submap-chip"]').allInnerTexts()).not.toContain(
+      cat(en, 'TeacherPortal.viewModel.skill.critical'),
+    );
+  } else {
+    await expect(submap).toHaveCount(0);
+  }
+
+  // §3e — class analysis stays visible in its honest coming-soon state (no Copy button).
+  const analysis = tab.locator('[data-slot="progress-analysis"]');
+  await expect(analysis).toBeVisible();
+  await expect(analysis).toContainText(label('analysis.comingSoon'));
+  await expect(analysis.getByRole('button')).toHaveCount(0);
 
   await page.mouse.move(0, 0);
   await page.screenshot({ path: path.join(PROOFS, 'progress-tab.png'), animations: 'disabled' });
-  await tab.locator('[data-slot="progress-subskill-trends"]').scrollIntoViewIfNeeded();
-  await page.screenshot({ path: path.join(PROOFS, 'progress-tab-scroll.png'), animations: 'disabled' });
   expectNoNewErrors(errors, 'Class progress load');
 
   // No serious or critical axe finding in this tab's panel or the frame's skill strip, and no sideways scroll on a phone.

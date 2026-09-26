@@ -108,12 +108,12 @@ test.describe('F3 — Teacher Portal v2 shell', () => {
 
     // The rail: the design's words through the catalogue keys, TEACHER VIEW, states.
     expect(cat(en, 'Shell.nav.results')).toBe('Classes');
-    expect(cat(en, 'Shell.nav.testSessions')).toBe('Live sessions');
+    expect(cat(en, 'Shell.nav.testSessions')).toBe('Test sessions');
     await expect(navLink(page, 'Classes')).toHaveAttribute('href', /\/dashboard\/results$/);
-    await expect(navLink(page, 'Live sessions')).toHaveAttribute('href', /\/dashboard\/test-sessions$/);
+    await expect(navLink(page, 'Test sessions')).toHaveAttribute('href', /\/dashboard\/test-sessions$/);
     await expect(groupLabels(page)).toHaveText('TEACHER VIEW', { useInnerText: true });
     await expectNavState(page, 'Classes', true);
-    await expectNavState(page, 'Live sessions', false);
+    await expectNavState(page, 'Test sessions', false);
     await waitForAnimationsSettled(page);
 
     // The card: 248×852 at the 24px gutter, radius 10, 1px #ECEEF2, no shadow.
@@ -190,9 +190,9 @@ test.describe('F3 — Teacher Portal v2 shell', () => {
     await expect(menu).toBeHidden();
 
     // Live sessions navigates and takes the active state; still no topbar there.
-    await navLink(page, 'Live sessions').click();
+    await navLink(page, 'Test sessions').click();
     await page.waitForURL('**/dashboard/test-sessions');
-    await expectNavState(page, 'Live sessions', true);
+    await expectNavState(page, 'Test sessions', true);
     await expectNavState(page, 'Classes', false);
     await expect(page.locator('[data-slot="topbar-actions"]')).toHaveCount(0);
 

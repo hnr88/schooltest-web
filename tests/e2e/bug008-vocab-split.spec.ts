@@ -79,35 +79,44 @@ test.describe(`BUG-008 vocabulary split (${MODE})`, () => {
     await shot(page, 'parent-view');
   });
 
-  test('student page and class progress: two vocabulary cards and two trend rows, never one blended', async ({ page }) => {
+  test('student page and class progress: two vocabulary rows and two subskill chips, never one blended', async ({ page }) => {
     const target = vocabSplitResult(TEACHER);
-    const everydayLabel = cat(en, 'TeacherPortal.viewModel.attribute.vocabA2');
-    const classroomLabel = cat(en, 'TeacherPortal.viewModel.attribute.vocabB1');
+    // The student report's breakdown rows use their own student-facing vocab labels
+    // (TeacherPortal.student.breakdown.vocab.*), not the teacher-only viewModel.attribute.*.
+    const everydayLabel = cat(en, 'TeacherPortal.student.breakdown.vocab.Vocab_A2');
+    const classroomLabel = cat(en, 'TeacherPortal.student.breakdown.vocab.Vocab_B1');
 
     await page.goto(`/dashboard/results/${target.classId}/students/${target.studentId}`);
-    const everyday = page.locator('[data-slot="student-subskill"][data-skill="Vocab_A2"]');
-    const classroom = page.locator('[data-slot="student-subskill"][data-skill="Vocab_B1"]');
+    // Spec 02 §3c: the subskill cards became the breakdown table — one row per display skill.
+    const everyday = page.locator('[data-slot="student-breakdown-row"][data-skill="Vocab_A2"]');
+    const classroom = page.locator('[data-slot="student-breakdown-row"][data-skill="Vocab_B1"]');
     await expect(everyday).toBeVisible({ timeout: 90_000 });
     await expect(everyday).toContainText(everydayLabel);
     await expect(classroom).toContainText(classroomLabel);
-    await expect(page.locator('[data-slot="student-subskill"][data-skill="Vocabulary"]')).toHaveCount(0);
-    await expect(page.locator('[data-slot="student-subskill"]')).toHaveCount(9);
+    await expect(everyday).not.toContainText(cat(en, 'TeacherPortal.viewModel.attribute.vocabA2'));
+    await expect(classroom).not.toContainText(cat(en, 'TeacherPortal.viewModel.attribute.vocabB1'));
+    await expect(page.locator('[data-slot="student-breakdown-row"][data-skill="Vocabulary"]')).toHaveCount(0);
+    await expect(page.locator('[data-slot="student-breakdown-row"]')).toHaveCount(9);
     await everyday.scrollIntoViewIfNeeded();
     await shot(page, 'student-page');
-    await page.locator('[data-slot="student-subskills"]').screenshot({ path: path.join(PROOF_DIR, `${MODE}-student-subskill-cards.png`), animations: 'disabled' });
+    await page.locator('[data-slot="student-breakdown"]').screenshot({ path: path.join(PROOF_DIR, `${MODE}-student-breakdown.png`), animations: 'disabled' });
 
     await page.goto(`/dashboard/results/${target.classId}?tab=progress`);
     const progress = page.locator('[data-tab-panel="progress"]');
     await expect(progress).toBeVisible({ timeout: 90_000 });
-    const trends = progress.locator('[data-slot="progress-subskill-trend"]');
-    await expect(progress.locator('[data-slot="progress-subskill-trend"][data-skill="Vocabulary"]')).toHaveCount(0);
+    // Spec 03 §3d: the class trend sparklines became the "Subskill growth" chips (one per strand).
+    const chips = progress.locator('[data-slot="progress-submap-chip"]');
+    await expect(progress.locator('[data-slot="progress-submap-chip"][data-skill="Vocabulary"]')).toHaveCount(0);
     if (PRE_INTEGRATION) {
-      // The old API recorded no per-strand history, so the shim left those points null:
-      // the strand lines appear only once the new API serves them (post-integration run).
-      test.info().annotations.push({ type: 'deferred', description: 'two vocabulary trend lines need post-integration history' });
+      // §3d renders only once the roster carries BUG-009 `attribute_bands` (post-integration run).
+      test.info().annotations.push({ type: 'deferred', description: 'the subskill-growth chips need post-integration history bands' });
     } else {
-      await expect(trends.filter({ hasText: everydayLabel })).toHaveCount(1);
-      await expect(trends.filter({ hasText: classroomLabel })).toHaveCount(1);
+      const everydayChip = chips.and(progress.locator('[data-skill="Vocab_A2"]'));
+      const classroomChip = chips.and(progress.locator('[data-skill="Vocab_B1"]'));
+      await expect(everydayChip).toHaveCount(1);
+      await expect(classroomChip).toHaveCount(1);
+      await expect(everydayChip).toHaveText(cat(en, 'TeacherPortal.progress.subMap.skills.Vocab_A2'));
+      await expect(classroomChip).toHaveText(cat(en, 'TeacherPortal.progress.subMap.skills.Vocab_B1'));
     }
     await expectNoBlendedLabel(progress);
     await progress.scrollIntoViewIfNeeded();

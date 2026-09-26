@@ -16,7 +16,7 @@ import type { StudentAskAiDrawerProps } from '@/modules/teacher/types/student-dr
 // go to C-TA-1 with `scope: 'student'` and this student's id, so every answer is
 // the live model's, grounded in this student's own results (TB-09). Leaving the
 // page (or the Reading skill) closes it.
-function StudentAskAiDrawer({ view, firstName, classDocumentId, studentDocumentId }: StudentAskAiDrawerProps) {
+function StudentAskAiDrawer({ sittingsCount, firstName, classDocumentId, studentDocumentId }: StudentAskAiDrawerProps) {
   const t = useTranslations(STUDENT_I18N_NAMESPACE);
   const tAsk = useTranslations('TeacherPortal.askAi');
   const open = useClassOverlaysStore(
@@ -34,7 +34,7 @@ function StudentAskAiDrawer({ view, firstName, classDocumentId, studentDocumentI
   const strings: AskAiStrings = {
     title: t('ask.title', { first: firstName }),
     grounded: t('ask.grounded', { first: firstName }),
-    intro: t('ask.intro', { first: firstName, count: view.tiles.sittings.count }),
+    intro: t('ask.intro', { first: firstName, count: sittingsCount }),
     placeholder: t('ask.placeholder'),
     groundingNote: (grounding) => tAsk('student.grounding', { sittings: grounding.sittings }),
     suggestions: STUDENT_ASK_SUGGESTIONS.map((key) => ({

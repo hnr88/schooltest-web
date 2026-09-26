@@ -726,7 +726,7 @@
       "opsSettings": "Tetapan platform",
       "account": "Akaun",
       "teacherDashboard": "Papan pemuka",
-      "testSessions": "Sesi langsung",
+      "testSessions": "Sesi ujian",
       "results": "Kelas"
     },
     "sidebar": {
@@ -1950,7 +1950,7 @@
       "recalledTitle": "Laporan ditarik balik oleh sekolah",
       "recalledBody": "Sekolah telah menarik balik laporan keluarga ini untuk semakan. Ia tidak lagi dipaparkan di sini — sekolah akan mengeluarkannya semula apabila dikemas kini.",
       "recalledAt": "Ditarik balik pada {date}.",
-      "listHeading": "Laporan keluarga",
+      "listHeading": "Laporan",
       "listDescription": "Laporan untuk anak anda, terbaharu dahulu. Laporan muncul di sini setelah sekolah mengeluarkannya.",
       "listEmptyTitle": "Tiada laporan lagi",
       "listEmptyBody": "Apabila anak anda menamatkan ujian dan sekolah mengeluarkan laporan, ia akan dipaparkan di sini.",
@@ -4450,10 +4450,10 @@
     "results": {
       "meta": {
         "title": "Keputusan — SchoolTest",
-        "description": "Keputusan kelas, cerapan pengajaran dan kemajuan antara Ujian A dan Ujian B."
+        "description": "Keputusan kelas, perancangan pengajaran dan kemajuan antara Ujian A dan Ujian B."
       },
       "title": "Keputusan",
-      "description": "Keputusan kelas, cerapan pengajaran dan kemajuan antara ujian.",
+      "description": "Keputusan kelas, perancangan pengajaran dan kemajuan antara ujian.",
       "list": {
         "loading": "Memuatkan kelas anda",
         "students": "{count, plural, other {# pelajar}}",
@@ -4513,7 +4513,7 @@
         "loading": "Memuatkan kelas ini",
         "meta": {
           "title": "Keputusan kelas — SchoolTest",
-          "description": "Satu kelas: diagnostik bacaan setiap pelajar, cerapan pengajaran di sebaliknya dan kemajuan antara Ujian A dan Ujian B."
+          "description": "Satu kelas: diagnostik bacaan setiap pelajar, perancangan pengajaran di sebaliknya dan kemajuan antara Ujian A dan Ujian B."
         },
         "noValue": "—",
         "notYetCount": "{count, plural, other {# belum menguasai}}",
@@ -4539,12 +4539,12 @@
       "tabs": {
         "listLabel": "Paparan keputusan kelas",
         "students": "Pelajar",
-        "insights": "Cerapan pengajaran",
+        "insights": "Pengajaran",
         "progress": "Kemajuan",
         "exit": "Ramalan keluar",
         "comingSoon": "Akan datang",
-        "reports": "Laporan keluarga",
-        "live": "Sesi langsung"
+        "reports": "Laporan",
+        "live": "Sesi ujian"
       },
       "insights": {
         "loading": "Memuatkan cerapan pengajaran",
@@ -5023,9 +5023,9 @@
       },
       "attribute": {
         "decoding": "Penyahkodan",
-        "vocabA2": "Kosa kata harian",
-        "vocabB1": "Kosa kata bilik darjah",
-        "vocabB2": "Kosa kata akademik",
+        "vocabA2": "Kosa kata (harian)",
+        "vocabB1": "Kosa kata (bilik darjah)",
+        "vocabB2": "Kosa kata (akademik)",
         "grammar": "Tatabahasa",
         "gist": "Isi utama",
         "detail": "Butiran",
@@ -5248,11 +5248,11 @@
       "tabs": {
         "listLabel": "Paparan keputusan kelas",
         "students": "Pelajar",
-        "progress": "Kemajuan kelas",
-        "insights": "Cerapan pengajaran",
+        "progress": "Kemajuan",
+        "insights": "Pengajaran",
         "exit": "Ramalan keluar",
-        "reports": "Laporan keluarga",
-        "live": "Sesi langsung"
+        "reports": "Laporan",
+        "live": "Sesi ujian"
       },
       "exit": {
         "title": "Ramalan keluar",
@@ -5326,24 +5326,65 @@
     },
     "progress": {
       "title": "Kemajuan kelas",
-      "subtitle": "{count, plural, =0 {Belum ada sesi yang diskor.} other {Pergerakan kelas merentas # sesi.}}",
-      "tiles": {
-        "meanShift": {
-          "label": "Anjakan purata",
-          "sub": "Sesi sebelumnya ke sesi terkini"
+      "subtitle": "{count, plural, =0 {Belum ada sesi yang diskor.} other {Pergerakan kelas merentas # sesi tahun ini.}}",
+      "dotMap": {
+        "title": "Kemajuan bacaan mengikut murid",
+        "sub": "Setiap baris ialah seorang murid, yang tertinggi dahulu. Titik ialah kedudukan permulaan dan mata anak panah ialah sesi terkini. Leret atas baris untuk butiran.",
+        "modeGrowth": "Tunjuk pertumbuhan",
+        "modeLatest": "Terkini sahaja",
+        "phases": {
+          "beginning": "Permulaan",
+          "emerging": "Baru muncul",
+          "developing": "Berkembang",
+          "consolidating": "Mantap"
         },
-        "gained": {
-          "label": "Meningkat",
-          "sub": "{threshold} mata atau lebih"
+        "studentsCount": "{count, plural, other {# murid}}",
+        "tooltip": "{name} · {firstMonth} {firstPct}% ({firstPhase}) → {latestMonth} {latestPct}% ({latestPhase})",
+        "endLabel": "Perubahan sedikit",
+        "legendUp": "Naik",
+        "legendBack": "Turun",
+        "classSummary": "{up} daripada {total} murid naik sekurang-kurangnya satu tahap ACARA sejak sesi pertama; {held} kekal dan {down} menurun.",
+        "empty": "Belum ada hasil untuk dibandingkan."
+      },
+      "gains": {
+        "topTitle": "Peningkatan keseluruhan tertinggi",
+        "lowTitle": "Peningkatan keseluruhan terendah",
+        "empty": "Belum ada hasil untuk dibandingkan."
+      },
+      "subMap": {
+        "title": "Pertumbuhan subkemahiran mengikut murid",
+        "sub": "Pilih subkemahiran untuk melihat tahap yang dicapai setiap murid. Titik ialah tahap pada sesi pertama dan mata anak panah ialah sesi terkini, jadi anda dapat melihat siapa bergerak maju dan siapa berundur.",
+        "skills": {
+          "Decoding": "Penyahkodan",
+          "Vocab_A2": "Kosa kata (harian)",
+          "Grammar": "Tatabahasa",
+          "Vocab_B1": "Kosa kata (bilik darjah)",
+          "Gist": "Isi utama",
+          "Detail": "Butiran",
+          "Inference": "Simpulan",
+          "Vocab_B2": "Kosa kata (akademik)"
         },
-        "held": {
-          "label": "Kekal stabil",
-          "sub": "Dalam lingkungan {threshold} mata"
+        "phases": {
+          "beginning": "Permulaan",
+          "emerging": "Baru muncul",
+          "developing": "Berkembang",
+          "consolidating": "Mantap"
         },
-        "slipped": {
-          "label": "Menurun",
-          "sub": "Turun {threshold} mata atau lebih"
-        }
+        "studentsCount": "{count, plural, other {# murid}}",
+        "tooltip": "{name} · {skill}: {firstPhase} ({firstMonth}) → {latestPhase} ({latestMonth})",
+        "tooltipLatest": "{name} · {skill}: {latestPhase} ({latestMonth})",
+        "moveUp": "↑ {count, plural, other {# tahap}}",
+        "moveHeld": "Kekal",
+        "moveDown": "↓ {count, plural, other {# tahap}}",
+        "summary": "{skill}: {up} naik · {held} kekal · {down} turun",
+        "legendUp": "Naik",
+        "legendBack": "Turun",
+        "legendHeld": "Kekal",
+        "empty": "Belum ada hasil untuk dibandingkan."
+      },
+      "analysis": {
+        "title": "Analisis kelas",
+        "comingSoon": "Ringkasan janaan akan datang tidak lama lagi"
       },
       "points": "{value} mata",
       "percent": "{value}%",
@@ -5355,27 +5396,70 @@
         "summary": "Purata kelas {from}% → {to}% merentas {count} sesi ({difference} mata).",
         "summarySingle": "Purata kelas {value}% daripada satu sesi setakat ini.",
         "summaryEmpty": "Belum ada sesi yang diskor."
-      },
-      "top": {
-        "title": "Kemajuan tertinggi",
-        "empty": "Belum ada peningkatan yang boleh dipercayai."
-      },
-      "watch": {
-        "title": "Murid untuk diperhatikan",
-        "empty": "Belum ada murid untuk diperhatikan."
-      },
-      "subskills": {
-        "title": "Pergerakan subkemahiran dari semasa ke semasa",
-        "description": "Purata kelas bagi setiap subkemahiran membaca merentas sesi, yang paling lemah dahulu",
-        "now": "kini {value}%"
-      },
-      "footnote": "Setiap perubahan murid di sini ialah perbandingan pelayan sendiri antara sesi terkini murid itu dengan sesi sebelumnya. Jika sesuatu pasangan tidak dapat dibandingkan, tiada perubahan ditunjukkan langsung. Purata kelas dari semasa ke semasa ialah purata biasa bagi sesi yang diskor dalam rekod."
+      }
     },
     "insights": {
-      "title": "Cerapan pengajaran",
+      "title": "Pengajaran",
       "subtitle": "Apa yang perlu diajar seterusnya, dan kepada siapa.",
       "emptyTitle": "Belum ada pelajar dalam kelas ini yang menyelesaikan ujian",
       "emptyDescription": "Penguasaan subkemahiran dan kumpulan yang disarankan dibina daripada keputusan bacaan yang telah selesai, jadi belum ada apa-apa untuk diajar. Ia akan muncul di sini sebaik sahaja seorang pelajar menghantar ujian.",
+      "teaching": {
+        "summary": "{v} kumpulan kosa kata, {c} kumpulan pemahaman dan {f} kumpulan asas, serta {p} pasangan bacaan untuk {n, plural, one {# pelajar} other {# pelajar}}.",
+        "empty": "Tiada keputusan lagi untuk kelas ini.",
+        "provisional": "sementara",
+        "moreMembers": "+{count}",
+        "section": {
+          "wholeClass": "Seluruh kelas",
+          "wholeClassSub": "Kumpulan bezaan",
+          "individual": "Individu",
+          "individualSub": "Pasangan dan langkah seterusnya"
+        },
+        "strands": {
+          "vocabulary": "Kosa kata",
+          "vocabularySub": "Tahap perkataan",
+          "comprehension": "Pemahaman",
+          "comprehensionSub": "Tahap perenggan",
+          "foundations": "Asas",
+          "foundationsSub": "Penyahkodan dan Tatabahasa",
+          "empty": "Belum dinilai."
+        },
+        "skills": {
+          "Vocab_A2": "Kosa kata harian",
+          "Vocab_B1": "Kosa kata bilik darjah",
+          "Vocab_B2": "Kosa kata akademik",
+          "Gist": "Isi utama",
+          "Detail": "Butiran",
+          "Inference": "Simpulan",
+          "Decoding": "Penyahkodan",
+          "Grammar": "Tatabahasa"
+        },
+        "prompt": {
+          "strand": "Prompt",
+          "all": "Prompt untuk semua",
+          "title": "Muat turun prompt untuk ditampal dalam pembantu AI anda",
+          "student": "Muat turun prompt AI untuk {name}",
+          "strandFor": "Muat turun prompt AI untuk {strand}"
+        },
+        "gate": {
+          "label": "Laluan keluar membaca kritis",
+          "passed": "{count} lulus",
+          "notYet": "{count} belum lulus"
+        },
+        "pairs": {
+          "title": "Pasangan membaca",
+          "intro": "Pembaca lebih mahir memimpin, untuk {skill}",
+          "empty": "Tiada pasangan jelas minggu ini."
+        },
+        "nextSteps": {
+          "title": "Langkah seterusnya",
+          "sub": "Satu fokus kosa kata dan satu fokus pemahaman bagi setiap pelajar",
+          "target": "{skill} → {phase}",
+          "vocabularyTarget": "{skill} → {phase}",
+          "extend": "Perluasan",
+          "vocabularyPill": "Fokus kosa kata: {skill} → {phase}",
+          "comprehensionPill": "Fokus pemahaman: {skill} → {phase}"
+        }
+      },
       "percent": "{value}%",
       "kpi": {
         "lastSitting": "Sesi terakhir",
@@ -5428,96 +5512,40 @@
       }
     },
     "familyReports": {
-      "title": "Laporan keluarga",
-      "subtitle": "Keluarkan keputusan kepada keluarga untuk {className}. Buka seorang pelajar untuk melihat atau mengeksport laporan penuh mereka.",
-      "releaseHeld": "{count, plural, =0 {Keluarkan laporan yang ditahan} other {Keluarkan # laporan yang ditahan}}",
-      "tiles": {
-        "scored": "Telah diskor",
-        "released": "Dikeluarkan kepada penjaga",
-        "held": "Ditahan untuk anda",
-        "noResult": "Belum ada keputusan"
+      "title": "Laporan",
+      "audiencePrompt": "Untuk siapa laporan ini?",
+      "comingSoon": "Akan datang",
+      "audiences": {
+        "parents": "Ibu bapa & penjaga",
+        "teachers": "Guru arus perdana",
+        "principal": "Pengetua",
+        "admin": "Pentadbir"
       },
-      "banner": {
-        "open": "{count, plural, other {# percubaan masih terbuka.}}",
-        "blocked": "{count, plural, other {# pelajar memerlukan ujian semula atau pemarkahan manual sebelum apa-apa boleh dikeluarkan untuk mereka.}}",
-        "gaps": "Mengeluarkan sekarang memberi penjaga gambaran kelas yang tidak lengkap.",
-        "complete": "Setiap percubaan dalam sesi ini telah diskor, jadi gambaran kelas adalah lengkap.",
-        "unscored": "{count, plural, other {# percubaan masih belum mempunyai markah.}}"
+      "notes": {
+        "parents": "Laporan bahasa Inggeris ringkas untuk keluarga. Satu untuk setiap pelajar, tiada data kelas.",
+        "teachers": "Laporan bilik darjah untuk guru arus perdana. Satu untuk setiap pelajar, dengan langkah pengajaran seterusnya.",
+        "principal": "Pandangan kepimpinan terhadap kelas: keputusan, fasa dan langkah seterusnya sepintas lalu.",
+        "admin": "Laporan pentadbiran untuk rekod sekolah. Data kelas, tiada nota pengajaran."
       },
-      "filters": {
-        "label": "Tunjukkan laporan",
-        "all": "Semua",
-        "held": "Ditahan",
-        "released": "Dikeluarkan",
-        "blocked": "Tersekat"
+      "classCard": {
+        "title": "Ringkasan kelas",
+        "meta": "{className} · {scored} daripada {total} pelajar dengan keputusan · untuk {audience}",
+        "download": "Muat turun PDF"
       },
-      "listLabel": "Laporan keluarga mengikut pelajar",
-      "empty": "Tiada apa-apa dalam kumpulan ini.",
-      "score": "{score}%",
-      "noResult": "Tiada keputusan",
-      "actions": {
-        "preview": "Pratonton laporan",
-        "release": "Keluarkan",
-        "recall": "Tarik balik"
+      "students": {
+        "title": "Pelajar individu",
+        "meta": "{scored} daripada {total} pelajar mempunyai laporan sedia · untuk {audience}",
+        "downloadAll": "Muat turun semua",
+        "pdf": "PDF",
+        "noResultYet": "Belum ada keputusan",
+        "pdfFor": "Muat turun laporan PDF untuk {name}"
       },
-      "preview": {
-        "eyebrow": "Pratonton laporan penjaga",
-        "meta": "{className} · diduduki pada {date}",
-        "score": "{score} / 100",
-        "canDo": "Apa yang mereka boleh lakukan",
-        "next": "Apa yang perlu diusahakan seterusnya",
-        "release": "Keluarkan kepada penjaga",
-        "recall": "Tarik balik laporan ini",
-        "viewAnalysis": "Lihat analisis penuh",
-        "close": "Tutup"
-      },
-      "release": {
-        "title": "Keluarkan kepada penjaga {name}?",
-        "body": "Mereka boleh membaca tahap, pecahan subkemahiran dan langkah seterusnya sebaik sahaja anda mengeluarkannya.",
-        "bodyRecalled": "Mereka boleh membaca tahap, pecahan subkemahiran dan langkah seterusnya sebaik sahaja anda mengeluarkannya. Laporan ini pernah ditarik balik, jadi penjaga akan melihatnya semula.",
-        "cta": "Keluarkan laporan"
-      },
-      "recall": {
-        "title": "Tarik balik laporan {name}?",
-        "body": "Menarik balik akan mengeluarkannya dari portal ibu bapa dan menghantar nota bahawa keputusan sedang disemak. Apa yang telah mereka baca tidak boleh dibatalkan.",
-        "reasonLabel": "Sebab penarikan balik",
-        "reasonHint": "Disimpan bersama keputusan. Maksimum 500 aksara.",
-        "reasonRequired": "Berikan sebab penarikan balik, maksimum 500 aksara.",
-        "cta": "Tarik balik laporan"
-      },
-      "releaseAll": {
-        "title": "{count, plural, other {Keluarkan # laporan yang ditahan?}}",
-        "body": "{count, plural, other {Penjaga # pelajar boleh membaca tahap dan langkah seterusnya dengan segera.}}",
-        "open": "{count, plural, other {# pelajar masih menduduki ujian, jadi penjaga mereka tidak akan melihat apa-apa dan mungkin akan bertanya sebabnya.}}",
-        "blocked": "{count, plural, other {# lagi tersekat kerana ujian semula atau pemarkahan manual.}}",
-        "tail": "Laporan boleh ditarik balik, tetapi apa yang telah dibaca tidak boleh dibatalkan.",
-        "cta": "{count, plural, other {Keluarkan # laporan}}",
-        "unscored": "{count, plural, other {# lagi belum mempunyai markah.}}"
-      },
-      "nothingHeld": {
-        "title": "Tiada laporan yang ditahan",
-        "body": "{count, plural, =0 {Setiap laporan yang telah diskor dalam {className} telah dihantar kepada penjaganya.} other {Setiap laporan yang telah diskor dalam {className} telah dihantar kepada penjaganya. # pelajar tanpa laporan masih belum mempunyai markah, sedang menunggu ujian semula atau pemarkahan manual, atau masih menduduki ujian, dan tidak boleh dikeluarkan dari sini.}}",
-        "cta": "Faham"
-      },
-      "cancel": "Batal",
-      "toast": {
-        "released": "Laporan {name} telah dikeluarkan kepada penjaganya",
-        "recalled": "Laporan {name} yang telah dikeluarkan ditarik balik",
-        "releasedAll": "{count, plural, other {# laporan telah dikeluarkan kepada penjaga}}",
-        "releasedSome": "{released} daripada {total} laporan yang ditahan telah dikeluarkan.",
-        "releasedNone": "Tiada laporan yang ditahan dikeluarkan.",
-        "notReleased": "Tidak dikeluarkan ({reason}): {names}."
-      },
-      "errors": {
-        "notReady": "keputusan belum lengkap",
-        "notFound": "keputusan tidak ditemui",
-        "forbidden": "anda tidak boleh mengubah keputusan ini",
-        "rateLimited": "terlalu banyak permintaan, cuba lagi dalam seminit",
-        "transport": "sambungan terputus, muat semula untuk melihat keadaan semasa",
-        "generic": "pelayan tidak menerima perubahan ini"
-      },
-      "failedRelease": "Laporan {name} tidak dikeluarkan: {reason}.",
-      "failedRecall": "Laporan {name} tidak ditarik balik: {reason}."
+      "download": {
+        "popupBlocked": "Benarkan tetingkap timbul untuk memuat turun laporan sebagai PDF.",
+        "allOpened": "Laporan pelajar dibuka — simpan sebagai PDF daripada dialog cetak.",
+        "allFailed": "Tidak dapat menyediakan laporan pelajar. Cuba lagi.",
+        "studentsTitle": "Laporan pelajar — {name}"
+      }
     },
     "live": {
       "students": {
@@ -5892,12 +5920,12 @@
       }
     },
     "liveSessions": {
-      "title": "Sesi langsung",
+      "title": "Sesi ujian",
       "summary": "{sessions, plural, other {# sesi}} sedang berjalan merentasi {classes, plural, other {# kelas}}. Seorang murid hanya boleh menduduki satu ujian pada satu masa.",
       "summaryNone": "Tiada sesi yang berjalan. Murid yang berbeza dalam kelas yang sama boleh menduduki versi berbeza serentak.",
       "startSession": "Mulakan sesi baharu",
-      "loading": "Memuatkan sesi langsung…",
-      "loadError": "Sesi langsung tidak dapat dimuatkan.",
+      "loading": "Memuatkan sesi ujian…",
+      "loadError": "Sesi ujian tidak dapat dimuatkan.",
       "retry": "Cuba lagi",
       "classMeta": "{year} · {count, plural, other {# murid}}",
       "classMetaNoYear": "{count, plural, other {# murid}}",
@@ -6227,6 +6255,24 @@
       },
       "progressTitle": "Kemajuan membaca dari semasa ke semasa",
       "progressDescription": "Skor domain keseluruhan berbanding kecekapan ACARA, bagi setiap borang yang diduduki tahun ini",
+      "statOverall": "Pembacaan keseluruhan",
+      "statAcaraPhase": "Fasa ACARA",
+      "statMomentum": "Momentum",
+      "momentum": {
+        "holding": "Bertahan",
+        "steady": "Mantap",
+        "accelerating": "Meningkat pesat",
+        "slipping": "Menurun"
+      },
+      "momentumNote": {
+        "holding": "Perubahan kecil sejak ujian pertama",
+        "steady": "Peningkatan jelas dan stabil",
+        "accelerating": "Peningkatan kukuh dan boleh dipercayai",
+        "slipping": "Menurun sejak ujian pertama",
+        "none": "Perlu dua sesi untuk diukur"
+      },
+      "progressCardTitle": "Kemajuan membaca",
+      "progressCardSubtitle": "Skor domain keseluruhan berbanding kecekapan ACARA, bagi setiap borang yang diduduki tahun ini",
       "phaseChip": "ACARA: {phase}",
       "chartLabel": "Skor membaca keseluruhan bagi setiap sesi, diplot berbanding fasa ACARA",
       "tiles": {
@@ -6244,6 +6290,17 @@
       },
       "subskillsTitle": "Subkemahiran membaca",
       "subskillsDescription": "Prestasi {first} merentas sembilan komponen membaca pada borang terkini",
+      "breakdown": {
+        "title": "Rincian subkemahiran membaca",
+        "columnSubskill": "Subkemahiran",
+        "columnPhase": "Fasa",
+        "provisionalNote": "Ambang kosa kata akademik adalah sementara",
+        "vocab": {
+          "Vocab_A2": "Kosa kata harian",
+          "Vocab_B1": "Kosa kata bilik darjah",
+          "Vocab_B2": "Kosa kata akademik"
+        }
+      },
       "subskills": {
         "deltaUp": "↑ +{points}",
         "deltaDown": "↓ −{points}",
@@ -6253,6 +6310,7 @@
       },
       "analysisTitle": "Analisis murid",
       "analysisBadge": "Ringkasan dijana",
+      "analysisComingSoon": "Ringkasan dijana akan disediakan kelak",
       "copy": "Salin",
       "copied": "Ulasan guru disalin ke papan keratan.",
       "copyFailed": "Tidak dapat menyalin ke papan keratan. Pilih teks dan salin secara manual.",

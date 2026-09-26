@@ -3,6 +3,8 @@ import path from 'node:path';
 
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
+import { classRosterResponseSchema } from '@/modules/results/schemas/roster.schema';
+
 import { roleCredentials } from './helpers/credentials';
 import { runSql } from './helpers/auth-db';
 import { joinAsStudent, answerFirstItem, rosterEmails } from './helpers/teacher-live-monitor-join';
@@ -10,6 +12,7 @@ import type { JoinedStudent } from './helpers/teacher-live-monitor-join';
 import { readMonitor } from './helpers/teacher-live-monitor-api';
 import { closeSession, createSession } from './helpers/teacher-past-sessions-api';
 import { sectionTab, sectionTabs } from './helpers/teacher-class-detail';
+import { downloadFrom, expectDeIdentified, expectSameDocument, readTeacherExportLive } from './helpers/teacher-export-live';
 import { signInTeacher } from './helpers/teacher-rail';
 
 /**
@@ -22,7 +25,6 @@ import { signInTeacher } from './helpers/teacher-rail';
 const API_BASE = 'http://127.0.0.1:5500';
 const PROOFS = path.resolve(process.cwd(), 'tests', 'e2e', 'proofs', 'w4-night2');
 const PROOF_CLASS = 't34tb8ogapnh4halzdn7yy4n'; // Proof 10X (demo-proof-scenario seed)
-const PATTERN_CLASS = 'lclzluqdumd3uvc3dwcd6joy'; // A27-Controls-v7fzb — roster whose released results carry scorer error_patterns
 const EMPTY_CLASS = 'r2mmzgm210d90nh9nevx9os2'; // E7-DBG-x0rm — zero active students
 const TEACHER = 't1@schooltest.local';
 
@@ -106,11 +108,23 @@ test('TEA-003: class detail roster tab lists the class students', async ({ page 
   await page.screenshot({ path: path.join(PROOFS, 'tea-003-roster.png'), animations: 'disabled' });
 });
 
-// ── TEA-004 — progress tab: cohort chart + subskill trends + watch-list ─────
-test('TEA-004: progress tab charts cohort growth with watch-list movers', async ({ page }) => {
+// ── TEA-004 — progress tab: dot map + gains cards + subskill growth + coming-soon analysis ──
+test('TEA-004: progress tab renders the dot map, gains cards and coming-soon analysis', async ({ page }) => {
   test.setTimeout(120_000);
   await signInTeacher(page, TEACHER);
+  // The roster body the page itself receives decides whether §3d can render (BUG-009 bands).
+  let rosterBody: unknown = null;
+  const rosterRead = page
+    .waitForResponse(async (response) => {
+      const url = new URL(response.url());
+      if (url.pathname !== '/api/my/students/results' || url.searchParams.get('class') !== PROOF_CLASS) return false;
+      if (response.request().method() !== 'GET' || !response.ok()) return false;
+      rosterBody = await response.json().catch(() => null);
+      return rosterBody !== null;
+    }, { timeout: 60_000 });
   await openClassTab(page, PROOF_CLASS, 'progress');
+  await rosterRead;
+  const roster = classRosterResponseSchema.parse(rosterBody);
 
   const panel = page.locator('[data-tab-panel="progress"]');
   const progress = panel.locator('[data-slot="class-progress"]');
@@ -119,37 +133,66 @@ test('TEA-004: progress tab charts cohort growth with watch-list movers', async 
   await expect(progress).toHaveAttribute('data-status', 'ready');
   expect(Number(await progress.getAttribute('data-sittings'))).toBeGreaterThanOrEqual(1);
 
-  // Cohort growth: the ACARA chart renders sitting points from real results.
-  const chart = panel.locator('[data-slot="class-progress-chart"]');
-  await expect(chart).toBeVisible();
-  await expect(panel.locator('[data-slot="progress-tile-value"]').first()).toBeVisible();
+  // The dot map: one row per scored student, with the growth/latest toggle above it.
+  const dotMap = panel.locator('[data-slot="progress-dot-map"]');
+  await expect(dotMap).toBeVisible();
+  await expect(dotMap.locator('[data-slot="progress-dot-mode"]')).toHaveCount(2);
+  await expect(dotMap.locator('[data-slot="progress-dot-row"]').first()).toBeVisible();
 
-  // Watch-list movers: both variants render (mover rows when data exists, the
-  // honest empty state otherwise) — either way the section is present.
-  const watch = panel.locator('[data-slot="progress-watch-list"]');
-  await expect(watch).toHaveCount(2);
+  // Both gains cards render (gain rows when reliable deltas exist, the honest
+  // empty state otherwise) — either way the sections are present.
+  await expect(panel.locator('[data-slot="progress-gains-top"]')).toBeVisible();
+  await expect(panel.locator('[data-slot="progress-gains-low"]')).toBeVisible();
+
+  // Subskill growth renders only once the roster carries BUG-009 `attribute_bands`; then it
+  // shows exactly the eight band-carrying chips — Critical is never charted.
+  const submap = panel.locator('[data-slot="progress-submap"]');
+  const carriesBands = roster.some((row) => row.result?.history?.some((point) => point.attribute_bands !== undefined));
+  if (carriesBands) {
+    await expect(submap).toBeVisible();
+    await expect(submap.locator('[data-slot="progress-submap-chip"]')).toHaveCount(8);
+  } else {
+    test.info().annotations.push({ type: 'fixture-gap', description: 'roster carries no attribute_bands — §3d hidden' });
+    await expect(submap).toHaveCount(0);
+  }
+
+  // Class analysis stays visible in its honest coming-soon state (no Copy button).
+  const analysis = panel.locator('[data-slot="progress-analysis"]');
+  await expect(analysis).toBeVisible();
+  await expect(analysis).toContainText(/coming soon/i);
+  await expect(analysis.locator('button')).toHaveCount(0);
   await page.screenshot({ path: path.join(PROOFS, 'tea-004-progress.png'), animations: 'disabled' });
 });
 
-// ── TEA-005 — insights tab: KPI row, suggested groups, error patterns ───────
-test('TEA-005: insights tab shows KPIs and scorer error patterns', async ({ page }) => {
+// ── TEA-005 — Teaching tab: summary line, three strand cards, exit-gate chip ──
+test('TEA-005: insights tab shows the Teaching summary, strand cards and exit gate', async ({ page }) => {
   test.setTimeout(120_000);
   await signInTeacher(page, TEACHER);
-  await openClassTab(page, PATTERN_CLASS, 'insights');
+  await openClassTab(page, PROOF_CLASS, 'insights');
 
   const insights = page.locator('[data-tab-panel="insights"] [data-slot="teaching-insights"]');
   await expect(insights).toBeVisible({ timeout: 30_000 });
   await expect(insights).toHaveAttribute('data-status', 'ready');
 
-  // Five KPIs from the roster + sittings (InsightsKpiRow).
-  const kpis = insights.locator('[data-slot="insights-kpis"]');
-  await expect(kpis).toBeVisible();
-  await expect(kpis.locator('h3, [data-slot^="kpi"]').first()).toBeVisible();
+  // The one-line summary counts the strand groups, pairs and students (Spec 04 §0).
+  const summary = insights.locator('[data-slot="teaching-summary"]');
+  await expect(summary).toBeVisible();
+  await expect(summary).not.toBeEmpty();
 
-  // The class roll-up of the scorer's per-result error patterns (TEA-005 card).
-  const patterns = insights.locator('[data-slot="insights-error-pattern"]');
-  await expect(patterns.first()).toBeVisible({ timeout: 15_000 });
-  await expect(insights.locator('[data-insights-section="error-patterns"]')).toContainText(/error pattern/i);
+  // "Whole class" is THREE differentiation cards: Vocabulary / Comprehension / Foundations.
+  const cards = insights.locator('[data-slot="teaching-strand-card"]');
+  await expect(cards).toHaveCount(3);
+  for (const strand of ['vocabulary', 'comprehension', 'foundations']) {
+    await expect(insights.locator(`[data-slot="teaching-strand-card"][data-strand="${strand}"]`)).toBeVisible();
+  }
+
+  // Critical reading is never a group — only the exit-gate chip on the Comprehension
+  // card, counting the roster's true/false gates.
+  const gate = insights.locator('[data-slot="teaching-gate"]');
+  await expect(gate).toBeVisible();
+  await expect(gate).toContainText(/critical reading exit gate/i);
+  expect(Number(await gate.getAttribute('data-passed')) + Number(await gate.getAttribute('data-not-yet')))
+    .toBeGreaterThan(0);
   await page.screenshot({ path: path.join(PROOFS, 'tea-005-insights.png'), animations: 'disabled' });
 });
 
@@ -1006,7 +1049,7 @@ test('TEA-035: a failed live-sessions read shows the error line and Retry recove
   await page.goto('/dashboard/test-sessions');
   const surface = page.locator('[data-surface="teacher-test-sessions"]');
   await expect(surface).toHaveAttribute('data-status', 'error', { timeout: 90_000 });
-  await expect(surface).toContainText('Live sessions could not be loaded.');
+  await expect(surface).toContainText('Test sessions could not be loaded.');
   const retry = surface.getByRole('button', { name: 'Try again' });
   await expect(retry).toBeVisible();
   await page.unroute('**/api/teacher/test-sessions?*status=open*');
@@ -1071,9 +1114,17 @@ test('TEA-049: student drilldown shows the subskill profile and overall chip', a
   const surface = page.locator('[data-surface="teacher-student-drill-down"]');
   await expect(surface).toHaveAttribute('data-status', 'success', { timeout: 90_000 });
   await expect(surface.locator('[data-slot="student-drill-down-header"]')).toBeVisible();
-  await expect(surface.locator('[data-slot="student-overall"]')).toBeVisible(); // the overall chip
-  await expect(surface.locator('[data-slot="student-subskills"]')).toBeVisible({ timeout: 30_000 });
-  await expect(surface.locator('[data-slot="student-subskills"]').getByText(/\d+/).first()).toBeVisible();
+  // The v2 header's three white stat cards replaced the old overall chip: the
+  // overall card prints the scored sitting's percentage (the student was picked
+  // with a scored result), the phase and momentum cards sit beside it.
+  const overall = surface.locator('[data-slot="student-stat-overall"]');
+  await expect(overall).toBeVisible();
+  await expect(overall.locator('[data-slot="student-overall-score"]')).toHaveText(/\d/);
+  await expect(surface.locator('[data-slot="student-stat-phase"]')).toBeVisible();
+  // The subskill profile is now the nine-row breakdown table (`StudentBreakdownTable`).
+  const breakdown = surface.locator('[data-slot="student-breakdown"]');
+  await expect(breakdown).toBeVisible({ timeout: 30_000 });
+  await expect(breakdown.locator('[data-slot="student-breakdown-row"]')).toHaveCount(9);
   await page.screenshot({ path: path.join(PROOFS, 'tea-049-drilldown.png'), animations: 'disabled' });
 });
 
@@ -1155,36 +1206,75 @@ test('TEA-052: empty prompt keeps send disabled; an API failure shows an honest 
   await page.screenshot({ path: path.join(PROOFS, 'tea-052-askai-failure.png'), animations: 'disabled' });
 });
 
-// ── TEA-054 — the export panel previews the de-identified export first ───────
+// ── TEA-054 — the Classes list's LLM export downloads the de-identified .md ──
 // The export class must NOT collide its roster names into its own class name
 // ("Proof 10X" carries the fixture given_name 'Proof') — the C-TR-5 guard
-// correctly withholds such a document, so this drives the clean Okonkwo class.
-const EXPORT_CLASS = 'q181z4hzj6kwzsexyt5xcv5p'; // Reading 8A — Okonkwo
-test('TEA-054: insights export opens the de-identified preview before download', async ({ page }) => {
+// correctly withholds such a document, so Proof 10X is excluded and the class
+// is resolved LIVE from the SIGNED-IN teacher's own Classes list (the pattern
+// teacher-results-export.spec.ts uses): a row rendering the PDF/LLM pair is a
+// class the teacher both OWNS and holds scored results for. A hard-coded class
+// id drifted out of t1's ownership and the export answered 403.
+test('TEA-054: the Classes list LLM export downloads the de-identified class summary', async ({
+  page,
+  playwright,
+}) => {
   test.setTimeout(300_000);
   await signInTeacher(page, TEACHER);
-  await page.goto(`/dashboard/results/${EXPORT_CLASS}?tab=insights`);
-  const panel = page.locator('[data-slot="teacher-export-panel"][data-export-kind="insights"]');
-  await expect(panel).toBeVisible({ timeout: 90_000 });
-  await expect(panel.locator('[data-slot="teacher-export-footnote"]')).toBeVisible();
-
-  await panel.getByRole('button').first().click();
-  const preview = page.locator('[data-slot="teacher-export-preview"]');
-  // The dialog opens once the C-TR-5 export answers; a refusal surfaces as the
-  // panel's own role=alert line, which the assertion below prints on failure.
-  await expect
-    .poll(
-      async () => {
-        if ((await preview.count()) > 0 && (await preview.isVisible())) return 'preview';
-        const error = page.locator('[data-slot="teacher-export-error"]');
-        return (await error.count()) > 0 ? `error: ${await error.first().innerText()}` : 'pending';
-      },
-      { timeout: 120_000 },
-    )
-    .toBe('preview');
-  await expect(preview.locator('[data-slot="teacher-export-prompt"]')).toBeVisible();
-  await expect(preview.locator('[data-slot="teacher-export-copy-download"]')).toBeVisible();
-  await page.screenshot({ path: path.join(PROOFS, 'tea-054-export-preview.png'), animations: 'disabled' });
+  await page.goto('/dashboard/results');
+  await expect(page.locator('[data-surface="teacher-results"]')).toHaveAttribute('data-status', 'ready', {
+    timeout: 60_000,
+  });
+  const exportRows = page.locator(
+    `[data-slot="results-class-row"]:not([data-class-id="${PROOF_CLASS}"]):has(button[data-export="llm"])`,
+  );
+  await expect(exportRows.first()).toBeVisible({ timeout: 60_000 });
+  const candidates = (await exportRows.evaluateAll((rows) => rows.map((row) => row.getAttribute('data-class-id')))).filter(
+    (id): id is string => id !== null,
+  );
+  // The server-side read runs as the SAME signed-in teacher (t1) who owns the class — the
+  // helper's default bearer is teacher@schooltest.local, which 403s on t1's classes. The
+  // C-TR-5 guard WITHHOLDS (400 EXPORT_WITHHELD) a class whose document would still carry
+  // a roster given name, so the first class the server actually exports is the one proven.
+  const rosterRequest = await playwright.request.newContext();
+  const t1Jwt = await teacherJwt(rosterRequest);
+  let exportClassId: string | null = null;
+  let server: Awaited<ReturnType<typeof readTeacherExportLive>> | null = null;
+  const refusals: string[] = [];
+  for (const candidate of candidates) {
+    try {
+      server = await readTeacherExportLive(playwright, { kind: 'insights', classDocumentId: candidate }, t1Jwt);
+      exportClassId = candidate;
+      break;
+    } catch (error) {
+      refusals.push(String(error));
+    }
+  }
+  test.info().annotations.push({ type: 'withheld-candidates', description: JSON.stringify(refusals) });
+  if (exportClassId === null || server === null) {
+    throw new Error(`[e2e] no t1 class besides the proof class is exported by the server: ${refusals.join(' | ')}`);
+  }
+  const button = page.locator(
+    `[data-slot="results-class-row"][data-class-id="${exportClassId}"] button[data-export="llm"]`,
+  );
+  await expect(button).toBeVisible({ timeout: 60_000 });
+  const downloaded = await downloadFrom(button);
+  expect(downloaded.filename, 'the browser saved under the SERVER filename').toBe(server.filename);
+  expectSameDocument(downloaded, server);
+  // De-identification: no roster display name the export class serves may appear, and the
+  // anonymised S-ids stand in for them (the helper teacher-results-export.spec uses).
+  let rosterNames: string[];
+  try {
+    const response = await rosterRequest.get(`${API_BASE}/api/my/students/results?class=${exportClassId}`, {
+      headers: { Authorization: `Bearer ${t1Jwt}` },
+    });
+    expect(response.status(), 'GET /api/my/students/results').toBe(200);
+    rosterNames = classRosterResponseSchema.parse(await response.json()).map((row) => row.student.name);
+  } finally {
+    await rosterRequest.dispose();
+  }
+  expect(rosterNames.length, 'the export class roster names its students').toBeGreaterThan(0);
+  expectDeIdentified(downloaded.body, rosterNames);
+  await page.screenshot({ path: path.join(PROOFS, 'tea-054-class-llm-export.png'), animations: 'disabled' });
 });
 
 // ── TEA-056 — the class diagnostic .md export is retired with no dead button ──

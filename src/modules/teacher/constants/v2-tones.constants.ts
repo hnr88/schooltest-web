@@ -6,7 +6,7 @@ import {
   PHASE_TONE as KIT_PHASE_TONE,
 } from '@/modules/teacher/constants/teacher-kit.constants';
 import { TONE_CHIP_INK } from '@/modules/teacher/constants/teacher-kit-tones.constants';
-import type { BannerTone, ExpectedKind } from '@/modules/teacher/types/v2-family.types';
+import type { ExpectedKind } from '@/modules/teacher/types/v2-family.types';
 import type { AcaraPhaseName, GrowthKind, ViewTone } from '@/modules/teacher/types/v2-view-common.types';
 
 // The chip pairs are the kit's (TONE_CHIP_INK), and so is the pair each phase and
@@ -75,8 +75,3 @@ export const PROGRESS_TILE_FG = {
   held: '#0E2350',
   slipped: '#B42318',
 } as const;
-
-export const FAMILY_BANNER_TONE: Readonly<Record<'incomplete' | 'complete', BannerTone>> = {
-  incomplete: { fg: '#92610B', bg: '#FDF9EF', border: '#EBD9AE' },
-  complete: { fg: '#1F7A4D', bg: '#F2FAF5', border: '#CDE9DA' },
-};

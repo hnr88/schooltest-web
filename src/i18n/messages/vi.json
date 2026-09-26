@@ -726,7 +726,7 @@
       "opsSettings": "Cài đặt nền tảng",
       "account": "Tài khoản",
       "teacherDashboard": "Bảng điều khiển",
-      "testSessions": "Phiên trực tiếp",
+      "testSessions": "Phiên kiểm tra",
       "results": "Lớp học"
     },
     "sidebar": {
@@ -1950,7 +1950,7 @@
       "recalledTitle": "Trường đã thu hồi báo cáo",
       "recalledBody": "Trường đã thu hồi báo cáo gia đình này để xem lại. Nó không còn hiển thị ở đây — trường sẽ phát hành lại khi được cập nhật.",
       "recalledAt": "Đã thu hồi vào {date}.",
-      "listHeading": "Báo cáo gia đình",
+      "listHeading": "Báo cáo",
       "listDescription": "Báo cáo của các con bạn, mới nhất trước tiên. Báo cáo xuất hiện ở đây khi trường phát hành.",
       "listEmptyTitle": "Chưa có báo cáo",
       "listEmptyBody": "Khi con bạn hoàn thành bài kiểm tra và trường phát hành báo cáo, nó sẽ xuất hiện tại đây.",
@@ -4459,10 +4459,10 @@
     "results": {
       "meta": {
         "title": "Kết quả — SchoolTest",
-        "description": "Kết quả lớp, nhận định giảng dạy và tiến bộ giữa Bài A và Bài B."
+        "description": "Kết quả lớp, kế hoạch giảng dạy và tiến bộ giữa Bài A và Bài B."
       },
       "title": "Kết quả",
-      "description": "Kết quả lớp, nhận định giảng dạy và tiến bộ giữa hai bài kiểm tra.",
+      "description": "Kết quả lớp, kế hoạch giảng dạy và tiến bộ giữa hai bài kiểm tra.",
       "list": {
         "loading": "Đang tải các lớp của bạn",
         "students": "{count, plural, other {# học sinh}}",
@@ -4522,7 +4522,7 @@
         "loading": "Đang tải lớp này",
         "meta": {
           "title": "Kết quả lớp — SchoolTest",
-          "description": "Một lớp: kết quả chẩn đoán đọc của từng học sinh, nhận định giảng dạy phía sau và tiến bộ giữa Bài A và Bài B."
+          "description": "Một lớp: kết quả chẩn đoán đọc của từng học sinh, kế hoạch giảng dạy phía sau và tiến bộ giữa Bài A và Bài B."
         },
         "noValue": "—",
         "notYetCount": "{count, plural, other {# chưa thành thạo}}",
@@ -4548,12 +4548,12 @@
       "tabs": {
         "listLabel": "Các khung xem kết quả lớp",
         "students": "Học sinh",
-        "insights": "Nhận định giảng dạy",
+        "insights": "Giảng dạy",
         "progress": "Tiến bộ",
         "exit": "Dự đoán đầu ra",
         "comingSoon": "Sắp có",
-        "reports": "Báo cáo gia đình",
-        "live": "Phiên trực tiếp"
+        "reports": "Báo cáo",
+        "live": "Phiên kiểm tra"
       },
       "insights": {
         "loading": "Đang tải nhận định giảng dạy",
@@ -5032,9 +5032,9 @@
       },
       "attribute": {
         "decoding": "Giải mã từ",
-        "vocabA2": "Từ vựng thông dụng",
-        "vocabB1": "Từ vựng lớp học",
-        "vocabB2": "Từ vựng học thuật",
+        "vocabA2": "Từ vựng (thông dụng)",
+        "vocabB1": "Từ vựng (lớp học)",
+        "vocabB2": "Từ vựng (học thuật)",
         "grammar": "Ngữ pháp",
         "gist": "Ý chính",
         "detail": "Chi tiết",
@@ -5257,11 +5257,11 @@
       "tabs": {
         "listLabel": "Các khung xem kết quả lớp",
         "students": "Học sinh",
-        "progress": "Tiến bộ của lớp",
-        "insights": "Nhận định giảng dạy",
+        "progress": "Tiến bộ",
+        "insights": "Giảng dạy",
         "exit": "Dự đoán đầu ra",
-        "reports": "Báo cáo gia đình",
-        "live": "Phiên trực tiếp"
+        "reports": "Báo cáo",
+        "live": "Phiên kiểm tra"
       },
       "exit": {
         "title": "Dự đoán đầu ra",
@@ -5335,24 +5335,65 @@
     },
     "progress": {
       "title": "Tiến bộ của lớp",
-      "subtitle": "{count, plural, =0 {Chưa có lần làm bài nào được chấm.} other {Sự thay đổi của lớp qua # lần làm bài.}}",
-      "tiles": {
-        "meanShift": {
-          "label": "Thay đổi trung bình",
-          "sub": "Từ lần trước đến lần gần nhất"
+      "subtitle": "{count, plural, =0 {Chưa có lần làm bài nào được chấm.} other {Sự thay đổi của lớp qua # lần làm bài trong năm nay.}}",
+      "dotMap": {
+        "title": "Tiến độ đọc theo học sinh",
+        "sub": "Mỗi hàng là một học sinh, cao nhất trước. Dấu chấm là vị trí ban đầu và đầu mũi tên là lần làm bài gần nhất. Di chuột lên hàng để xem chi tiết.",
+        "modeGrowth": "Xem tiến bộ",
+        "modeLatest": "Chỉ lần gần nhất",
+        "phases": {
+          "beginning": "Bắt đầu",
+          "emerging": "Mới hình thành",
+          "developing": "Đang phát triển",
+          "consolidating": "Củng cố"
         },
-        "gained": {
-          "label": "Tăng",
-          "sub": "Từ {threshold} điểm trở lên"
+        "studentsCount": "{count, plural, other {# học sinh}}",
+        "tooltip": "{name} · {firstMonth} {firstPct}% ({firstPhase}) → {latestMonth} {latestPct}% ({latestPhase})",
+        "endLabel": "Ít thay đổi",
+        "legendUp": "Tiến lên",
+        "legendBack": "Lùi lại",
+        "classSummary": "{up} trên {total} học sinh đã tiến lên ít nhất một giai đoạn ACARA kể từ lần làm bài đầu tiên; {held} giữ nguyên và {down} lùi lại.",
+        "empty": "Chưa có kết quả để so sánh."
+      },
+      "gains": {
+        "topTitle": "Mức tăng tổng thể cao nhất",
+        "lowTitle": "Mức tăng tổng thể thấp nhất",
+        "empty": "Chưa có kết quả để so sánh."
+      },
+      "subMap": {
+        "title": "Tiến bộ kỹ năng thành phần theo học sinh",
+        "sub": "Chọn một kỹ năng thành phần để xem từng học sinh đã đạt giai đoạn nào. Dấu chấm là giai đoạn ở lần làm bài đầu tiên và đầu mũi tên là lần gần nhất, để bạn thấy ai tiến lên và ai lùi lại.",
+        "skills": {
+          "Decoding": "Giải mã từ",
+          "Vocab_A2": "Từ vựng (thông dụng)",
+          "Grammar": "Ngữ pháp",
+          "Vocab_B1": "Từ vựng (lớp học)",
+          "Gist": "Ý chính",
+          "Detail": "Chi tiết",
+          "Inference": "Suy luận",
+          "Vocab_B2": "Từ vựng (học thuật)"
         },
-        "held": {
-          "label": "Giữ ổn định",
-          "sub": "Trong phạm vi {threshold} điểm"
+        "phases": {
+          "beginning": "Bắt đầu",
+          "emerging": "Mới hình thành",
+          "developing": "Đang phát triển",
+          "consolidating": "Củng cố"
         },
-        "slipped": {
-          "label": "Giảm",
-          "sub": "Giảm từ {threshold} điểm trở lên"
-        }
+        "studentsCount": "{count, plural, other {# học sinh}}",
+        "tooltip": "{name} · {skill}: {firstPhase} ({firstMonth}) → {latestPhase} ({latestMonth})",
+        "tooltipLatest": "{name} · {skill}: {latestPhase} ({latestMonth})",
+        "moveUp": "↑ {count, plural, other {# giai đoạn}}",
+        "moveHeld": "Ổn định",
+        "moveDown": "↓ {count, plural, other {# giai đoạn}}",
+        "summary": "{skill}: {up} tiến lên · {held} giữ nguyên · {down} lùi lại",
+        "legendUp": "Tiến lên",
+        "legendBack": "Lùi lại",
+        "legendHeld": "Ổn định",
+        "empty": "Chưa có kết quả để so sánh."
+      },
+      "analysis": {
+        "title": "Phân tích lớp",
+        "comingSoon": "Bản tóm tắt tự động sẽ sớm ra mắt"
       },
       "points": "{value} điểm",
       "percent": "{value}%",
@@ -5364,27 +5405,70 @@
         "summary": "Trung bình lớp {from}% → {to}% qua {count} lần làm bài ({difference} điểm).",
         "summarySingle": "Trung bình lớp {value}% từ một lần làm bài cho đến nay.",
         "summaryEmpty": "Chưa có lần làm bài nào được chấm."
-      },
-      "top": {
-        "title": "Tiến bộ nhiều nhất",
-        "empty": "Chưa có mức tăng đáng tin cậy nào."
-      },
-      "watch": {
-        "title": "Học sinh cần theo dõi",
-        "empty": "Chưa có học sinh nào cần theo dõi."
-      },
-      "subskills": {
-        "title": "Thay đổi kỹ năng thành phần theo thời gian",
-        "description": "Điểm trung bình của lớp cho từng kỹ năng đọc thành phần qua các lần làm bài, yếu nhất trước",
-        "now": "hiện {value}%"
-      },
-      "footnote": "Mọi thay đổi của học sinh ở đây đều do máy chủ tự so sánh lần làm bài gần nhất của em với lần trước đó. Khi không thể so sánh một cặp, sẽ không hiển thị thay đổi nào. Điểm trung bình của lớp theo thời gian là trung bình cộng đơn giản của các lần làm bài đã chấm được ghi nhận."
+      }
     },
     "insights": {
-      "title": "Nhận định giảng dạy",
+      "title": "Giảng dạy",
       "subtitle": "Nên dạy gì tiếp theo và dạy cho ai.",
       "emptyTitle": "Chưa có học sinh nào trong lớp này hoàn thành bài kiểm tra",
       "emptyDescription": "Mức thành thạo từng kỹ năng con và các nhóm được đề xuất đều dựa trên kết quả đọc đã hoàn thành, nên hiện chưa có gì để dạy. Chúng sẽ xuất hiện ngay khi có học sinh nộp bài.",
+      "teaching": {
+        "summary": "{v} nhóm từ vựng, {c} nhóm đọc hiểu và {f} nhóm nền tảng, cùng {p} cặp đọc cho {n, plural, other {# học sinh}}.",
+        "empty": "Chưa có kết quả nào cho lớp này.",
+        "provisional": "tạm thời",
+        "moreMembers": "+{count}",
+        "section": {
+          "wholeClass": "Cả lớp",
+          "wholeClassSub": "Nhóm phân hóa",
+          "individual": "Cá nhân",
+          "individualSub": "Ghép cặp và bước tiếp theo"
+        },
+        "strands": {
+          "vocabulary": "Từ vựng",
+          "vocabularySub": "Cấp độ từ",
+          "comprehension": "Đọc hiểu",
+          "comprehensionSub": "Cấp độ đoạn văn",
+          "foundations": "Nền tảng",
+          "foundationsSub": "Giải mã từ và Ngữ pháp",
+          "empty": "Chưa được đánh giá."
+        },
+        "skills": {
+          "Vocab_A2": "Từ vựng thông dụng",
+          "Vocab_B1": "Từ vựng lớp học",
+          "Vocab_B2": "Từ vựng học thuật",
+          "Gist": "Ý chính",
+          "Detail": "Chi tiết",
+          "Inference": "Suy luận",
+          "Decoding": "Giải mã từ",
+          "Grammar": "Ngữ pháp"
+        },
+        "prompt": {
+          "strand": "Prompt",
+          "all": "Prompt cho cả lớp",
+          "title": "Tải prompt để dán vào trợ lý AI của bạn",
+          "student": "Tải prompt AI cho {name}",
+          "strandFor": "Tải prompt AI cho {strand}"
+        },
+        "gate": {
+          "label": "Ngưỡng đầu ra đọc phản biện",
+          "passed": "{count} đã đạt",
+          "notYet": "{count} chưa đạt"
+        },
+        "pairs": {
+          "title": "Ghép cặp đọc",
+          "intro": "Bạn đọc tốt hơn dẫn dắt, cho {skill}",
+          "empty": "Không có cặp rõ ràng trong tuần này."
+        },
+        "nextSteps": {
+          "title": "Bước tiếp theo",
+          "sub": "Mỗi học sinh một trọng tâm từ vựng và một trọng tâm đọc hiểu",
+          "target": "{skill} → {phase}",
+          "vocabularyTarget": "{skill} → {phase}",
+          "extend": "Mở rộng",
+          "vocabularyPill": "Trọng tâm từ vựng: {skill} → {phase}",
+          "comprehensionPill": "Trọng tâm đọc hiểu: {skill} → {phase}"
+        }
+      },
       "percent": "{value}%",
       "kpi": {
         "lastSitting": "Buổi thi gần nhất",
@@ -5437,96 +5521,40 @@
       }
     },
     "familyReports": {
-      "title": "Báo cáo gia đình",
-      "subtitle": "Công bố kết quả cho gia đình của {className}. Mở một học sinh để xem hoặc xuất báo cáo đầy đủ.",
-      "releaseHeld": "{count, plural, =0 {Công bố báo cáo đang giữ} other {Công bố # báo cáo đang giữ}}",
-      "tiles": {
-        "scored": "Đã chấm",
-        "released": "Đã công bố cho phụ huynh",
-        "held": "Đang giữ cho bạn",
-        "noResult": "Chưa có kết quả"
+      "title": "Báo cáo",
+      "audiencePrompt": "Báo cáo này dành cho ai?",
+      "comingSoon": "Sắp ra mắt",
+      "audiences": {
+        "parents": "Phụ huynh & người chăm sóc",
+        "teachers": "Giáo viên bộ môn",
+        "principal": "Hiệu trưởng",
+        "admin": "Hành chính"
       },
-      "banner": {
-        "open": "{count, plural, other {# lượt làm bài vẫn đang mở.}}",
-        "blocked": "{count, plural, other {# học sinh cần thi lại hoặc chấm thủ công trước khi có thể công bố cho các em.}}",
-        "gaps": "Công bố lúc này sẽ cho phụ huynh bức tranh lớp học còn thiếu sót.",
-        "complete": "Mọi lượt làm bài trong buổi này đã được chấm, nên bức tranh lớp học đã đầy đủ.",
-        "unscored": "{count, plural, other {# lượt làm bài chưa có điểm.}}"
+      "notes": {
+        "parents": "Báo cáo tiếng Anh dễ hiểu cho gia đình. Mỗi học sinh một bản, không có dữ liệu lớp.",
+        "teachers": "Báo cáo dành cho giáo viên bộ môn. Mỗi học sinh một bản, kèm các bước giảng dạy tiếp theo.",
+        "principal": "Góc nhìn lãnh đạo về lớp học: kết quả, giai đoạn và các bước tiếp theo trong một cái nhìn.",
+        "admin": "Báo cáo hành chính cho hồ sơ nhà trường. Dữ liệu lớp, không có ghi chú giảng dạy."
       },
-      "filters": {
-        "label": "Hiển thị báo cáo",
-        "all": "Tất cả",
-        "held": "Đang giữ",
-        "released": "Đã công bố",
-        "blocked": "Bị chặn"
+      "classCard": {
+        "title": "Tóm tắt lớp",
+        "meta": "{className} · {scored} trong {total} học sinh đã có kết quả · dành cho {audience}",
+        "download": "Tải PDF"
       },
-      "listLabel": "Báo cáo gia đình theo học sinh",
-      "empty": "Không có gì trong nhóm này.",
-      "score": "{score}%",
-      "noResult": "Không có kết quả",
-      "actions": {
-        "preview": "Xem trước báo cáo",
-        "release": "Công bố",
-        "recall": "Thu hồi"
+      "students": {
+        "title": "Học sinh cá nhân",
+        "meta": "{scored} trong {total} học sinh đã có báo cáo sẵn sàng · dành cho {audience}",
+        "downloadAll": "Tải tất cả",
+        "pdf": "PDF",
+        "noResultYet": "Chưa có kết quả",
+        "pdfFor": "Tải báo cáo PDF của {name}"
       },
-      "preview": {
-        "eyebrow": "Xem trước báo cáo cho phụ huynh",
-        "meta": "{className} · làm bài ngày {date}",
-        "score": "{score} / 100",
-        "canDo": "Những gì các em làm được",
-        "next": "Điều cần luyện tiếp theo",
-        "release": "Công bố cho phụ huynh",
-        "recall": "Thu hồi báo cáo này",
-        "viewAnalysis": "Xem phân tích đầy đủ",
-        "close": "Đóng"
-      },
-      "release": {
-        "title": "Công bố cho phụ huynh của {name}?",
-        "body": "Phụ huynh có thể đọc mức độ, phân tích kỹ năng con và các bước tiếp theo ngay khi bạn công bố.",
-        "bodyRecalled": "Phụ huynh có thể đọc mức độ, phân tích kỹ năng con và các bước tiếp theo ngay khi bạn công bố. Báo cáo này đã từng bị thu hồi, nên phụ huynh sẽ thấy lại báo cáo.",
-        "cta": "Công bố báo cáo"
-      },
-      "recall": {
-        "title": "Thu hồi báo cáo của {name}?",
-        "body": "Thu hồi sẽ gỡ báo cáo khỏi cổng phụ huynh và gửi thông báo rằng kết quả đang được xem xét. Những gì phụ huynh đã đọc thì không thể rút lại.",
-        "reasonLabel": "Lý do thu hồi",
-        "reasonHint": "Được lưu cùng kết quả. Tối đa 500 ký tự.",
-        "reasonRequired": "Hãy nhập lý do thu hồi, tối đa 500 ký tự.",
-        "cta": "Thu hồi báo cáo"
-      },
-      "releaseAll": {
-        "title": "{count, plural, other {Công bố # báo cáo đang giữ?}}",
-        "body": "{count, plural, other {Phụ huynh của # học sinh có thể đọc mức độ và các bước tiếp theo ngay.}}",
-        "open": "{count, plural, other {# học sinh vẫn đang làm bài, nên phụ huynh của các em sẽ không thấy gì và có thể hỏi lý do.}}",
-        "blocked": "{count, plural, other {# học sinh khác bị chặn do cần thi lại hoặc chấm thủ công.}}",
-        "tail": "Báo cáo có thể thu hồi, nhưng không thể rút lại những gì đã đọc.",
-        "cta": "{count, plural, other {Công bố # báo cáo}}",
-        "unscored": "{count, plural, other {# học sinh khác chưa có điểm.}}"
-      },
-      "nothingHeld": {
-        "title": "Không có báo cáo nào đang giữ",
-        "body": "{count, plural, =0 {Mọi báo cáo đã chấm trong {className} đều đã được gửi tới phụ huynh.} other {Mọi báo cáo đã chấm trong {className} đều đã được gửi tới phụ huynh. # học sinh chưa có báo cáo thì chưa có điểm, đang chờ thi lại, chờ chấm thủ công hoặc vẫn đang làm bài, nên không thể công bố từ đây.}}",
-        "cta": "Đã hiểu"
-      },
-      "cancel": "Hủy",
-      "toast": {
-        "released": "Đã công bố báo cáo của {name} cho phụ huynh",
-        "recalled": "Đã thu hồi báo cáo đã công bố của {name}",
-        "releasedAll": "{count, plural, other {Đã công bố # báo cáo cho phụ huynh}}",
-        "releasedSome": "Đã công bố {released} trên {total} báo cáo đang giữ.",
-        "releasedNone": "Không có báo cáo đang giữ nào được công bố.",
-        "notReleased": "Chưa công bố ({reason}): {names}."
-      },
-      "errors": {
-        "notReady": "kết quả chưa hoàn tất",
-        "notFound": "không tìm thấy kết quả",
-        "forbidden": "bạn không thể thay đổi kết quả này",
-        "rateLimited": "quá nhiều yêu cầu, hãy thử lại sau một phút",
-        "transport": "kết nối bị ngắt, hãy tải lại để xem trạng thái hiện tại",
-        "generic": "máy chủ không chấp nhận thay đổi này"
-      },
-      "failedRelease": "Chưa công bố được báo cáo của {name}: {reason}.",
-      "failedRecall": "Chưa thu hồi được báo cáo của {name}: {reason}."
+      "download": {
+        "popupBlocked": "Hãy cho phép cửa sổ bật lên để tải báo cáo dưới dạng PDF.",
+        "allOpened": "Đã mở báo cáo học sinh — lưu dưới dạng PDF từ hộp thoại in.",
+        "allFailed": "Không thể chuẩn bị báo cáo học sinh. Vui lòng thử lại.",
+        "studentsTitle": "Báo cáo học sinh — {name}"
+      }
     },
     "live": {
       "students": {
@@ -5901,12 +5929,12 @@
       }
     },
     "liveSessions": {
-      "title": "Phiên trực tiếp",
+      "title": "Phiên kiểm tra",
       "summary": "{sessions, plural, other {# phiên}} đang diễn ra ở {classes, plural, other {# lớp}}. Mỗi học sinh chỉ có thể làm một bài kiểm tra tại một thời điểm.",
       "summaryNone": "Không có phiên nào đang diễn ra. Các học sinh khác nhau trong cùng một lớp có thể làm các phiên bản khác nhau cùng lúc.",
       "startSession": "Bắt đầu phiên mới",
-      "loading": "Đang tải các phiên trực tiếp…",
-      "loadError": "Không thể tải các phiên trực tiếp.",
+      "loading": "Đang tải các phiên kiểm tra…",
+      "loadError": "Không thể tải các phiên kiểm tra.",
       "retry": "Thử lại",
       "classMeta": "{year} · {count, plural, other {# học sinh}}",
       "classMetaNoYear": "{count, plural, other {# học sinh}}",
@@ -6236,6 +6264,24 @@
       },
       "progressTitle": "Tiến bộ đọc theo thời gian",
       "progressDescription": "Điểm lĩnh vực tổng thể so với mức thành thạo ACARA, cho từng bài đã làm trong năm nay",
+      "statOverall": "Đọc tổng thể",
+      "statAcaraPhase": "Giai đoạn ACARA",
+      "statMomentum": "Xu hướng tiến bộ",
+      "momentum": {
+        "holding": "Giữ nguyên",
+        "steady": "Tiến bộ đều",
+        "accelerating": "Tiến bộ nhanh",
+        "slipping": "Đi xuống"
+      },
+      "momentumNote": {
+        "holding": "Ít thay đổi so với bài đầu tiên",
+        "steady": "Tiến bộ rõ ràng và đều đặn",
+        "accelerating": "Tiến bộ mạnh và đáng tin cậy",
+        "slipping": "Giảm so với bài đầu tiên",
+        "none": "Cần hai lượt làm bài để đo được"
+      },
+      "progressCardTitle": "Tiến bộ đọc",
+      "progressCardSubtitle": "Điểm lĩnh vực tổng thể so với mức thành thạo ACARA, cho từng bài đã làm trong năm nay",
       "phaseChip": "ACARA: {phase}",
       "chartLabel": "Điểm đọc tổng thể ở mỗi lần làm bài, so với các giai đoạn ACARA",
       "tiles": {
@@ -6253,6 +6299,17 @@
       },
       "subskillsTitle": "Các kỹ năng đọc thành phần",
       "subskillsDescription": "Kết quả của {first} ở chín thành phần của kỹ năng đọc trong bài gần nhất",
+      "breakdown": {
+        "title": "Chi tiết kỹ năng đọc thành phần",
+        "columnSubskill": "Kỹ năng thành phần",
+        "columnPhase": "Giai đoạn",
+        "provisionalNote": "Ngưỡng từ vựng học thuật mang tính tạm thời",
+        "vocab": {
+          "Vocab_A2": "Từ vựng thông dụng",
+          "Vocab_B1": "Từ vựng lớp học",
+          "Vocab_B2": "Từ vựng học thuật"
+        }
+      },
       "subskills": {
         "deltaUp": "↑ +{points}",
         "deltaDown": "↓ −{points}",
@@ -6262,6 +6319,7 @@
       },
       "analysisTitle": "Phân tích học sinh",
       "analysisBadge": "Tóm tắt tự động",
+      "analysisComingSoon": "Tóm tắt tự động sẽ sớm ra mắt",
       "copy": "Sao chép",
       "copied": "Đã sao chép nhận xét của giáo viên vào bộ nhớ tạm.",
       "copyFailed": "Không thể sao chép vào bộ nhớ tạm. Hãy chọn văn bản và tự sao chép.",

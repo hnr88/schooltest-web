@@ -1,7 +1,12 @@
 import { expect, test, type Page } from '@playwright/test';
 
-import { sectionTab } from './helpers/teacher-class-detail';
 import { downloadFrom, expectSameDocument } from './helpers/teacher-export-live';
+import {
+  openResultsList,
+  readLiveResults,
+  signedInTeacherPage,
+  TEACHER_EMAIL,
+} from './helpers/teacher-results-live';
 import {
   dbClassRoster,
   expectAnonymisedIds,
@@ -9,17 +14,13 @@ import {
   readExportResponse,
   type RosterIdentity,
 } from './helpers/teacher-export-privacy';
-import {
-  openClassResults,
-  readLiveResults,
-  signedInTeacherPage,
-  TEACHER_EMAIL,
-} from './helpers/teacher-results-live';
 
 // Flow 21 against the teacher's class whose roster students actually HAVE email
 // addresses in Postgres: all five forbidden fields are non-empty for every student,
-// so the de-identification sweep of the Teaching insights export (C-TR-5) bites on
-// the email leg too. The class list is C-TD-1 alone (the C-TR-1 detail answers 410).
+// so the de-identification sweep of the class LLM export (C-TR-5, the Teaching
+// insights summary) bites on the email leg too. The export itself hangs off the
+// Classes list's class row since the Teaching-tab export panel retired with the v2
+// redesign. The class list is C-TD-1 alone (the C-TR-1 detail answers 410).
 // Flow 25 (the progress export) retired with the Progress export panel, which the
 // Teacher Portal v2 design dropped.
 
@@ -48,12 +49,12 @@ test.afterAll(async () => {
 });
 
 async function downloadInsights() {
-  await openClassResults(page, classDocumentId);
-  await sectionTab(page, 'insights').click();
-  await expect(page.locator('[data-slot="teaching-insights"]')).toHaveAttribute('data-status', 'ready', {
-    timeout: 30_000,
-  });
-  return downloadFrom(page.locator('button[data-export-kind="insights"]'));
+  await openResultsList(page);
+  return downloadFrom(
+    page.locator(
+      `[data-slot="results-class-row"][data-class-id="${classDocumentId}"] button[data-export="llm"]`,
+    ),
+  );
 }
 
 /** All five forbidden fields are populated here, so 5 values per student are searched. */

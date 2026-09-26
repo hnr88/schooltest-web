@@ -75,18 +75,12 @@ export function studentsPhaseText(row: RosterRow): string {
   return key === null ? NO_VALUE : cat(en, `TeacherPortal.kit.phase.${key}`);
 }
 
-/** Family reports score cell. */
-export function familyScoreText(row: RosterRow): string {
-  if (row.result === null) return cat(en, 'TeacherPortal.familyReports.noResult');
-  const score = row.result.overall.domain_score;
-  return score === null ? NO_VALUE : cat(en, 'TeacherPortal.familyReports.score').replace('{score}', String(score));
-}
-
-/** Drill-down "ACARA: X phase" pill, or null when the server placed nobody (no pill). */
+/** Drill-down header phase chip word (the v2 ACARA stat card), or null when the
+ * server placed nobody — the header draws the kit dash with no chip at all. */
 export function drillDownPhaseText(view: ResultView): string | null {
   const key = phaseKey(view.acara_phase);
   if (key === null) return null;
-  return cat(en, 'TeacherPortal.student.phaseChip').replace('{phase}', cat(en, `TeacherPortal.viewModel.phaseSub.${key}`));
+  return cat(en, `TeacherPortal.kit.phase.${key}`);
 }
 
 /** The trend chart's points: the scored `history[].overall` values, oldest first. */

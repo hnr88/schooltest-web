@@ -1,17 +1,18 @@
 'use client';
 
-import { Copy, Sparkle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useId } from 'react';
 
-import { TeacherButton } from '@/modules/teacher/components/v2/TeacherButton';
-import { ToneChip } from '@/modules/teacher/components/v2/ToneChip';
+import { cn } from '@/lib/utils';
 import { STUDENT_I18N_NAMESPACE } from '@/modules/teacher/constants/student-detail.constants';
 import type { StudentAnalysisCardProps } from '@/modules/teacher/types/student-drill-down.types';
 
-// "Student analysis" (`Teacher Portal v2.dc.html:466–485`): the generated summary, each
-// sentence built from this student's own result. Copy hands the page the plain text.
-function StudentAnalysisCard({ paragraphs, onCopy }: StudentAnalysisCardProps) {
+// "Student analysis" in its LOCKED coming-soon state (Spec 02 §0.1/§3d): the
+// card stays visible beside the breakdown table, but until a real generated-
+// analysis source exists it shows only a muted placeholder — no generated-summary
+// badge, no Copy button and no sample paragraphs (the mock's commentary is
+// explicitly illustrative). The shell matches the breakdown card beside it (mock `.card`).
+function StudentAnalysisCard({ className }: StudentAnalysisCardProps) {
   const t = useTranslations(STUDENT_I18N_NAMESPACE);
   const headingId = useId();
 
@@ -19,28 +20,17 @@ function StudentAnalysisCard({ paragraphs, onCopy }: StudentAnalysisCardProps) {
     <section
       data-slot="student-analysis"
       aria-labelledby={headingId}
-      className="flex flex-col gap-[13px] rounded-[11px] border border-l-[3px] border-[#E4EBF6] border-l-[#1A3B8B] bg-white px-[22px] py-5"
+      className={cn(
+        'flex flex-col overflow-hidden rounded-[16px] border border-[#E6EBF3] bg-white shadow-[0_1px_3px_rgba(14,35,80,0.05)]',
+        className,
+      )}
     >
-      <div className="flex flex-wrap items-center justify-between gap-2.5">
-        <div className="flex flex-wrap items-center gap-[9px]">
-          <h2 id={headingId} className="text-[15px] font-semibold text-navy-900">
-            {t('analysisTitle')}
-          </h2>
-          <ToneChip tone="info" size="xs" className="gap-[5px] px-[9px] py-[3px] font-semibold tracking-[0.03em]">
-            <Sparkle aria-hidden="true" className="size-[11px]" fill="currentColor" strokeWidth={0} />
-            {t('analysisBadge')}
-          </ToneChip>
-        </div>
-        <TeacherButton tone="outline" size="xs" data-slot="student-analysis-copy" onClick={onCopy} className="flex-none">
-          <Copy aria-hidden="true" className="size-[13px]" strokeWidth={2} />
-          {t('copy')}
-        </TeacherButton>
-      </div>
-      {paragraphs.map((paragraph) => (
-        <p key={paragraph} className="text-[13.5px] leading-[1.65] text-[#374151]">
-          {paragraph}
-        </p>
-      ))}
+      <h2 id={headingId} className="border-b border-[#E6EBF3] bg-[#F5F8FD] px-5 py-4 text-[16px] font-semibold text-navy-900">
+        {t('analysisTitle')}
+      </h2>
+      <p data-slot="student-analysis-placeholder" className="px-[22px] pt-[18px] pb-[22px] text-[13.5px] leading-[1.65] text-[#6B7280]">
+        {t('analysisComingSoon')}
+      </p>
     </section>
   );
 }

@@ -9,6 +9,8 @@ import {
 } from '@/modules/teacher/constants/v2-i18n.constants';
 import type { TeachingGroup } from '@/modules/teacher/types/v2-insights.types';
 
+export { strandGroups } from '@/modules/teacher/lib/v2/teaching/groups';
+
 // Suggested groups from the roster (design `insights.groups`: students grouped by the area
 // holding them back): each student under their weakest subskill (`weakestSkill` — assessed,
 // not the Critical gate, ties by display order; the Students tab's own column), everyone with

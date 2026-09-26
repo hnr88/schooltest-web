@@ -48,6 +48,26 @@ export const ACARA_BAND_RANGES: ReadonlyArray<{ phase: AcaraPhaseName; top: numb
 
 export const STUDENT_CHART_GRID_LEVELS: readonly number[] = [40, 60, 80];
 
+/**
+ * Spec 02 §3b — the student report chart's piecewise y: the four ACARA bands are
+ * EQUAL heights (a quarter of the plot each) between these score edges, so a score
+ * sits proportionally WITHIN its band and no numeric axis is drawn.
+ */
+export const STUDENT_BAND_EDGES: readonly number[] = [0, 45, 62, 80, 100];
+
+/** The equal-height bands' washes (`02 Student report.html:233–236`), top band first. */
+export const STUDENT_BAND_CHART_BANDS: ReadonlyArray<{
+  phase: AcaraPhaseName;
+  top: number;
+  bottom: number;
+  fill: string;
+}> = [
+  { phase: 'Consolidating', top: 100, bottom: 80, fill: '#C9D8F2' },
+  { phase: 'Developing', top: 80, bottom: 62, fill: '#DCE6F6' },
+  { phase: 'Emerging', top: 62, bottom: 45, fill: '#EAF0F9' },
+  { phase: 'Beginning', top: 45, bottom: 0, fill: '#F5F7FB' },
+];
+
 export const CHART_LAST_POINT_FILL = '#0E2350';
 
 export const CHART_POINT_FILL = '#8A94A6';

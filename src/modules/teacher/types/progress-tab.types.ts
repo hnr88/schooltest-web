@@ -1,7 +1,12 @@
 import type { RosterRow } from '@/modules/results/types/roster.types';
-import type { KpiCardTone } from '@/modules/teacher/types/teacher-kit.types';
 import type { ClassChartGeometry } from '@/modules/teacher/types/v2-chart.types';
-import type { ProgressMover, ProgressTileId, SubskillTrend } from '@/modules/teacher/types/v2-class-tabs.types';
+import type {
+  DotMapView,
+  MoverCounts,
+  ProgressMover,
+  SubSkillMap,
+  SubskillTrend,
+} from '@/modules/teacher/types/v2-class-tabs.types';
 
 /** The Class progress tab: the class detail's roster rows; the panel issues no read of its own. */
 export interface ProgressTabPanelProps {
@@ -10,13 +15,36 @@ export interface ProgressTabPanelProps {
   classDocumentId: string;
 }
 
-/** One progress tile as printed: its kit tone and its text (`null` = the kit dash). */
-export interface ProgressTileDisplay {
-  id: ProgressTileId;
-  tone: KpiCardTone;
-  text: string | null;
-  /** Mean shift prints its step with the "pts" unit. */
-  points: boolean;
+/** `progressTabView()` — everything the tab prints, from the one roster read. */
+export interface ProgressTabView {
+  status: 'ready' | 'empty';
+  sittings: number;
+  dotMap: DotMapView;
+  subMap: SubSkillMap[];
+  gainTop: ProgressMover[];
+  gainLow: ProgressMover[];
+  analysis: MoverCounts;
+}
+
+/** §3b "Reading progress by student": the view model's dot map, straight from the panel. */
+export interface ProgressDotMapProps {
+  dotMap: DotMapView;
+}
+
+/** §3c the two gains cards: the server-delta rankings, ≤4 each. */
+export interface ProgressGainsCardsProps {
+  top: readonly ProgressMover[];
+  low: readonly ProgressMover[];
+}
+
+/** §3d "Subskill growth by student": one map per band-carrying subskill, chips pick. */
+export interface ProgressSubskillGrowthProps {
+  maps: readonly SubSkillMap[];
+}
+
+/** §3e "Class analysis": the reliable-mover tally; the prose itself is a coming-soon state. */
+export interface ProgressClassAnalysisProps {
+  counts: MoverCounts;
 }
 
 /** The sentence under the class chart, as a `TeacherPortal.progress` key and its values. */
@@ -24,18 +52,6 @@ export type ProgressSummaryText =
   | { key: 'chart.summary'; values: { from: number; to: number; count: number; difference: string } }
   | { key: 'chart.summarySingle'; values: { value: number } }
   | { key: 'chart.summaryEmpty'; values: Record<string, never> };
-
-/** `progressTabView()` — everything the tab prints, from the one roster read. */
-export interface ProgressTabView {
-  status: 'ready' | 'empty';
-  sittings: number;
-  tiles: ProgressTileDisplay[];
-  chart: ClassChartGeometry;
-  summary: ProgressSummaryText;
-  topProgress: ProgressMover[];
-  watch: ProgressMover[];
-  trends: SubskillTrend[];
-}
 
 /** "Class reading over time": the banded chart and the sentence under it. */
 export interface ProgressAcaraSectionProps {

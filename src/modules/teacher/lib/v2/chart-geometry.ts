@@ -9,6 +9,8 @@ import {
   CLASS_CHART_FRAME,
   CLASS_CHART_X_SUB_OFFSET,
   SPARKLINE_FRAME,
+  STUDENT_BAND_CHART_BANDS,
+  STUDENT_BAND_EDGES,
   STUDENT_CHART_FRAME,
   STUDENT_CHART_GRID_LEVELS,
   STUDENT_CHART_X_SUB_OFFSET,
@@ -20,6 +22,7 @@ import type {
   ClassChartGeometry,
   LineChartGeometry,
   SparklineGeometry,
+  StudentBandChartGeometry,
   StudentChartGeometry,
 } from '@/modules/teacher/types/v2-chart.types';
 import type { SeriesPoint } from '@/modules/teacher/types/v2-view-common.types';
@@ -33,8 +36,37 @@ function yScale(frame: ChartFrame): (value: number) => number {
   return (value) => Math.round(frame.padT + (1 - value / CHART_SCALE_MAX) * plotHeight);
 }
 
-function lineChart(points: readonly SeriesPoint[], frame: ChartFrame, subOffset: number): LineChartGeometry {
-  const yOf = yScale(frame);
+/**
+ * Spec 02 §3b — the piecewise y of the student report chart: each ACARA band
+ * between `STUDENT_BAND_EDGES` is a quarter of the plot, so a score maps
+ * proportionally WITHIN its band instead of linearly across the whole plot.
+ */
+function bandYScale(frame: ChartFrame): (value: number) => number {
+  const plotHeight = frame.H - frame.padT - frame.padB;
+  const bandH = plotHeight / (STUDENT_BAND_EDGES.length - 1);
+  const axisY = frame.H - frame.padB;
+  const top = STUDENT_BAND_EDGES[STUDENT_BAND_EDGES.length - 1];
+  return (value) => {
+    const clamped = Math.min(Math.max(value, STUDENT_BAND_EDGES[0]), top);
+    for (let band = 0; band < STUDENT_BAND_EDGES.length - 1; band += 1) {
+      const lo = STUDENT_BAND_EDGES[band];
+      const hi = STUDENT_BAND_EDGES[band + 1];
+      if (clamped <= hi) {
+        const within = (clamped - lo) / (hi - lo);
+        return Math.round(axisY - band * bandH - within * bandH);
+      }
+    }
+    return axisY;
+  };
+}
+
+function lineChart(
+  points: readonly SeriesPoint[],
+  frame: ChartFrame,
+  subOffset: number,
+  yOfOverride?: (value: number) => number,
+): LineChartGeometry {
+  const yOf = yOfOverride ?? yScale(frame);
   const plotWidth = frame.W - frame.padL - frame.padR;
   const axisY = frame.H - frame.padB;
   const plotted = points.map((point, index): ChartPoint => {
@@ -107,6 +139,38 @@ export function studentChart(points: readonly SeriesPoint[]): StudentChartGeomet
   return {
     ...lineChart(points, STUDENT_CHART_FRAME, STUDENT_CHART_X_SUB_OFFSET),
     bounds: STUDENT_CHART_GRID_LEVELS.map((level) => ({ y: yOf(level) })),
+  };
+}
+
+/**
+ * Spec 02 §3b — the student report chart over the SAME frame as `studentChart`,
+ * but the four ACARA phases are equal-height washes (`STUDENT_BAND_CHART_BANDS`)
+ * on the piecewise `bandYScale`, their names centred in each band, and the three
+ * interior edges drawn as dashed bounds. No numeric axis is drawn anywhere.
+ */
+export function studentBandChart(points: readonly SeriesPoint[]): StudentBandChartGeometry {
+  const frame = STUDENT_CHART_FRAME;
+  const yOf = bandYScale(frame);
+  const bands = STUDENT_BAND_CHART_BANDS.map((band) => {
+    const top = yOf(band.top);
+    const bottom = yOf(band.bottom);
+    return {
+      phase: band.phase,
+      labelKey: PHASE_LABEL_KEY[band.phase],
+      y: Math.min(top, bottom),
+      h: Math.abs(bottom - top),
+      midY: (top + bottom) / 2,
+      fill: band.fill,
+    };
+  });
+  return {
+    ...lineChart(points, frame, STUDENT_CHART_X_SUB_OFFSET, yOf),
+    // Band names sit centred in their own band, not at the linear label levels.
+    acara: bands.map(({ phase, labelKey, midY }) => ({ phase, labelKey, y: midY })),
+    axisTop: frame.padT,
+    bandW: frame.W - frame.padL - frame.padR,
+    bands,
+    bounds: STUDENT_BAND_EDGES.slice(1, -1).map((edge) => ({ y: yOf(edge) })),
   };
 }
 

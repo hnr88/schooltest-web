@@ -1,7 +1,9 @@
 import { describe, expect, test } from 'vitest';
 
+import { displaySkills } from '@/modules/results';
+import { TEACHING_STRANDS } from '@/modules/teacher/constants/teaching.constants';
 import { t2Roster } from '@/modules/teacher/lib/v2/__fixtures__/t2';
-import { rosterGroups } from '@/modules/teacher/lib/v2/roster-groups';
+import { rosterGroups, strandGroups } from '@/modules/teacher/lib/v2/roster-groups';
 
 describe('rosterGroups — recorded t2 roster', () => {
   test('each student under their weakest subskill in display order; no scored subskill → Not yet assessed, last', () => {
@@ -51,5 +53,17 @@ describe('rosterGroups — recorded t2 roster', () => {
 
   test('an empty roster (every recorded row removed) has no groups', () => {
     expect(rosterGroups(t2Roster.slice(0, 0))).toEqual([]);
+  });
+
+  test('each assessed student appears exactly once in each applicable Teaching strand', () => {
+    for (const strand of ['vocabulary', 'comprehension', 'foundations'] as const) {
+      const skills: readonly string[] = TEACHING_STRANDS[strand];
+      const expected = t2Roster.filter((row) => row.result !== null && displaySkills(row.result)
+        .some((tile) => skills.includes(tile.skill) && tile.domain_score !== null));
+      const groups = strandGroups(t2Roster, strand);
+      expect(groups.flatMap((group) => group.students.map((student) => student.studentDocumentId)).sort())
+        .toEqual(expected.map((row) => row.student.document_id).sort());
+      expect(groups.map((group) => group.skill)).not.toContain('Critical');
+    }
   });
 });

@@ -14,7 +14,14 @@ function scoredOn(roster: readonly RosterRow[], skill: DisplaySkill): PairingStu
     const score = displaySkills(row.result).find((tile) => tile.skill === skill)?.domain_score ?? null;
     const band = assessedBandOf(row.result, skill);
     if (score === null || band === null) return [];
-    return [{ studentDocumentId: row.student.document_id, firstName: getStudentFirstName(row.student.name), score, band }];
+    return [{
+      studentDocumentId: row.student.document_id,
+      firstName: getStudentFirstName(row.student.name),
+      initials: row.student.initials,
+      provisionalCut: skill === 'Vocab_B2' && row.result.academic_vocab.provisional_cut,
+      score,
+      band,
+    }];
   });
 }
 

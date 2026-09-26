@@ -1,11 +1,10 @@
 import { mkdirSync } from 'node:fs';
 import path from 'node:path';
 
-import { expect, test, type Locator } from '@playwright/test';
-import { displaySkillSchema, type DisplaySkill } from '@schooltest/scoring-contracts';
+import { readFileSync } from 'node:fs';
 
-import { apiEnv } from '../helpers/auth-db';
-import { loginCached } from '../helpers/http';
+import { expect, test, type Download, type Locator } from '@playwright/test';
+
 import { cat, icu } from '../helpers/i18n';
 import {
   AGGREGATE_STATUSES,
@@ -21,37 +20,37 @@ import {
 } from '../helpers/school-admin-diagnostic';
 import { READY, expectNoNewErrors, frame, setAsideErrors, waitForDashboard } from '../helpers/teacher-class-detail';
 import {
-  expectWeakestFirst,
-  expectedGroups,
-  expectedKpis,
-  expectedPairCount,
-  expectedSkill,
+  expectedGateSummary,
+  expectedLargestGapSkill,
+  expectedNextSteps,
+  expectedPairs,
+  expectedStrandGroups,
+  expectedSummaryCounts,
   insights,
-  latestReadingActivity,
   pageJson,
   parseRoster,
-  renderedMastery,
+  SKILL_LABEL_KEY,
   viewModel,
 } from '../helpers/teacher-insights-tab';
-import { API_BASE } from '../helpers/teacher-results-live';
-import { ACCOUNTS, en, signIn } from '../helpers/teacher-rail';
+import { en, signIn } from '../helpers/teacher-rail';
 import { watchErrors } from '../helpers/ui';
 
-// S5 — Teaching insights (Teacher Portal v2.dc.html:723–871; design shots
-// class-detail-complete--insights*.png at 1440×900). Real sign-in, real API, no
-// interception: every number is compared with a value re-derived in the harness from the
-// live responses, and the tab may make no failing request. The school-admin tests prove
-// the widened class-diagnostic schema on the analytics screen that shares it.
+// S5 — the TEACHING tab (spec 04: `live_feedback_2/spec-teacher-portal-04-teaching.md`,
+// mock `04 Teaching.html`). Real sign-in, real API, no interception: every number is
+// compared with a value re-derived in the harness from the live roster the page received,
+// and the tab may make no failing request. The tab is ROSTER-ONLY — it reads no sittings
+// list and no class diagnostic (§0/§1), and Critical reading appears only as the exit-gate
+// chip (§3f), never as a group or a pill. The school-admin tests prove the widened
+// class-diagnostic schema on the analytics screen that shares it.
 const PROOFS = path.resolve(process.cwd(), 'tests', 'e2e', 'proofs', 'teacher-v2');
-const pct = (value: number) => icu(insights('percent'), { value: String(value) });
 const note = (type: string, value: unknown) => test.info().annotations.push({ type, description: JSON.stringify(value) });
 /** The seven skills the Progress panel renders a movement row for — Critical reading is the gate, not a skill. */
 const MOVEMENT_SKILLS = ['Decoding', 'Vocab_A2', 'Grammar', 'Vocab_B1', 'Gist', 'Detail', 'Inference'] as const;
 
 test.use({ viewport: { width: 1440, height: 900 } });
 
-test.describe('S5 — Teaching insights tab', () => {
-  test('KPIs, reading mastery, cohort, pairings, groups and activity equal the live API', async ({ page, playwright }) => {
+test.describe('S5 — Teaching tab', () => {
+  test('strand cards, exit-gate chip, reading pairs and next steps equal the live roster', async ({ page }) => {
     test.setTimeout(240_000);
     mkdirSync(PROOFS, { recursive: true });
     const errors = watchErrors(page);
@@ -62,93 +61,174 @@ test.describe('S5 — Teaching insights tab', () => {
     setAsideErrors(errors, 'classes-list');
 
     const failed = failedResponses(page);
+    // Roster-only (§0/§1): the tab never reads the class diagnostic.
+    const diagnosticReads: string[] = [];
+    page.on('request', (request) => {
+      if (/\/diagnostic\b/.test(new URL(request.url()).pathname)) diagnosticReads.push(request.url());
+    });
     const rosterBody = pageJson(page, `/api/my/students/results?class=${classId}`);
-    const activityBody = pageJson(page, /\/api\/sittings\/[^/]+\/activity/);
     await page.goto(`/dashboard/results/${classId}?tab=insights`);
     await expect(frame(page)).toHaveAttribute('data-status', READY, { timeout: 30_000 });
     const panel = page.locator('[data-tab-panel="insights"] [data-slot="teaching-insights"]');
     await expect(panel).toHaveAttribute('data-status', 'ready', { timeout: 30_000 });
     const roster = parseRoster(await rosterBody);
-    const kpis = expectedKpis(roster);
-    const kpi = (key: string) => panel.locator(`[data-kpi="${key}"]`);
+    const counts = expectedSummaryCounts(roster);
+    if (counts.n === 0) throw new Error('[e2e] the class has no scored result');
+
+    // Header: "Teaching" and the one-line wired summary. No week chip, no week phrasing (§0.1).
     await expect(panel.getByRole('heading', { level: 2, name: insights('title'), exact: true })).toBeVisible();
-    const request = await playwright.request.newContext();
-    const jwt = await loginCached(request, API_BASE, { email: ACCOUNTS.teacher.email, password: apiEnv(ACCOUNTS.teacher.secret) });
-    const activity = await latestReadingActivity(request, jwt, classId).finally(() => request.dispose());
-
-    // Class average and participation, recomputed from the roster the page received.
-    if (kpis.classAverage === null || kpis.participation === null) throw new Error('[e2e] the class has no scored result');
-    await expect(kpi('class-average')).toHaveAttribute('data-value', String(kpis.classAverage));
-    await expect(kpi('class-average')).toContainText(pct(kpis.classAverage));
-    await expect(kpi('participation')).toHaveAttribute('data-value', String(kpis.participation));
-    await expect(kpi('participation')).toContainText(pct(kpis.participation));
-    await expect(kpi('participation')).toContainText(
-      icu(insights('kpi.participationSub'), { scored: String(kpis.scored), total: String(kpis.total) }),
+    const plural = (count: number, one: string, other: string) => `${count} ${count === 1 ? one : other}`;
+    const summaryText = icu(
+      insights('teaching.summary')
+        .replace('{f, plural, one {# foundations group} other {# foundations groups}}', plural(counts.f, 'foundations group', 'foundations groups'))
+        .replace('{p, plural, one {# reading pair} other {# reading pairs}}', plural(counts.p, 'reading pair', 'reading pairs'))
+        .replace('{n, plural, one {# student} other {# students}}', plural(counts.n, 'student', 'students')),
+      { v: String(counts.v), c: String(counts.c) },
     );
-    if (kpis.lastSatAt !== null) {
-      await expect(kpi('last-sitting')).toHaveAttribute('data-value', kpis.lastSatAt);
-      const month = new Intl.DateTimeFormat('en', { month: 'short', timeZone: 'UTC' }).format(new Date(kpis.lastSatAt));
-      await expect(kpi('last-sitting')).toContainText(month);
-      if (activity.formCode !== null) await expect(kpi('last-sitting')).toContainText(activity.formCode);
+    await expect(panel.locator('[data-slot="teaching-summary"]')).toHaveText(summaryText);
+    await expect(panel).not.toContainText(/Week of/i);
+
+    // "Whole class": THREE cards — Vocabulary, Comprehension (Gist/Detail/Inference only)
+    // and the new Foundations (Decoding/Grammar) — one group row per limiting subskill,
+    // in strand order, every scored student placed by furthest-below-mean (§3b).
+    const groupsByStrand = expectedStrandGroups(roster);
+    for (const strand of ['vocabulary', 'comprehension', 'foundations'] as const) {
+      const card = panel.locator(`[data-slot="teaching-strand-card"][data-strand="${strand}"]`);
+      await expect(card).toBeVisible();
+      await expect(card).toContainText(insights(`teaching.strands.${strand}`));
+      await expect(card).toContainText(insights(`teaching.strands.${strand}Sub`));
+      const groupRows = card.locator('[data-slot="teaching-group"]');
+      const expected = groupsByStrand[strand];
+      await expect(groupRows).toHaveCount(expected.length);
+      for (const [index, group] of expected.entries()) {
+        expect(group.skill, 'Critical reading is never a phase group (§0.1)').not.toBe('Critical');
+        await expect(groupRows.nth(index)).toHaveAttribute('data-skill', group.skill);
+        await expect(groupRows.nth(index)).toHaveAttribute('data-count', String(group.members.length));
+        await expect(groupRows.nth(index)).toHaveAttribute('title', group.members.join(', '));
+        await expect(groupRows.nth(index)).toContainText(insights(`teaching.skills.${group.skill}`));
+        if (group.phase === null) await expect(groupRows.nth(index)).not.toHaveAttribute('data-phase', /.*/);
+        else await expect(groupRows.nth(index)).toHaveAttribute('data-phase', group.phase);
+      }
     }
 
-    // Reading mastery: each row's mean, assessed and secure counts from the roster; weakest first.
-    const rows = await renderedMastery(panel);
-    expect(rows.map((row) => row.skill).sort()).toEqual([...displaySkillSchema.options].sort());
-    for (const row of rows) {
-      const expected = expectedSkill(roster, row.skill as DisplaySkill);
-      expect({ mean: row.mean, assessed: row.assessed, secure: row.secure }, row.skill).toEqual(expected);
-    }
-    const focus = expectWeakestFirst(rows)[0];
-    await expect(kpi('top-gap')).toHaveAttribute('data-value', focus.skill);
-    expect(focus.flag).toBe('focus');
-    await expect(panel.locator('[data-slot="insights-mastery-row"]').first()).toContainText(viewModel('flag.classFocus'));
+    // The Critical reading exit-gate chip (§3f): true vs false gate counts on the
+    // Comprehension card — a chip, never a group row or a next-step pill.
+    const gate = expectedGateSummary(roster);
+    const gateChip = panel.locator('[data-slot="teaching-gate"]');
+    await expect(gateChip).toHaveAttribute('data-passed', String(gate.passed));
+    await expect(gateChip).toHaveAttribute('data-not-yet', String(gate.notYet));
+    await expect(gateChip).toContainText(icu(insights('teaching.gate.passed'), { count: String(gate.passed) }));
+    await expect(gateChip).toContainText(icu(insights('teaching.gate.notYet'), { count: String(gate.notYet) }));
 
-    // Cohort: each phase bar counts the students the server's crosswalk placed in that
-    // phase. A scored result with a null acara_phase is in no bar — never a score cut.
-    const phaseCounts = await panel
-      .locator('[data-slot="insights-phase-bar"]')
-      .evaluateAll((bars) => bars.map((bar) => [bar.getAttribute('data-phase'), Number(bar.getAttribute('data-count'))]));
-    const serverPhase = (code: string): string => (code === 'developing_to_consolidating' ? 'developing' : code);
-    const placed = roster.flatMap((row) => (row.result?.acara_phase ? [serverPhase(row.result.acara_phase)] : []));
-    expect(phaseCounts).toEqual(
-      ['Beginning', 'Emerging', 'Developing', 'Consolidating'].map((phase) => [
-        phase,
-        placed.filter((code) => code === phase.toLowerCase()).length,
-      ]),
-    );
-
-    // Pairings on the class focus, by the design's rule over the live scores.
-    const pairings = panel.locator('[data-insights-section="pairings"]');
-    const pairCount = expectedPairCount(roster, focus.skill as DisplaySkill);
-    const skillLabel = viewModel(`skill.${focus.skill.toLowerCase()}`).toLowerCase();
-    await expect(pairings).toHaveAttribute('data-skill', focus.skill);
-    await expect(pairings.locator('[data-slot="insights-pair"]')).toHaveCount(pairCount);
-    await expect(pairings).toContainText(icu(insights(pairCount > 0 ? 'pairings.intro' : 'pairings.none'), { skill: skillLabel }));
-
-    // Groups: every roster student under their weakest subskill, in display order.
-    const groups = panel.locator('[data-slot="insights-group"]');
-    const expectedGroupList = expectedGroups(roster);
-    await expect(groups).toHaveCount(expectedGroupList.length);
-    for (const [index, group] of expectedGroupList.entries()) {
-      await expect(groups.nth(index)).toHaveAttribute('data-attribute', group.attribute);
-      await expect(groups.nth(index)).toHaveAttribute('data-count', String(group.members.length));
-      await expect(groups.nth(index).locator('[data-slot="insights-group-member"]')).toHaveText(group.members);
-    }
-
-    // Recent activity: shown only when the latest reading sitting has a trail.
-    note('live-expected', { ...kpis, focus: focus.skill, pairCount, groups: expectedGroupList.map((group) => group.attribute), activity });
-    const activityCard = panel.locator('[data-insights-section="activity"]');
-    if (activity.sittingId !== null) await activityBody;
-    if (activity.entries === 0) {
-      await expect(activityCard).toHaveCount(0);
+    // Reading pairs on the class's largest-gap subskill, named in the intro (§3c).
+    const gapSkill = expectedLargestGapSkill(roster);
+    const expectedPairsList = gapSkill === null ? [] : expectedPairs(roster, gapSkill);
+    const pairRows = panel.locator('[data-slot="teaching-pair"]');
+    await expect(pairRows).toHaveCount(expectedPairsList.length);
+    const pairsCard = panel.locator('[data-slot="teaching-pairs"]');
+    if (gapSkill === null || expectedPairsList.length === 0) {
+      await expect(pairsCard).toContainText(insights('teaching.pairs.empty'));
     } else {
-      await expect(activityCard).toHaveAttribute('data-sitting-id', activity.sittingId ?? '');
-      await expect(activityCard.locator('[data-slot="insights-activity-row"]')).toHaveCount(Math.min(3, activity.entries));
+      await expect(pairsCard).toContainText(
+        icu(insights('teaching.pairs.intro'), { skill: viewModel(SKILL_LABEL_KEY[gapSkill]) }),
+      );
+      for (const [index, pair] of expectedPairsList.entries()) {
+        await expect(pairRows.nth(index)).toHaveAttribute('data-lead', pair.lead);
+        await expect(pairRows.nth(index)).toHaveAttribute('data-learner', pair.learner);
+      }
     }
 
-    expectNoNewErrors(errors, 'Teaching insights');
-    expect(failed, 'no failing request on the Teaching insights tab').toEqual([]);
+    // Next steps: one row per scored student, TWO pills (vocabulary + comprehension —
+    // never Foundations, never Critical), coloured by the CURRENT band and naming the
+    // NEXT phase, ending in "Extend" past Consolidating (§3d).
+    const expectedSteps = expectedNextSteps(roster);
+    const stepRows = panel.locator('[data-slot="teaching-next-step"]');
+    await expect(stepRows).toHaveCount(expectedSteps.length);
+    const phaseLabel = (phase: string) =>
+      phase === 'Extend' ? insights('teaching.nextSteps.extend') : viewModel(`phase.${phase.toLowerCase()}`);
+    for (const [index, step] of expectedSteps.entries()) {
+      await expect(stepRows.nth(index)).toHaveAttribute('data-student', step.studentId);
+      await expect(stepRows.nth(index)).toContainText(step.firstName);
+      const expectedPills = [step.vocabulary, step.comprehension].filter((target) => target !== null);
+      const pills = stepRows.nth(index).locator('[data-slot="teaching-pill"]');
+      await expect(pills).toHaveCount(expectedPills.length);
+      for (const [pillIndex, target] of expectedPills.entries()) {
+        await expect(pills.nth(pillIndex)).toHaveAttribute('data-skill', target!.skill);
+        await expect(pills.nth(pillIndex)).toHaveAttribute('data-phase', target!.phase);
+        await expect(pills.nth(pillIndex)).toContainText(
+          icu(insights(target!.skill.startsWith('Vocab_') ? 'teaching.nextSteps.vocabularyTarget' : 'teaching.nextSteps.target'), {
+            skill: insights(`teaching.skills.${target!.skill}`),
+            phase: phaseLabel(target!.nextPhase),
+          }),
+        );
+      }
+      // The per-student prompt button names the student — the DOWNLOADED prompt must not (§3e).
+      await expect(stepRows.nth(index).locator('[data-slot="teaching-prompt"]')).toHaveAttribute(
+        'title',
+        icu(insights('teaching.prompt.student'), { name: step.firstName }),
+      );
+    }
+
+    // Every prompt button ships: three strand prompts, "Prompt for all", one per student.
+    await expect(panel.locator('[data-slot="teaching-prompt"]')).toHaveCount(4 + expectedSteps.length);
+    for (const strand of ['vocabulary', 'comprehension', 'foundations']) {
+      await expect(panel.locator(`[data-slot="teaching-prompt"][data-scope="strand:${strand}"]`)).toBeVisible();
+    }
+    await expect(panel.locator('[data-slot="teaching-prompt"][data-scope="all"]')).toContainText(insights('teaching.prompt.all'));
+
+    // Prompt downloads (§3e): a strand prompt and a per-student prompt download as .md files that
+    // carry no roster first or last name (per-student files are named by index + initials).
+    const rosterNames = [
+      ...new Set(
+        roster.flatMap((row) => {
+          const parts = row.student.name.trim().split(/\s+/);
+          return [parts[0], parts[parts.length - 1]];
+        }),
+      ),
+    ].filter((part) => part !== undefined && part.length > 1);
+    const readDownload = async (download: Download): Promise<string> => {
+      const file = await download.path();
+      return readFileSync(file, 'utf8');
+    };
+    const expectNameFree = (body: string, what: string) => {
+      for (const part of rosterNames) {
+        expect(body, `${what} must not carry the roster name "${part}"`).not.toMatch(new RegExp(`\\b${part}\\b`));
+      }
+    };
+    const strandButton = panel
+      .locator('[data-slot="teaching-prompt"][data-scope^="strand:"]:not([disabled])')
+      .first();
+    await expect(strandButton, 'at least one strand has groups to prompt for').toHaveCount(1);
+    const strand = ((await strandButton.getAttribute('data-scope')) ?? '').replace('strand:', '');
+    await expect(strandButton).toHaveAttribute(
+      'aria-label',
+      icu(insights('teaching.prompt.strandFor'), { strand: insights(`teaching.strands.${strand}`) }),
+    );
+    const [strandDownload] = await Promise.all([page.waitForEvent('download'), strandButton.click()]);
+    expect(strandDownload.suggestedFilename()).toBe(`teaching-prompt-${strand}.md`);
+    const strandBody = await readDownload(strandDownload);
+    expect(strandBody.length).toBeGreaterThan(0);
+    expectNameFree(strandBody, `the ${strand} strand prompt`);
+    for (const empty of ['vocabulary', 'comprehension', 'foundations'].filter((name) => groupsByStrand[name as 'vocabulary'].length === 0)) {
+      await expect(panel.locator(`[data-slot="teaching-prompt"][data-scope="strand:${empty}"]`), `${empty} has no groups`).toBeDisabled();
+    }
+
+    const firstStep = expectedSteps[0];
+    const firstRow = roster.find((row) => row.student.document_id === firstStep.studentId);
+    const initials = (firstRow?.student.initials ?? '').toLowerCase();
+    const [studentDownload] = await Promise.all([
+      page.waitForEvent('download'),
+      stepRows.first().locator('[data-slot="teaching-prompt"]').click(),
+    ]);
+    expect(studentDownload.suggestedFilename()).toBe(`teaching-prompt-student-1-${initials}.md`);
+    const studentBody = await readDownload(studentDownload);
+    expect(studentBody).toContain(`## Student ${firstRow?.student.initials ?? ''}`);
+    expectNameFree(studentBody, 'the per-student prompt');
+    expect(diagnosticReads, 'the Teaching tab never reads the class diagnostic').toEqual([]);
+
+    note('live-expected', { counts, gate, gapSkill, pairs: expectedPairsList, steps: expectedSteps.length });
+    expectNoNewErrors(errors, 'Teaching tab');
+    expect(failed, 'no failing request on the Teaching tab').toEqual([]);
     const underHeader = async (target: Locator) => {
       const [sticky, box] = [await page.locator('[data-slot="class-detail-sticky"]').boundingBox(), await target.boundingBox()];
       if (sticky === null || box === null) return;
@@ -156,13 +236,9 @@ test.describe('S5 — Teaching insights tab', () => {
       await page.locator('[data-slot="dashboard-content"]').evaluate((element, by) => element.scrollBy({ top: by, behavior: 'instant' }), top);
     };
     await page.screenshot({ path: path.join(PROOFS, 'insights-tab.png'), animations: 'disabled' });
-    if (activity.entries > 0) {
-      await underHeader(activityCard);
-      await page.screenshot({ path: path.join(PROOFS, 'insights-tab-activity.png'), animations: 'disabled' });
-    }
-    await underHeader(pairings);
+    await underHeader(panel.locator('[data-slot="teaching-next-steps"]'));
     await page.screenshot({ path: path.join(PROOFS, 'insights-tab-scroll.png'), animations: 'disabled' });
-    expectNoNewErrors(errors, 'Teaching insights (scrolled)');
+    expectNoNewErrors(errors, 'Teaching tab (scrolled)');
   });
 
   test('school-admin overview: eight labelled reading areas with the live counts, zero console errors', async ({ page }) => {

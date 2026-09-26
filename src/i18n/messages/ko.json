@@ -726,7 +726,7 @@
       "opsSettings": "플랫폼 설정",
       "account": "계정",
       "teacherDashboard": "대시보드",
-      "testSessions": "실시간 세션",
+      "testSessions": "테스트 세션",
       "results": "학급"
     },
     "sidebar": {
@@ -1950,7 +1950,7 @@
       "recalledTitle": "학교가 리포트를 회수했습니다",
       "recalledBody": "학교가 검토를 위해 이 가족 리포트를 회수했습니다. 더 이상 여기에 표시되지 않으며, 업데이트되면 다시 공개됩니다.",
       "recalledAt": "{date}에 회수됨.",
-      "listHeading": "가족 리포트",
+      "listHeading": "보고서",
       "listDescription": "자녀의 리포트, 최신순. 학교가 공개하면 여기에 표시됩니다.",
       "listEmptyTitle": "아직 리포트가 없습니다",
       "listEmptyBody": "자녀가 평가를 완료하고 학교가 리포트를 공개하면 여기에 나타납니다.",
@@ -4450,10 +4450,10 @@
     "results": {
       "meta": {
         "title": "결과 — SchoolTest",
-        "description": "학급 결과, 수업 인사이트, 테스트 A와 테스트 B 사이의 향상도입니다."
+        "description": "학급 결과, 수업 계획, 테스트 A와 테스트 B 사이의 향상도입니다."
       },
       "title": "결과",
-      "description": "학급 결과, 수업 인사이트, 두 시험 사이의 향상도입니다.",
+      "description": "학급 결과, 수업 계획, 두 시험 사이의 향상도입니다.",
       "list": {
         "loading": "담당 학급을 불러오는 중",
         "students": "{count, plural, other {학생 #명}}",
@@ -4513,7 +4513,7 @@
         "loading": "이 학급을 불러오는 중",
         "meta": {
           "title": "학급 결과 — SchoolTest",
-          "description": "한 학급의 모든 학생 읽기 진단 결과와 수업 인사이트, 테스트 A에서 테스트 B까지의 향상도입니다."
+          "description": "한 학급의 모든 학생 읽기 진단 결과와 수업 계획, 테스트 A에서 테스트 B까지의 향상도입니다."
         },
         "noValue": "—",
         "notYetCount": "{count, plural, other {#명 미숙달}}",
@@ -4539,12 +4539,12 @@
       "tabs": {
         "listLabel": "학급 결과 보기",
         "students": "학생",
-        "insights": "수업 인사이트",
+        "insights": "수업",
         "progress": "향상도",
         "exit": "졸업 예측",
         "comingSoon": "준비 중",
-        "reports": "가족 리포트",
-        "live": "실시간 세션"
+        "reports": "보고서",
+        "live": "테스트 세션"
       },
       "insights": {
         "loading": "수업 인사이트를 불러오는 중",
@@ -5023,9 +5023,9 @@
       },
       "attribute": {
         "decoding": "단어 해독",
-        "vocabA2": "일상 어휘",
-        "vocabB1": "교실 어휘",
-        "vocabB2": "학술 어휘",
+        "vocabA2": "어휘 (일상)",
+        "vocabB1": "어휘 (교실)",
+        "vocabB2": "어휘 (학술)",
         "grammar": "문법",
         "gist": "핵심 내용 파악",
         "detail": "세부 정보",
@@ -5248,11 +5248,11 @@
       "tabs": {
         "listLabel": "학급 결과 보기",
         "students": "학생",
-        "progress": "학급 향상도",
-        "insights": "수업 인사이트",
+        "progress": "향상도",
+        "insights": "수업",
         "exit": "졸업 예측",
-        "reports": "가족 리포트",
-        "live": "실시간 세션"
+        "reports": "보고서",
+        "live": "테스트 세션"
       },
       "exit": {
         "title": "졸업 예측",
@@ -5326,24 +5326,65 @@
     },
     "progress": {
       "title": "학급 향상도",
-      "subtitle": "{count, plural, =0 {아직 채점된 응시 회차가 없습니다.} other {#회 응시에 걸친 학급의 변화입니다.}}",
-      "tiles": {
-        "meanShift": {
-          "label": "평균 변화",
-          "sub": "직전 응시 대비 최근 응시"
+      "subtitle": "{count, plural, =0 {아직 채점된 응시 회차가 없습니다.} other {올해 #회 응시에 걸친 학급의 변화입니다.}}",
+      "dotMap": {
+        "title": "학생별 읽기 진도",
+        "sub": "각 행은 학생 한 명이며 점수가 높은 순서입니다. 점은 처음 응시한 위치, 화살표 촉은 최근 응시 위치입니다. 행에 마우스를 올리면 자세한 내용이 표시됩니다.",
+        "modeGrowth": "성장 보기",
+        "modeLatest": "최근만 보기",
+        "phases": {
+          "beginning": "시작",
+          "emerging": "도입",
+          "developing": "발달",
+          "consolidating": "정착"
         },
-        "gained": {
-          "label": "향상",
-          "sub": "{threshold}점 이상 상승"
+        "studentsCount": "{count, plural, other {#명의 학생}}",
+        "tooltip": "{name} · {firstMonth} {firstPct}% ({firstPhase}) → {latestMonth} {latestPct}% ({latestPhase})",
+        "endLabel": "변화 거의 없음",
+        "legendUp": "향상",
+        "legendBack": "하락",
+        "classSummary": "첫 응시 이후 {total}명 중 {up}명이 적어도 한 단계 높은 ACARA 단계로 올라갔고, {held}명은 유지, {down}명은 하락했습니다.",
+        "empty": "비교할 결과가 아직 없습니다."
+      },
+      "gains": {
+        "topTitle": "전체 향상 상위",
+        "lowTitle": "전체 향상 하위",
+        "empty": "비교할 결과가 아직 없습니다."
+      },
+      "subMap": {
+        "title": "학생별 하위 기능 성장",
+        "sub": "하위 기능을 선택하면 각 학생이 도달한 단계를 볼 수 있습니다. 점은 첫 응시 때의 단계, 화살표 촉은 최근 응시 때의 단계이므로 누가 앞으로 나아갔고 누가 뒤로 물러났는지 한눈에 보입니다.",
+        "skills": {
+          "Decoding": "단어 해독",
+          "Vocab_A2": "어휘 (일상)",
+          "Grammar": "문법",
+          "Vocab_B1": "어휘 (교실)",
+          "Gist": "핵심 내용 파악",
+          "Detail": "세부 정보",
+          "Inference": "추론",
+          "Vocab_B2": "어휘 (학술)"
         },
-        "held": {
-          "label": "유지",
-          "sub": "{threshold}점 이내"
+        "phases": {
+          "beginning": "시작",
+          "emerging": "도입",
+          "developing": "발달",
+          "consolidating": "정착"
         },
-        "slipped": {
-          "label": "하락",
-          "sub": "{threshold}점 이상 하락"
-        }
+        "studentsCount": "{count, plural, other {#명의 학생}}",
+        "tooltip": "{name} · {skill}: {firstPhase} ({firstMonth}) → {latestPhase} ({latestMonth})",
+        "tooltipLatest": "{name} · {skill}: {latestPhase} ({latestMonth})",
+        "moveUp": "↑ {count, plural, other {#단계}}",
+        "moveHeld": "변화 없음",
+        "moveDown": "↓ {count, plural, other {#단계}}",
+        "summary": "{skill}: {up}명 향상 · {held}명 유지 · {down}명 하락",
+        "legendUp": "향상",
+        "legendBack": "하락",
+        "legendHeld": "유지",
+        "empty": "비교할 결과가 아직 없습니다."
+      },
+      "analysis": {
+        "title": "학급 분석",
+        "comingSoon": "자동 생성 요약은 곧 제공됩니다"
       },
       "points": "{value}점",
       "percent": "{value}%",
@@ -5355,27 +5396,70 @@
         "summary": "{count}회 응시 동안 학급 평균 {from}% → {to}% ({difference}점).",
         "summarySingle": "지금까지 1회 응시, 학급 평균 {value}%.",
         "summaryEmpty": "아직 채점된 응시 회차가 없습니다."
-      },
-      "top": {
-        "title": "최고 향상",
-        "empty": "아직 신뢰할 만한 향상이 없습니다."
-      },
-      "watch": {
-        "title": "주의 깊게 볼 학생",
-        "empty": "아직 주의 깊게 볼 학생이 없습니다."
-      },
-      "subskills": {
-        "title": "시간에 따른 하위 기능 변화",
-        "description": "응시 회차에 걸친 읽기 하위 기능별 학급 평균, 약한 순",
-        "now": "현재 {value}%"
-      },
-      "footnote": "여기에 표시된 학생별 변화는 모두 서버가 각 학생의 최근 응시를 직전 응시와 직접 비교한 결과입니다. 비교할 수 없는 경우에는 변화를 전혀 표시하지 않습니다. 시간에 따른 학급 평균은 기록된 채점 응시의 단순 평균입니다."
+      }
     },
     "insights": {
-      "title": "수업 인사이트",
+      "title": "수업",
       "subtitle": "다음에 무엇을, 누구에게 가르칠지 알려 줍니다.",
       "emptyTitle": "이 학급에서 시험을 완료한 학생이 아직 없습니다",
       "emptyDescription": "하위 기능 숙달도와 추천 그룹은 완료된 읽기 결과로 만들어지므로 아직 수업에 쓸 자료가 없습니다. 학생이 시험을 제출하면 바로 여기에 표시됩니다.",
+      "teaching": {
+        "summary": "어휘 {v}개 그룹, 독해 {c}개 그룹, 기초 {f}개 그룹, 그리고 {n, plural, other {학생 #명}}을 위한 읽기 짝꿍 {p}쌍이 있습니다.",
+        "empty": "이 학급에는 아직 결과가 없습니다.",
+        "provisional": "임시",
+        "moreMembers": "+{count}",
+        "section": {
+          "wholeClass": "전체 학급",
+          "wholeClassSub": "수준별 그룹",
+          "individual": "개별 학생",
+          "individualSub": "짝꿍과 다음 학습"
+        },
+        "strands": {
+          "vocabulary": "어휘",
+          "vocabularySub": "단어 수준",
+          "comprehension": "독해",
+          "comprehensionSub": "문단 수준",
+          "foundations": "기초",
+          "foundationsSub": "단어 해독과 문법",
+          "empty": "아직 평가되지 않았습니다."
+        },
+        "skills": {
+          "Vocab_A2": "일상 어휘",
+          "Vocab_B1": "교실 어휘",
+          "Vocab_B2": "학술 어휘",
+          "Gist": "핵심 내용 파악",
+          "Detail": "세부 정보",
+          "Inference": "추론",
+          "Decoding": "단어 해독",
+          "Grammar": "문법"
+        },
+        "prompt": {
+          "strand": "프롬프트",
+          "all": "전체 프롬프트",
+          "title": "AI 어시스턴트에 붙여 넣을 프롬프트를 내려받습니다",
+          "student": "{name} 학생 AI 프롬프트 내려받기",
+          "strandFor": "{strand} AI 프롬프트 다운로드"
+        },
+        "gate": {
+          "label": "비판적 읽기 통과 기준",
+          "passed": "{count}명 통과",
+          "notYet": "{count}명 미통과"
+        },
+        "pairs": {
+          "title": "읽기 짝꿍",
+          "intro": "실력이 앞선 학생이 이끄는 {skill} 짝꿍",
+          "empty": "이번 주에는 뚜렷한 짝꿍이 없습니다."
+        },
+        "nextSteps": {
+          "title": "다음 학습",
+          "sub": "한 명당 어휘 하나와 독해 하나",
+          "target": "{skill} → {phase}",
+          "vocabularyTarget": "{skill} → {phase}",
+          "extend": "확장",
+          "vocabularyPill": "어휘 집중: {skill} → {phase}",
+          "comprehensionPill": "독해 집중: {skill} → {phase}"
+        }
+      },
       "percent": "{value}%",
       "kpi": {
         "lastSitting": "최근 시험",
@@ -5428,96 +5512,40 @@
       }
     },
     "familyReports": {
-      "title": "가정 보고서",
-      "subtitle": "{className}의 결과를 가정에 공개합니다. 학생을 열어 전체 보고서를 보거나 내보내세요.",
-      "releaseHeld": "{count, plural, =0 {보류된 보고서 공개} other {보류된 보고서 #건 공개}}",
-      "tiles": {
-        "scored": "채점 완료",
-        "released": "보호자에게 공개됨",
-        "held": "보류 중",
-        "noResult": "아직 결과 없음"
+      "title": "보고서",
+      "audiencePrompt": "이 보고서는 누구를 위한 것인가요?",
+      "comingSoon": "곧 제공 예정",
+      "audiences": {
+        "parents": "학부모 및 보호자",
+        "teachers": "일반 교사",
+        "principal": "교장",
+        "admin": "행정"
       },
-      "banner": {
-        "open": "{count, plural, other {#건의 응시가 아직 진행 중입니다.}}",
-        "blocked": "{count, plural, other {#명의 학생은 재응시나 수동 채점이 끝나야 공개할 수 있습니다.}}",
-        "gaps": "지금 공개하면 보호자는 빈틈이 있는 학급 현황을 보게 됩니다.",
-        "complete": "이번 응시의 모든 시도가 채점되어 학급 현황이 완전합니다.",
-        "unscored": "{count, plural, other {#건의 응시는 아직 점수가 없습니다.}}"
+      "notes": {
+        "parents": "가정을 위한 쉬운 영어 보고서입니다. 학생당 한 부이며 학급 데이터는 포함되지 않습니다.",
+        "teachers": "일반 교사를 위한 교실용 보고서입니다. 학생당 한 부이며 교수 다음 단계가 포함됩니다.",
+        "principal": "학급에 대한 리더십 보기: 결과, 단계 및 다음 단계를 한눈에 확인합니다.",
+        "admin": "학교 기록을 위한 행정 보고서입니다. 학급 데이터이며 교수 노트는 없습니다."
       },
-      "filters": {
-        "label": "보고서 보기",
-        "all": "전체",
-        "held": "보류",
-        "released": "공개됨",
-        "blocked": "차단됨"
+      "classCard": {
+        "title": "학급 요약",
+        "meta": "{className} · 학생 {total}명 중 {scored}명이 결과 있음 · 대상: {audience}",
+        "download": "PDF 다운로드"
       },
-      "listLabel": "학생별 가정 보고서",
-      "empty": "이 그룹에는 항목이 없습니다.",
-      "score": "{score}%",
-      "noResult": "결과 없음",
-      "actions": {
-        "preview": "보고서 미리 보기",
-        "release": "공개",
-        "recall": "회수"
+      "students": {
+        "title": "학생별 보고서",
+        "meta": "학생 {total}명 중 {scored}명의 보고서가 준비됨 · 대상: {audience}",
+        "downloadAll": "모두 다운로드",
+        "pdf": "PDF",
+        "noResultYet": "결과 없음",
+        "pdfFor": "{name}의 PDF 보고서 다운로드"
       },
-      "preview": {
-        "eyebrow": "보호자 보고서 미리 보기",
-        "meta": "{className} · {date} 응시",
-        "score": "{score} / 100",
-        "canDo": "할 수 있는 것",
-        "next": "다음에 연습할 것",
-        "release": "보호자에게 공개",
-        "recall": "이 보고서 회수",
-        "viewAnalysis": "전체 분석 보기",
-        "close": "닫기"
-      },
-      "release": {
-        "title": "{name} 학생의 보호자에게 공개할까요?",
-        "body": "공개하는 즉시 보호자가 등급, 하위 기술별 결과, 다음 단계를 볼 수 있습니다.",
-        "bodyRecalled": "공개하는 즉시 보호자가 등급, 하위 기술별 결과, 다음 단계를 볼 수 있습니다. 이 보고서는 이미 한 번 회수되었으므로 보호자가 다시 보게 됩니다.",
-        "cta": "보고서 공개"
-      },
-      "recall": {
-        "title": "{name} 학생의 보고서를 회수할까요?",
-        "body": "회수하면 학부모 포털에서 보고서가 사라지고 결과를 검토 중이라는 안내가 전송됩니다. 이미 읽은 내용은 되돌릴 수 없습니다.",
-        "reasonLabel": "회수 사유",
-        "reasonHint": "결과와 함께 저장됩니다. 최대 500자.",
-        "reasonRequired": "회수 사유를 500자 이내로 입력하세요.",
-        "cta": "보고서 회수"
-      },
-      "releaseAll": {
-        "title": "{count, plural, other {보류된 보고서 #건을 공개할까요?}}",
-        "body": "{count, plural, other {학생 #명의 보호자가 등급과 다음 단계를 바로 볼 수 있습니다.}}",
-        "open": "{count, plural, other {#명은 아직 응시 중이라 해당 보호자는 아무것도 보지 못하고 이유를 물어볼 수 있습니다.}}",
-        "blocked": "{count, plural, other {#명은 재응시나 수동 채점 때문에 공개할 수 없습니다.}}",
-        "tail": "보고서는 회수할 수 있지만 이미 읽은 내용은 되돌릴 수 없습니다.",
-        "cta": "{count, plural, other {보고서 #건 공개}}",
-        "unscored": "{count, plural, other {#명은 아직 점수가 없습니다.}}"
-      },
-      "nothingHeld": {
-        "title": "보류된 보고서가 없습니다",
-        "body": "{count, plural, =0 {{className}의 채점된 보고서는 모두 보호자에게 전달되었습니다.} other {{className}의 채점된 보고서는 모두 보호자에게 전달되었습니다. 보고서가 없는 학생 #명은 아직 점수가 없거나, 재응시나 수동 채점을 기다리거나, 아직 응시 중이므로 여기에서 공개할 수 없습니다.}}",
-        "cta": "확인"
-      },
-      "cancel": "취소",
-      "toast": {
-        "released": "{name} 학생의 보고서를 보호자에게 공개했습니다",
-        "recalled": "{name} 학생의 공개된 보고서를 회수했습니다",
-        "releasedAll": "{count, plural, other {보고서 #건을 보호자에게 공개했습니다}}",
-        "releasedSome": "보류된 보고서 {total}건 중 {released}건을 공개했습니다.",
-        "releasedNone": "공개된 보류 보고서가 없습니다.",
-        "notReleased": "공개되지 않음({reason}): {names}."
-      },
-      "errors": {
-        "notReady": "결과가 아직 완료되지 않았습니다",
-        "notFound": "결과를 찾을 수 없습니다",
-        "forbidden": "이 결과를 변경할 권한이 없습니다",
-        "rateLimited": "요청이 너무 많습니다. 잠시 후 다시 시도하세요",
-        "transport": "연결이 끊겼습니다. 새로 고침하여 현재 상태를 확인하세요",
-        "generic": "서버가 변경을 받아들이지 않았습니다"
-      },
-      "failedRelease": "{name} 학생의 보고서를 공개하지 못했습니다: {reason}.",
-      "failedRecall": "{name} 학생의 보고서를 회수하지 못했습니다: {reason}."
+      "download": {
+        "popupBlocked": "보고서를 PDF로 다운로드하려면 팝업을 허용하세요.",
+        "allOpened": "학생 보고서가 열렸습니다 — 인쇄 대화 상자에서 PDF로 저장하세요.",
+        "allFailed": "학생 보고서를 준비할 수 없습니다. 다시 시도하세요.",
+        "studentsTitle": "학생 보고서 — {name}"
+      }
     },
     "live": {
       "students": {
@@ -5892,12 +5920,12 @@
       }
     },
     "liveSessions": {
-      "title": "실시간 세션",
+      "title": "테스트 세션",
       "summary": "{classes, plural, other {#개 반}}에서 {sessions, plural, other {#개 세션}}이 진행 중입니다. 학생은 한 번에 하나의 시험만 응시할 수 있습니다.",
       "summaryNone": "진행 중인 세션이 없습니다. 같은 반의 학생들도 서로 다른 버전을 동시에 응시할 수 있습니다.",
       "startSession": "새 세션 시작",
-      "loading": "실시간 세션을 불러오는 중…",
-      "loadError": "실시간 세션을 불러오지 못했습니다.",
+      "loading": "테스트 세션을 불러오는 중…",
+      "loadError": "테스트 세션을 불러오지 못했습니다.",
       "retry": "다시 시도",
       "classMeta": "{year} · 학생 {count, plural, other {#명}}",
       "classMetaNoYear": "학생 {count, plural, other {#명}}",
@@ -6227,6 +6255,24 @@
       },
       "progressTitle": "시간에 따른 읽기 성장",
       "progressDescription": "올해 응시한 각 시험지의 전체 영역 점수를 ACARA 숙련도와 비교",
+      "statOverall": "전체 읽기",
+      "statAcaraPhase": "ACARA 단계",
+      "statMomentum": "성장 추세",
+      "momentum": {
+        "holding": "유지",
+        "steady": "꾸준한 향상",
+        "accelerating": "빠른 향상",
+        "slipping": "하락"
+      },
+      "momentumNote": {
+        "holding": "첫 응시 이후 변화가 거의 없음",
+        "steady": "꾸준하고 뚜렷한 향상",
+        "accelerating": "뚜렷하고 신뢰할 수 있는 향상",
+        "slipping": "첫 응시 이후 하락",
+        "none": "측정에는 두 번의 응시가 필요합니다"
+      },
+      "progressCardTitle": "읽기 성장",
+      "progressCardSubtitle": "올해 응시한 각 시험지의 전체 영역 점수를 ACARA 숙련도와 비교",
       "phaseChip": "ACARA: {phase}",
       "chartLabel": "응시 회차별 전체 읽기 점수를 ACARA 단계와 함께 나타낸 그래프",
       "tiles": {
@@ -6244,6 +6290,17 @@
       },
       "subskillsTitle": "읽기 하위 기능",
       "subskillsDescription": "최근 시험지에서 {first} 학생이 읽기의 아홉 가지 구성 요소에서 보인 수행",
+      "breakdown": {
+        "title": "읽기 하위 기능 상세",
+        "columnSubskill": "하위 기능",
+        "columnPhase": "단계",
+        "provisionalNote": "학술 어휘 기준은 잠정 값입니다",
+        "vocab": {
+          "Vocab_A2": "일상 어휘",
+          "Vocab_B1": "교실 어휘",
+          "Vocab_B2": "학술 어휘"
+        }
+      },
       "subskills": {
         "deltaUp": "↑ +{points}",
         "deltaDown": "↓ −{points}",
@@ -6253,6 +6310,7 @@
       },
       "analysisTitle": "학생 분석",
       "analysisBadge": "자동 생성 요약",
+      "analysisComingSoon": "자동 생성 요약은 곧 제공될 예정입니다",
       "copy": "복사",
       "copied": "교사 코멘트를 클립보드에 복사했습니다.",
       "copyFailed": "클립보드에 복사할 수 없습니다. 텍스트를 선택해 직접 복사하세요.",

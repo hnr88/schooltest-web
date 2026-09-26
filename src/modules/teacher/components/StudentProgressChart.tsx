@@ -9,9 +9,11 @@ import type { StudentProgressChartProps } from '@/modules/teacher/types/student-
 
 const STYLE = STUDENT_CHART_STYLE;
 
-// The overall score per sitting against the ACARA phase levels
-// (`Teacher Portal v2.dc.html:404–425`, points `:2039–2043`). Every coordinate is
-// `studentChart()`'s; the tooltip names the sitting's month and year, as the design does.
+// The overall score per sitting against the four EQUAL-HEIGHT ACARA phase bands
+// (Spec 02 §3b, `02 Student report.html:232–264`): the piecewise y is
+// `studentBandChart()`'s, the band washes and centred phase names come with the
+// geometry, and no numeric axis is drawn. The tooltip names the sitting's month
+// and year, as the design does.
 function StudentProgressChart({ chart }: StudentProgressChartProps) {
   const t = useTranslations(STUDENT_I18N_NAMESPACE);
   const tVm = useTranslations(VIEW_MODEL_I18N_NAMESPACE);
@@ -25,6 +27,16 @@ function StudentProgressChart({ chart }: StudentProgressChartProps) {
       aria-label={t('chartLabel')}
       className="block h-auto w-full overflow-visible"
     >
+      {chart.bands.map((band) => (
+        <rect
+          key={band.phase}
+          x={chart.axisX}
+          y={band.y}
+          width={chart.bandW}
+          height={band.h}
+          fill={band.fill}
+        />
+      ))}
       {chart.bounds.map((bound) => (
         <line
           key={bound.y}
@@ -32,7 +44,7 @@ function StudentProgressChart({ chart }: StudentProgressChartProps) {
           x2={chart.axisRight}
           y1={bound.y}
           y2={bound.y}
-          stroke={STYLE.grid}
+          stroke={STYLE.bandBounds}
           strokeWidth={1}
           strokeDasharray="3 4"
         />
@@ -51,7 +63,7 @@ function StudentProgressChart({ chart }: StudentProgressChartProps) {
           <title>{tVm('chart.studentTip', { n: point.n, when: monthYear(point.satAt), value: point.value })}</title>
           <circle cx={point.cx} cy={point.cy} r={14} fill="transparent" />
           <circle cx={point.cx} cy={point.cy} r={5} fill={STYLE.pointFill} stroke={STYLE.line} strokeWidth={2.5} />
-          <text x={point.valueX} y={point.cy} dy={-13} fontSize={13} fontWeight={600} fill={point.valueFill} textAnchor={point.valueAnchor}>
+          <text x={point.valueX} y={point.cy} dy={-13} fontSize={13} fontWeight={600} fill={STYLE.line} textAnchor={point.valueAnchor}>
             {t('percent', { value: point.value })}
           </text>
           <text x={point.labelX} y={chart.xLabelY} fontSize={12} fontWeight={500} fill={STYLE.xLabel} textAnchor="middle">

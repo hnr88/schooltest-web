@@ -1,4 +1,4 @@
-import { mkdirSync } from 'node:fs';
+import { existsSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
 
 import { expect, test, type Page } from '@playwright/test';
@@ -69,10 +69,11 @@ function ladderResult(): { resultId: string; attributes: Record<string, StoredEn
  * most distinct bands (the drill-down reads the latest), with its class and the
  * stored per-attribute statuses. Read straight from Postgres.
  */
-function drillDownTarget(): { classId: string; studentId: string; statuses: Record<string, string> } {
+function drillDownTarget(): { classId: string; studentId: string; gatePassed: string; statuses: Record<string, string> } {
   const row = runSql(
     `with latest as (
        select r.attributes, s.document_id as student, c.document_id as class,
+              coalesce(r.gate ->> 'passed', '') as gate_passed,
               row_number() over (partition by s.id order by r.created_at desc) as rn
          from results r
          join results_student_lnk rs on rs.result_id = r.id
@@ -84,19 +85,19 @@ function drillDownTarget(): { classId: string; studentId: string; statuses: Reco
         where u.email = '${TEACHER}' and r.skill = 'reading' and r.destination = 'official'
           and r.published_at is not null and r.model_version = 'reading-3model/1'
           and (r.overall ->> 'domain_score') is not null)
-     select class, student, attributes::text from latest where rn = 1
+     select class, student, gate_passed, attributes::text from latest where rn = 1
       order by (select count(distinct v ->> 'status') from jsonb_each(attributes::jsonb) as e(k, v)
                  where jsonb_typeof(v) = 'object' and v ? 'domain_score') desc
       limit 1`,
   ).split('\n')[0];
-  const [classId, studentId, ...rest] = (row ?? '').split('|');
+  const [classId, studentId, gatePassed, ...rest] = (row ?? '').split('|');
   if (!classId || !studentId) throw new Error(`[e2e] no latest scored reading result for ${TEACHER}`);
   const attributes = JSON.parse(rest.join('|')) as Record<string, { status?: string } | string>;
   const statuses: Record<string, string> = {};
   for (const [name, entry] of Object.entries(attributes)) {
     if (typeof entry === 'object' && entry !== null && typeof entry.status === 'string') statuses[name] = entry.status;
   }
-  return { classId, studentId, statuses };
+  return { classId, studentId, gatePassed: gatePassed ?? '', statuses };
 }
 
 /** The teacher portal's band word (TeacherPortal.viewModel.band.*) for a stored status. */
@@ -174,52 +175,78 @@ test.describe('Phase Model (spec 3) — ACARA phase ladder rows and family lines
     await testInfo.attach('teacher-report-ladder-rows', { path: shot, contentType: 'image/png' });
   });
 
-  test('teacher drill-down: every subskill card states its phase on the ladder, no percentage', async ({ page }, testInfo) => {
+  test('teacher drill-down: every breakdown row states its phase word, no percentage', async ({ page }, testInfo) => {
     const target = drillDownTarget();
     testInfo.annotations.push({ type: 'student', description: `${target.classId}/${target.studentId}` });
     await page.goto(`/dashboard/results/${target.classId}/students/${target.studentId}`);
-    const cards = page.locator('[data-slot="student-subskill"]');
-    await expect(cards.first()).toBeVisible({ timeout: 90_000 });
-    // 9 since spec 4 (af388f51) added Academic Vocabulary as its own card.
-    await expect(cards).toHaveCount(9);
+    // The v2 redesign replaced the subskill-card ladder with the nine-row breakdown
+    // table (`StudentBreakdownTable`): each row's phase cell holds the bordered pill
+    // printing the band WORD, or the kit dash when the sitting left it unassessed.
+    const rows = page.locator('[data-slot="student-breakdown-row"]');
+    await expect(rows.first()).toBeVisible({ timeout: 90_000 });
+    // 9 since spec 4 (af388f51) added Academic Vocabulary as its own row.
+    await expect(rows).toHaveCount(9);
 
     for (const [name, status] of Object.entries(target.statuses)) {
-      const card = page.locator(`[data-slot="student-subskill"][data-skill="${name}"]`);
-      await expect(card, name).not.toContainText('%');
+      const row = page.locator(`[data-slot="student-breakdown-row"][data-skill="${name}"]`);
+      await expect(row, name).not.toContainText('%');
+      const phase = row.locator('[data-slot="student-breakdown-phase"]');
       if (status === 'not_assessed') {
-        await expect(card.locator('[data-slot="student-subskill-phase"]'), name).toHaveText(cat(en, 'TeacherPortal.kit.noValue'));
+        await expect(phase, name).toHaveText(cat(en, 'TeacherPortal.kit.noValue'));
         continue;
       }
-      const step = LADDER.indexOf(status as (typeof LADDER)[number]) + 1;
-      await expect(card.locator('[data-slot="student-subskill-phase"]'), name).toHaveText(bandWord(status));
-      await expect(card.locator('[data-slot="student-subskill-ladder"]'), name).toHaveAttribute('data-step', String(step));
-      await expect(card.locator('[data-slot="student-subskill-ladder"] [data-reached="true"]'), name).toHaveCount(step);
+      await expect(phase.locator('span[data-tone]'), name).toHaveText(bandWord(status));
     }
-    const critical = page.locator('[data-slot="student-subskill"][data-skill="Critical"]');
+    const critical = page.locator('[data-slot="student-breakdown-row"][data-skill="Critical"]');
     await expect(critical).not.toContainText('%');
-    await expect(critical.locator('[data-slot="student-subskill-ladder"]')).toHaveCount(0);
+    // The exit gate never takes a band: its cell prints EXACTLY the gate word the stored
+    // `gate.passed` names, or the dash when the gate is unscored — never a percentage.
+    const expectedGate =
+      target.gatePassed === 'true'
+        ? cat(en, 'TeacherPortal.viewModel.gate.passed')
+        : target.gatePassed === 'false'
+          ? cat(en, 'TeacherPortal.viewModel.gate.notYet')
+          : cat(en, 'TeacherPortal.kit.noValue');
+    await expect(critical.locator('[data-slot="student-breakdown-phase"]')).toHaveText(expectedGate);
 
-    // The analysis names subskills by phase: only the OVERALL sentence carries a %.
-    const paragraphs = page.locator('[data-slot="student-analysis"] p');
-    const texts = await paragraphs.allInnerTexts();
-    for (const text of texts.slice(1)) expect(text).not.toMatch(/\d+%/);
+    // The analysis card is the locked coming-soon placeholder: no generated sentence and no %.
+    const analysisCard = page.locator('[data-slot="student-analysis"]');
+    await expect(analysisCard).toBeVisible();
+    await expect(analysisCard.locator('[data-slot="student-analysis-placeholder"]')).toHaveText(
+      cat(en, 'TeacherPortal.student.analysisComingSoon'),
+    );
+    expect(await analysisCard.innerText()).not.toMatch(/\d+\s*%/);
 
-    const subskills = page.locator('[data-slot="student-subskills"]');
-    await subskills.scrollIntoViewIfNeeded();
+    // The proof shots are PAGE shots raced against a NODE timer. On this page the
+    // capture has been observed to wedge INSIDE the renderer — the live analysis
+    // placeholder never settles — and once wedged, Playwright's own screenshot
+    // timeout never fires, burning the whole 180s budget after every assertion
+    // had already passed. The Node timer always fires, so a wedged capture costs
+    // 20s and a loud warning, never the audit's verdict.
+    const captureWithDeadline = async (file: string, fullPage = false): Promise<void> => {
+      await Promise.race([
+        page
+          .screenshot({ path: file, animations: 'disabled', timeout: 20_000, fullPage })
+          .catch((error: unknown) => console.warn(`[phase-ladder] capture failed: ${String(error).slice(0, 120)}`)),
+        new Promise<void>((resolve) => setTimeout(resolve, 20_000).unref?.()),
+      ]);
+    };
     const shot = path.join(PROOF_DIR, 'teacher-drill-down-subskills.png');
-    await subskills.screenshot({ path: shot, animations: 'disabled' });
-    await testInfo.attach('teacher-drill-down-subskills', { path: shot, contentType: 'image/png' });
+    await captureWithDeadline(shot);
+    if (existsSync(shot)) await testInfo.attach('teacher-drill-down-subskills', { path: shot, contentType: 'image/png' });
     const analysis = path.join(PROOF_DIR, 'teacher-drill-down-analysis.png');
-    await page.locator('[data-slot="student-analysis"]').screenshot({ path: analysis, animations: 'disabled' });
-    await testInfo.attach('teacher-drill-down-analysis', { path: analysis, contentType: 'image/png' });
+    await captureWithDeadline(analysis, true);
+    if (existsSync(analysis)) await testInfo.attach('teacher-drill-down-analysis', { path: analysis, contentType: 'image/png' });
 
-    // The class Insights pairings state phases, never a percentage.
+    // The Teaching tab's Reading pairs state phases, never a percentage (Spec 04:
+    // the `teaching-pairs` card, one `teaching-pair` row per pairing, named
+    // lead/learner via data attributes).
     await page.goto(`/dashboard/results/${target.classId}?tab=insights`);
     await expect(page.locator('[data-tab-panel="insights"] [data-slot="teaching-insights"]')).toBeVisible({ timeout: 90_000 });
-    const pairings = page.locator('[data-tab-panel="insights"] [data-insights-section="pairings"]');
-    const pairs = await pairings.locator('[data-slot="insights-pair"]').allInnerTexts();
-    for (const pair of pairs) expect(pair).not.toMatch(/\d+%/);
-    testInfo.annotations.push({ type: 'pairs', description: String(pairs.length) });
+    const pairs = page.locator('[data-tab-panel="insights"] [data-slot="teaching-pairs"] [data-slot="teaching-pair"]');
+    const pairTexts = await pairs.allInnerTexts();
+    for (const pair of pairTexts) expect(pair).not.toMatch(/\d+%/);
+    testInfo.annotations.push({ type: 'pairs', description: String(pairTexts.length) });
   });
 
   test('parent view: strength and focus lines name the skill and the phrase, never a percentage', async ({ page }, testInfo) => {

@@ -179,30 +179,33 @@ async function rowAction(page: import('@playwright/test').Page, row: ReturnType<
     }
   });
 
-  test('TEA-053: the class results export downloads a CSV', async ({ page }) => {
+  test('TEA-053: the class results export downloads a document', async ({ page }) => {
     test.setTimeout(120_000); // shared dev server compiles under fleet load
     await signInTeacher(page, 't1@schooltest.local');
     await page.goto(`/dashboard/results/${PROOF}`);
-    const exportButtons = page.locator('[data-slot="export-buttons"]');
+    // v2 redesign: the class header's export tray is gone — the SAME class-scoped
+    // exports (PDF + LLM, ExportButtons) now ride each scored row of the students
+    // results table. The first scored row's pair is the export this test proves.
+    const exportButtons = page.locator('[data-slot="export-buttons"]').first();
     await expect(exportButtons).toBeVisible({ timeout: 30_000 });
-    // The header carries two export buttons (download-tray PDF, export .md);
-    // the second is the document export the design ships on this surface.
     const [download] = await Promise.all([
       page.waitForEvent('download', { timeout: 30_000 }),
-      exportButtons.locator('button, a').last().click(),
+      exportButtons.locator('[data-export]').last().click(),
     ]);
     expect(download.suggestedFilename()).toMatch(/\.(csv|md|pdf)$/);
   });
 
-  test('TEA-060: batch release flips every held report in the class', async ({ page }) => {
+  test('TEA-060: Download all prints one page per scored report in the class', async ({ page }) => {
     await signInTeacher(page, 't1@schooltest.local');
     await page.goto(`/dashboard/results/${PROOF}?tab=reports`);
-    const release = page.getByRole('button', { name: /release (all|held)/i });
-    test.skip((await release.count()) === 0, 'no held reports to batch-release right now');
-    await release.first().click();
-    const dialog = page.getByRole('alertdialog');
-    await dialog.getByRole('button', { name: /release/i }).last().click();
-    await expect(page.getByRole('button', { name: /release (all|held)/i })).toHaveCount(0, { timeout: 20_000 });
+    const downloadAll = page.locator('[data-slot="reports-download-all"]');
+    await expect(downloadAll, 'the reports tab renders its Download all').toBeVisible({ timeout: 30_000 });
+    // Proof 10X holds scored (released) results, so the batch download is wired
+    await expect(downloadAll).toBeEnabled({ timeout: 20_000 });
+    const [popup] = await Promise.all([page.waitForEvent('popup'), downloadAll.click()]);
+    await expect(popup.locator('.page').first()).toBeVisible({ timeout: 30_000 });
+    expect(await popup.locator('.page').count(), 'a page per scored student').toBeGreaterThan(0);
+    await popup.close();
   });
 
   test('TEA-062: the teacher family preview page renders the wired preview', async ({ page }) => {
@@ -215,5 +218,10 @@ async function rowAction(page: import('@playwright/test').Page, row: ReturnType<
     test.setTimeout(120_000);
     await signInTeacher(page, 't1@schooltest.local');
     await page.goto(`/dashboard/reports/${RELEASED_RESULT}`);
-    await expect(page.locator('main')).toContainText(/report|reading|score/i, { timeout: 30_000 });
+    // The dashboard shell renders its own <main data-slot="sidebar-inset">, so the
+    // bare `main` locator is ambiguous while the report loads inside its skeleton.
+    // The report's own surface main carries the rendered per-student report.
+    const report = page.locator('main[data-surface="teacher-report"]');
+    await expect(report).toBeVisible({ timeout: 60_000 });
+    await expect(report).toContainText(/report|reading|score/i, { timeout: 30_000 });
   });

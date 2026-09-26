@@ -1,6 +1,7 @@
 import type { AttributeName } from '@schooltest/scoring-contracts';
 
 import type { RosterReleaseState, RosterRow } from '@/modules/results';
+import type { StudentsTabRow } from '@/modules/teacher/types/v2-class-tabs.types';
 import type { PhaseView, ViewTone } from '@/modules/teacher/types/v2-view-common.types';
 
 export type ExpectedKind = 'at' | 'approaching' | 'below';
@@ -23,57 +24,12 @@ export interface ReleaseActions {
   recall: boolean;
 }
 
-export type FamilyFilter = 'all' | 'held' | 'released' | 'blocked';
+export type ReportsAudience = 'parents' | 'teachers' | 'principal' | 'admin';
 
-export interface FamilyReportsOptions {
-  filter?: FamilyFilter;
-}
-
-export interface FamilyReportRow {
-  studentDocumentId: string;
-  resultDocumentId: string | null;
-  name: string;
-  initials: string;
-  status: ReleaseStatusView;
-  whyKey: string;
-  releasedAt: string | null;
-  score: number | null;
-  expected: ExpectedView | null;
-  actions: ReleaseActions;
-}
-
-export interface FamilyCounts {
-  total: number;
+export interface ReportsView {
+  rows: StudentsTabRow[];
   scored: number;
-  released: number;
-  /** Held AND scored: the rows the release buttons can act on (TB-40). */
-  held: number;
-  recalled: number;
-  open: number;
-  blocked: number;
-  /** Held but carrying no `domain_score` — counted under `noResult`, never under `scored` (TB-40). */
-  unscored: number;
-  noResult: number;
-}
-
-export interface BannerTone extends ViewTone {
-  border: string;
-}
-
-export interface FamilyBanner {
-  kind: 'incomplete' | 'complete';
-  open: number;
-  blocked: number;
-  unscored: number;
-  tone: BannerTone;
-}
-
-export interface FamilyReportsView {
-  filter: FamilyFilter;
-  rows: FamilyReportRow[];
-  counts: FamilyCounts;
-  banner: FamilyBanner | null;
-  releasableResultIds: string[];
+  total: number;
 }
 
 export interface CarerLine {
@@ -99,71 +55,32 @@ export interface CarerReportView {
   actions: Pick<ReleaseActions, 'release' | 'recall'>;
 }
 
-export type FamilyConfirm =
-  | { kind: 'release'; row: FamilyReportRow }
-  | { kind: 'recall'; row: FamilyReportRow }
-  | { kind: 'releaseAll' }
-  | { kind: 'nothingHeld' };
-
-export interface FamilyFailureGroup {
-  reasonKey: string;
-  names: string[];
-}
-
-export interface ReleaseBatchSummary {
-  tone: 'ok' | 'warn' | 'error';
-  released: number;
-  total: number;
-  failures: FamilyFailureGroup[];
-}
-
 export interface FamilyReportsPanelProps {
   classDocumentId: string;
   rows: RosterRow[];
 }
 
-export interface FamilyReportActions {
-  confirm: FamilyConfirm | null;
-  reason: string;
-  error: string | null;
-  pending: boolean;
-  setReason: (reason: string) => void;
-  askRelease: (row: FamilyReportRow) => void;
-  askRecall: (row: FamilyReportRow) => void;
-  askReleaseAll: () => void;
-  close: () => void;
-  run: () => void;
+export interface ReportsDownloadsApi {
+  downloadPdf: (row: StudentsTabRow) => void;
+  downloadAll: () => void;
+  pdfPendingId: string | null;
 }
 
-export interface FamilyReportsSummaryProps {
-  counts: FamilyCounts;
-  banner: FamilyBanner | null;
+export interface ReportsAudiencePickerProps {
+  value: ReportsAudience;
+  titleId: string;
+  onChange: (audience: ReportsAudience) => void;
 }
 
-export interface FamilyReportRowItemProps {
-  row: FamilyReportRow;
-  onPreview: () => void;
-  onRelease: () => void;
-  onRecall: () => void;
-}
-
-export interface CarerReportPreviewProps {
-  report: CarerReportView;
-  classDocumentId: string;
+export interface ReportsClassCardProps {
   className: string;
-  onClose: () => void;
-  onRelease: () => void;
-  onRecall: () => void;
+  audience: ReportsAudience;
+  scored: number;
+  total: number;
 }
 
-export interface FamilyReportDialogsProps {
-  actions: FamilyReportActions;
-  counts: FamilyCounts;
-  heldCount: number;
-  className: string;
-}
-
-export interface RecallReportDialogProps {
-  actions: FamilyReportActions;
-  name: string;
+export interface ReportsStudentListProps {
+  view: ReportsView;
+  audience: ReportsAudience;
+  downloads: ReportsDownloadsApi;
 }

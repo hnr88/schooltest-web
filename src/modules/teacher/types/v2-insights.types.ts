@@ -3,6 +3,19 @@ import type { AssessedBand } from '@schooltest/scoring-contracts';
 import type { ClassDiagnostic } from '@/modules/teach';
 import type { AcaraPhaseName, SkillRef, ViewTone } from '@/modules/teacher/types/v2-view-common.types';
 
+export type {
+  NextPhase,
+  TeachingGateSummary,
+  TeachingNextStep,
+  TeachingPlanState,
+  TeachingPlanView,
+  TeachingSkill,
+  TeachingStrand,
+  TeachingStrandGroup,
+  TeachingStudent,
+  TeachingTarget,
+} from '@/modules/teacher/types/teaching-plan.types';
+
 export type TeachingDiagnostic = Pick<ClassDiagnostic, 'form_code' | 'groups'>;
 
 export interface LastSittingKpi {
@@ -79,6 +92,8 @@ export interface CohortView {
 export interface PairingStudent {
   studentDocumentId: string;
   firstName: string;
+  initials: string;
+  provisionalCut: boolean;
   /** Ranks and gaps the pair; never shown — the card shows `band`. */
   score: number;
   band: AssessedBand;

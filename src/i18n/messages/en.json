@@ -726,7 +726,7 @@
       "opsSettings": "Platform settings",
       "account": "Account",
       "teacherDashboard": "Dashboard",
-      "testSessions": "Live sessions",
+      "testSessions": "Test sessions",
       "results": "Classes"
     },
     "sidebar": {
@@ -1950,7 +1950,7 @@
       "recalledTitle": "Report recalled by the school",
       "recalledBody": "The school has recalled this family report while it is reviewed. It is no longer visible here — the school will release it again when it is updated.",
       "recalledAt": "Recalled on {date}.",
-      "listHeading": "Family reports",
+      "listHeading": "Reports",
       "listDescription": "Reports for your children, newest first. A report appears here once the school releases it.",
       "listEmptyTitle": "No reports yet",
       "listEmptyBody": "When your child completes a test and the school releases the report, it will appear here.",
@@ -4440,10 +4440,10 @@
     "results": {
       "meta": {
         "title": "Results — SchoolTest",
-        "description": "Class results, teaching insights and the progress between Test A and Test B."
+        "description": "Class results, teaching plans and the progress between Test A and Test B."
       },
       "title": "Results",
-      "description": "Class results, teaching insights and progress between tests.",
+      "description": "Class results, teaching plans and progress between tests.",
       "list": {
         "loading": "Loading your classes",
         "students": "{count, plural, one {# student} other {# students}}",
@@ -4503,7 +4503,7 @@
         "loading": "Loading this class",
         "meta": {
           "title": "Class results — SchoolTest",
-          "description": "One class: every student’s reading diagnostic, the teaching insights behind it and the progress between Test A and Test B."
+          "description": "One class: every student’s reading diagnostic, the teaching plans behind it and the progress between Test A and Test B."
         },
         "noValue": "—",
         "notYetCount": "{count, plural, one {# not yet mastered} other {# not yet mastered}}",
@@ -4529,12 +4529,12 @@
       "tabs": {
         "listLabel": "Class results views",
         "students": "Students",
-        "insights": "Teaching insights",
+        "insights": "Teaching",
         "progress": "Progress",
         "exit": "Exit predictions",
         "comingSoon": "Coming soon",
-        "reports": "Family reports",
-        "live": "Live sessions"
+        "reports": "Reports",
+        "live": "Test sessions"
       },
       "insights": {
         "loading": "Loading teaching insights",
@@ -5013,9 +5013,9 @@
       },
       "attribute": {
         "decoding": "Decoding",
-        "vocabA2": "Everyday Vocabulary",
-        "vocabB1": "Classroom Vocabulary",
-        "vocabB2": "Academic Vocabulary",
+        "vocabA2": "Vocabulary (everyday)",
+        "vocabB1": "Vocabulary (classroom)",
+        "vocabB2": "Vocabulary (academic)",
         "grammar": "Grammar",
         "gist": "Gist",
         "detail": "Detail",
@@ -5238,11 +5238,11 @@
       "tabs": {
         "listLabel": "Class results views",
         "students": "Students",
-        "progress": "Class progress",
-        "insights": "Teaching insights",
+        "progress": "Progress",
+        "insights": "Teaching",
         "exit": "Exit predictions",
-        "reports": "Family reports",
-        "live": "Live sessions"
+        "reports": "Reports",
+        "live": "Test sessions"
       },
       "exit": {
         "title": "Exit predictions",
@@ -5316,24 +5316,65 @@
     },
     "progress": {
       "title": "Class progress",
-      "subtitle": "{count, plural, =0 {No scored sittings yet.} one {Class movement across # sitting.} other {Class movement across # sittings.}}",
-      "tiles": {
-        "meanShift": {
-          "label": "Mean shift",
-          "sub": "Previous sitting to latest"
+      "subtitle": "{count, plural, =0 {No scored sittings yet.} one {Class movement across # sitting this year.} other {Class movement across # sittings this year.}}",
+      "dotMap": {
+        "title": "Reading progress by student",
+        "sub": "Each row is a student, highest first. The dot is where they started and the arrowhead is their latest sitting. Hover over a row for details.",
+        "modeGrowth": "Show growth",
+        "modeLatest": "Latest only",
+        "phases": {
+          "beginning": "Beginning",
+          "emerging": "Emerging",
+          "developing": "Developing",
+          "consolidating": "Consolidating"
         },
-        "gained": {
-          "label": "Gained",
-          "sub": "{threshold} points or more"
+        "studentsCount": "{count, plural, one {# student} other {# students}}",
+        "tooltip": "{name} · {firstMonth} {firstPct}% ({firstPhase}) → {latestMonth} {latestPct}% ({latestPhase})",
+        "endLabel": "Little change",
+        "legendUp": "Moved up",
+        "legendBack": "Went back",
+        "classSummary": "{up} of {total, plural, one {# student} other {# students}} moved up at least one ACARA phase since the first sitting; {held} held and {down} slipped.",
+        "empty": "No results to compare yet."
+      },
+      "gains": {
+        "topTitle": "Highest overall gains",
+        "lowTitle": "Lowest overall gains",
+        "empty": "No results to compare yet."
+      },
+      "subMap": {
+        "title": "Subskill growth by student",
+        "sub": "Pick a subskill to see which phase each student has reached. The dot is the phase at the first sitting and the arrowhead is the latest sitting, so you can see who moved forward and who went back.",
+        "skills": {
+          "Decoding": "Decoding",
+          "Vocab_A2": "Vocabulary (everyday)",
+          "Grammar": "Grammar",
+          "Vocab_B1": "Vocabulary (classroom)",
+          "Gist": "Gist",
+          "Detail": "Detail",
+          "Inference": "Inference",
+          "Vocab_B2": "Vocabulary (academic)"
         },
-        "held": {
-          "label": "Held steady",
-          "sub": "Within {threshold} points"
+        "phases": {
+          "beginning": "Beginning",
+          "emerging": "Emerging",
+          "developing": "Developing",
+          "consolidating": "Consolidating"
         },
-        "slipped": {
-          "label": "Slipped",
-          "sub": "{threshold} points or more down"
-        }
+        "studentsCount": "{count, plural, one {# student} other {# students}}",
+        "tooltip": "{name} · {skill}: {firstPhase} ({firstMonth}) → {latestPhase} ({latestMonth})",
+        "tooltipLatest": "{name} · {skill}: {latestPhase} ({latestMonth})",
+        "moveUp": "↑ {count, plural, one {# phase} other {# phases}}",
+        "moveHeld": "Held",
+        "moveDown": "↓ {count, plural, one {# phase} other {# phases}}",
+        "summary": "{skill}: {up} moved up · {held} held · {down} slipped",
+        "legendUp": "Moved up",
+        "legendBack": "Went back",
+        "legendHeld": "Held",
+        "empty": "No results to compare yet."
+      },
+      "analysis": {
+        "title": "Class analysis",
+        "comingSoon": "Generated summary coming soon"
       },
       "points": "{value} pts",
       "percent": "{value}%",
@@ -5345,27 +5386,70 @@
         "summary": "Class average {from}% → {to}% across {count} sittings ({difference} pts).",
         "summarySingle": "Class average {value}% from one sitting so far.",
         "summaryEmpty": "No scored sittings yet."
-      },
-      "top": {
-        "title": "Top progress",
-        "empty": "No reliable gains yet."
-      },
-      "watch": {
-        "title": "Students to watch",
-        "empty": "No students to watch yet."
-      },
-      "subskills": {
-        "title": "Subskill movement over time",
-        "description": "Class average for each reading subskill across the sittings, weakest first",
-        "now": "now {value}%"
-      },
-      "footnote": "Every student change here is the server's own comparison of their latest sitting with the one before it. Where a pair cannot be compared, no change is shown at all. Class averages over time are plain averages of the scored sittings on record."
+      }
     },
     "insights": {
-      "title": "Teaching insights",
+      "title": "Teaching",
       "subtitle": "What to teach next, and who to teach it to.",
       "emptyTitle": "No student in this class has completed a test yet",
       "emptyDescription": "Subskill mastery and suggested groups are built from completed reading results, so there is nothing to teach from yet. They appear here as soon as a student submits a test.",
+      "teaching": {
+        "summary": "{v} vocabulary, {c} comprehension and {f, plural, one {# foundations group} other {# foundations groups}}, and {p, plural, one {# reading pair} other {# reading pairs}} for {n, plural, one {# student} other {# students}}.",
+        "empty": "No results yet for this class.",
+        "provisional": "provisional",
+        "moreMembers": "+{count}",
+        "section": {
+          "wholeClass": "Whole class",
+          "wholeClassSub": "Differentiated groups",
+          "individual": "Individual",
+          "individualSub": "Pairings and next steps"
+        },
+        "strands": {
+          "vocabulary": "Vocabulary",
+          "vocabularySub": "Word level",
+          "comprehension": "Comprehension",
+          "comprehensionSub": "Paragraph level",
+          "foundations": "Foundations",
+          "foundationsSub": "Decoding and Grammar",
+          "empty": "Not assessed yet."
+        },
+        "skills": {
+          "Vocab_A2": "Everyday",
+          "Vocab_B1": "Classroom",
+          "Vocab_B2": "Academic",
+          "Gist": "Gist",
+          "Detail": "Detail",
+          "Inference": "Inference",
+          "Decoding": "Decoding",
+          "Grammar": "Grammar"
+        },
+        "prompt": {
+          "strand": "Prompt",
+          "all": "Prompt for all",
+          "title": "Download a prompt to paste into your AI assistant",
+          "student": "Download AI prompt for {name}",
+          "strandFor": "Download the AI prompt for {strand}"
+        },
+        "gate": {
+          "label": "Critical reading exit gate",
+          "passed": "{count} passed",
+          "notYet": "{count} not yet"
+        },
+        "pairs": {
+          "title": "Reading pairs",
+          "intro": "Stronger reader leads, for {skill}",
+          "empty": "No clear pairs this week."
+        },
+        "nextSteps": {
+          "title": "Next steps",
+          "sub": "One vocabulary and one comprehension focus each",
+          "target": "{skill} → {phase}",
+          "vocabularyTarget": "{skill} vocab → {phase}",
+          "extend": "Extend",
+          "vocabularyPill": "Vocabulary focus: {skill} → {phase}",
+          "comprehensionPill": "Comprehension focus: {skill} → {phase}"
+        }
+      },
       "percent": "{value}%",
       "kpi": {
         "lastSitting": "Last sitting",
@@ -5418,96 +5502,40 @@
       }
     },
     "familyReports": {
-      "title": "Family reports",
-      "subtitle": "Release results to families for {className}. Open a student to see or export their full report.",
-      "releaseHeld": "{count, plural, =0 {Release held reports} one {Release # held report} other {Release # held reports}}",
-      "tiles": {
-        "scored": "Scored",
-        "released": "Released to carers",
-        "held": "Held for you",
-        "noResult": "No result yet"
+      "title": "Reports",
+      "audiencePrompt": "Who is this report for?",
+      "comingSoon": "Coming soon",
+      "audiences": {
+        "parents": "Parents & carers",
+        "teachers": "Mainstream teachers",
+        "principal": "Principal",
+        "admin": "Admin"
       },
-      "banner": {
-        "open": "{count, plural, one {# attempt is still open.} other {# attempts are still open.}}",
-        "blocked": "{count, plural, one {# student needs a re-sit or manual scoring before anything can be released for them.} other {# students need a re-sit or manual scoring before anything can be released for them.}}",
-        "gaps": "Releasing now gives carers a class picture with gaps in it.",
-        "complete": "Every attempt in this sitting is scored, so the class picture is complete.",
-        "unscored": "{count, plural, one {# attempt has no score yet.} other {# attempts have no score yet.}}"
+      "notes": {
+        "parents": "Plain-English reports for families. One per student, no class data.",
+        "teachers": "Classroom-facing reports for mainstream teachers. One per student, with teaching next steps.",
+        "principal": "A leadership view of the class: results, phases and next steps at a glance.",
+        "admin": "Administrative reports for school records. Class data, no teaching notes."
       },
-      "filters": {
-        "label": "Show reports",
-        "all": "All",
-        "held": "Held",
-        "released": "Released",
-        "blocked": "Blocked"
+      "classCard": {
+        "title": "Class summary",
+        "meta": "{className} · {scored} of {total} students with a result · for {audience}",
+        "download": "Download PDF"
       },
-      "listLabel": "Family reports by student",
-      "empty": "Nothing in this group.",
-      "score": "{score}%",
-      "noResult": "No result",
-      "actions": {
-        "preview": "Preview report",
-        "release": "Release",
-        "recall": "Recall"
+      "students": {
+        "title": "Individual students",
+        "meta": "{scored} of {total} students have a report ready · for {audience}",
+        "downloadAll": "Download all",
+        "pdf": "PDF",
+        "noResultYet": "No result yet",
+        "pdfFor": "Download PDF report for {name}"
       },
-      "preview": {
-        "eyebrow": "Carer report preview",
-        "meta": "{className} · sat {date}",
-        "score": "{score} / 100",
-        "canDo": "What they can do",
-        "next": "What to work on next",
-        "release": "Release to carer",
-        "recall": "Recall this report",
-        "viewAnalysis": "View full analysis",
-        "close": "Close"
-      },
-      "release": {
-        "title": "Release to {name}’s carer?",
-        "body": "They can read the band, the subskill breakdown and the next steps as soon as you release it.",
-        "bodyRecalled": "They can read the band, the subskill breakdown and the next steps as soon as you release it. This report was recalled once already, so the carer will see it again.",
-        "cta": "Release the report"
-      },
-      "recall": {
-        "title": "Recall {name}’s report?",
-        "body": "Recalling takes it out of the parent portal and sends a note saying the result is under review. What they have already read cannot be un-sent.",
-        "reasonLabel": "Reason for the recall",
-        "reasonHint": "Saved with the result. Up to 500 characters.",
-        "reasonRequired": "Give a reason for the recall, up to 500 characters.",
-        "cta": "Recall the report"
-      },
-      "releaseAll": {
-        "title": "{count, plural, one {Release # held report?} other {Release # held reports?}}",
-        "body": "{count, plural, one {The carer of # student can read the band and next steps straight away.} other {Carers of # students can read the band and next steps straight away.}}",
-        "open": "{count, plural, one {# student is still sitting, so that carer will see nothing and is likely to ask why.} other {# students are still sitting, so those carers will see nothing and are likely to ask why.}}",
-        "blocked": "{count, plural, one {# more is blocked on a re-sit or manual scoring.} other {# more are blocked on a re-sit or manual scoring.}}",
-        "tail": "Reports can be recalled, but not un-read.",
-        "cta": "{count, plural, one {Release # report} other {Release # reports}}",
-        "unscored": "{count, plural, one {# more has no score yet.} other {# more have no score yet.}}"
-      },
-      "nothingHeld": {
-        "title": "Nothing is being held back",
-        "body": "{count, plural, =0 {Every scored report in {className} has already gone to its carer.} one {Every scored report in {className} has already gone to its carer. The # student without a report has no score yet, is waiting on a re-sit or on manual scoring, or is still sitting, and cannot be released from here.} other {Every scored report in {className} has already gone to its carer. The # students without a report have no score yet, are waiting on a re-sit or on manual scoring, or are still sitting, and cannot be released from here.}}",
-        "cta": "Got it"
-      },
-      "cancel": "Cancel",
-      "toast": {
-        "released": "Released {name}’s report to their carer",
-        "recalled": "Recalled {name}’s released report",
-        "releasedAll": "{count, plural, one {Released # report to carers} other {Released # reports to carers}}",
-        "releasedSome": "Released {released} of {total} held reports.",
-        "releasedNone": "No held report was released.",
-        "notReleased": "Not released ({reason}): {names}."
-      },
-      "errors": {
-        "notReady": "the result is not complete yet",
-        "notFound": "the result was not found",
-        "forbidden": "you cannot change this result",
-        "rateLimited": "too many requests, try again in a minute",
-        "transport": "the connection dropped, refresh to see the current state",
-        "generic": "the server did not accept the change"
-      },
-      "failedRelease": "{name}’s report was not released: {reason}.",
-      "failedRecall": "{name}’s report was not recalled: {reason}."
+      "download": {
+        "popupBlocked": "Allow pop-ups to download the reports as a PDF.",
+        "allOpened": "Student reports opened — save as PDF from the print dialog.",
+        "allFailed": "Could not prepare the student reports. Try again.",
+        "studentsTitle": "Student reports — {name}"
+      }
     },
     "live": {
       "students": {
@@ -5882,12 +5910,12 @@
       }
     },
     "liveSessions": {
-      "title": "Live sessions",
+      "title": "Test sessions",
       "summary": "{sessions, plural, one {# session} other {# sessions}} running across {classes, plural, one {# class} other {# classes}}. A student can only sit one test at a time.",
       "summaryNone": "Nothing running. Different students in the same class can sit different versions side by side.",
       "startSession": "Start new session",
-      "loading": "Loading live sessions…",
-      "loadError": "Live sessions could not be loaded.",
+      "loading": "Loading test sessions…",
+      "loadError": "Test sessions could not be loaded.",
       "retry": "Try again",
       "classMeta": "{year} · {count, plural, one {# student} other {# students}}",
       "classMetaNoYear": "{count, plural, one {# student} other {# students}}",
@@ -6217,6 +6245,24 @@
       },
       "progressTitle": "Reading progress over time",
       "progressDescription": "Overall domain score against ACARA proficiency, each form sat this year",
+      "statOverall": "Overall reading",
+      "statAcaraPhase": "ACARA phase",
+      "statMomentum": "Momentum",
+      "momentum": {
+        "holding": "Holding",
+        "steady": "Steady",
+        "accelerating": "Accelerating",
+        "slipping": "Slipping"
+      },
+      "momentumNote": {
+        "holding": "Little change since the first sitting",
+        "steady": "A clear, steady gain",
+        "accelerating": "Strong, reliable gain",
+        "slipping": "Falling since the first sitting",
+        "none": "Needs two sittings to measure"
+      },
+      "progressCardTitle": "Reading progress",
+      "progressCardSubtitle": "Overall domain score against ACARA proficiency, each form sat this year",
       "phaseChip": "ACARA: {phase}",
       "chartLabel": "Overall reading score at each sitting, plotted against the ACARA phases",
       "tiles": {
@@ -6234,6 +6280,17 @@
       },
       "subskillsTitle": "Reading subskills",
       "subskillsDescription": "How {first} performed across the nine components of reading on the latest form",
+      "breakdown": {
+        "title": "Reading subskill breakdown",
+        "columnSubskill": "Subskill",
+        "columnPhase": "Phase",
+        "provisionalNote": "Academic vocabulary cut is provisional",
+        "vocab": {
+          "Vocab_A2": "Everyday vocabulary",
+          "Vocab_B1": "Classroom vocabulary",
+          "Vocab_B2": "Academic vocabulary"
+        }
+      },
       "subskills": {
         "deltaUp": "↑ +{points}",
         "deltaDown": "↓ −{points}",
@@ -6243,6 +6300,7 @@
       },
       "analysisTitle": "Student analysis",
       "analysisBadge": "Generated summary",
+      "analysisComingSoon": "Generated summary coming soon",
       "copy": "Copy",
       "copied": "Teacher commentary copied to clipboard.",
       "copyFailed": "Could not copy to the clipboard. Select the text and copy it instead.",

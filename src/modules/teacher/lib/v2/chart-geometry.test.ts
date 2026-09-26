@@ -3,7 +3,7 @@ import { describe, expect, test } from 'vitest';
 import type { ResultView } from '@schooltest/scoring-contracts';
 
 import { t2Result, t2ResultDilnoza } from '@/modules/teacher/lib/v2/__fixtures__/t2';
-import { acaraChart, sparkline, studentChart } from '@/modules/teacher/lib/v2/chart-geometry';
+import { acaraChart, sparkline, studentBandChart, studentChart } from '@/modules/teacher/lib/v2/chart-geometry';
 import type { SeriesPoint } from '@/modules/teacher/types/v2-view-common.types';
 
 function recordedOverall(result: ResultView): SeriesPoint[] {
@@ -50,6 +50,35 @@ describe('studentChart — the design student chart geometry on recorded series'
     const chart = studentChart(recordedOverall(t2Result('Jae-won')));
     expect(chart.points[0]).toMatchObject({ cx: 377, cy: 134 });
     expect(chart.areaPath).toBe('M377,206 L377,134 L377,206 Z');
+  });
+});
+
+describe('studentBandChart — the Spec 02 equal-height band geometry', () => {
+  const series: SeriesPoint[] = [
+    { n: 1, satAt: '2026-02-01', value: 45 },
+    { n: 2, satAt: '2026-04-01', value: 58 },
+    { n: 3, satAt: '2026-06-01', value: 49 },
+    { n: 4, satAt: '2026-08-01', value: 53 },
+  ];
+
+  test('four equal-height bands with their washes and the three interior edges', () => {
+    const chart = studentBandChart(series);
+    expect(chart.bands.map((band) => [band.phase, band.y, band.h])).toEqual([
+      ['Consolidating', 16, 48],
+      ['Developing', 64, 47],
+      ['Emerging', 111, 48],
+      ['Beginning', 159, 47],
+    ]);
+    expect(chart.bounds.map((bound) => bound.y)).toEqual([159, 111, 64]);
+    // Band names are centred in their own band, not at the linear label levels.
+    expect(chart.acara.map((level) => level.y)).toEqual([40, 87.5, 135, 182.5]);
+  });
+
+  test('a score sits proportionally WITHIN its band (mock: 45 → band top, 58 → y 122)', () => {
+    const chart = studentBandChart(series);
+    expect(chart.points.map((point) => point.cy)).toEqual([159, 122, 147, 136]);
+    // The x geometry is the student frame's, unchanged.
+    expect(chart.points.map((point) => point.cx)).toEqual([132, 295, 459, 622]);
   });
 });
 

@@ -7,18 +7,17 @@ import type { RosterRow } from '@/modules/results/types/roster.types';
 import { teacherDashboardResponseSchema } from '@/modules/teacher/schemas/teacher.schema';
 import type { TeacherDashboardResponse } from '@/modules/teacher/types/teacher.types';
 
-import { apiEnv, runSql } from './auth-db';
+import { apiEnv } from './auth-db';
 import { cat } from './i18n';
 import { fetchWithRetry, loginCached } from './http';
 import { ACCOUNTS, en } from './teacher-rail';
 import { API_BASE } from './teacher-results-live';
 
-// Harness for teacher-v2/family-reports-tab.spec.ts. Every expected value is read live
-// from the API the browser talks to; the one write the spec makes is undone from a
-// snapshot of the row taken before it.
+// Harness for the teacher Reports tab specs (Spec 06's rebuilt tab — the release
+// workflow is gone, so nothing here writes). Every expected value is read live
+// from the API the browser talks to.
 
 export const fr = (key: string) => cat(en, `TeacherPortal.familyReports.${key}`);
-export const vm = (key: string) => cat(en, `TeacherPortal.viewModel.${key}`);
 
 /** Resolves the catalog's ICU for one value set: `=N` / `one` / `other` plural arms and `{x}` args. */
 export function icu(template: string, values: Record<string, string | number>): string {
@@ -71,63 +70,28 @@ export async function teacherApi(playwright: PlaywrightWorkerArgs['playwright'])
 }
 
 /**
- * The four tiles, tallied from what the API actually served for every roster row: the
- * `release_state` AND the score on it. A held result with no `overall.domain_score` is not
- * scored and cannot be released, so it counts under "No result yet" (TB-40).
+ * The tallies the Reports tab is built on, computed from what the API actually
+ * served for every roster row. The release workflow is gone (Spec 06 §0.1), so
+ * `release_state` no longer gates anything: a row is SCORED exactly when its
+ * result carries an `overall.domain_score` — that row serves a PDF; every other
+ * row (no result, or an unscored one) reads "No result yet".
  */
-export function expectedTiles(roster: readonly RosterRow[]): Record<'scored' | 'released' | 'held' | 'noResult', number> {
-  const count = (states: readonly string[]) => roster.filter((row) => states.includes(row.release_state)).length;
-  const heldRows = roster.filter((row) => row.release_state === 'held');
-  const held = heldRows.filter((row) => row.result !== null && row.result.overall.domain_score !== null).length;
-  const released = count(['released']);
-  return {
-    scored: released + held,
-    released,
-    held,
-    noResult: count(['manual', 'absent', 'nosit', 'open']) + (heldRows.length - held),
-  };
+export function expectedTiles(roster: readonly RosterRow[]): Record<'scored' | 'noResult', number> {
+  const scored = roster.filter((row) => row.result !== null && row.result.overall.domain_score !== null).length;
+  return { scored, noResult: roster.length - scored };
 }
 
-export interface ResultRowSnapshot {
-  resultId: string;
-  columns: string[];
-  notificationBaseline: number;
-}
+/** A served `acara_phase` → the kit's phase word; anything unmapped (or null) reads the kit dash. */
+const SERVER_PHASE_KEY: Readonly<Record<string, string>> = {
+  beginning: 'beginning',
+  emerging: 'emerging',
+  developing: 'developing',
+  developing_to_consolidating: 'developing',
+  consolidating: 'consolidating',
+};
 
-const SNAPSHOT_COLUMNS = `coalesce(published_at_field::text, 'NULL'), coalesce(recalled_at::text, 'NULL'),
-  coalesce(recall_reason, 'NULL'), updated_at::text`;
-const literal = (value: string) => (value === 'NULL' ? 'null' : `'${value.replace(/'/g, "''")}'`);
-
-/** The row's release columns before any write; null when the database is out of reach (then nothing is written). */
-export function snapshotResultRow(resultId: string): ResultRowSnapshot | null {
-  const columns = runSql(`select ${SNAPSHOT_COLUMNS} from results where document_id = ${literal(resultId)}`).split('|');
-  const baseline = Number(runSql('select coalesce(max(id), 0) from notifications'));
-  if (columns.length !== 4 || !Number.isInteger(baseline)) return null;
-  return { resultId, columns, notificationBaseline: baseline };
-}
-
-export function recallReasonOf(resultId: string): string {
-  return runSql(`select coalesce(recall_reason, 'NULL') from results where document_id = ${literal(resultId)}`);
-}
-
-/**
- * Writes the snapshot back and deletes the release/recall notifications the run created
- * (they carry no result id, so they are matched by the id window and event type).
- */
-export function restoreResultRow(snapshot: ResultRowSnapshot): string[] {
-  const [published, recalled, reason, updated] = snapshot.columns;
-  runSql(`update results set published_at_field = ${literal(published)}, recalled_at = ${literal(recalled)},
-    recall_reason = ${literal(reason)}, updated_at = ${literal(updated)}
-    where document_id = ${literal(snapshot.resultId)}`);
-  const created = runSql(`select coalesce(string_agg(id::text, ','), '') from notifications
-    where id > ${snapshot.notificationBaseline} and event_type in ('test_results_ready', 'report_recalled')`);
-  if (created !== '') {
-    runSql(`delete from notifications_user_lnk where notification_id in (${created})`);
-    runSql(`delete from notifications where id in (${created})`);
-  }
-  expect(
-    runSql(`select ${SNAPSHOT_COLUMNS} from results where document_id = ${literal(snapshot.resultId)}`).split('|'),
-    'result row restored to its snapshot',
-  ).toEqual(snapshot.columns);
-  return created === '' ? [] : created.split(',');
+export function expectedPhaseText(row: RosterRow): string {
+  const code = row.result?.acara_phase?.trim().toLowerCase().replace(/\s+phase$/, '') ?? null;
+  const key = code === null ? undefined : SERVER_PHASE_KEY[code];
+  return key === undefined ? cat(en, 'TeacherPortal.kit.noValue') : cat(en, `TeacherPortal.kit.phase.${key}`);
 }

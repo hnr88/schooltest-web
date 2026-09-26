@@ -72,3 +72,16 @@ export interface SparklineGeometry {
   polyline: string;
   last: SparklinePoint | null;
 }
+
+/**
+ * Spec 02 §3b — the student report chart: the same line geometry, but the ACARA
+ * phases are four EQUAL-HEIGHT washes (piecewise y, edges 0/45/62/80/100) with
+ * their names centred in each band and no numeric axis. `bands` runs top-first.
+ */
+export interface StudentBandChartGeometry extends LineChartGeometry {
+  axisTop: number;
+  bandW: number;
+  bands: AcaraBand[];
+  /** The interior band edges (45/62/80) as dashed grid lines. */
+  bounds: Array<{ y: number }>;
+}

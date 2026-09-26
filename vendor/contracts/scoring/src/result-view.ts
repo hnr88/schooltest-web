@@ -150,6 +150,7 @@ export const resultHistoryPointSchema = z.strictObject({
   sat_at: z.iso.date(),
   overall: domainScoreSchema.nullable(),
   attributes: z.record(displaySkillSchema, domainScoreSchema.nullable()),
+  attribute_bands: z.record(displaySkillSchema, assessedBandSchema.nullable()).optional(),
 });
 export type ResultHistoryPoint = z.infer<typeof resultHistoryPointSchema>;
 

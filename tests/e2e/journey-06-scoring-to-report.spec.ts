@@ -3,6 +3,7 @@ import path from 'node:path';
 import { expect, test } from '@playwright/test';
 
 import { displaySkills } from '@/modules/results/lib/display-skills';
+import { acaraPhaseKey } from '@/modules/teacher/lib/teacher-kit';
 
 import {
   JOURNEY_06_SHOTS,
@@ -75,33 +76,35 @@ test.describe('journey 06 — scoring to teacher report', () => {
       await expect(headline).toBeInViewport();
       await expect(headline).toHaveText(`${overall}%`);
 
-      // …and each of the eight subskill cards carries ITS OWN server value as an
-      // ACARA phase (Phase Model, spec 3): the attribute's band on the ladder
-      // (Everyday and Classroom Vocabulary each their own), the exit gate on
-      // Critical — never a percentage, and an absence renders as the kit dash.
+      // …and each breakdown row (Spec 02 §3c) carries ITS OWN server value as an
+      // ACARA phase: the attribute's band (Everyday and Classroom Vocabulary each
+      // their own), the exit gate on Critical — never a percentage, and an absence
+      // renders as the kit dash.
+      const noValue = cat(en, 'TeacherPortal.kit.noValue');
       for (const tile of displaySkills(view)) {
-        const card = page.locator(`[data-slot="student-subskill"][data-skill="${tile.skill}"]`);
-        await expect(card).toHaveAttribute('data-assessed', String(tile.domain_score !== null));
-        await expect(card).not.toContainText('%');
+        const row = page.locator(`[data-slot="student-breakdown-row"][data-skill="${tile.skill}"]`);
+        await expect(row).not.toContainText('%');
+        const phase = row.locator('[data-slot="student-breakdown-phase"]');
         if (tile.source === 'gate') {
-          await expect(card.locator('[data-slot="student-subskill-ladder"]')).toHaveCount(0);
+          await expect(phase).toHaveText(
+            view.gate.passed === null
+              ? noValue
+              : cat(en, `TeacherPortal.viewModel.gate.${view.gate.passed ? 'passed' : 'notYet'}`),
+          );
           continue;
         }
-        await expect(card.locator('[data-slot="student-subskill-phase"]')).toHaveText(
+        await expect(phase).toHaveText(
           tile.status === null || tile.status === 'not_assessed'
-            ? cat(en, 'TeacherPortal.kit.noValue')
+            ? noValue
             : cat(en, `TeacherPortal.viewModel.band.${tile.status === 'not_yet' ? 'notYet' : tile.status}`),
         );
       }
-      if (view.acara_phase !== null) {
-        await expect(page.locator('[data-slot="student-progress"] [data-slot="status-pill"]')).toHaveText(
-          cat(en, 'TeacherPortal.student.phaseChip').replace(
-            '{phase}',
-            cat(en, `TeacherPortal.viewModel.phaseSub.${view.acara_phase.toLowerCase()}`),
-          ),
-        );
-      }
-      await page.locator('[data-slot="student-subskills"]').scrollIntoViewIfNeeded();
+      // The ACARA phase stat card is the server's `acara_phase`, never re-derived.
+      const phaseKey = acaraPhaseKey(view.acara_phase);
+      await expect(page.locator('[data-slot="student-stat-phase"]')).toContainText(
+        phaseKey === null ? noValue : cat(en, `TeacherPortal.kit.phase.${phaseKey}`),
+      );
+      await page.locator('[data-slot="student-breakdown"]').scrollIntoViewIfNeeded();
       await page.screenshot({
         path: path.join(JOURNEY_06_SHOTS, '01-results-surface.png'),
         fullPage: true,

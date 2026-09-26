@@ -1,4 +1,4 @@
-import { expect, type APIRequestContext, type Locator, type Page } from '@playwright/test';
+import { expect, type APIRequestContext, type Page } from '@playwright/test';
 import { displaySkillSchema, type DisplaySkill, type ResultView } from '@schooltest/scoring-contracts';
 
 import { classRosterResponseSchema } from '@/modules/results/schemas/roster.schema';
@@ -117,46 +117,9 @@ export function expectedPairCount(rows: readonly RosterRow[], skill: DisplaySkil
   return pairs;
 }
 
-export interface RenderedMasteryRow {
-  skill: string;
-  mean: number | null;
-  secure: number | null;
-  assessed: number;
-  flag: string | null;
-}
-
-export function renderedMastery(panel: Locator): Promise<RenderedMasteryRow[]> {
-  return panel.locator('[data-slot="insights-mastery-row"]').evaluateAll((items) =>
-    items.map((item) => {
-      const numeric = (name: string) => {
-        const value = item.getAttribute(name);
-        return value === null ? null : Number(value);
-      };
-      return {
-        skill: item.getAttribute('data-skill') ?? '',
-        mean: numeric('data-mean'),
-        secure: numeric('data-secure'),
-        assessed: Number(item.getAttribute('data-assessed')),
-        flag: item.getAttribute('data-flag'),
-      };
-    }),
-  );
-}
-
-/** Weakest first: ranked skills (not Critical, with a mean) lead, by fewest secure then lowest mean; Critical follows. */
-export function expectWeakestFirst(rows: readonly RenderedMasteryRow[]): RenderedMasteryRow[] {
-  const ranked = rows.filter((row) => row.skill !== 'Critical' && row.mean !== null);
-  expect(rows.slice(0, ranked.length), 'ranked skills lead the list').toEqual(ranked);
-  for (const [index, after] of ranked.entries()) {
-    const before = ranked[index - 1];
-    if (before === undefined) continue;
-    const [secureA, secureB] = [before.secure ?? 0, after.secure ?? 0];
-    expect(secureA < secureB || (secureA === secureB && (before.mean ?? 0) <= (after.mean ?? 0)), `${before.skill} before ${after.skill}`).toBe(true);
-  }
-  const critical = rows.find((row) => row.skill === 'Critical');
-  if (critical !== undefined && critical.mean !== null) expect(rows[ranked.length].skill).toBe('Critical');
-  return ranked;
-}
+// The old insights tab's mastery-table helpers (`renderedMastery` over
+// `[data-slot="insights-mastery-row"]`, `expectWeakestFirst`) retired with the
+// Spec-04 rebuild: the Teaching tab renders strand cards, not a mastery table.
 
 /** The class's latest reading sitting (same read as the app) and how many activity entries it has. */
 export async function latestReadingActivity(request: APIRequestContext, jwt: string, classId: string) {
@@ -182,4 +145,214 @@ export async function latestReadingActivity(request: APIRequestContext, jwt: str
   expect(activity.status()).toBe(200);
   const feed = sittingActivityFeedSchema.parse(((await activity.json()) as { data: unknown }).data);
   return { sittingId: latest.documentId, formCode: latest.form?.form_code ?? null, entries: feed.entries.length };
+}
+
+// ---------------------------------------------------------------------------
+// Spec 04 — the rebuilt Teaching tab (`live_feedback_2/spec-teacher-portal-04-teaching.md`,
+// mock `04 Teaching.html`). Everything below re-derives the tab's view model from the live
+// roster: THREE strand cards (Vocabulary / Comprehension / Foundations) group every scored
+// student under the subskill, within the strand, where they sit FURTHEST BELOW the class
+// mean; pairs run on the class's largest-gap skill (lowest mean, Critical excluded — no
+// band); next steps are two pills per scored student naming the NEXT phase (ladder
+// Beginning→Emerging→Developing→Consolidating→"Extend"); Critical is only the exit gate.
+const TEACHING_STRANDS = {
+  vocabulary: ['Vocab_A2', 'Vocab_B1', 'Vocab_B2'],
+  comprehension: ['Gist', 'Detail', 'Inference'],
+  foundations: ['Decoding', 'Grammar'],
+} as const;
+export type TeachingStrandName = keyof typeof TEACHING_STRANDS;
+const STRAND_NAMES = Object.keys(TEACHING_STRANDS) as TeachingStrandName[];
+const TEACHING_BAND_RANK = { not_yet: 0, emerging: 1, developing: 2, secure: 3 } as const;
+const TEACHING_PHASE_BY_RANK = ['Beginning', 'Emerging', 'Developing', 'Consolidating'] as const;
+const TEACHING_NEXT_PHASE = ['Emerging', 'Developing', 'Consolidating', 'Extend'] as const;
+/** The app's `SKILL_LABEL_KEY` (`v2-i18n.constants.ts`) mirrored, so pair/next-step labels resolve the same way. */
+export const SKILL_LABEL_KEY: Readonly<Record<DisplaySkill, string>> = {
+  Decoding: 'skill.decoding',
+  Vocab_A2: 'attribute.vocabA2',
+  Grammar: 'skill.grammar',
+  Vocab_B1: 'attribute.vocabB1',
+  Gist: 'skill.gist',
+  Detail: 'skill.detail',
+  Inference: 'skill.inference',
+  Vocab_B2: 'attribute.vocabB2',
+  Critical: 'skill.critical',
+};
+
+function classMeans(rows: readonly RosterRow[]): Map<DisplaySkill, number> {
+  const means = new Map<DisplaySkill, number>();
+  for (const skill of displaySkillSchema.options) {
+    const scores = resultsOf(rows)
+      .map((result) => reading(result, skill).score)
+      .filter(isNumber);
+    if (scores.length > 0) means.set(skill, mean(scores));
+  }
+  return means;
+}
+
+function limitingSkill(result: ResultView, strand: TeachingStrandName, means: Map<DisplaySkill, number>): DisplaySkill | null {
+  let selected: DisplaySkill | null = null;
+  let smallestGap = Infinity;
+  for (const skill of TEACHING_STRANDS[strand]) {
+    const { score } = reading(result, skill);
+    const classMean = means.get(skill);
+    if (score === null || classMean === undefined) continue;
+    if (score - classMean < smallestGap) {
+      selected = skill;
+      smallestGap = score - classMean;
+    }
+  }
+  return selected;
+}
+
+export interface ExpectedStrandGroup {
+  skill: string;
+  members: string[];
+  /** The members' MODAL current band on the skill as a phase name (ties → the lower band); null when none is banded. */
+  phase: string | null;
+}
+
+function modalPhase(results: readonly ResultView[], skill: DisplaySkill): string | null {
+  const counts = new Map<string, number>();
+  for (const result of results) {
+    const { status } = reading(result, skill);
+    if (status !== null && status in TEACHING_BAND_RANK) counts.set(status, (counts.get(status) ?? 0) + 1);
+  }
+  const rank = (band: string) => TEACHING_BAND_RANK[band as keyof typeof TEACHING_BAND_RANK];
+  const [top] = [...counts].sort(([a, countA], [b, countB]) => countB - countA || rank(a) - rank(b));
+  return top === undefined ? null : TEACHING_PHASE_BY_RANK[rank(top[0])];
+}
+
+/** Per strand, one group row per limiting subskill in strand order, members in roster order. */
+export function expectedStrandGroups(rows: readonly RosterRow[]): Record<TeachingStrandName, ExpectedStrandGroup[]> {
+  const means = classMeans(rows);
+  const membersBySkill = Object.fromEntries(STRAND_NAMES.map((strand) => [strand, new Map<string, RosterRow[]>()])) as Record<
+    TeachingStrandName,
+    Map<string, RosterRow[]>
+  >;
+  for (const row of rows) {
+    if (row.result === null) continue;
+    for (const strand of STRAND_NAMES) {
+      const skill = limitingSkill(row.result, strand, means);
+      if (skill === null) continue;
+      const map = membersBySkill[strand];
+      map.set(skill, [...(map.get(skill) ?? []), row]);
+    }
+  }
+  return Object.fromEntries(
+    STRAND_NAMES.map((strand) => [
+      strand,
+      TEACHING_STRANDS[strand].flatMap((skill) => {
+        const members = membersBySkill[strand].get(skill);
+        if (members === undefined) return [];
+        return [{
+          skill,
+          members: members.map((row) => row.student.name),
+          phase: modalPhase(resultsOf(members), skill),
+        }];
+      }),
+    ]),
+  ) as Record<TeachingStrandName, ExpectedStrandGroup[]>;
+}
+
+/** The class's largest-gap subskill: the lowest class mean outside Critical (which carries no band). */
+export function expectedLargestGapSkill(rows: readonly RosterRow[]): DisplaySkill | null {
+  let selected: DisplaySkill | null = null;
+  let lowest = Infinity;
+  for (const [skill, classMean] of classMeans(rows)) {
+    if (skill === 'Critical' || classMean >= lowest) continue;
+    selected = skill;
+    lowest = classMean;
+  }
+  return selected;
+}
+
+/** The Critical reading exit-gate chip: count true vs false gates, ignoring not-assessed rows. */
+export function expectedGateSummary(rows: readonly RosterRow[]): { passed: number; notYet: number } {
+  const summary = { passed: 0, notYet: 0 };
+  for (const row of rows) {
+    if (row.result?.gate.passed === true) summary.passed += 1;
+    else if (row.result?.gate.passed === false) summary.notYet += 1;
+  }
+  return summary;
+}
+
+export interface ExpectedTarget {
+  skill: DisplaySkill;
+  band: string;
+  phase: string;
+  nextPhase: string;
+}
+
+export interface ExpectedNextStep {
+  studentId: string;
+  firstName: string;
+  vocabulary: ExpectedTarget | null;
+  comprehension: ExpectedTarget | null;
+}
+
+/** One row per scored student; each pill is the student's limiting subskill in that strand with their CURRENT band and the NEXT phase. */
+export function expectedNextSteps(rows: readonly RosterRow[]): ExpectedNextStep[] {
+  const means = classMeans(rows);
+  const target = (result: ResultView, strand: TeachingStrandName): ExpectedTarget | null => {
+    const skill = limitingSkill(result, strand, means);
+    const band = skill === null ? null : reading(result, skill).status;
+    if (skill === null || band === null || !(band in TEACHING_BAND_RANK)) return null;
+    return {
+      skill,
+      band,
+      phase: TEACHING_PHASE_BY_RANK[TEACHING_BAND_RANK[band as keyof typeof TEACHING_BAND_RANK]],
+      nextPhase: TEACHING_NEXT_PHASE[TEACHING_BAND_RANK[band as keyof typeof TEACHING_BAND_RANK]],
+    };
+  };
+  return rows.flatMap((row) => {
+    if (row.result === null) return [];
+    const scored =
+      row.result.overall.domain_score !== null ||
+      displaySkillSchema.options.some((skill) => reading(row.result as ResultView, skill).score !== null);
+    if (!scored) return [];
+    const vocabulary = target(row.result, 'vocabulary');
+    const comprehension = target(row.result, 'comprehension');
+    // No banded vocabulary or comprehension subskill → no next-step row (nothing to prompt).
+    if (vocabulary === null && comprehension === null) return [];
+    return [{
+      studentId: row.student.document_id,
+      firstName: row.student.name.trim().split(/\s+/)[0] ?? '',
+      vocabulary,
+      comprehension,
+    }];
+  });
+}
+
+/** The header summary's five counts: three strand group counts, pair count and scored-student count. */
+export function expectedSummaryCounts(rows: readonly RosterRow[]): { v: number; c: number; f: number; p: number; n: number } {
+  const groups = expectedStrandGroups(rows);
+  const skill = expectedLargestGapSkill(rows);
+  return {
+    v: groups.vocabulary.length,
+    c: groups.comprehension.length,
+    f: groups.foundations.length,
+    p: skill === null ? 0 : expectedPairCount(rows, skill),
+    n: expectedNextSteps(rows).length,
+  };
+}
+
+/** The pair rows the tab renders on one skill: strongest leads weakest, gap >= 12, at most 4 pairs. */
+export function expectedPairs(rows: readonly RosterRow[], skill: DisplaySkill): { lead: string; learner: string }[] {
+  const ranked = rows
+    .filter((row) => row.result !== null)
+    .flatMap((row) => {
+      const { score } = reading(row.result as ResultView, skill);
+      const first = row.student.name.trim().split(/\s+/)[0] ?? '';
+      return score === null ? [] : [{ first, score }];
+    })
+    .sort((a, b) => b.score - a.score);
+  const pairs: { lead: string; learner: string }[] = [];
+  let support = ranked.length - 1;
+  for (let strong = 0; strong < support && pairs.length < PAIR_MAX; strong += 1) {
+    if (ranked[strong].score - ranked[support].score >= PAIR_MIN_GAP) {
+      pairs.push({ lead: ranked[strong].first, learner: ranked[support].first });
+    }
+    support -= 1;
+  }
+  return pairs;
 }

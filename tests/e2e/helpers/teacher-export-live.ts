@@ -55,19 +55,19 @@ export async function readTeacherExportLive(
   }
 }
 
-/** Clicks a button and returns the file the BROWSER actually saved. */
+/**
+ * Clicks an export button and returns the file the BROWSER actually saved.
+ *
+ * The v2 export surfaces (the Classes list's per-row PDF/LLM pair, the student
+ * page's export) download straight from the click — `saveTeacherExportFile` hands
+ * the SERVER's bytes to the browser's download machinery, so the download event
+ * fires on the click itself. The old Teaching-tab panel's preview dialog is retired.
+ */
 export async function downloadFrom(button: Locator): Promise<TeacherExportFile> {
   const page = button.page();
-  await page.context().grantPermissions(['clipboard-read', 'clipboard-write'], {
-    origin: new URL(page.url()).origin,
-  });
-  await button.click();
-  const preview = page.locator('[data-slot="teacher-export-preview"]');
-  await expect(preview).toBeVisible({ timeout: 20_000 });
-  await expect(preview.locator('[data-slot="teacher-export-prompt"]')).not.toBeEmpty();
   const [download]: [Download, void] = await Promise.all([
     page.waitForEvent('download', { timeout: 30_000 }),
-    preview.locator('[data-slot="teacher-export-copy-download"]').click(),
+    button.click(),
   ]);
   const stream = await download.createReadStream();
   const chunks: Buffer[] = [];

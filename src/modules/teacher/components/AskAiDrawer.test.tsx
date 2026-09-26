@@ -7,8 +7,8 @@ import { afterEach, describe, expect, test } from 'vitest';
 import enMessages from '@/i18n/messages/en.json';
 import { ClassAskAiDrawer } from '@/modules/teacher/components/ClassAskAiDrawer';
 import { StudentAskAiDrawer } from '@/modules/teacher/components/StudentAskAiDrawer';
+import { buildStudentDrillDownView } from '@/modules/teacher/lib/student-drill-down-view';
 import { t2ResultDilnoza } from '@/modules/teacher/lib/v2/__fixtures__/t2';
-import { studentDetail } from '@/modules/teacher/lib/v2/student-detail';
 import { useClassOverlaysStore } from '@/modules/teacher/stores/use-class-overlays-store';
 import type { DashboardClass } from '@/modules/teacher/types/teacher.types';
 
@@ -23,7 +23,8 @@ import type { DashboardClass } from '@/modules/teacher/types/teacher.types';
 
 const STUDENT = 'student-dilnoza';
 const CLASS = 'qves8wrtl7r9ctw49jivm8gl';
-const view = studentDetail(t2ResultDilnoza);
+// The drawer's intro counts the view model's own scored sittings (the Sittings tile's number).
+const sittingsCount = buildStudentDrillDownView(t2ResultDilnoza).tiles.sittings;
 
 /** The t2 class the recorded fixture belongs to, as GET /api/teacher/dashboard returns it. */
 const classCard = {
@@ -72,7 +73,7 @@ const bubbles = () =>
 
 describe('the student Ask AI drawer', () => {
   test('stays closed until the student target is opened, then shows the grounding note', () => {
-    mount(<StudentAskAiDrawer view={view} firstName="Dilnoza" classDocumentId={CLASS} studentDocumentId={STUDENT} />);
+    mount(<StudentAskAiDrawer sittingsCount={sittingsCount} firstName="Dilnoza" classDocumentId={CLASS} studentDocumentId={STUDENT} />);
     expect(drawer()).toBeNull();
     act(() => useClassOverlaysStore.getState().openAskAi({ scope: 'class' }));
     expect(drawer()).toBeNull();
@@ -89,7 +90,7 @@ describe('the student Ask AI drawer', () => {
   });
 
   test('a suggestion posts the question and waits for the endpoint — it is never answered here', () => {
-    mount(<StudentAskAiDrawer view={view} firstName="Dilnoza" classDocumentId={CLASS} studentDocumentId={STUDENT} />);
+    mount(<StudentAskAiDrawer sittingsCount={sittingsCount} firstName="Dilnoza" classDocumentId={CLASS} studentDocumentId={STUDENT} />);
     act(() => useClassOverlaysStore.getState().openAskAi({ scope: 'student', studentDocumentId: STUDENT }));
     act(() => {
       document.body.querySelector<HTMLButtonElement>('[data-slot="ask-ai-suggestion"][data-intent="focus"]')?.click();
@@ -102,7 +103,7 @@ describe('the student Ask AI drawer', () => {
   });
 
   test('leaving the page closes the drawer', () => {
-    mount(<StudentAskAiDrawer view={view} firstName="Dilnoza" classDocumentId={CLASS} studentDocumentId={STUDENT} />);
+    mount(<StudentAskAiDrawer sittingsCount={sittingsCount} firstName="Dilnoza" classDocumentId={CLASS} studentDocumentId={STUDENT} />);
     act(() => useClassOverlaysStore.getState().openAskAi({ scope: 'student', studentDocumentId: STUDENT }));
     act(() => root?.unmount());
     root = null;
