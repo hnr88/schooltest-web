@@ -48,10 +48,10 @@ const RATE_LIMITED = {
   error: { status: 429, name: 'RateLimitError', message: 'Too many requests', details: { retry_after_seconds: 1500 } },
 };
 // The student-app renderer's own en catalog (schooltest-app), which this repo cannot import:
-// ReadingRunner.next / nextPassage / finishSection, ReadingRunner.correct,
+// ReadingRunner.next (the v2 footer's only advance label), ReadingRunner.correct,
 // TeacherTrial.runner.endLabel / endConfirm, TeacherTrial.complete.title.
 const RUNNER = {
-  advance: /^(Next question|Next passage|Finish section)$/,
+  advance: /^(Next question)$/,
   correct: 'Correct',
   endLabel: 'End the trial',
   endConfirm: 'End trial',
