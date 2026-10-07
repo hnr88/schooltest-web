@@ -48,10 +48,12 @@ const RATE_LIMITED = {
   error: { status: 429, name: 'RateLimitError', message: 'Too many requests', details: { retry_after_seconds: 1500 } },
 };
 // The student-app renderer's own en catalog (schooltest-app), which this repo cannot import:
-// ReadingRunner.next (the v2 footer's only advance label), ReadingRunner.correct,
+// ReadingRunner.next (the v2 footer's only advance label), ReadingRunner.yourQuestions (the v2
+// navigator strip that replaced the "Question N of M" counter), ReadingRunner.correct,
 // TeacherTrial.runner.endLabel / endConfirm, TeacherTrial.complete.title.
 const RUNNER = {
   advance: /^(Next question)$/,
+  questionStrip: 'Your questions',
   correct: 'Correct',
   endLabel: 'End the trial',
   endConfirm: 'End trial',
@@ -222,7 +224,9 @@ test('BUG-004 — Teacher demo mints a link, Open starts the trial in a new tab,
   if (offer.trial?.session_document_id) opened.sessions.add(offer.trial.session_document_id);
   expect(offer.trial?.form_document_id).toBe(formId);
 
-  await expect(demo.getByText(/Question \d+ of [1-9]\d*/)).toBeVisible({ timeout: 90_000 });
+  // v2 replaces the "Question N of M" counter with the "Your questions"
+  // navigator strip — the trial's first item is up when the strip is.
+  await expect(demo.getByText(RUNNER.questionStrip, { exact: true })).toBeVisible({ timeout: 90_000 });
   await demo.screenshot({ path: path.join(PROOFS, 'after-02-demo-tab-first-question.png'), animations: 'disabled' });
 
   // A fresh trial is started by C-TT-START; a trial already running on this form is resumed.
