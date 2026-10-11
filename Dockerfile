@@ -78,6 +78,17 @@ RUN mkdir .next && chown node:node .next
 COPY --from=builder --chown=node:node /app/.next/standalone ./
 COPY --from=builder --chown=node:node /app/.next/static ./.next/static
 
+# Build info (ST4S W2-11). Declared last, after every COPY, so changing the
+# commit or version never invalidates a build-cache layer. The defaults keep a
+# plain `docker build` identical to the image built before these lines existed.
+ARG GIT_COMMIT=unknown
+ARG APP_VERSION=unknown
+ENV APP_COMMIT_SHA=${GIT_COMMIT} \
+    APP_VERSION=${APP_VERSION}
+LABEL org.opencontainers.image.revision="${GIT_COMMIT}" \
+      org.opencontainers.image.version="${APP_VERSION}" \
+      org.opencontainers.image.source="https://github.com/hnr88/schooltest-web"
+
 USER node
 
 EXPOSE ${PORT_INTERNAL}

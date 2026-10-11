@@ -1,0 +1,294 @@
+# schooltest-web CI (ST4S W2-11, decisions D2 section A, resolutions R1, R7, R8).
+#
+# This repository is PUBLIC, so nothing in this file may need a credential:
+#   * the only credential used is the per-run GITHUB_TOKEN issued by GitHub;
+#   * `pull_request_target` is never used and the publish job never runs on a
+#     pull request (fork pull requests included);
+#   * registry, domain and flag settings are repository VARIABLES (not secrets).
+#
+# verify  : typecheck, lint (0 errors) and the vitest suite. Blocking on every
+#           pull request and push. The Playwright e2e suite is NOT run here (it
+#           needs a live API and real data).
+# publish : flag-gated by repository variable PUBLISH_IMAGES (default unset, so
+#           a first push only runs the gates). Builds BOTH environment variants
+#           of the image from the same SHA (NEXT_PUBLIC_* values are baked at
+#           build time and the Dockerfile refuses localhost values), signs each
+#           digest keylessly, attaches a CycloneDX SBOM.
+# attest-promotion : attaches the staging promotion attestation to the staging
+#           digest and only then moves the `staging` pointer tag. The
+#           `production` pointer is moved only by promote.yml (W2-26) by
+#           re-tagging the already built production variant.
+name: CI
+
+on:
+  pull_request:
+    branches: [staging, main]
+  push:
+    branches: [staging, main]
+  workflow_dispatch:
+
+# Cancel superseded runs on the same ref to save CI minutes.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  CI: "true"
+  # Registry namespace. Packages are private (decision D2-05, a founder action).
+  REGISTRY: ${{ vars.REGISTRY || 'ghcr.io/hnr88' }}
+
+jobs:
+  verify:
+    name: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          version: 10.33.0
+
+      - name: Setup Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          # Matches NODE_VERSION=22-alpine in the Dockerfile.
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # A few e2e helpers and one drift guard import contract modules straight
+      # from a sibling checkout of the private schooltest-api repository. A
+      # runner for this public repository cannot (and must not) read it. Those
+      # files are found from the compiler's own "cannot find module" errors for
+      # that path: errors inside them are tolerated and listed in the job
+      # summary, and they are left out of the unit run. Any other type error
+      # fails the job. When nothing imports the sibling any more the list is
+      # empty and this step is the plain `pnpm typecheck`.
+      - name: Typecheck
+        run: |
+          out="$RUNNER_TEMP/tsc.txt"
+          list="$RUNNER_TEMP/sibling-only.txt"
+          : > "$list"
+          if pnpm typecheck > "$out" 2>&1; then
+            cat "$out"
+            exit 0
+          fi
+          cat "$out"
+          grep -E "^[^ ]+\([0-9]+,[0-9]+\): error TS2307: Cannot find module '(\.\./)+schooltest-api/src/" "$out" \
+            | sed 's/(.*//' | sort -u > "$list" || true
+          if ! grep -q "error TS" "$out"; then
+            echo "::error::typecheck failed without a type error (see the log above)"
+            exit 1
+          fi
+          # Fail on any error in a file that is not one of the sibling-only files.
+          if ! awk -F'(' 'NR==FNR { skip[$0]=1; next } /error TS/ { if (!($1 in skip)) bad++ } END { exit bad > 0 }' "$list" "$out"; then
+            echo "::error::type errors outside the files that need the schooltest-api sibling"
+            exit 1
+          fi
+          {
+            echo "### Left out of this run: need the private schooltest-api sibling"
+            sed 's/^/- \x60/; s/$/\x60/' "$list"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Unit tests
+        run: |
+          args=()
+          while IFS= read -r f; do
+            args+=(--exclude "$f")
+          done < "$RUNNER_TEMP/sibling-only.txt"
+          pnpm test "${args[@]}"
+
+  publish:
+    name: publish (${{ matrix.variant }})
+    needs: verify
+    # Never on pull_request; only a push to staging with the flag switched on.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/staging' && vars.PUBLISH_IMAGES == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    environment: staging
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - variant: staging
+            api_base_url: ${{ vars.WEB_STAGING_API_BASE_URL || 'https://staging-api.schooltest.com.au' }}
+            app_url: ${{ vars.WEB_STAGING_APP_URL || 'https://staging.schooltest.com.au' }}
+          - variant: production
+            api_base_url: ${{ vars.WEB_PRODUCTION_API_BASE_URL || 'https://api.schooltest.com.au' }}
+            app_url: ${{ vars.WEB_PRODUCTION_APP_URL || 'https://schooltest.com.au' }}
+    # Each matrix leg sets only its own output name, so the two digests do not
+    # overwrite each other (documented GitHub behaviour for matrix outputs).
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      digest_staging: ${{ steps.digest.outputs.digest_staging }}
+      digest_production: ${{ steps.digest.outputs.digest_production }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Read application version
+        id: version
+        run: echo "version=$(jq -r .version package.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+
+      - name: Log in to GHCR
+        # Switching REGISTRY to ECR later also changes this step (OIDC role).
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push ${{ matrix.variant }} image
+        id: build
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          provenance: mode=max
+          sbom: false
+          tags: ${{ env.REGISTRY }}/schooltest-web:sha-${{ github.sha }}-${{ matrix.variant }}
+          # ALLOW_LOCALHOST_PUBLIC_URLS is deliberately never passed.
+          build-args: |
+            NEXT_PUBLIC_API_BASE_URL=${{ matrix.api_base_url }}
+            NEXT_PUBLIC_APP_URL=${{ matrix.app_url }}
+            GIT_COMMIT=${{ github.sha }}
+            APP_VERSION=${{ steps.version.outputs.version }}
+            PORT_INTERNAL=28721
+          cache-from: type=gha,scope=web-${{ matrix.variant }}
+          cache-to: type=gha,mode=max,scope=web-${{ matrix.variant }}
+
+      - name: Record digest
+        id: digest
+        env:
+          DIGEST: ${{ steps.build.outputs.digest }}
+          VARIANT: ${{ matrix.variant }}
+        run: |
+          case "$DIGEST" in
+            sha256:*) ;;
+            *) echo "Unexpected digest: '$DIGEST'" >&2; exit 1 ;;
+          esac
+          echo "digest_${VARIANT}=${DIGEST}" >> "$GITHUB_OUTPUT"
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+        with:
+          cosign-release: v3.1.3
+
+      - name: Sign image digest (keyless)
+        env:
+          IMAGE: ${{ env.REGISTRY }}/schooltest-web
+          DIGEST: ${{ steps.build.outputs.digest }}
+        run: cosign sign --yes "${IMAGE}@${DIGEST}"
+
+      - name: Generate CycloneDX SBOM
+        uses: anchore/sbom-action@66cbf4bc1f1c0d2edc94016e65bc221b6bb0ad6c # v0.24.3
+        with:
+          image: ${{ env.REGISTRY }}/schooltest-web@${{ steps.build.outputs.digest }}
+          format: cyclonedx-json
+          output-file: sbom-web-${{ matrix.variant }}.cdx.json
+          upload-artifact: false
+          upload-release-assets: false
+
+      - name: Attest SBOM
+        env:
+          IMAGE: ${{ env.REGISTRY }}/schooltest-web
+          DIGEST: ${{ steps.build.outputs.digest }}
+          VARIANT: ${{ matrix.variant }}
+        run: cosign attest --yes --type cyclonedx --predicate "sbom-web-${VARIANT}.cdx.json" "${IMAGE}@${DIGEST}"
+
+      - name: Upload SBOM
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: sbom-web-${{ matrix.variant }}
+          path: sbom-web-${{ matrix.variant }}.cdx.json
+          retention-days: 90
+
+  attest-promotion:
+    name: attest staging promotion
+    needs: publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+
+      - name: Log in to GHCR
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+        with:
+          cosign-release: v3.1.3
+
+      - name: Write promotion predicate
+        env:
+          SHA: ${{ github.sha }}
+          VERSION: ${{ needs.publish.outputs.version }}
+          WEB_STAGING_DIGEST: ${{ needs.publish.outputs.digest_staging }}
+          WEB_PRODUCTION_DIGEST: ${{ needs.publish.outputs.digest_production }}
+        run: |
+          for d in "$WEB_STAGING_DIGEST" "$WEB_PRODUCTION_DIGEST"; do
+            case "$d" in
+              sha256:*) ;;
+              *) echo "Missing image digest from the publish job: '$d'" >&2; exit 1 ;;
+            esac
+          done
+          jq -n \
+            --arg sha "$SHA" \
+            --arg version "$VERSION" \
+            --arg web "$WEB_STAGING_DIGEST" \
+            --arg webProduction "$WEB_PRODUCTION_DIGEST" \
+            --arg builtAt "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            '{environment: "staging", sha: $sha, version: $version,
+              images: {web: $web, webProduction: $webProduction},
+              builtAt: $builtAt}' > staging-promotion.json
+          cat staging-promotion.json
+
+      - name: Attest staging promotion
+        env:
+          IMAGE: ${{ env.REGISTRY }}/schooltest-web
+          WEB_STAGING_DIGEST: ${{ needs.publish.outputs.digest_staging }}
+        run: |
+          cosign attest --yes \
+            --type https://schooltest.com.au/attestations/promotion/v1 \
+            --predicate staging-promotion.json \
+            "${IMAGE}@${WEB_STAGING_DIGEST}"
+
+      - name: Move the staging pointer tag
+        # Only after the attestation exists, so the staging host agent never
+        # resolves a digest that it cannot verify. No `production` pointer here.
+        env:
+          IMAGE: ${{ env.REGISTRY }}/schooltest-web
+          WEB_STAGING_DIGEST: ${{ needs.publish.outputs.digest_staging }}
+        run: docker buildx imagetools create --tag "${IMAGE}:staging" "${IMAGE}@${WEB_STAGING_DIGEST}"

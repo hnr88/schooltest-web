@@ -1,0 +1,10 @@
+# Default owner for everything. Branch protection can require owner review once
+# it is enabled (decision D2, task W2-11).
+* @hnr88
+
+# Build, delivery and pipeline files are listed explicitly so they can require
+# review on their own.
+/.github/ @hnr88
+/Dockerfile @hnr88
+/docker-compose.yml @hnr88
+/next.config.ts @hnr88
