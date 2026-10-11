@@ -22,6 +22,10 @@ const NOINDEX_PATHS = [
 
 const nextConfig: NextConfig = {
   output: 'standalone',
+  // Drops the framework banner (`x-powered-by: Next.js`). The security headers
+  // themselves are NOT added in headers() below: that is evaluated at build
+  // time, and they are switchable at runtime, so src/proxy.ts sets them.
+  poweredByHeader: false,
   reactCompiler: true,
   // SEO/AEO: resolve metadata before streaming for EVERY user agent, so canonical,
   // hreflang, description, og:* and twitter:* always sit in <head>. By default

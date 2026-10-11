@@ -1,6 +1,14 @@
 import { createEnv } from '@t3-oss/env-nextjs';
 import { z } from 'zod';
 
+// A sample or placeholder secret copied into a real deployment is as good as no
+// secret. Matches the markers the *.example files and templates use.
+const PLACEHOLDER_SECRET = /change[-_ ]?me|tobemodified|example|placeholder/i;
+
+export function isPlaceholderSecret(value: string | null | undefined): boolean {
+  return typeof value === 'string' && PLACEHOLDER_SECRET.test(value);
+}
+
 export const env = createEnv({
   server: {
     API_BASE_URL: z.url().default('http://localhost:1337'),
@@ -36,3 +44,11 @@ export const env = createEnv({
   },
   emptyStringAsUndefined: true,
 });
+
+// Server-side only, once at module load. Warns (never throws: a deploy that
+// boots today must keep booting) and names the variable, never its value.
+if (typeof window === 'undefined' && isPlaceholderSecret(process.env.REVALIDATE_SECRET)) {
+  console.warn(
+    '[env] REVALIDATE_SECRET looks like a placeholder value; set a strong random secret in the runtime environment.',
+  );
+}
