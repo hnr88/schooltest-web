@@ -1,0 +1,558 @@
+# schooltest-web promote (ST4S W2-26; decisions D2 sections 1, 3, 4, 6 and F; resolutions R1, R7).
+#
+# Production web is moved ONLY by this workflow, and it never builds. ci.yml has
+# already built, scanned and signed BOTH variants (`-staging`, `-production`) from
+# the same SHA, because NEXT_PUBLIC_* values are baked at build time. Promotion
+# re-tags the already built `-production` variant:
+#
+#   docker buildx imagetools create --tag <registry>/schooltest-web:production \
+#       <registry>/schooltest-web@<webProduction digest>
+#
+# Trust chain checked BEFORE any ref, tag or pointer moves:
+#   1. SHA is the tip of `staging`; `version` equals package.json at that SHA; tag
+#      v<version> does not exist; every check-run named in repository variable
+#      PROMOTE_REQUIRED_CHECKS (default `verify`) succeeded on that exact SHA; the
+#      SHA can be fast-forwarded onto `main`.
+#   2. The staging variant digest (resolved from `sha-<sha>-staging`) carries a
+#      cosign build signature and a staging promotion attestation from
+#      ci.yml@refs/heads/staging for exactly this SHA.
+#   3. The digest moved to `:production` is `images.webProduction` of that
+#      attestation, its own build signature is valid, tag `sha-<sha>-production`
+#      points to it, and it differs from the staging digest. A staging variant
+#      therefore can never be promoted to production.
+#
+# Then: fast-forward `main`, sign a promotion attestation
+# (environment "production") on the production digest, move `:production`,
+# create annotated tag v<version>, publish a GitHub Release (digests.txt,
+# promotion.json, staging-promotion.json, sbom.cdx.json). The host agent follows
+# `:production` only when that attestation was signed by
+# promote.yml@refs/heads/main, so this workflow must be dispatched on `main`.
+#
+# Rollback: dispatch with `release_tag=vX.Y.Z` (an earlier release) and leave
+# `sha` and `version` empty. The digests come from that release, are verified by
+# the same chain, `main` and tags are not touched, and the attestation carries
+# rollback=true.
+#
+# No health wait: the web app has no commit-reporting route (decision D2 makes
+# that api only). The production host agent verifies the running container.
+#
+# Hardening:
+#   * only `workflow_dispatch`; never pull_request or pull_request_target;
+#   * this repository is PUBLIC, so the only credential is the per-run
+#     GITHUB_TOKEN; signing is keyless (GitHub OIDC). No secret, no Coolify or
+#     cloud credential is used here;
+#   * inputs reach shell only through environment variables, never expanded
+#     into scripts;
+#   * every third-party action is pinned by full commit SHA.
+#
+# Known limits (founder actions W2-26-01 and W2-26-02):
+#   * GITHUB_TOKEN cannot push a commit range that changes `.github/workflows`.
+#     When it does, a repository admin fast-forwards `main` once by hand
+#     (`git push origin <sha>:main`) and then dispatches this workflow; it sees
+#     `main` already at the SHA and skips only the push.
+#   * Residual risk accepted until D2-03 names a second reviewer: one human is
+#     both author and reviewer of a production promotion. The `production`
+#     environment approval is a deliberate second action and an audit record,
+#     not separation of duties.
+name: Promote
+
+on:
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: "Commit to promote (40 hex). Empty = tip of staging. Leave empty in rollback mode."
+        required: false
+        default: ""
+        type: string
+      version:
+        description: "Release version X.Y.Z. Must equal package.json at the SHA. Leave empty in rollback mode."
+        required: false
+        default: ""
+        type: string
+      evidence:
+        description: "URL or text of the operator e2e run against staging (required)."
+        required: true
+        type: string
+      release_tag:
+        description: "Rollback mode: an existing release tag (vX.Y.Z). Mutually exclusive with sha."
+        required: false
+        default: ""
+        type: string
+
+# One promotion at a time; never cancel one that is part way through.
+concurrency:
+  group: promote
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  SOURCE_REPO: hnr88/schooltest-web
+  # Same default as ci.yml. Switching to ECR later also changes the login step.
+  REGISTRY: ${{ vars.REGISTRY || 'ghcr.io/hnr88' }}
+  IMAGE: ${{ vars.REGISTRY || 'ghcr.io/hnr88' }}/schooltest-web
+  COSIGN_ISSUER: https://token.actions.githubusercontent.com
+  BUILD_ID_RE: '^https://github\.com/hnr88/schooltest-web/\.github/workflows/ci\.yml@refs/heads/staging$'
+  PROMOTE_ID_RE: '^https://github\.com/hnr88/schooltest-web/\.github/workflows/promote\.yml@refs/heads/main$'
+  PREDICATE_TYPE: https://schooltest.com.au/attestations/promotion/v1
+
+jobs:
+  promote:
+    name: promote
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: production
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
+      checks: read
+    steps:
+      - name: Validate inputs and dispatch context
+        env:
+          IN_SHA: ${{ inputs.sha }}
+          IN_VERSION: ${{ inputs.version }}
+          IN_EVIDENCE: ${{ inputs.evidence }}
+          IN_RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          set -euo pipefail
+          fail() { echo "::error::$*"; exit 1; }
+
+          [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ] || fail "promote runs only on workflow_dispatch"
+          [ "$GITHUB_REPOSITORY" = "$SOURCE_REPO" ] || fail "promote runs only in ${SOURCE_REPO} (this is ${GITHUB_REPOSITORY})"
+          [ "$GITHUB_REF" = "refs/heads/main" ] || fail "Dispatch on main (this run is on '${GITHUB_REF}'). The production host agent only accepts attestations signed by promote.yml@refs/heads/main."
+          [ -n "$IN_EVIDENCE" ] || fail "evidence is required (URL or text of the operator e2e run)"
+          [ "${#IN_EVIDENCE}" -le 2000 ] || fail "evidence is longer than 2000 characters; give a URL"
+
+          if [ -n "$IN_RELEASE_TAG" ]; then
+            [ -z "$IN_SHA" ] || fail "release_tag and sha are mutually exclusive"
+            [[ "$IN_RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || fail "release_tag must look like vX.Y.Z"
+            version="${IN_RELEASE_TAG#v}"
+            if [ -n "$IN_VERSION" ] && [ "$IN_VERSION" != "$version" ]; then
+              fail "version '${IN_VERSION}' does not match release_tag '${IN_RELEASE_TAG}'; leave version empty in rollback mode"
+            fi
+            mode=rollback
+          else
+            [[ "$IN_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || fail "version must look like X.Y.Z"
+            if [ -n "$IN_SHA" ]; then
+              [[ "$IN_SHA" =~ ^[0-9a-f]{40}$ ]] || fail "sha must be 40 lowercase hex characters (or empty for the tip of staging)"
+            fi
+            version="$IN_VERSION"
+            mode=normal
+          fi
+          {
+            echo "PROMOTE_MODE=${mode}"
+            echo "PROMOTE_VERSION=${version}"
+          } >> "$GITHUB_ENV"
+          echo "mode=${mode} version=${version}"
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      # Pre-flight (normal mode). Uses only git, curl and jq so it can be run
+      # against local fixtures. Every `exit 1` here happens before any ref, tag
+      # or pointer moves.
+      - name: Pre-flight (tip of staging, version, tag, check-runs, fast-forward)
+        if: inputs.release_tag == ''
+        env:
+          IN_SHA: ${{ inputs.sha }}
+          GH_TOKEN: ${{ github.token }}
+          REQUIRED_CHECKS: ${{ vars.PROMOTE_REQUIRED_CHECKS || 'verify' }}
+        run: |
+          set -euo pipefail
+          fail() { echo "::error::$*"; exit 1; }
+          AUTH_B64="$(printf 'x-access-token:%s' "${GH_TOKEN:-}" | base64 -w0)"
+          echo "::add-mask::${AUTH_B64}"
+          gitx() { git -c "http.https://github.com/.extraheader=AUTHORIZATION: basic ${AUTH_B64}" "$@"; }
+
+          gitx fetch --no-tags --prune origin \
+            '+refs/heads/staging:refs/remotes/origin/staging' \
+            '+refs/heads/main:refs/remotes/origin/main'
+          tip="$(git rev-parse --verify refs/remotes/origin/staging)"
+          sha="${IN_SHA:-$tip}"
+
+          # (1) the SHA is the tip of staging
+          [ "$sha" = "$tip" ] || fail "sha ${sha} is not the tip of staging (${tip}); only the tip of staging can be promoted"
+
+          # (2) version equals package.json at the SHA
+          pkg_version="$(git show "${sha}:package.json" | jq -r '.version')"
+          [ "$pkg_version" = "$PROMOTE_VERSION" ] || fail "version ${PROMOTE_VERSION} does not equal package.json version ${pkg_version} at ${sha}"
+
+          # (3) the release tag does not exist
+          tag_hits="$(gitx ls-remote --tags origin "refs/tags/v${PROMOTE_VERSION}" "refs/tags/v${PROMOTE_VERSION}^{}")"
+          [ -z "$tag_hits" ] || fail "tag v${PROMOTE_VERSION} already exists; bump the version (or use release_tag to roll back)"
+
+          # (4) every required check-run succeeded on this exact SHA
+          required="$(printf '%s' "$REQUIRED_CHECKS" | jq -R 'split(",") | map(gsub("^\\s+|\\s+$"; "")) | map(select(length > 0))')"
+          [ "$(jq 'length' <<<"$required")" -gt 0 ] || fail "PROMOTE_REQUIRED_CHECKS names no check"
+          runs='[]'
+          page=1
+          while :; do
+            body="$(curl -fsS \
+              -H "Authorization: Bearer ${GH_TOKEN:-}" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/commits/${sha}/check-runs?per_page=100&page=${page}")" \
+              || fail "could not read the check-runs of ${sha}"
+            runs="$(jq -c --argjson more "$(jq -c '.check_runs // []' <<<"$body")" '. + $more' <<<"$runs")"
+            [ "$(jq '.check_runs // [] | length' <<<"$body")" -ge 100 ] || break
+            page=$((page + 1))
+            [ "$page" -le 10 ] || break
+          done
+          bad=0
+          while IFS= read -r name; do
+            state="$(jq -r --arg n "$name" '[.[] | select(.name == $n)]
+              | if length == 0 then "missing"
+                elif all(.[]; .conclusion == "success") then "success"
+                else "not successful" end' <<<"$runs")"
+            if [ "$state" = "success" ]; then
+              echo "check-run '${name}': success"
+            else
+              echo "::error::check-run '${name}' on ${sha}: ${state}"
+              bad=1
+            fi
+          done < <(jq -r '.[]' <<<"$required")
+          [ "$bad" = 0 ] || exit 1
+
+          # (5) main can be fast-forwarded to the SHA (or is already there)
+          main_tip="$(git rev-parse --verify refs/remotes/origin/main)"
+          if [ "$main_tip" = "$sha" ]; then
+            ff=skip
+            echo "main is already at ${sha}; the push step will be skipped"
+          elif git merge-base --is-ancestor "$main_tip" "$sha"; then
+            ff=push
+            if [ -n "$(git diff --name-only "$main_tip" "$sha" -- .github/workflows)" ]; then
+              echo "::warning::The range main..${sha} changes .github/workflows. GITHUB_TOKEN cannot push that. If the push step is refused, a repository admin runs 'git push origin ${sha}:main' once and this workflow is dispatched again."
+            fi
+          else
+            fail "main (${main_tip}) is not an ancestor of ${sha}; main moves only by fast-forward from staging"
+          fi
+
+          {
+            echo "PROMOTE_SHA=${sha}"
+            echo "PROMOTE_FF=${ff}"
+            echo "PROMOTE_ROLLBACK=false"
+          } >> "$GITHUB_ENV"
+          echo "Pre-flight passed for ${sha} (version ${PROMOTE_VERSION})."
+
+      # Rollback pre-flight: the record of an earlier release only locates the
+      # digests; trust comes from the signature chain verified below.
+      - name: Pre-flight (rollback, resolve the release record)
+        if: inputs.release_tag != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          IN_RELEASE_TAG: ${{ inputs.release_tag }}
+          REQUIRED_CHECKS: ${{ vars.PROMOTE_REQUIRED_CHECKS || 'verify' }}
+        run: |
+          set -euo pipefail
+          fail() { echo "::error::$*"; exit 1; }
+          AUTH_B64="$(printf 'x-access-token:%s' "${GH_TOKEN:-}" | base64 -w0)"
+          echo "::add-mask::${AUTH_B64}"
+          gitx() { git -c "http.https://github.com/.extraheader=AUTHORIZATION: basic ${AUTH_B64}" "$@"; }
+
+          gitx fetch --no-tags --prune origin '+refs/heads/main:refs/remotes/origin/main'
+          gitx fetch --no-tags origin "+refs/tags/${IN_RELEASE_TAG}:refs/tags/${IN_RELEASE_TAG}" \
+            || fail "tag ${IN_RELEASE_TAG} does not exist"
+          tag_sha="$(git rev-parse --verify "refs/tags/${IN_RELEASE_TAG}^{commit}")"
+          git merge-base --is-ancestor "$tag_sha" refs/remotes/origin/main \
+            || fail "${IN_RELEASE_TAG} (${tag_sha}) is not on main; only promoted releases can be rolled back to"
+
+          mkdir -p "$RUNNER_TEMP/release-record"
+          gh release download "$IN_RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \
+            --dir "$RUNNER_TEMP/release-record" --pattern digests.txt --pattern promotion.json \
+            || fail "release ${IN_RELEASE_TAG} has no digests.txt and promotion.json assets"
+          rec="$RUNNER_TEMP/release-record"
+          [ "$(jq -r '.sha' "$rec/promotion.json")" = "$tag_sha" ] \
+            || fail "release record sha does not match the commit of ${IN_RELEASE_TAG}"
+          [ "$(jq -r '.version' "$rec/promotion.json")" = "$PROMOTE_VERSION" ] \
+            || fail "release record version does not match ${IN_RELEASE_TAG}"
+          stg="$(awk '$1 == "web-staging" { print $2 }' "$rec/digests.txt")"
+          prod="$(awk '$1 == "web-production" { print $2 }' "$rec/digests.txt")"
+          for d in "$stg" "$prod"; do
+            [[ "$d" =~ ^sha256:[0-9a-f]{64}$ ]] || fail "digests.txt of ${IN_RELEASE_TAG} is missing a web digest"
+          done
+          [ "$(jq -r '.images.webProduction' "$rec/promotion.json")" = "$prod" ] \
+            || fail "digests.txt and promotion.json of ${IN_RELEASE_TAG} disagree"
+
+          # The check-runs of that commit must still show success.
+          runs="$(curl -fsS \
+            -H "Authorization: Bearer ${GH_TOKEN:-}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/commits/${tag_sha}/check-runs?per_page=100" \
+            | jq -c '.check_runs // []')" || fail "could not read the check-runs of ${tag_sha}"
+          bad=0
+          while IFS= read -r name; do
+            state="$(jq -r --arg n "$name" '[.[] | select(.name == $n)]
+              | if length == 0 then "missing"
+                elif all(.[]; .conclusion == "success") then "success"
+                else "not successful" end' <<<"$runs")"
+            [ "$state" = "success" ] || { echo "::error::check-run '${name}' on ${tag_sha}: ${state}"; bad=1; }
+          done < <(printf '%s' "$REQUIRED_CHECKS" | jq -r 'split(",") | .[] | gsub("^\\s+|\\s+$"; "") | select(length > 0)')
+          [ "$bad" = 0 ] || exit 1
+
+          {
+            echo "PROMOTE_SHA=${tag_sha}"
+            echo "PROMOTE_FF=skip"
+            echo "PROMOTE_ROLLBACK=true"
+            echo "HINT_STAGING_DIGEST=${stg}"
+            echo "HINT_PRODUCTION_DIGEST=${prod}"
+          } >> "$GITHUB_ENV"
+          echo "Rollback target ${IN_RELEASE_TAG} = ${tag_sha}"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+
+      - name: Log in to GHCR
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+        with:
+          cosign-release: v3.1.3
+
+      # Still pre-flight: nothing has moved yet.
+      - name: Verify digests, build signatures and the staging attestation
+        run: |
+          set -euo pipefail
+          fail() { echo "::error::$*"; exit 1; }
+          digest_of() { docker buildx imagetools inspect "$1" --format '{{json .Manifest}}' | jq -r '.digest'; }
+          is_digest() { [[ "$1" =~ ^sha256:[0-9a-f]{64}$ ]]; }
+          # Bound to this exact commit, this repository and the ci.yml build identity.
+          cosign_flags=(
+            --certificate-identity-regexp "$BUILD_ID_RE"
+            --certificate-oidc-issuer "$COSIGN_ISSUER"
+            --certificate-github-workflow-sha "$PROMOTE_SHA"
+            --certificate-github-workflow-repository "$SOURCE_REPO"
+          )
+
+          if [ "$PROMOTE_MODE" = normal ]; then
+            stg="$(digest_of "${IMAGE}:sha-${PROMOTE_SHA}-staging")"
+          else
+            stg="$HINT_STAGING_DIGEST"
+          fi
+          is_digest "$stg" || fail "could not resolve the staging variant digest for ${PROMOTE_SHA}"
+
+          cosign verify "${cosign_flags[@]}" "${IMAGE}@${stg}" > /dev/null
+          cosign verify-attestation --type "$PREDICATE_TYPE" "${cosign_flags[@]}" "${IMAGE}@${stg}" > "$RUNNER_TEMP/staging-att.out"
+
+          jq -c --arg sha "$PROMOTE_SHA" --arg stg "$stg" '
+            def stmt: if .payload then (.payload | @base64d | fromjson)
+                      elif .dsseEnvelope.payload then (.dsseEnvelope.payload | @base64d | fromjson)
+                      else . end;
+            stmt | (.predicate // empty)
+            | select(.environment == "staging" and .sha == $sha and .images.web == $stg)
+          ' "$RUNNER_TEMP/staging-att.out" | head -n 1 > staging-promotion.json
+          [ -s staging-promotion.json ] || fail "no staging promotion attestation for ${PROMOTE_SHA} on ${stg}"
+
+          [ "$(jq -r '.version' staging-promotion.json)" = "$PROMOTE_VERSION" ] \
+            || fail "staging attestation version does not equal ${PROMOTE_VERSION}"
+          prod="$(jq -r '.images.webProduction' staging-promotion.json)"
+          is_digest "$prod" || fail "staging attestation has no images.webProduction digest"
+
+          # A mislabelled variant would be the same bytes as the staging build.
+          [ "$prod" != "$stg" ] || fail "images.webProduction equals the staging digest; refusing to promote a staging variant"
+
+          if [ "$PROMOTE_MODE" = rollback ]; then
+            [ "$prod" = "$HINT_PRODUCTION_DIGEST" ] || fail "release record digest differs from the attested production variant"
+          fi
+
+          # The production variant digest must carry its own build signature ...
+          cosign verify "${cosign_flags[@]}" "${IMAGE}@${prod}" > /dev/null
+
+          # ... and the immutable tag of that variant must point to it.
+          tag_digest="$(digest_of "${IMAGE}:sha-${PROMOTE_SHA}-production" 2>/dev/null || true)"
+          if [ -n "$tag_digest" ]; then
+            [ "$tag_digest" = "$prod" ] || fail "sha-${PROMOTE_SHA}-production points to ${tag_digest}, not the attested ${prod}"
+          elif [ "$PROMOTE_MODE" = normal ]; then
+            fail "tag sha-${PROMOTE_SHA}-production does not exist"
+          else
+            echo "::notice::tag sha-${PROMOTE_SHA}-production no longer exists (pruned); the attested digest is used"
+          fi
+
+          {
+            echo "STAGING_DIGEST=${stg}"
+            echo "PRODUCTION_DIGEST=${prod}"
+          } >> "$GITHUB_ENV"
+          echo "staging variant    ${stg}"
+          echo "production variant ${prod}"
+
+      - name: Collect release evidence
+        env:
+          IN_EVIDENCE: ${{ inputs.evidence }}
+          APPROVER: ${{ github.actor }}
+        run: |
+          set -euo pipefail
+          fail() { echo "::error::$*"; exit 1; }
+          cosign_flags=(
+            --certificate-identity-regexp "$BUILD_ID_RE"
+            --certificate-oidc-issuer "$COSIGN_ISSUER"
+            --certificate-github-workflow-sha "$PROMOTE_SHA"
+            --certificate-github-workflow-repository "$SOURCE_REPO"
+          )
+
+          # SBOM of the production variant, taken from its verified attestation.
+          cosign verify-attestation --type cyclonedx "${cosign_flags[@]}" "${IMAGE}@${PRODUCTION_DIGEST}" > "$RUNNER_TEMP/sbom-att.out"
+          jq -c '
+            def stmt: if .payload then (.payload | @base64d | fromjson)
+                      elif .dsseEnvelope.payload then (.dsseEnvelope.payload | @base64d | fromjson)
+                      else . end;
+            stmt | (.predicate // empty) | select(.bomFormat == "CycloneDX")
+          ' "$RUNNER_TEMP/sbom-att.out" | head -n 1 > sbom.cdx.json
+          [ -s sbom.cdx.json ] || fail "no CycloneDX SBOM attestation on ${PRODUCTION_DIGEST}"
+
+          printf 'web-staging %s\nweb-production %s\n' "$STAGING_DIGEST" "$PRODUCTION_DIGEST" > digests.txt
+
+          jq -n \
+            --arg sha "$PROMOTE_SHA" \
+            --arg version "$PROMOTE_VERSION" \
+            --arg approver "$APPROVER" \
+            --arg evidence "$IN_EVIDENCE" \
+            --argjson rollback "$PROMOTE_ROLLBACK" \
+            --arg web "$STAGING_DIGEST" \
+            --arg webProduction "$PRODUCTION_DIGEST" \
+            --arg runUrl "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+            --arg promotedAt "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            '{environment: "production", sha: $sha, version: $version,
+              approver: $approver, evidence: $evidence, rollback: $rollback,
+              images: {web: $web, webProduction: $webProduction},
+              runUrl: $runUrl, promotedAt: $promotedAt}' > promotion.json
+          cat promotion.json
+
+      - name: Upload evidence (kept even if a later step fails)
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: promotion-web-${{ github.run_id }}
+          path: |
+            digests.txt
+            promotion.json
+            staging-promotion.json
+            sbom.cdx.json
+          retention-days: 90
+
+      # First move: the ref. Refused (non fast-forward, or a range that touches
+      # workflow files) before any pointer or attestation exists.
+      - name: Fast-forward main
+        if: env.PROMOTE_MODE == 'normal' && env.PROMOTE_FF == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          AUTH_B64="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          echo "::add-mask::${AUTH_B64}"
+          if ! git -c "http.https://github.com/.extraheader=AUTHORIZATION: basic ${AUTH_B64}" \
+              push origin "${PROMOTE_SHA}:refs/heads/main"; then
+            echo "::error::main was not fast-forwarded. If the range changes .github/workflows, GITHUB_TOKEN may not push it: a repository admin runs 'git push origin ${PROMOTE_SHA}:main' once, then dispatch this workflow again (it skips the push when main is already at the SHA). Nothing else has moved."
+            exit 1
+          fi
+
+      - name: Attest promotion (environment production)
+        run: |
+          set -euo pipefail
+          cosign attest --yes \
+            --type "$PREDICATE_TYPE" \
+            --predicate promotion.json \
+            "${IMAGE}@${PRODUCTION_DIGEST}"
+
+      # Prove the host agent will accept it before the pointer moves.
+      - name: Verify the promotion attestation as the host agent will
+        run: |
+          set -euo pipefail
+          fail() { echo "::error::$*"; exit 1; }
+          ts="$(jq -r '.promotedAt' promotion.json)"
+          cosign verify-attestation --type "$PREDICATE_TYPE" \
+            --certificate-identity-regexp "$PROMOTE_ID_RE" \
+            --certificate-oidc-issuer "$COSIGN_ISSUER" \
+            "${IMAGE}@${PRODUCTION_DIGEST}" > "$RUNNER_TEMP/promotion-att.out"
+          jq -e -c --arg ts "$ts" --arg sha "$PROMOTE_SHA" --arg prod "$PRODUCTION_DIGEST" '
+            def stmt: if .payload then (.payload | @base64d | fromjson)
+                      elif .dsseEnvelope.payload then (.dsseEnvelope.payload | @base64d | fromjson)
+                      else . end;
+            stmt | (.predicate // empty)
+            | select(.environment == "production" and .promotedAt == $ts
+                     and .sha == $sha and .images.webProduction == $prod)
+          ' "$RUNNER_TEMP/promotion-att.out" > /dev/null \
+            || fail "the new promotion attestation did not verify; the production pointer was NOT moved"
+
+      - name: Move the production pointer (re-tag, no rebuild)
+        run: |
+          set -euo pipefail
+          fail() { echo "::error::$*"; exit 1; }
+          docker buildx imagetools create --tag "${IMAGE}:production" "${IMAGE}@${PRODUCTION_DIGEST}"
+          now="$(docker buildx imagetools inspect "${IMAGE}:production" --format '{{json .Manifest}}' | jq -r '.digest')"
+          [ "$now" = "$PRODUCTION_DIGEST" ] || fail ":production resolves to ${now}, expected ${PRODUCTION_DIGEST}"
+          echo ":production -> ${now}"
+
+      # Last: the tag marks a promotion that is complete, so a failed run before
+      # this point can simply be dispatched again.
+      - name: Create annotated tag
+        if: env.PROMOTE_MODE == 'normal'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          APPROVER: ${{ github.actor }}
+        run: |
+          set -euo pipefail
+          AUTH_B64="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          echo "::add-mask::${AUTH_B64}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "v${PROMOTE_VERSION}" "$PROMOTE_SHA" \
+            -m "schooltest-web v${PROMOTE_VERSION} promoted by ${APPROVER}"
+          git -c "http.https://github.com/.extraheader=AUTHORIZATION: basic ${AUTH_B64}" \
+            push origin "refs/tags/v${PROMOTE_VERSION}"
+
+      - name: Publish GitHub Release
+        if: env.PROMOTE_MODE == 'normal'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          IN_EVIDENCE: ${{ inputs.evidence }}
+          APPROVER: ${{ github.actor }}
+        run: |
+          set -euo pipefail
+          {
+            echo "schooltest-web v${PROMOTE_VERSION}"
+            echo
+            echo "- Commit: ${PROMOTE_SHA}"
+            echo "- Approver (dispatched by): ${APPROVER}"
+            echo "- Staging variant digest: ${STAGING_DIGEST}"
+            echo "- Production variant digest: ${PRODUCTION_DIGEST}"
+            echo "- Run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+            echo
+            echo "Evidence note (operator e2e run):"
+            echo
+            printf '%s\n' "$IN_EVIDENCE"
+          } > release-notes.md
+          for attempt in 1 2 3; do
+            if gh release create "v${PROMOTE_VERSION}" --repo "$GITHUB_REPOSITORY" --verify-tag \
+                --title "schooltest-web v${PROMOTE_VERSION}" --notes-file release-notes.md \
+                digests.txt promotion.json staging-promotion.json sbom.cdx.json; then
+              exit 0
+            fi
+            echo "release attempt ${attempt} failed; retrying"
+            sleep 10
+          done
+          echo "::error::Tag and :production are in place but the release was not created. The evidence files are in the run's artifact 'promotion-web-${GITHUB_RUN_ID}'; create the release by hand with 'gh release create v${PROMOTE_VERSION} --verify-tag'."
+          exit 1
+
+      - name: Summary
+        env:
+          APPROVER: ${{ github.actor }}
+        run: |
+          {
+            echo "### schooltest-web promotion"
+            echo
+            echo "- Mode: ${PROMOTE_MODE} (rollback=${PROMOTE_ROLLBACK})"
+            echo "- Version: ${PROMOTE_VERSION}"
+            echo "- Commit: \`${PROMOTE_SHA}\`"
+            echo "- \`:production\` -> \`${PRODUCTION_DIGEST}\` (staging variant \`${STAGING_DIGEST}\`)"
+            echo "- Dispatched by: ${APPROVER}"
+            echo "- No health wait: web has no commit-reporting route. The production host agent deploys the digest and verifies the running container."
+          } >> "$GITHUB_STEP_SUMMARY"
