@@ -115,6 +115,7 @@ export interface ResetPasswordRequest {
 export type ResetPasswordErrorKey =
   | 'invalidOrExpired'
   | 'expiredLink'
+  | 'weakPassword'
   | 'offlineError'
   | 'serverError';
 
@@ -130,6 +131,7 @@ export type ResetPasswordView = 'form' | 'invalid' | 'expired' | 'success';
 
 export type ChangePasswordErrorKey =
   | 'wrongCurrentPassword'
+  | 'weakPassword'
   | 'sessionExpired'
   | 'tooManyRequests'
   | 'offlineError'

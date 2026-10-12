@@ -183,6 +183,7 @@
     "currentPasswordPlaceholder": "请输入当前密码",
     "currentPasswordRequired": "请填写当前密码",
     "wrongCurrentPassword": "您输入的当前密码不正确。",
+    "weakPassword": "请选择更强的密码：至少 12 个字符，且不能是常见密码。",
     "sessionExpired": "您的登录会话已过期，请重新登录。",
     "updatePasswordButton": "更新密码",
     "updatingPassword": "正在更新密码…",

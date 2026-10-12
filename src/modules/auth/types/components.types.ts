@@ -130,7 +130,7 @@ export interface SignUpConfirmStateProps {
   email: string;
 }
 
-export type FormErrorKey = 'takenError' | 'offlineError' | 'registerError';
+export type FormErrorKey = 'takenError' | 'weakPassword' | 'offlineError' | 'registerError';
 
 export interface SignUpFormProps {
   onRegistered: (email: string) => void;

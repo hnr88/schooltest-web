@@ -183,6 +183,7 @@
     "currentPasswordPlaceholder": "Masukkan kata laluan semasa anda",
     "currentPasswordRequired": "Kata laluan semasa diperlukan",
     "wrongCurrentPassword": "Kata laluan semasa yang anda masukkan tidak betul.",
+    "weakPassword": "Pilih kata laluan yang lebih kuat: sekurang-kurangnya 12 aksara dan bukan kata laluan yang lazim digunakan.",
     "sessionExpired": "Sesi anda telah tamat tempoh. Sila log masuk semula.",
     "updatePasswordButton": "Kemas kini kata laluan",
     "updatingPassword": "Mengemas kini kata laluan…",

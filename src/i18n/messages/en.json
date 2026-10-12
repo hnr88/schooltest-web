@@ -184,6 +184,7 @@
     "currentPasswordPlaceholder": "Enter your current password",
     "currentPasswordRequired": "Current password is required",
     "wrongCurrentPassword": "The current password you entered is incorrect.",
+    "weakPassword": "Choose a stronger password: at least 12 characters and not a common password.",
     "sessionExpired": "Your session has expired. Please sign in again.",
     "sessionExpiredBody": "Ops sessions end after 30 minutes of inactivity. Sign in again — nothing you saved was lost.",
     "sessionExpiredAction": "Sign in again",
