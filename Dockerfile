@@ -1,10 +1,15 @@
 # syntax=docker/dockerfile:1
+# Base image pin (task W3-17, D7 section C). NODE_DIGEST pins node:${NODE_VERSION} by digest so a build is
+# reproducible and a patch is a reviewed digest bump (ops/security/patching/pin-digests.sh in schooltest-api,
+# monthly window). Build with `--build-arg NODE_DIGEST=` (empty) to unpin, or when overriding NODE_VERSION:
+# the digest belongs to the default NODE_VERSION and will not match another tag.
 ARG NODE_VERSION=22-alpine
+ARG NODE_DIGEST=@sha256:0a7108bf6c7bf5de370ffb1a3ed6be93d405b43ff159f681a8d18c0e2bc2e402
 
 # =============================================================================
 # Stage 1: install dependencies (cached unless package files change)
 # =============================================================================
-FROM node:${NODE_VERSION} AS deps
+FROM node:${NODE_VERSION}${NODE_DIGEST} AS deps
 
 WORKDIR /app
 
@@ -19,7 +24,7 @@ RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
 # =============================================================================
 # Stage 2: build the standalone Next.js application
 # =============================================================================
-FROM node:${NODE_VERSION} AS builder
+FROM node:${NODE_VERSION}${NODE_DIGEST} AS builder
 
 WORKDIR /app
 
@@ -60,7 +65,7 @@ RUN pnpm run build
 # =============================================================================
 # Stage 3: production image (minimal, standalone)
 # =============================================================================
-FROM node:${NODE_VERSION} AS runner
+FROM node:${NODE_VERSION}${NODE_DIGEST} AS runner
 
 WORKDIR /app
 
