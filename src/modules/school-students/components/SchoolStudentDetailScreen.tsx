@@ -19,6 +19,7 @@ import { StudentSummaryCards } from '@/modules/school-students/components/Studen
 import { studentDisplayName } from '@/modules/school-students/hooks/use-student-row-actions';
 import { toAcaraPhase, toFirstLanguage } from '@/modules/school-students/lib/student-level';
 import { useSchoolStudentQuery } from '@/modules/school-students/queries/use-school-student.query';
+import { PrivacyConsentPanel } from '@/modules/privacy-consent';
 import { RecordCrumb } from '@/modules/shell';
 
 import type { SchoolStudentDetailScreenProps } from '@/modules/school-students/types/components.types';
@@ -159,6 +160,7 @@ export function SchoolStudentDetailScreen({ documentId }: SchoolStudentDetailScr
               <StudentRecordPanel student={student} onEdit={() => setEditOpen(true)} />
               <StudentClassPanel student={student} classes={classes} />
             </div>
+            <PrivacyConsentPanel studentDocumentId={student.documentId} audience="school_admin" />
             {editOpen ? (
               <SchoolStudentEditDialog
                 student={student}

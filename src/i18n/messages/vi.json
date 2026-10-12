@@ -6711,5 +6711,67 @@
     "previousPage": "Trước",
     "nextPage": "Tiếp",
     "pageOf": "Trang {page} / {pageCount}"
+  },
+  "PrivacyConsent": {
+    "title": "Privacy and consent",
+    "descriptionParent": "The consents recorded for your child. You can withdraw a consent at any time and give it again later.",
+    "descriptionSchool": "The consents recorded for this student, including any school attestation. Withdrawal applies from now on.",
+    "aiRequiredNote": "Without an active AI consent, this student's writing is marked by a teacher instead.",
+    "type": {
+      "data_collection": {
+        "title": "Data collection"
+      },
+      "ai_processing": {
+        "title": "AI-assisted marking"
+      },
+      "recording_monitoring": {
+        "title": "Recording and monitoring"
+      }
+    },
+    "state": {
+      "active": "Active",
+      "withdrawn": "Withdrawn",
+      "none": "Not recorded"
+    },
+    "since": {
+      "active": "Active since {date}",
+      "withdrawn": "Withdrawn on {date}",
+      "none": "No consent has been recorded yet."
+    },
+    "policyVersion": "Recorded under privacy policy version {version}",
+    "statementKey": "Recorded under wording {key}",
+    "source": {
+      "parent_wizard": "Given by the guardian when the student was added",
+      "parent_portal": "Given by the guardian in the parent portal",
+      "school_attestation": "Attested by the school",
+      "import": "Recorded with the school's student import",
+      "ops": "Recorded by SchoolTest support"
+    },
+    "guardianWithdrew": "The guardian withdrew this consent. A school attestation cannot override a guardian's withdrawal.",
+    "grant": {
+      "parent": "Give consent",
+      "school_admin": "Record school attestation"
+    },
+    "withdraw": {
+      "button": "Withdraw",
+      "title": "Withdraw consent for {consent}?",
+      "description": "Withdrawal applies from now on. It does not undo marking or any other processing already done.",
+      "aiNoticeTitle": "What happens to this student's writing",
+      "aiNoticeBody": "After withdrawal, new writing from this student is marked by a teacher instead of an AI service.",
+      "confirm": "Withdraw consent",
+      "cancel": "Keep consent"
+    },
+    "error": {
+      "disabled": "Consent records are not available right now.",
+      "notFound": "This student or consent could not be found.",
+      "alreadyWithdrawn": "This consent was already withdrawn. The list has been refreshed.",
+      "guardianRequired": "A guardian's consent is required first.",
+      "generic": "That did not work. Please try again."
+    },
+    "errorTitle": "Consents could not be loaded",
+    "errorDescription": "Something went wrong while loading the consent records. Try again.",
+    "retry": "Try again",
+    "notFoundTitle": "Consent records not found",
+    "notFoundDescription": "This student could not be found, or you do not have access to their consent records."
   }
 }

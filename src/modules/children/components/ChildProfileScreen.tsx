@@ -4,6 +4,7 @@ import { UserRoundX } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Button, SkeletonCard } from '@/modules/design-system';
+import { PrivacyConsentPanel } from '@/modules/privacy-consent';
 import { QueryErrorFallback } from '@/modules/query-errors';
 import { RecordCrumb } from '@/modules/shell';
 import { ChildKpiStrip } from '@/modules/children/components/ChildKpiStrip';
@@ -89,6 +90,7 @@ export function ChildProfileScreen({ documentId }: ChildProfileScreenProps) {
       ) : (
         <SkeletonCard rows={4} />
       )}
+      <PrivacyConsentPanel studentDocumentId={documentId} audience="parent" />
     </main>
   );
 }
