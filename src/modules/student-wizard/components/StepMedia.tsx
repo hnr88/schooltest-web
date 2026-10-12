@@ -9,6 +9,7 @@ import {
   PHOTO_MAX_BYTES,
   VOICE_INTRO_MAX_BYTES,
 } from '@/modules/student-wizard/constants/student-wizard.constants';
+import { useWizardPrivacyOptions } from '@/modules/student-wizard/hooks/use-student-wizard';
 import type { MediaUploadLabels } from '@/modules/student-wizard/types/media.types';
 import type { StudentWizardValues } from '@/modules/student-wizard/types/student-wizard.types';
 
@@ -16,8 +17,13 @@ import type { StudentWizardValues } from '@/modules/student-wizard/types/student
 // mandatory. photo = image ≤15MB, voice_intro = audio ≤10MB; each MediaUpload
 // uploads immediately on selection (C-UPLOAD-PARENT) and stores the numeric
 // file id (or null) on the shared RHF form — null fails the required rule.
+// W4-19: with the minimised profile ON both are optional and carry a one-line
+// "why we ask"; flags OFF keeps them required with no extra line.
 export function StepMedia() {
   const t = useTranslations('StudentWizard.media');
+  const tWhy = useTranslations('StudentWizard.whyWeAsk');
+  const { options } = useWizardPrivacyOptions();
+  const { minimised } = options;
   const { control } = useFormContext<StudentWizardValues>();
   const { errors } = useFormState({ control });
 
@@ -52,7 +58,13 @@ export function StepMedia() {
           control={control}
           name="photo"
           render={({ field }) => (
-            <WizardField id="wizard-photo" label={t('photo.label')} required error={errors.photo?.message}>
+            <WizardField
+              id="wizard-photo"
+              label={t('photo.label')}
+              required={!minimised}
+              helper={minimised ? tWhy('photo') : undefined}
+              error={errors.photo?.message}
+            >
               <MediaUpload
                 accept="image/*"
                 maxBytes={PHOTO_MAX_BYTES}
@@ -71,7 +83,8 @@ export function StepMedia() {
             <WizardField
               id="wizard-voice-intro"
               label={t('voice.label')}
-              required
+              required={!minimised}
+              helper={minimised ? tWhy('voice') : undefined}
               error={errors.voice_intro?.message}
             >
               <MediaUpload

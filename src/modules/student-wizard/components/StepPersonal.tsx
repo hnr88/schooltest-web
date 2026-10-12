@@ -5,8 +5,10 @@ import { Controller, useFormContext, useFormState } from 'react-hook-form';
 
 import { NationalityCombobox } from '@/modules/student-wizard/components/NationalityCombobox';
 import { WizardChoiceField } from '@/modules/student-wizard/components/WizardChoiceField';
+import { WizardPrivacyNotice } from '@/modules/student-wizard/components/WizardPrivacyNotice';
 import { WizardTextField } from '@/modules/student-wizard/components/WizardTextField';
 import { GENDER_VALUES } from '@/modules/student-wizard/constants/student-wizard.constants';
+import { useWizardPrivacyOptions } from '@/modules/student-wizard/hooks/use-student-wizard';
 import type { StudentWizardValues } from '@/modules/student-wizard/types/student-wizard.types';
 import { todayIso } from '@/modules/student-wizard/lib/step-personal.helpers';
 
@@ -15,8 +17,14 @@ import { todayIso } from '@/modules/student-wizard/lib/step-personal.helpers';
 // passport], two-up rows at `1fr 1fr / gap:16px` and 22px between them.
 // Date of birth stays a native date input, not the design's DD/MM/YYYY text box:
 // the schema this field is bound to accepts ISO only.
+// W4-19: opens with the collection notice; with the minimised profile ON the
+// passport field is not rendered and gender and nationality are optional, each
+// with a one-line "why we ask". Flags OFF renders exactly the fields as before.
 export function StepPersonal() {
   const t = useTranslations('StudentWizard.personal');
+  const tWhy = useTranslations('StudentWizard.whyWeAsk');
+  const { options } = useWizardPrivacyOptions();
+  const { minimised } = options;
   const locale = useLocale();
   const { register, control } = useFormContext<StudentWizardValues>();
   // Subscribe THIS child to form-state changes — the `useForm` instance lives in
@@ -28,6 +36,7 @@ export function StepPersonal() {
 
   return (
     <div className="flex flex-col gap-5.5 duration-300 ease-out animate-in fade-in slide-in-from-bottom-1 motion-reduce:animate-none">
+      <WizardPrivacyNotice />
       <div className="grid gap-4 sm:grid-cols-2">
         <WizardTextField
           id="wizard-given-name"
@@ -77,7 +86,8 @@ export function StepPersonal() {
           <WizardChoiceField
             id="wizard-gender"
             label={t('gender.label')}
-            required
+            required={!minimised}
+            helper={minimised ? tWhy('gender') : undefined}
             options={genderOptions}
             value={field.value ?? ''}
             error={errors.gender?.message}
@@ -93,7 +103,8 @@ export function StepPersonal() {
             <NationalityCombobox
               id="wizard-nationality"
               label={t('nationality')}
-              required
+              required={!minimised}
+              helper={minimised ? tWhy('nationality') : undefined}
               locale={locale}
               value={field.value ?? ''}
               placeholder={t('nationalityPlaceholder')}
@@ -104,14 +115,16 @@ export function StepPersonal() {
             />
           )}
         />
-        <WizardTextField
-          id="wizard-passport"
-          label={t('passportNumber')}
-          required
-          placeholder={t('passportPlaceholder')}
-          error={errors.passport_number?.message}
-          registration={register('passport_number')}
-        />
+        {minimised ? null : (
+          <WizardTextField
+            id="wizard-passport"
+            label={t('passportNumber')}
+            required
+            placeholder={t('passportPlaceholder')}
+            error={errors.passport_number?.message}
+            registration={register('passport_number')}
+          />
+        )}
       </div>
     </div>
   );

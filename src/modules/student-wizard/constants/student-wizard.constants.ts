@@ -2,6 +2,7 @@ import { Mail, MessageCircle, MessageSquare, Smartphone } from 'lucide-react';
 import type { DefaultValues } from 'react-hook-form';
 
 import { parentViewsEnabled } from '@/modules/flags';
+import type { WizardSchemaOptions } from '@/modules/student-wizard/types/schemas.types';
 import type {
   ContactChannelOption,
   StudentWizardValues,
@@ -75,6 +76,28 @@ export function activeWizardStepKeys(): readonly WizardStepKey[] {
   return parentViewsEnabled() ? WIZARD_STEP_KEYS : WIZARD_STEP_KEYS_MASKED;
 }
 
+// W4-19 (D5 S1/S4): the schema options that reproduce TODAY's wizard exactly.
+// Every privacy switch is OFF — passport/gender/nationality/photo/voice stay
+// required and no consent field gates the submit. Used while the consent config
+// is pending, when it fails to load, and in edit mode.
+export const DEFAULT_WIZARD_SCHEMA_OPTIONS: WizardSchemaOptions = {
+  minimised: false,
+  guardianConsentRequired: false,
+  recordsEnabled: false,
+};
+
+// The two SEPARATE consent boxes on the review step: the API consent type, the
+// form-only boolean that holds the parent's choice, and the config statement it
+// shows. Order is the order they render and the order `consents` is written.
+export const WIZARD_CONSENT_ROWS = [
+  { type: 'data_collection', field: 'consent_data_collection' },
+  { type: 'ai_processing', field: 'consent_ai_processing' },
+] as const;
+
+// Review-step fields for the first-invalid-step redirect (STEP_FIELDS itself
+// stays untouched: its review entry is empty and lives in wizard-steps).
+export const REVIEW_STEP_FIELDS = WIZARD_CONSENT_ROWS.map((row) => row.field);
+
 // preferred_contact_channel selection-card icons (§5.12).
 export const CONTACT_CHANNELS: readonly ContactChannelOption[] = [
   { value: 'whatsapp', icon: MessageCircle },
@@ -105,4 +128,6 @@ export const WIZARD_DEFAULT_VALUES: DefaultValues<StudentWizardValues> = {
   preferred_contact_channel: 'whatsapp',
   photo: null,
   voice_intro: null,
+  consent_data_collection: false,
+  consent_ai_processing: false,
 };

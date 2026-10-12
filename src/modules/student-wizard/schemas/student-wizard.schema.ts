@@ -7,15 +7,21 @@ import {
   CONTACT_CHANNEL_VALUES,
   CURRENT_YEAR,
   CURRENT_YEAR_LEVEL_VALUES,
+  DEFAULT_WIZARD_SCHEMA_OPTIONS,
   DOB_MIN_YEAR,
   GENDER_VALUES,
+  REVIEW_STEP_FIELDS,
   TARGET_YEAR_MAX_OFFSET,
   TARGET_YEAR_MIN,
   TERM_VALUES,
   WIZARD_STEP_KEYS,
 } from '@/modules/student-wizard/constants/student-wizard.constants';
 
-import type { StudentWizardSchema, WizardSchemaTranslator } from '@/modules/student-wizard/types/schemas.types';
+import type {
+  StudentWizardSchema,
+  WizardSchemaOptions,
+  WizardSchemaTranslator,
+} from '@/modules/student-wizard/types/schemas.types';
 
 function isValidDateOfBirth(value: string): boolean {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
@@ -43,7 +49,20 @@ function isValidTargetYear(value: string): boolean {
 
 // C-UI-STUDENT-WIZARD / C-STUDENT-CREATE — the per-step field rules 1:1 with the
 // server whitelist. NEVER includes parent/status/student_key/teacher/class/user.
-export function createStudentWizardSchema(t: WizardSchemaTranslator) {
+//
+// W4-19 (D5 S1/S4): `opts` mirrors the server's consent config. The default
+// (all false) reproduces today's schema exactly. `minimised` drops passport from
+// the required set and makes gender, nationality, photo and voice intro
+// optional; `guardianConsentRequired` (with records enabled) makes the data
+// collection tick mandatory. The two consent booleans are form-only: they never
+// reach the whitelist payload, buildStudentPayload turns them into `consents`.
+export function createStudentWizardSchema(
+  t: WizardSchemaTranslator,
+  opts: WizardSchemaOptions = DEFAULT_WIZARD_SCHEMA_OPTIONS,
+) {
+  const { minimised } = opts;
+  const guardianConsentRequired = opts.recordsEnabled && opts.guardianConsentRequired;
+
   const requiredEmail = (requiredMessage: string) =>
     z.string().trim().min(1, requiredMessage).pipe(z.email(t('emailInvalid')));
 
@@ -78,17 +97,17 @@ export function createStudentWizardSchema(t: WizardSchemaTranslator) {
       .string()
       .min(1, t('dobRequired'))
       .refine(isValidDateOfBirth, t('dobInvalid')),
-    gender: z.enum(GENDER_VALUES, { error: t('genderRequired') }),
-    nationality: z
-      .string()
-      .trim()
-      .min(1, t('nationalityRequired'))
-      .max(100, t('nationalityTooLong')),
-    passport_number: z
-      .string()
-      .trim()
-      .min(1, t('passportRequired'))
-      .max(50, t('passportTooLong')),
+    gender: minimised
+      ? z.enum(GENDER_VALUES, { error: t('genderRequired') }).optional()
+      : z.enum(GENDER_VALUES, { error: t('genderRequired') }),
+    nationality: minimised
+      ? z.string().trim().max(100, t('nationalityTooLong'))
+      : z.string().trim().min(1, t('nationalityRequired')).max(100, t('nationalityTooLong')),
+    // Minimised: the field is not rendered and never sent, so the key stays in
+    // the schema as an empty-allowed string (form defaults and review keep working).
+    passport_number: minimised
+      ? z.string().trim().max(50, t('passportTooLong'))
+      : z.string().trim().min(1, t('passportRequired')).max(50, t('passportTooLong')),
     // Step 2 — Education
     current_school: z
       .string()
@@ -124,10 +143,19 @@ export function createStudentWizardSchema(t: WizardSchemaTranslator) {
     preferred_contact_channel: z.enum(CONTACT_CHANNEL_VALUES).default('whatsapp'),
     // Step 4 — Media (upload file ids from C-UPLOAD-PARENT): both uploads are
     // mandatory — a missing id (null) fails the step with the required message.
-    photo: masked ? z.number().int().positive().nullable() : requiredUploadId(t('photoRequired')),
-    voice_intro: masked
-      ? z.number().int().positive().nullable()
-      : requiredUploadId(t('voiceIntroRequired')),
+    photo:
+      masked || minimised
+        ? z.number().int().positive().nullable()
+        : requiredUploadId(t('photoRequired')),
+    voice_intro:
+      masked || minimised
+        ? z.number().int().positive().nullable()
+        : requiredUploadId(t('voiceIntroRequired')),
+    // Review step — consent (form-only, unticked by default, never a dark pattern).
+    consent_data_collection: guardianConsentRequired
+      ? z.boolean().default(false).refine((ticked) => ticked, t('consentDataCollectionRequired'))
+      : z.boolean().default(false),
+    consent_ai_processing: z.boolean().default(false),
   });
 }
 export type StudentWizardValues = z.input<StudentWizardSchema>;
@@ -135,7 +163,11 @@ export type StudentWizardOutput = z.output<StudentWizardSchema>;
 
 // Task 47: STEP_FIELDS indexed by the ACTIVE step list — masked mode drops the
 // guardian/media entries so step gates and error redirects track the rendered
-// steps. Flag ON returns the same five entries as STEP_FIELDS.
+// steps. Flag ON returns the same five entries as STEP_FIELDS, except that the
+// review step (empty in STEP_FIELDS) carries the consent fields (W4-19) so a
+// consent error maps back to the review step in first-invalid-step.
 export function activeStepFields(): readonly (readonly (keyof StudentWizardValues)[])[] {
-  return activeWizardStepKeys().map((key) => STEP_FIELDS[WIZARD_STEP_KEYS.indexOf(key)]);
+  return activeWizardStepKeys().map((key) =>
+    key === 'review' ? REVIEW_STEP_FIELDS : STEP_FIELDS[WIZARD_STEP_KEYS.indexOf(key)],
+  );
 }

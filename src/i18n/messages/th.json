@@ -1335,6 +1335,62 @@
       "createdTitle": "เพิ่มนักเรียนแล้ว",
       "savedTitle": "บันทึกการเปลี่ยนแปลงแล้ว",
       "body": "กำลังพาคุณไปที่ บุตรหลานของฉัน…"
+    },
+    "notice": {
+      "title": "What we ask for and why",
+      "loading": "Loading what we ask for",
+      "intro": "We use these details only to set up this student and run their tests. The privacy policy lists who can see each detail and how long we keep it.",
+      "optionalNote": "Anything marked optional can be left blank.",
+      "rows": {
+        "identity": {
+          "label": "Name, email and date of birth.",
+          "why": "These identify the student, let them sign in and stop the same student being entered twice."
+        },
+        "education": {
+          "label": "Current school, year level and target entry.",
+          "why": "These help us choose suitable tests and match the student to schools in the parent portal."
+        },
+        "guardian": {
+          "label": "Guardian name, email and phone.",
+          "why": "These are shown back to you in the parent portal so you can keep contact details up to date."
+        },
+        "media": {
+          "label": "Photo and voice introduction.",
+          "why": "The photo is shown to the student at sign-in so they can confirm it is them. The voice introduction is played back to you in the parent portal."
+        },
+        "extras": {
+          "label": "Gender, nationality and passport number.",
+          "why": "These are kept on the student record. Nationality is shown back to you in the parent portal. Gender and passport number are not used for any test or report today."
+        },
+        "extrasOptional": {
+          "label": "Gender and nationality (optional).",
+          "why": "Both can be left blank. Nationality is shown back to you in the parent portal. Gender is not used for any test or report today. We do not ask for a passport number."
+        }
+      }
+    },
+    "consent": {
+      "title": "Your consent",
+      "intro": "These are two separate choices. Nothing is ticked for you.",
+      "required": "Required",
+      "optional": "Optional",
+      "data_collection": {
+        "title": "Data collection",
+        "label": "I agree to this data collection statement"
+      },
+      "ai_processing": {
+        "title": "AI-assisted marking",
+        "label": "I agree to AI-assisted marking"
+      },
+      "aiDeclineNote": "This choice is separate and optional. You can say no and still add this student.",
+      "aiDeclineMarking": "This choice is separate and optional. You can say no and still add this student. Their writing will be marked by a teacher instead.",
+      "policyVersion": "This applies under privacy policy version {version}.",
+      "changeLater": "You can change either choice later on the student's Privacy and consent page."
+    },
+    "whyWeAsk": {
+      "gender": "Optional. It is kept on the student record and is not used for any test or report today.",
+      "nationality": "Optional. It is shown back to you in the parent portal.",
+      "photo": "Optional. It is shown to the student at sign-in so they can confirm it is them.",
+      "voice": "Optional. It is played back to you in the parent portal."
     }
   },
   "StudentWizardSchema": {
@@ -1365,7 +1421,8 @@
     "guardianEmailRequired": "กรุณากรอกอีเมลผู้ปกครอง",
     "wechatTooLong": "ไอดี WeChat ยาวเกินไป",
     "photoRequired": "โปรดเพิ่มรูปภาพนักเรียน",
-    "voiceIntroRequired": "โปรดเพิ่มการแนะนำตัวด้วยเสียง"
+    "voiceIntroRequired": "โปรดเพิ่มการแนะนำตัวด้วยเสียง",
+    "consentDataCollectionRequired": "Agree to data collection to add this student"
   },
   "Children": {
     "meta": {

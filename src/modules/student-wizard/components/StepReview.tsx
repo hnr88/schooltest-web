@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 
 import { Alert } from '@/modules/design-system';
 import { ReviewSummaryTable } from '@/modules/student-wizard/components/ReviewSummaryTable';
+import { WizardConsentBlock } from '@/modules/student-wizard/components/WizardConsentBlock';
 import { useReviewModel } from '@/modules/student-wizard/hooks/use-review-model';
 import type { WizardSubmitError } from '@/modules/student-wizard/types/student-wizard.types';
 
@@ -15,6 +16,8 @@ import type { StepReviewProps } from '@/modules/student-wizard/types/components.
 // drawn — an invented price is worse than a missing panel.
 // The submit itself is fired by the footer's confirm button (full-schema parse →
 // mutation); its failure lands in the alert above the table.
+// W4-19: the consent block (two separate, unticked boxes) sits above the summary
+// and renders only when the consent config enables records.
 export function StepReview({ error, onDismissError }: StepReviewProps) {
   const t = useTranslations('StudentWizard.review');
   const { rows } = useReviewModel();
@@ -33,6 +36,7 @@ export function StepReview({ error, onDismissError }: StepReviewProps) {
             : t(`error.${error.kind}Body`)}
         </Alert>
       ) : null}
+      <WizardConsentBlock />
       <ReviewSummaryTable rows={rows} emptyLabel={t('empty')} />
     </div>
   );

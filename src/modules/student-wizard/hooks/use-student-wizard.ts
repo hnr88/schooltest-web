@@ -2,11 +2,14 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
-import { useCallback, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useForm, useFormContext, useWatch } from 'react-hook-form';
 
+import type { ConsentConfig } from '@/modules/privacy-consent/types/consent.types';
+import { useConsentConfigQuery } from '@/modules/privacy-consent/queries/use-consent-config.query';
 import {
   activeWizardStepKeys,
+  DEFAULT_WIZARD_SCHEMA_OPTIONS,
   WIZARD_DEFAULT_VALUES,
 } from '@/modules/student-wizard/constants/student-wizard.constants';
 import {
@@ -14,9 +17,56 @@ import {
   type StudentWizardOutput,
   type StudentWizardValues,
 } from '@/modules/student-wizard/schemas/student-wizard.schema';
+import type { WizardSchemaOptions } from '@/modules/student-wizard/types/schemas.types';
 import type { WizardMode } from '@/modules/student-wizard/types/student-wizard.types';
 
 import type { UseStudentWizardParams } from '@/modules/student-wizard/types/hooks.types';
+
+// W4-19 (D5 S1/S4): the schema options for the live consent config. Anything
+// that is not a loaded config in CREATE mode (pending, failed, or the edit
+// screen) is today's behaviour, exactly: OFF = today's required set. The edit
+// screen's payload and optionality rules must not change.
+export function resolveWizardOptions(
+  config: ConsentConfig | undefined,
+  mode: WizardMode,
+): WizardSchemaOptions {
+  if (!config || mode === 'edit') return DEFAULT_WIZARD_SCHEMA_OPTIONS;
+  return {
+    minimised: config.minimised_student_profile,
+    recordsEnabled: config.consent_records_enabled,
+    guardianConsentRequired: config.consent_records_enabled && config.guardian_consent_required,
+  };
+}
+
+// The same options for the step components, which sit inside the FormProvider
+// and do not receive `mode`. Edit mode never has the consent fields in the form
+// (see wizardDefaultValues), so their absence is the edit-mode signal.
+export function useWizardPrivacyOptions() {
+  const { control } = useFormContext<StudentWizardValues>();
+  const consentField = useWatch({ control, name: 'consent_data_collection' });
+  const query = useConsentConfigQuery();
+  const isCreate = consentField !== undefined;
+  return {
+    config: query.data,
+    isPending: query.isPending,
+    isCreate,
+    options: resolveWizardOptions(query.data, isCreate ? 'create' : 'edit'),
+  };
+}
+
+// Create starts with every consent box unticked. Edit never sends consents, so
+// its form simply does not carry the two consent keys.
+function wizardDefaultValues(
+  mode: WizardMode,
+  initialValues: UseStudentWizardParams['initialValues'],
+) {
+  const values = { ...WIZARD_DEFAULT_VALUES, ...initialValues };
+  if (mode === 'edit') {
+    delete values.consent_data_collection;
+    delete values.consent_ai_processing;
+  }
+  return values;
+}
 
 // Step-state machinery for the wizard (C-UI-STUDENT-WIZARD Navigation):
 // Continue validates the current step (WizardScreen runs form.trigger first);
@@ -28,12 +78,25 @@ import type { UseStudentWizardParams } from '@/modules/student-wizard/types/hook
 // guardian/media steps are masked, five with the parent views flag on.
 export function useStudentWizard({ mode, initialValues }: UseStudentWizardParams) {
   const t = useTranslations('StudentWizardSchema');
-  const schema = useMemo(() => createStudentWizardSchema(t), [t]);
+  // The consent config is read from the API, never from env (D5). A pending or
+  // failed request keeps today's schema; navigation is never blocked on it.
+  const configQuery = useConsentConfigQuery();
+  const options = useMemo(
+    () => resolveWizardOptions(configQuery.data, mode),
+    [configQuery.data, mode],
+  );
+  const schema = useMemo(() => createStudentWizardSchema(t, options), [t, options]);
   const form = useForm<StudentWizardValues, unknown, StudentWizardOutput>({
     resolver: zodResolver(schema),
     mode: 'onBlur',
-    defaultValues: { ...WIZARD_DEFAULT_VALUES, ...initialValues },
+    defaultValues: wizardDefaultValues(mode, initialValues),
   });
+  const { setValue } = form;
+  // Minimised: the passport field is gone and must never ship, even if a parent
+  // typed one while the config request was still in flight.
+  useEffect(() => {
+    if (options.minimised) setValue('passport_number', '');
+  }, [options.minimised, setValue]);
   // The flag is build-time static, so the active list never changes mid-run.
   const [stepKeys] = useState(() => activeWizardStepKeys());
   const stepCount = stepKeys.length;

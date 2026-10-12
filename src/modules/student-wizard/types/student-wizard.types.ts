@@ -122,19 +122,30 @@ export interface WizardScreenProps {
   onSubmit?: (values: StudentWizardOutput) => Promise<void>;
 }
 
+// W4-13 / W4-19 wire contract: the OPTIONAL guardian consents a parent create
+// carries. Grant-only (an unticked box sends nothing), at most one entry per type.
+// `statement_key` is omitted: the server records the current statement, the same
+// wording `GET /api/consents/config` served the parent.
+export interface StudentCreateConsent {
+  consent_type: 'data_collection' | 'ai_processing';
+  statement_key?: string;
+}
+
 // C-STUDENT-CREATE whitelist payload — the ONLY keys the client may send. Built
 // by construction (build-student-payload) so `parent`/`status`/`student_key`/
-// `teacher`/`class`/`user` can never appear. Everything the wizard renders is
-// required except `year_level`/`parent_guardian_wechat`; media keep `| null`
-// only for the edit path's explicit clear semantics (create never sends null).
+// `teacher`/`class`/`user` can never appear. Today's required set (flags OFF)
+// always carries gender/nationality/passport_number/photo/voice_intro; with the
+// minimised profile ON (W4-19) those five are omitted when empty — `passport_number`
+// never ships. Media keep `| null` only for the edit path's explicit clear
+// semantics (create never sends null).
 export interface StudentCreatePayload {
   given_name: string;
   family_name: string;
   email: string;
   date_of_birth: string;
-  gender: Gender;
-  nationality: string;
-  passport_number: string;
+  gender?: Gender;
+  nationality?: string;
+  passport_number?: string;
   current_school: string;
   current_year_level: CurrentYearLevel;
   target_entry_year: string;
@@ -143,10 +154,11 @@ export interface StudentCreatePayload {
   parent_guardian_phone: string;
   parent_guardian_email: string;
   preferred_contact_channel: ContactChannel;
-  photo: number | null;
-  voice_intro: number | null;
+  photo?: number | null;
+  voice_intro?: number | null;
   year_level?: number;
   parent_guardian_wechat?: string;
+  consents?: StudentCreateConsent[];
 }
 
 // Task 47 (st-mvp-pivot): with guardian/media steps masked the submit body
