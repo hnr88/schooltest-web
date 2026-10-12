@@ -1,0 +1,166 @@
+# schooltest-web security scanning (ST4S program task W3-07, same mechanism as schooltest-api W3-06;
+# gaps G-21, G-22; decision D7 section C).
+#
+# ONE mechanism: this workflow only calls `scripts/security-scan.sh`, the same script a developer
+# runs locally (`pnpm security:scan`). The script runs pnpm audit, gitleaks, Trivy (filesystem,
+# config, optional image) and Semgrep CE, applies `security/exceptions.json` (expiring entries
+# only), flags CISA KEV matches and exits by `SECURITY_GATE_LEVEL`.
+#
+# Gate: repository variable SECURITY_GATE_LEVEL = off (default, report only) | critical | high.
+# An EXPIRED exception fails the run at every level, including off (a process error).
+# Job `security-scan` is the check-run name the orchestrator adds to PROMOTE_REQUIRED_CHECKS once
+# its runs are green (W2 R1). Do not rename it. Job `image-scan` builds the repo Dockerfile with
+# `docker build --pull` and scans the image; it runs weekly and on demand only.
+#
+# Reusable: ci.yml (or any workflow) can call it with
+#   uses: ./.github/workflows/security.yml
+#   with: { gate_level: critical }
+#
+# Hardening (this repository is PUBLIC): contents: read only, no secrets referenced anywhere, no
+# pull_request_target (a fork pull request runs with a read-only token and no repository secrets),
+# checkout does not persist credentials, third-party actions are pinned by full commit SHA (version
+# in the trailing comment), reports are uploaded as artifacts and contain counts, ids and redacted
+# findings only. No student data is ever used in CI: the scan reads source, lockfile and images.
+# Gate level comes from a repository VARIABLE (vars.SECURITY_GATE_LEVEL), never a secret.
+name: security
+
+on:
+  schedule:
+    # Monday 20:00 UTC = Tuesday 06:00 AEST.
+    - cron: '0 20 * * 1'
+  pull_request:
+    branches: [staging, main]
+  workflow_dispatch:
+    inputs:
+      gate_level:
+        description: 'Gate level for this run: off, critical or high (blank = repository variable SECURITY_GATE_LEVEL, then off)'
+        required: false
+        type: string
+        default: ''
+  workflow_call:
+    inputs:
+      gate_level:
+        description: 'Gate level for this run: off, critical or high (blank = repository variable SECURITY_GATE_LEVEL, then off)'
+        required: false
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-scan-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  PNPM_VERSION: '10.33.0'
+  # Matches NODE_VERSION=22-alpine in the Dockerfile and the verify job in ci.yml.
+  NODE_VERSION: '22'
+
+jobs:
+  security-scan:
+    name: security-scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      SECURITY_GATE_LEVEL: ${{ inputs.gate_level || vars.SECURITY_GATE_LEVEL || 'off' }}
+      # Weekly runs read the whole history; pull requests and manual runs read the diff.
+      SCAN_HISTORY: ${{ github.event_name == 'schedule' && '1' || '0' }}
+      GITLEAKS_BASE_REF: origin/${{ github.base_ref || 'staging' }}
+      SCAN_OUT: ${{ runner.temp }}/security-scan
+    steps:
+      - name: Check out (full history for gitleaks)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Run security scan
+        shell: bash
+        run: bash scripts/security-scan.sh
+
+      - name: Job summary
+        if: always()
+        shell: bash
+        run: |
+          if [ -f "$SCAN_OUT/summary.json" ]; then
+            node -e '
+              const s = JSON.parse(require("fs").readFileSync(process.env.SCAN_OUT + "/summary.json", "utf8"));
+              const c = s.activeCounts;
+              console.log("## security-scan (gate level: " + s.level + ")\n");
+              console.log("| critical | high | moderate | low | gitleaks | semgrep ERROR | KEV | gate |");
+              console.log("|---|---|---|---|---|---|---|---|");
+              console.log("| " + [c.critical, c.high, c.moderate, c.low, s.gitleaks ?? "n/a", s.semgrepErrors ?? "n/a", s.kev.length, s.gate.failed ? "FAIL" : "pass"].join(" | ") + " |");
+              for (const p of s.processErrors) console.log("\n**Process error:** " + p);
+              if (s.incomplete.length) console.log("\nIncomplete scanners: " + s.incomplete.join(", "));
+            ' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "No summary.json was produced (see the scan step log)." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: security-scan-reports
+          path: |
+            ${{ runner.temp }}/security-scan/*.json
+            ${{ runner.temp }}/security-scan/*.log
+            ${{ runner.temp }}/security-scan/*.err
+          if-no-files-found: warn
+          retention-days: 30
+
+  image-scan:
+    name: image-scan
+    # Weekly (and on demand) only: building the image is the slow part. Pull requests run the
+    # filesystem scan above.
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      SECURITY_GATE_LEVEL: ${{ inputs.gate_level || vars.SECURITY_GATE_LEVEL || 'off' }}
+      SCAN_OUT: ${{ runner.temp }}/image-scan
+      IMAGE_TAG: schooltest-web:scan
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      # The Dockerfile refuses localhost NEXT_PUBLIC_* values unless this build arg is true. This
+      # image is built only to be scanned and is never pushed or deployed, so the dummy localhost
+      # defaults are correct here.
+      - name: Build image (fresh base layers)
+        shell: bash
+        run: |
+          docker build --pull \
+            --build-arg ALLOW_LOCALHOST_PUBLIC_URLS=true \
+            --tag "$IMAGE_TAG" .
+
+      - name: Scan image
+        shell: bash
+        run: |
+          bash scripts/security-scan.sh --image "$IMAGE_TAG" \
+            --skip pnpm-audit,gitleaks,trivy-fs,semgrep
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: image-scan-reports
+          path: |
+            ${{ runner.temp }}/image-scan/*.json
+            ${{ runner.temp }}/image-scan/*.log
+          if-no-files-found: warn
+          retention-days: 30

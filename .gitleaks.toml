@@ -1,0 +1,41 @@
+# Gitleaks configuration for schooltest-web (ST4S program task W3-07, same mechanism as
+# schooltest-api W3-06; gaps G-21 / G-22).
+#
+# `scripts/security-scan.sh` runs gitleaks with --redact against this file. Gitleaks' own rule set
+# stays in force (`useDefault`); only findings that were individually triaged and shown NOT to be
+# credentials are allow-listed below, each by path with the reason.
+#
+# This repository is PUBLIC. Do not add a path here to silence a finding you have not read. A new
+# entry needs a comment naming the file, why the value is not a secret, and a reviewer other than
+# the author. A real secret is rotated first; allow-listing it afterwards is never the fix.
+#
+# Not allow-listed on purpose: `.env.example` carries `REVALIDATE_SECRET=change-me-...`, a
+# placeholder. If gitleaks flags it, it stays a reported finding until task W3-09 replaces the
+# placeholder; it is not hidden here.
+
+title = "schooltest-web gitleaks"
+
+[extend]
+useDefault = true
+
+# Known non-secret hits from the W1 security review (ground-security 3.7).
+[[allowlists]]
+description = "Next.js documentation copy: truncated multiline PRIVATE_KEY samples"
+paths = [
+  # Vendored Next.js environment-variables guide. Lines 37 and 44 show a truncated, deliberately
+  # fake `PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----...Kh9NV...-----END DSA PRIVATE KEY-----"`
+  # sample of the multiline .env syntax. It is documentation text, not key material.
+  '''\.claude/docs/guides/environment-variables\.md''',
+]
+
+# generic-api-key false positives found by the first full-history run (2026-10-12). Every hit is an
+# i18n label key or a skill-strand key in a teacher-lens helper or its unit test, such as
+# `labelKey: 'attribute.vocabB2'` or `key: 'subskills.strandA2'` (the rule reads "Key ... B2"
+# as an assignment of a high-entropy value). Identifiers, not credentials.
+[[allowlists]]
+description = "Teacher lens helpers and tests: generic-api-key matched i18n key identifiers"
+targetRules = ["generic-api-key"]
+paths = [
+  '''src/modules/teacher/lib/v2/(teaching-insights|subskill-cards|students-tab)\.test\.ts''',
+  '''src/modules/teacher/lib/student-detail-text(\.test)?\.ts''',
+]

@@ -1,0 +1,78 @@
+# Dependabot for schooltest-web (ST4S program task W3-07, same mechanism as schooltest-api W3-06;
+# decision D7 section C, D2 section A).
+#
+# One scanning mechanism: scripts/security-scan.sh and .github/workflows/security.yml report the
+# vulnerabilities; this file keeps dependencies current so the report stays short.
+# Settings that need a human in GitHub (Dependabot alerts, security updates, secret scanning,
+# push protection) are tracked as G-21 in the ST4S FOUNDER-ACTIONS list.
+version: 2
+
+updates:
+  # npm: weekly. One pull request for minor and patch version updates; security updates open
+  # separately (and are not blocked by the group) so a fix is never held back by a feature bump.
+  - package-ecosystem: npm
+    directory: /
+    target-branch: staging
+    schedule:
+      interval: weekly
+      day: monday
+      time: '06:00'
+      timezone: Australia/Sydney
+    open-pull-requests-limit: 5
+    labels: [dependencies]
+    commit-message:
+      prefix: 'chore(deps)'
+    groups:
+      npm-minor-and-patch:
+        applies-to: version-updates
+        update-types: [minor, patch]
+      npm-security:
+        applies-to: security-updates
+        patterns: ['*']
+    ignore:
+      # Same two entries as schooltest-api. This repo has no @strapi/* dependency today; the entry
+      # keeps a future Strapi client pinned to the API's Strapi version (upgraded deliberately in
+      # the monthly window).
+      - dependency-name: '@strapi/*'
+      # file: contract packages under vendor/contracts are not registry packages.
+      - dependency-name: '@schooltest/*'
+
+  # GitHub Actions: weekly. Actions are pinned by full commit SHA with the version in a comment;
+  # Dependabot rewrites both.
+  - package-ecosystem: github-actions
+    directory: /
+    target-branch: staging
+    schedule:
+      interval: weekly
+      day: monday
+      time: '06:30'
+      timezone: Australia/Sydney
+    open-pull-requests-limit: 5
+    labels: [dependencies, ci]
+    commit-message:
+      prefix: 'chore(ci)'
+    groups:
+      github-actions:
+        patterns: ['*']
+
+  # Docker base image (the Dockerfile uses node:${NODE_VERSION}-alpine): monthly.
+  - package-ecosystem: docker
+    directory: /
+    target-branch: staging
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 5
+    labels: [dependencies, docker]
+    commit-message:
+      prefix: 'chore(docker)'
+
+  # Compose image references: monthly.
+  - package-ecosystem: docker-compose
+    directory: /
+    target-branch: staging
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 5
+    labels: [dependencies, docker]
+    commit-message:
+      prefix: 'chore(docker)'
