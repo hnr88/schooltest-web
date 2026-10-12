@@ -27,6 +27,7 @@ export { useRequireSchoolAdmin } from './hooks/use-require-school-admin';
 export { SchoolStaffGuard } from './components/SchoolStaffGuard';
 export { useRequireSchoolStaff } from './hooks/use-require-school-staff';
 export { OpsGuard } from './components/OpsGuard';
+export { MfaStepUpHost } from './components/MfaStepUpHost';
 export { useRequireOps } from './hooks/use-require-ops';
 export {
   TEACHER_ROLE_TYPE,
@@ -53,6 +54,15 @@ export { useResetPasswordMutation } from './queries/use-reset-password.mutation'
 export { useResendConfirmationMutation } from './queries/use-resend-confirmation.mutation';
 export { changePasswordSchema, type ChangePasswordInput } from './schemas/change-password.schema';
 export { useChangePasswordMutation } from './queries/use-change-password.mutation';
+export { useMfaVerifyMutation } from './queries/use-mfa-verify.mutation';
+export { classifyMfaError } from './lib/classify-mfa-error';
+export { mfaVerifyRequestSchema, mfaVerifyResponseSchema, type MfaVerifyInput } from './schemas/mfa.schema';
+export type {
+  MfaVerifyErrorKey,
+  MfaVerifyFailure,
+  MfaVerifyResponse,
+  MfaFactorMode,
+} from './types/mfa.types';
 export type {
   AuthUser,
   AuthUserRole,

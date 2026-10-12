@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import type { CSSProperties, ReactNode } from 'react';
 
+import { MfaStepUpHost } from '@/modules/auth';
 import { SidebarInset, SidebarProvider } from '@/modules/design-system';
 import { AppSidebar, AppTopbar } from '@/modules/shell';
 import { NOINDEX_ROBOTS } from '@/modules/seo';
@@ -59,6 +60,10 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       {/* Teacher only (the host renders nothing for any other role): the ONE
           "Start a new session" modal every teacher screen opens. */}
       <StartSessionHost />
+      {/* W3-20: renders nothing until the API's MFA gate answers 403
+          MFA_REQUIRED for an enforced role; then the one blocking
+          "Verify your identity" dialog. */}
+      <MfaStepUpHost />
     </SidebarProvider>
   );
 }

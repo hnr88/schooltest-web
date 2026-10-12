@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { onAuthInvalid, readClientToken, writeClientToken } from '@/lib/axios/strapi';
+import { onAuthInvalid, onMfaRequired, readClientToken, writeClientToken } from '@/lib/axios/strapi';
 
 import type { AuthState } from '@/modules/auth/types/stores.types';
 
@@ -12,19 +12,28 @@ import type { AuthState } from '@/modules/auth/types/stores.types';
 // explicit token write (a fresh sign-in, or a deliberate sign-out). The ops
 // guard renders the design-drawn session-expired card from it instead of
 // bounce-redirecting; it is in-memory only, so a fresh page load starts clean.
+//
+// W3-20: `mfaRequired` is raised by the axios boundary's MFA_REQUIRED signal (a
+// 403 from the API's MFA gate) and cleared the same way — any explicit token
+// write. A successful step-up verify writes the new token, so the host's
+// dialog closes; the 403 itself never touches the stored token.
 export const useAuthStore = create<AuthState>((set) => ({
   token: null,
   hydrated: false,
   sessionExpired: false,
-  hydrate: () => set({ token: readClientToken(), hydrated: true, sessionExpired: false }),
+  mfaRequired: false,
+  hydrate: () =>
+    set({ token: readClientToken(), hydrated: true, sessionExpired: false, mfaRequired: false }),
   setToken: (token) => {
     writeClientToken(token);
-    set({ token, sessionExpired: false });
+    set({ token, sessionExpired: false, mfaRequired: false });
   },
   markSessionExpired: () => set({ sessionExpired: true }),
+  markMfaRequired: () => set({ mfaRequired: true }),
 }));
 
 // The axios layer cannot import this store (the store already imports the
 // axios helpers), so the store subscribes to the boundary's auth-invalid
 // channel here — module scope, exactly once.
 onAuthInvalid(() => useAuthStore.getState().markSessionExpired());
+onMfaRequired(() => useAuthStore.getState().markMfaRequired());

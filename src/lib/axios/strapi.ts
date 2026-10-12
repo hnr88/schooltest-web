@@ -56,6 +56,27 @@ function notifyAuthInvalid(): void {
   for (const listener of authInvalidListeners) listener();
 }
 
+const mfaRequiredListeners = new Set<() => void>();
+
+/**
+ * W3-20 (D3 MFA-3): fires when the API's MFA gate refused a request with
+ * `403 { error.details.code: 'MFA_REQUIRED' }` — the caller's role is enforced
+ * and the presented token carries no second factor. It is NOT a sign-out: the
+ * token stays, and the auth store raises the flag the step-up host renders its
+ * blocking dialog from. A role the API does not enforce never produces the
+ * response, so this channel is silent for every other user.
+ */
+export function onMfaRequired(listener: () => void): () => void {
+  mfaRequiredListeners.add(listener);
+  return () => {
+    mfaRequiredListeners.delete(listener);
+  };
+}
+
+export function notifyMfaRequired(): void {
+  for (const listener of mfaRequiredListeners) listener();
+}
+
 export function readClientToken(): string | null {
   if (typeof window === 'undefined') return null;
   try {
@@ -106,6 +127,11 @@ const PUBLIC_INVITATION_PATH = /^\/api\/invitations(\/|$)/;
 // design: a signed-in visitor registering interest must not have the call
 // evaluated against their role — the route is public regardless.
 const PUBLIC_PILOT_REGISTRATION_PATH = /^\/api\/pilot-registrations(\/|$)/;
+
+// The MFA surface answers its own 403s (MFA_NOT_AVAILABLE, and an MFA_REQUIRED
+// on the verify call itself): those are the caller's to classify. Raising the
+// step-up flag from them would loop the dialog.
+const MFA_ENDPOINT_PATH = /^\/api\/auth\/mfa(\/|$)/;
 
 strapi.interceptors.request.use((config) => {
   const token = readClientToken();
@@ -167,6 +193,18 @@ strapi.interceptors.response.use(
       idempotencyKey: typeof idempotencyRaw === 'string' ? idempotencyRaw : null,
     });
     (error as AxiosError & { restFailure?: RestFailure }).restFailure = failure;
+    // W3-20: an MFA_REQUIRED 403 is a step-up request, never a sign-out. It is
+    // handled BEFORE the auth-invalid branch and leaves the stored token alone.
+    const errorBody = error.response?.data as
+      | { error?: { details?: { code?: unknown } } }
+      | undefined;
+    if (
+      error.response?.status === 403 &&
+      errorBody?.error?.details?.code === 'MFA_REQUIRED' &&
+      !MFA_ENDPOINT_PATH.test(config?.url ?? '')
+    ) {
+      notifyMfaRequired();
+    }
     if (failure.kind === 'auth-invalid') {
       writeClientToken(null);
       notifyAuthInvalid();
