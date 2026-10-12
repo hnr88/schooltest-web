@@ -60,6 +60,14 @@ export const rubricOutputSchema = z.strictObject({
   rubric_ref: str,
   rubric_version: z.number().int().min(0),
   model: str,
+  /**
+   * ST4S W5-04 (G-41): the model the gateway reports it served and the SHA-256
+   * of the prompt TEMPLATE. Both OPTIONAL — rows written before the api records
+   * them (and every row while the api flag is off) carry neither. Strict, so a
+   * mirror that lacked them would reject a row that has them.
+   */
+  model_served: str.optional(),
+  prompt_sha256: z.string().regex(/^[0-9a-f]{64}$/).optional(),
   scored_at: str,
   dimensions: z.record(str, z.number().int()).nullable().optional(),
   rationale: z.record(str, str).optional(),

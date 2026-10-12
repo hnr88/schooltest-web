@@ -8,7 +8,7 @@ import {
   reviewTally,
   submittedAgo,
 } from '@/modules/report/lib/review-display';
-import { resultReviewSchema } from '@/modules/teacher/schemas/teacher-review.schema';
+import { resultReviewSchema, rubricOutputSchema } from '@/modules/teacher/schemas/teacher-review.schema';
 
 import reading from './fixtures/result-review-reading.live.json';
 import unreached from './fixtures/result-review-unreached.live.json';
@@ -88,5 +88,52 @@ describe('review display helpers (live reviews)', () => {
     expect(submittedAgo(reading.recordedAt, new Date(at + 3 * 3_600_000))).toEqual({ unit: 'hours', count: 3 });
     expect(submittedAgo(reading.recordedAt, new Date(at + 2 * 86_400_000))).toEqual({ unit: 'days', count: 2 });
     expect(submittedAgo('not a timestamp', new Date(at))).toBeNull();
+  });
+});
+
+// ST4S W5-04 (G-41): `model_served` and `prompt_sha256` are OPTIONAL provenance
+// keys on the strict rubric body. The live fixture was recorded before any row
+// carried a scored body (every `rubric_score` in it is null: no gateway is
+// reachable on the recording box), so the scored bodies below are built on the
+// fixture's own provider-scored row, using its rubric_ref and the student's own
+// recorded text as the quote, and add ONLY the two keys under test.
+describe('rubric_score provenance keys (additive)', () => {
+  const row = writing.review.items.find((item) => item.correct_key.type === 'provider_scored');
+  const text = (row?.given as { text: string }).text;
+  const legacy = {
+    provider: 'writing_llm' as const,
+    rubric_ref: (row?.correct_key as unknown as { rubric_ref: string }).rubric_ref,
+    rubric_version: 0,
+    model: 'writing-alias',
+    scored_at: writing.recordedAt,
+    dimensions: { task_achievement: 3 },
+    rationale: { task_achievement: 'Answers the prompt.' },
+    evidence: { task_achievement: text.slice(0, 40) },
+  };
+  const withRow = (rubricScore: unknown) => ({
+    ...writing.review,
+    items: writing.review.items.map((item) =>
+      item.response_document_id === row?.response_document_id ? { ...item, rubric_score: rubricScore } : item,
+    ),
+  });
+  const sha = 'a'.repeat(64);
+
+  it('a legacy body without either key still parses, inside the whole review too', () => {
+    expect(rubricOutputSchema.safeParse(legacy).success).toBe(true);
+    expect(resultReviewSchema.safeParse(withRow(legacy)).success).toBe(true);
+  });
+
+  it('a body carrying both keys parses and keeps them', () => {
+    const body = { ...legacy, model_served: 'bedrock-served-model', prompt_sha256: sha };
+    const parsed = resultReviewSchema.parse(withRow(body));
+    const stored = parsed.items.find((item) => item.response_document_id === row?.response_document_id);
+    expect(stored?.rubric_score).toMatchObject({ model_served: 'bedrock-served-model', prompt_sha256: sha });
+  });
+
+  it('a malformed prompt_sha256 fails, and the strictness elsewhere is unchanged', () => {
+    expect(rubricOutputSchema.safeParse({ ...legacy, prompt_sha256: 'a'.repeat(63) }).success).toBe(false);
+    expect(rubricOutputSchema.safeParse({ ...legacy, prompt_sha256: 'A'.repeat(64) }).success).toBe(false);
+    expect(rubricOutputSchema.safeParse({ ...legacy, model_served: '' }).success).toBe(false);
+    expect(rubricOutputSchema.safeParse({ ...legacy, prompt_sha256: sha, unlisted: 1 }).success).toBe(false);
   });
 });
