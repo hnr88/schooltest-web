@@ -1,0 +1,5 @@
+# Report security vulnerabilities and privacy concerns here.
+Contact: mailto:privacy@schooltest.com.au
+Expires: 2027-10-11T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://schooltest.com.au/.well-known/security.txt
