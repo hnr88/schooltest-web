@@ -280,6 +280,9 @@
       "expiredBody": "Reset links last 30 minutes and work once. This one has already been opened, so it can no longer be used.",
       "sendNewLink": "Send a new link",
       "doneBody": "Your password has been updated. Log in with your new password to return to the portal."
+    },
+    "policyLinks": {
+      "lead": "How we handle information:"
     }
   },
   "MagicLink": {

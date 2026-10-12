@@ -280,6 +280,9 @@
       "expiredBody": "재설정 링크는 30분 동안 한 번만 유효합니다. 이 링크는 이미 사용되어 더 이상 사용할 수 없습니다.",
       "sendNewLink": "새 링크 보내기",
       "doneBody": "비밀번호가 변경되었습니다. 새 비밀번호로 로그인하여 포털로 돌아가세요."
+    },
+    "policyLinks": {
+      "lead": "How we handle information:"
     }
   },
   "MagicLink": {

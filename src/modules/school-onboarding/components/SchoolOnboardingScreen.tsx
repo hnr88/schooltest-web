@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 
+import { PolicyLinks } from '@/modules/auth';
 import { Spinner } from '@/modules/design-system';
 import { OnboardingStatusScreen } from '@/modules/school-onboarding/components/OnboardingStatusScreen';
 import { SchoolOnboardingWizard } from '@/modules/school-onboarding/components/SchoolOnboardingWizard';
@@ -31,7 +32,10 @@ export function SchoolOnboardingScreen({ token }: SchoolOnboardingScreenProps) {
         ) : error ? (
           <OnboardingStatusScreen state={classifyLinkError(error)} />
         ) : data ? (
-          <SchoolOnboardingWizard token={token} data={data} />
+          <div className="flex flex-col gap-6">
+            <PolicyLinks />
+            <SchoolOnboardingWizard token={token} data={data} />
+          </div>
         ) : null}
       </div>
     </main>

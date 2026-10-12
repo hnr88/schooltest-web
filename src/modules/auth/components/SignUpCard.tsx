@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { Link, useRouter } from '@/i18n/navigation';
 import { AuthDivider } from '@/modules/auth/components/AuthDivider';
 import { GoogleButton } from '@/modules/auth/components/GoogleButton';
+import { PolicyLinks } from '@/modules/auth/components/PolicyLinks';
 import { SignUpConfirmState } from '@/modules/auth/components/SignUpConfirmState';
 import { SignUpForm } from '@/modules/auth/components/SignUpForm';
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
@@ -70,6 +71,7 @@ export function SignUpCard() {
       <GoogleButton className="w-full" />
       <AuthDivider label={t('orDivider')} />
       <SignUpForm onRegistered={setRegisteredEmail} />
+      <PolicyLinks className="text-center" />
       <p className="text-center text-body-md text-body">
         {t('hasAccount')}{' '}
         <Link

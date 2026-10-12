@@ -280,6 +280,9 @@
       "expiredBody": "重设链接有效期为 30 分钟，且只能使用一次。此链接已被打开，因此无法再次使用。",
       "sendNewLink": "发送新链接",
       "doneBody": "您的密码已更新。请使用新密码登录以返回门户。"
+    },
+    "policyLinks": {
+      "lead": "How we handle information:"
     }
   },
   "MagicLink": {

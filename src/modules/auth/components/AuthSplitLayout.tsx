@@ -12,6 +12,7 @@ import type { AuthSplitLayoutProps } from '@/modules/auth/types/components.types
 export function AuthSplitLayout({ children }: AuthSplitLayoutProps) {
   const t = useTranslations('Auth');
   const tShell = useTranslations('Shell.sidebar');
+  const tNav = useTranslations('Navigation');
 
   return (
     <main className="flex flex-1 bg-background">
@@ -90,6 +91,18 @@ export function AuthSplitLayout({ children }: AuthSplitLayoutProps) {
               className="text-[12.5px] text-[#64748B] no-underline hover:text-[#0E2350] hover:underline"
             >
               {t('chrome.footerPrivacy')}
+            </Link>
+            <Link
+              href="/terms-of-service"
+              className="text-[12.5px] text-[#64748B] no-underline hover:text-[#0E2350] hover:underline"
+            >
+              {tNav('termsOfService')}
+            </Link>
+            <Link
+              href="/cookie-policy"
+              className="text-[12.5px] text-[#64748B] no-underline hover:text-[#0E2350] hover:underline"
+            >
+              {tNav('cookiePolicy')}
             </Link>
             <Link
               href="/"

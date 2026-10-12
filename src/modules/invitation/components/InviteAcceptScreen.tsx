@@ -3,6 +3,7 @@
 import { format } from 'date-fns';
 import { useTranslations } from 'next-intl';
 
+import { PolicyLinks } from '@/modules/auth';
 import { Badge, Spinner } from '@/modules/design-system';
 import { InviteAcceptForm } from '@/modules/invitation/components/InviteAcceptForm';
 import { InviteStatusScreen } from '@/modules/invitation/components/InviteStatusScreen';
@@ -55,6 +56,7 @@ export function InviteAcceptScreen({ token }: InviteAcceptScreenProps) {
               token={token}
               defaultValues={{ first_name: data.first_name, last_name: data.last_name }}
             />
+            <PolicyLinks />
           </div>
         ) : null}
       </div>

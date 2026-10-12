@@ -280,6 +280,9 @@
       "expiredBody": "Liên kết đặt lại có hiệu lực 30 phút và chỉ dùng một lần. Liên kết này đã được mở nên không thể sử dụng nữa.",
       "sendNewLink": "Gửi liên kết mới",
       "doneBody": "Mật khẩu của bạn đã được cập nhật. Đăng nhập bằng mật khẩu mới để quay lại cổng thông tin."
+    },
+    "policyLinks": {
+      "lead": "How we handle information:"
     }
   },
   "MagicLink": {

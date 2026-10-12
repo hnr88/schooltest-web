@@ -19,6 +19,7 @@ export { ResetPasswordCard } from './components/ResetPasswordCard';
 export { ResetPasswordForm } from './components/ResetPasswordForm';
 export { ResendCountdownButton } from './components/ResendCountdownButton';
 export { SignUpCard } from './components/SignUpCard';
+export { PolicyLinks } from './components/PolicyLinks';
 export { SignUpForm } from './components/SignUpForm';
 export { ParentGuard } from './components/ParentGuard';
 export { TeacherGuard } from './components/TeacherGuard';

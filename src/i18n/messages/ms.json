@@ -280,6 +280,9 @@
       "expiredBody": "Pautan tetapan semula bertahan 30 minit dan hanya berfungsi sekali. Yang ini telah dibuka, jadi ia tidak boleh digunakan lagi.",
       "sendNewLink": "Hantar pautan baharu",
       "doneBody": "Kata laluan anda telah dikemas kini. Log masuk dengan kata laluan baharu anda untuk kembali ke portal."
+    },
+    "policyLinks": {
+      "lead": "How we handle information:"
     }
   },
   "MagicLink": {
