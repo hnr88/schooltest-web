@@ -1,6 +1,6 @@
 {
   "name": "@schooltest/scoring-contracts",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Portable reading-scoring contracts (score-req/1, score-resp/1, stored Result, ResultView v2, diagnostic export v2). ONE source of truth imported by schooltest-api, schooltest-web, schooltest-app and every HTTP test so the shapes cannot drift.",
   "main": "./dist/index.js",

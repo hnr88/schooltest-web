@@ -1,6 +1,6 @@
 {
   "name": "@schooltest/notification-contracts",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "ONE source of truth for the notification wire shapes, imported by schooltest-api, schooltest-web and schooltest-app so the three hand-copied mirrors cannot drift.",
   "main": "./dist/index.js",
