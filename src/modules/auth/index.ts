@@ -28,6 +28,8 @@ export { SchoolStaffGuard } from './components/SchoolStaffGuard';
 export { useRequireSchoolStaff } from './hooks/use-require-school-staff';
 export { OpsGuard } from './components/OpsGuard';
 export { MfaStepUpHost } from './components/MfaStepUpHost';
+export { MfaEnrolPanel } from './components/MfaEnrolPanel';
+export { MfaRecoveryCodes } from './components/MfaRecoveryCodes';
 export { useRequireOps } from './hooks/use-require-ops';
 export {
   TEACHER_ROLE_TYPE,
@@ -55,8 +57,27 @@ export { useResendConfirmationMutation } from './queries/use-resend-confirmation
 export { changePasswordSchema, type ChangePasswordInput } from './schemas/change-password.schema';
 export { useChangePasswordMutation } from './queries/use-change-password.mutation';
 export { useMfaVerifyMutation } from './queries/use-mfa-verify.mutation';
+export { useMfaStatusQuery, MFA_STATUS_QUERY_KEY } from './queries/use-mfa-status.query';
+export {
+  useMfaEnrolStartMutation,
+  useMfaEnrolConfirmMutation,
+} from './queries/use-mfa-enrol.mutation';
+export { useMfaEnrol, type MfaEnrolPhase, type MfaEnrolFailure } from './hooks/use-mfa-enrol';
 export { classifyMfaError } from './lib/classify-mfa-error';
-export { mfaVerifyRequestSchema, mfaVerifyResponseSchema, type MfaVerifyInput } from './schemas/mfa.schema';
+export {
+  mfaVerifyRequestSchema,
+  mfaVerifyResponseSchema,
+  mfaStatusResponseSchema,
+  mfaEnrolStartRequestSchema,
+  mfaEnrolStartResponseSchema,
+  mfaEnrolConfirmRequestSchema,
+  mfaEnrolConfirmResponseSchema,
+  type MfaVerifyInput,
+  type MfaStatusResponse,
+  type MfaEnrolStartResponse,
+  type MfaEnrolSecretResponse,
+  type MfaEnrolConfirmResponse,
+} from './schemas/mfa.schema';
 export type {
   MfaVerifyErrorKey,
   MfaVerifyFailure,

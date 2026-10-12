@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 
-import { ChangePasswordForm } from '@/modules/auth';
+import { ChangePasswordForm, MfaEnrolPanel } from '@/modules/auth';
 import { AccountIdentityPanel } from '@/modules/settings/components/AccountIdentityPanel';
 import { SettingsLanguagePanel } from '@/modules/settings/components/SettingsLanguagePanel';
 import { SettingsPanel } from '@/modules/settings/components/SettingsPanel';
@@ -23,6 +23,8 @@ export function AuthSettingsPanel() {
       >
         <ChangePasswordForm />
       </SettingsPanel>
+      {/* W3-22: renders nothing unless GET /api/auth/mfa/status says available. */}
+      <MfaEnrolPanel />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
+import { MfaEnrolPanel } from '@/modules/auth';
 import { OpsAccountCard } from '@/modules/ops';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -29,8 +30,10 @@ export default async function OpsSettingsPage() {
         <h1 className="text-[30px] font-medium tracking-[-0.02em] text-[#0E2350]">{t('title')}</h1>
         <p className="text-sm text-[#7C8698]">{t('description')}</p>
       </div>
-      <div className="max-w-[820px]">
+      <div className="flex max-w-[820px] flex-col gap-6">
         <OpsAccountCard />
+        {/* W3-22: renders nothing unless GET /api/auth/mfa/status says available. */}
+        <MfaEnrolPanel />
       </div>
     </main>
   );
