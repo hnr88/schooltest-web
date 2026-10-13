@@ -8,6 +8,7 @@ import type { OpsImportReject } from '@schooltest/ops-contracts';
 
 import { idempotencyHeaders, strapi } from '@/lib/axios/strapi';
 import { portalImportPreviewSchema } from '@/modules/ops/schemas/import.schema';
+import type { ConsentAttestationBody } from '@/modules/privacy-consent';
 
 // The ONE write path behind every school admin import dialog (Students page
 // with its class picker, class detail with the class fixed). It drives the SAME
@@ -22,6 +23,11 @@ export interface ImportStudentsInput {
   /** The raw csv text — the engine parses it server-side, never a client row. */
   csv: string;
   classDocumentId: string;
+  /**
+   * W4-21: the school's guardian-consent attestation (consent records ON, a box
+   * ticked). Sent only with the commit; absent, the commit body is unchanged.
+   */
+  consentAttestation?: ConsentAttestationBody;
 }
 
 export type ImportStudentsResult =
@@ -50,6 +56,7 @@ const receiptResultSchema = z.object({
 async function importStudentsRequest({
   csv,
   classDocumentId,
+  consentAttestation,
 }: ImportStudentsInput): Promise<ImportStudentsResult> {
   // Validate first, write second — the preview is never trusted (the commit
   // re-validates server-side); it exists so a file with broken rows is named
@@ -69,10 +76,17 @@ async function importStudentsRequest({
   }
 
   const requestKey = mintRequestKey();
-  try {
+  // The attestation is part of the commit's own body, so a replay under the same
+  // Idempotency-Key re-sends it and the idempotent attestation write is repaired.
+  const commitBody = {
+    csv,
+    class_documentId: classDocumentId,
+    ...(consentAttestation === undefined ? {} : { consent_attestation: consentAttestation }),
+  };
+  const commitOnce = async (): Promise<ImportStudentsResult> => {
     const commit = await strapi.post<{ data: unknown }>(
       '/api/schools/me/import-students/commit',
-      { csv, class_documentId: classDocumentId },
+      commitBody,
       { headers: idempotencyHeaders(requestKey) },
     );
     const result = opsImportCommitResultSchema.parse(commit.data.data);
@@ -82,12 +96,27 @@ async function importStudentsRequest({
       skipped: result.skipped,
       rejected: result.rejected,
     };
+  };
+  try {
+    return await commitOnce();
   } catch (error) {
     // A commit that lost its CONNECTION (no response) may still have landed:
     // ask the receipt instead of re-sending the write. A server REFUSAL (4xx/
     // 5xx with a response) is surfaced — a failed receipt is cleared, so the
     // same file can simply be retried.
     if (isLostConnection(error)) {
+      // With an attestation the receipt alone is not enough: the attestation is
+      // written after the commit, so a lost answer may hide a missing write. The
+      // same key resolves to the stored commit and re-runs it (idempotent).
+      if (consentAttestation !== undefined) {
+        try {
+          return await commitOnce();
+        } catch (replayError) {
+          if (!isLostConnection(replayError)) {
+            throw replayError;
+          }
+        }
+      }
       const receipt = await strapi.get<{ data: unknown }>(
         `/api/schools/me/import-students/receipts/${encodeURIComponent(requestKey)}`,
       );

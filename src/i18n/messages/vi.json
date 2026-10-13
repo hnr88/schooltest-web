@@ -6829,6 +6829,79 @@
     "errorDescription": "Something went wrong while loading the consent records. Try again.",
     "retry": "Try again",
     "notFoundTitle": "Consent records not found",
-    "notFoundDescription": "This student could not be found, or you do not have access to their consent records."
+    "notFoundDescription": "This student could not be found, or you do not have access to their consent records.",
+    "erase": {
+      "sectionTitle": "Erase personal data",
+      "title": "Erase personal data",
+      "description": "This student is archived. You can permanently remove their personal data. Results that no longer identify them are kept for your school's reports.",
+      "entry": "Erase this student's personal data",
+      "erasedNote": "This student's personal data has been erased. Only results that no longer identify them remain.",
+      "successToast": "Personal data erased.",
+      "alreadyErasedToast": "This student's personal data had already been erased.",
+      "dialog": {
+        "title": "Erase {name}'s personal data?",
+        "sub": "This cannot be undone.",
+        "intro": "This permanently removes the personal data listed below. Check that this is the right student and that the request is genuine before you continue.",
+        "removedTitle": "What is removed",
+        "removed": {
+          "name": "Name",
+          "email": "Email address",
+          "dateOfBirth": "Date of birth",
+          "guardian": "Guardian details",
+          "photo": "Photo",
+          "voice": "Voice introduction",
+          "recordings": "Recordings",
+          "login": "Sign-in account"
+        },
+        "keptTitle": "What is kept",
+        "kept": {
+          "results": "Results, with nothing that identifies the student",
+          "yearAndClass": "Year level and class, used for school reports"
+        },
+        "backups": "Backup copies can still hold this data. They expire on a fixed schedule, within 190 days of the erasure.",
+        "channelLabel": "How was the request made?",
+        "channel": {
+          "school_initiated": "The school decided to erase this data",
+          "guardian_email": "A guardian asked by email"
+        },
+        "referenceLabel": "Reference",
+        "referenceHint": "A ticket number, or the date and subject of the guardian's email. Up to {max} characters. Do not include names or other personal details.",
+        "receivedLabel": "Date the request was received",
+        "typeNameLabel": "Type {name} to confirm",
+        "nameMismatch": "That does not match the student's given name.",
+        "cancel": "Keep this data",
+        "confirm": "Erase personal data"
+      },
+      "error": {
+        "erasureDisabled": "Erasing student data is not available right now.",
+        "notArchived": "Only an archived student can be erased. The page has been refreshed.",
+        "inSession": "This student has a test in progress. Try again when it has finished.",
+        "legalHold": "A legal hold applies to this student or your school, so the data cannot be erased. Contact SchoolTest support.",
+        "confirmation": "The name you typed does not match this student. Check it and try again.",
+        "notFound": "This student could not be found.",
+        "generic": "That did not work. Please try again."
+      }
+    },
+    "attestation": {
+      "title": "Guardian consent held by your school",
+      "intro": "Tick what your school holds guardian consent for. These are two separate choices and nothing is ticked for you.",
+      "required": "Required",
+      "optional": "Optional",
+      "data_collection": {
+        "label": "My school holds guardian consent for this data collection"
+      },
+      "ai_processing": {
+        "label": "My school holds guardian consent for AI-assisted marking"
+      },
+      "aiDeclineNote": "This choice is separate and optional. You can leave it unticked and still add students.",
+      "aiDeclineMarking": "This choice is separate and optional. You can leave it unticked and still add students. Their writing will be marked by a teacher instead.",
+      "requiredError": "Tick data collection to continue. Your school must hold guardian consent before students are added.",
+      "policyVersion": "Recorded under privacy policy version {version}.",
+      "changeLater": "You can change this later on each student's Privacy and consent panel.",
+      "refusal": {
+        "guardianRequired": "Your school must hold guardian consent for data collection before students can be added. Tick the box and try again.",
+        "disabled": "Consent records have just been switched off, so no attestation was sent. Try again."
+      }
+    }
   }
 }

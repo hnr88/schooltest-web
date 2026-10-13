@@ -1,11 +1,16 @@
 import type { z } from 'zod';
 
 import type {
+  consentAttestationBodySchema,
+  consentAttestationTypeSchema,
   consentConfigSchema,
   consentGrantBodySchema,
   consentRecordSchema,
   consentSourceSchema,
   consentTypeSchema,
+  eraseChannelSchema,
+  eraseStudentBodySchema,
+  eraseStudentResponseSchema,
 } from '@/modules/privacy-consent/schemas/consent.schema';
 
 export type ConsentConfig = z.infer<typeof consentConfigSchema>;
@@ -38,4 +43,44 @@ export interface ConsentRowModel {
 
 export interface ConsentWithdrawInput {
   documentId: string;
+}
+
+// ---- W4-21: school attestation and student erasure ----------------------------
+
+export type ConsentAttestationType = z.infer<typeof consentAttestationTypeSchema>;
+export type ConsentAttestationBody = z.infer<typeof consentAttestationBodySchema>;
+
+/** The two boxes of the attestation, as the administrator ticks them. Both start false. */
+export type ConsentAttestationSelection = Record<ConsentAttestationType, boolean>;
+
+/** What the live config allows the attestation to show. `visible` is false while records are off. */
+export interface ConsentAttestationOptions {
+  visible: boolean;
+  /** `guardian_consent_required` (only counts while records are enabled): data collection must be ticked. */
+  required: boolean;
+  /** `ai_consent_required`: declining AI marking sends the writing to a teacher. */
+  aiConsentRequired: boolean;
+  policyVersion: string | null;
+  /** The API-served wording per type; absent when the config carries none. */
+  statements: Partial<Record<ConsentAttestationType, ConsentStatement>>;
+}
+
+/** A server refusal the attestation can show inline (409 `details.code`). */
+export type ConsentAttestationRefusal = 'guardianRequired' | 'disabled';
+
+export type EraseChannel = z.infer<typeof eraseChannelSchema>;
+export type EraseStudentBody = z.infer<typeof eraseStudentBodySchema>;
+export type EraseStudentResult = z.infer<typeof eraseStudentResponseSchema>['data'];
+
+export interface EraseStudentInput {
+  documentId: string;
+  body: EraseStudentBody;
+}
+
+/** What the erase dialog collects. `receivedOn` is a `YYYY-MM-DD` date. */
+export interface EraseRequestValues {
+  typedName: string;
+  channel: EraseChannel;
+  reference: string;
+  receivedOn: string;
 }

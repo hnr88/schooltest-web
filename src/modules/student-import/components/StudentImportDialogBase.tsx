@@ -14,6 +14,7 @@ import {
   OpsDialogHeader,
   Skeleton,
 } from '@/modules/design-system';
+import { ConsentAttestationFields } from '@/modules/privacy-consent';
 import { StudentImportFields } from '@/modules/student-import/components/StudentImportFields';
 import { StudentImportRejectList } from '@/modules/student-import/components/StudentImportRejectList';
 import type { StudentImportFlowState } from '@/modules/student-import/hooks/use-student-import-flow';
@@ -96,6 +97,18 @@ export function StudentImportDialogBase({
             : {})}
         />
         <p className="text-meta text-body">{t('readyCount', { count: state.parsed.rows.length })}</p>
+        {/* W4-21: the school's guardian-consent attestation. Renders nothing while
+            consent records are off, so the dialog is then exactly as it was. */}
+        {state.attestation === undefined ? null : (
+          <ConsentAttestationFields
+            options={state.attestation.options}
+            value={state.attestation.selection}
+            onChange={state.attestation.onChange}
+            showRequiredError={state.attestation.missing && state.parsed.rows.length > 0}
+            disabled={state.pending}
+            idPrefix="import-consent-attestation"
+          />
+        )}
         {/* The count line is gone: the list below names the same rows AND says
             which line each one is, so the two together only said it twice. */}
         <StudentImportRejectList parseErrors={state.parsed.errors} serverRejects={state.rejects} />

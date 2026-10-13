@@ -1,5 +1,9 @@
 import type { z } from 'zod';
 
+import type {
+  ConsentAttestationOptions,
+  ConsentAttestationSelection,
+} from '@/modules/privacy-consent';
 import type { STUDENT_IMPORT_ALL_COLUMNS } from '@/modules/student-import/constants/student-import.constants';
 import type {
   parsedStudentCsvSchema,
@@ -21,3 +25,14 @@ export type ParsedStudentRow = z.infer<typeof studentImportRowSchema>;
 export type ParsedStudentRowError = z.infer<typeof studentImportRowErrorSchema>;
 
 export type ParsedStudentCsv = z.infer<typeof parsedStudentCsvSchema>;
+
+// W4-21: the school's guardian-consent attestation as the import dialog holds it. The
+// flow hook owns it and the dialog renders it; it is sent with the commit as the
+// optional `consent_attestation` object (W4-14) and never with the preview.
+export interface StudentImportAttestationState {
+  options: ConsentAttestationOptions;
+  selection: ConsentAttestationSelection;
+  onChange: (next: ConsentAttestationSelection) => void;
+  /** Guardian consent is required and data collection is not ticked: the import is held. */
+  missing: boolean;
+}

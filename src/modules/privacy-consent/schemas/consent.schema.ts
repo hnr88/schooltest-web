@@ -65,3 +65,46 @@ export const consentGrantBodySchema = z.object({
 // POST /api/consents/:documentId/withdraw body: the reason is optional and this
 // panel has no field for one, so the body is empty.
 export const consentWithdrawBodySchema = z.object({ reason: z.string().max(200).optional() });
+
+// ---- W4-21 (D5 S1, S3): school attestation and student erasure ----------------
+
+/** The two purposes a school may attest. Recording and monitoring is never school-attestable. */
+export const consentAttestationTypeSchema = z.enum(['data_collection', 'ai_processing']);
+
+export const CONSENT_ATTESTATION_REFERENCE_MAX = 120;
+
+// The optional `consent_attestation` object W4-14 accepts on the school create and
+// on the import commit (schooltest-api/src/api/school/lib/students-consent.ts).
+// `reference` is part of the contract; this client has no field for one yet, so it
+// is never set here.
+export const consentAttestationBodySchema = z.strictObject({
+  consent_types: z.array(consentAttestationTypeSchema).min(1).max(2),
+  reference: z.string().trim().min(1).max(CONSENT_ATTESTATION_REFERENCE_MAX).optional(),
+});
+
+/** The only two channels and the one verification method the school route accepts (W4-20). */
+export const ERASE_CHANNELS = ['school_initiated', 'guardian_email'] as const;
+export const eraseChannelSchema = z.enum(ERASE_CHANNELS);
+
+export const ERASE_REFERENCE_MAX = 120;
+
+// POST /api/schools/me/children/:documentId/erase body. The school detail never
+// exposes `student_key`, so the student is confirmed with the typed given name.
+export const eraseStudentBodySchema = z.strictObject({
+  confirm_given_name: z.string().trim().min(1).max(200),
+  request: z.strictObject({
+    channel: eraseChannelSchema,
+    reference: z.string().trim().min(1).max(ERASE_REFERENCE_MAX),
+    received_at: z.iso.datetime({ offset: true }),
+    verification_method: z.literal('school_admin_authenticated'),
+  }),
+});
+
+// The API also answers `student_key`. It is deliberately not part of this schema,
+// so it is stripped on parse and never reaches component state or the cache.
+export const eraseStudentResponseSchema = z.object({
+  data: z.object({
+    erased: z.boolean(),
+    counts: z.record(z.string(), z.number().int().nonnegative()),
+  }),
+});

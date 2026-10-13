@@ -160,7 +160,13 @@ export function SchoolStudentDetailScreen({ documentId }: SchoolStudentDetailScr
               <StudentRecordPanel student={student} onEdit={() => setEditOpen(true)} />
               <StudentClassPanel student={student} classes={classes} />
             </div>
-            <PrivacyConsentPanel studentDocumentId={student.documentId} audience="school_admin" />
+            <PrivacyConsentPanel
+              studentDocumentId={student.documentId}
+              audience="school_admin"
+              studentStatus={student.student_status}
+              studentGivenName={student.given_name}
+              studentFamilyName={student.family_name}
+            />
             {editOpen ? (
               <SchoolStudentEditDialog
                 student={student}

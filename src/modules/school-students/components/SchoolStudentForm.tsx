@@ -1,6 +1,8 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
+import type { FormEvent } from 'react';
 
 import type { SchoolClass } from '@/modules/classes';
 import {
@@ -15,6 +17,11 @@ import {
   OpsDialogFooter,
   OpsFieldShell,
 } from '@/modules/design-system';
+import {
+  ConsentAttestationFields,
+  ConsentAttestationProvider,
+  useConsentAttestation,
+} from '@/modules/privacy-consent';
 import { StudentEaldFields } from '@/modules/school-students/components/StudentEaldFields';
 import { useStudentForm } from '@/modules/school-students/hooks/use-student-form';
 import type { StudentFormTarget } from '@/modules/school-students/types/hooks.types';
@@ -34,14 +41,49 @@ const NATIVE_SELECT_CLASS =
 // fresh per target, so default values always match. `modal` renders the
 // OpsDialog-kit body/footer chrome for the edit dialog; the flat layout stays
 // for the add-student page.
-export function SchoolStudentForm({ target, classes, showAcaraPhase, onCancel, onDone, modal = false }: SchoolStudentFormProps) {
+export function SchoolStudentForm(props: SchoolStudentFormProps) {
+  // W4-21: the add form (and only the add form) holds the school's guardian-consent
+  // attestation. It lives beside the form's own values, so it never enters the
+  // student schema; the create mutation reads it from this provider.
+  if (props.target.mode === 'create') {
+    return (
+      <ConsentAttestationProvider>
+        <SchoolStudentFormBody {...props} />
+      </ConsentAttestationProvider>
+    );
+  }
+  return <SchoolStudentFormBody {...props} />;
+}
+
+function SchoolStudentFormBody({
+  target,
+  classes,
+  showAcaraPhase,
+  onCancel,
+  onDone,
+  modal = false,
+}: SchoolStudentFormProps) {
   const t = useTranslations('SchoolStudents.form');
   const editing = target.mode === 'edit';
-  const { form, submit, pending } = useStudentForm(target, onDone);
+  const { form, submit: submitForm, pending } = useStudentForm(target, onDone);
+  const consent = useConsentAttestation();
+  const [attempted, setAttempted] = useState(false);
   const {
     register,
     formState: { errors },
   } = form;
+
+  // Guardian consent required and data collection not ticked: nothing is sent. The
+  // message sits under the box; the form's own field errors still show.
+  const submit = (event: FormEvent<HTMLFormElement>) => {
+    if (consent !== null && consent.missing) {
+      event.preventDefault();
+      setAttempted(true);
+      void form.trigger();
+      return;
+    }
+    void submitForm(event);
+  };
 
   const fields = (
     <>
@@ -94,6 +136,16 @@ export function SchoolStudentForm({ target, classes, showAcaraPhase, onCancel, o
       </OpsFieldShell>
       {editing ? <p className="text-meta text-body">{t('keepHint')}</p> : null}
       <StudentEaldFields form={form} showAcaraPhase={showAcaraPhase} />
+      {consent === null ? null : (
+        <ConsentAttestationFields
+          options={consent.options}
+          value={consent.selection}
+          onChange={consent.setSelection}
+          showRequiredError={attempted}
+          refusal={consent.refusal}
+          disabled={pending}
+        />
+      )}
     </>
   );
 

@@ -6,9 +6,21 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import { showOpsToast } from '@/modules/ops/actions';
+import {
+  buildConsentAttestation,
+  classifyConsentError,
+  CONSENT_CONFIG_QUERY_KEY,
+  EMPTY_ATTESTATION_SELECTION,
+  isAttestationMissing,
+  useConsentAttestationOptions,
+} from '@/modules/privacy-consent';
+import type { ConsentAttestationSelection } from '@/modules/privacy-consent';
 import { classifyImportFailure, type ImportFailureKind } from '@/modules/student-import/lib/classify-import-failure';
 import { useImportStudentsMutation } from '@/modules/student-import/queries/use-import-students.mutation';
-import type { ParsedStudentCsv } from '@/modules/student-import/types/student-import.types';
+import type {
+  ParsedStudentCsv,
+  StudentImportAttestationState,
+} from '@/modules/student-import/types/student-import.types';
 
 const EMPTY_PARSED: ParsedStudentCsv = { rows: [], errors: [] };
 
@@ -47,6 +59,12 @@ export interface StudentImportFlowState {
   canSubmit: boolean;
   pending: boolean;
   submit: () => Promise<void>;
+  /**
+   * W4-21: the school's guardian-consent attestation (unticked boxes, shown only
+   * while consent records are ON). Optional so a host that builds its own state
+   * object is unaffected; this hook always provides it.
+   */
+  attestation?: StudentImportAttestationState;
 }
 
 /**
@@ -65,12 +83,18 @@ export function useStudentImportFlow({
   onDone,
 }: UseStudentImportFlowOptions): StudentImportFlowState {
   const t = useTranslations(messageNamespace);
+  const tConsent = useTranslations('PrivacyConsent');
   const queryClient = useQueryClient();
   const [parsed, setParsedState] = useState<ParsedStudentCsv>(EMPTY_PARSED);
   const [csv, setCsvState] = useState('');
   const [classId, setClassId] = useState(initialClassDocumentId);
   const [rejects, setRejects] = useState<readonly OpsImportReject[]>([]);
   const importStudents = useImportStudentsMutation();
+  const attestationOptions = useConsentAttestationOptions();
+  const [attestationSelection, setAttestationSelection] = useState<ConsentAttestationSelection>(
+    EMPTY_ATTESTATION_SELECTION,
+  );
+  const attestationMissing = isAttestationMissing(attestationOptions, attestationSelection);
 
   const setParsed = (next: ParsedStudentCsv, text: string) => {
     setParsedState(next);
@@ -79,7 +103,10 @@ export function useStudentImportFlow({
     setRejects([]);
   };
 
-  const canSubmit = classId !== '' && parsed.rows.length > 0 && !importStudents.isPending;
+  // With guardian consent required and data collection unticked the import is held,
+  // exactly as the API would refuse it (409), so nothing is created without it.
+  const canSubmit =
+    classId !== '' && parsed.rows.length > 0 && !importStudents.isPending && !attestationMissing;
 
   const submit = async () => {
     if (!canSubmit) {
@@ -87,8 +114,21 @@ export function useStudentImportFlow({
     }
     let result;
     try {
-      result = await importStudents.mutateAsync({ csv, classDocumentId: classId });
+      const consentAttestation = buildConsentAttestation(attestationOptions, attestationSelection);
+      result = await importStudents.mutateAsync({
+        csv,
+        classDocumentId: classId,
+        ...(consentAttestation === undefined ? {} : { consentAttestation }),
+      });
     } catch (error) {
+      // 409 GUARDIAN_CONSENT_REQUIRED / CONSENT_RECORDS_DISABLED: the switches the
+      // dialog loaded are stale. Say so in the school's words and re-read them.
+      const consentKind = classifyConsentError(error);
+      if (consentKind === 'guardianRequired' || consentKind === 'disabled') {
+        void queryClient.invalidateQueries({ queryKey: CONSENT_CONFIG_QUERY_KEY });
+        showOpsToast({ tone: 'error', message: tConsent(`attestation.refusal.${consentKind}`) });
+        return;
+      }
       const failure = classifyImportFailure(error);
       if (failure.kind === 'server') {
         showOpsToast({ tone: 'error', message: failure.serverMessage ?? '' });
@@ -143,5 +183,11 @@ export function useStudentImportFlow({
     canSubmit,
     pending: importStudents.isPending,
     submit,
+    attestation: {
+      options: attestationOptions,
+      selection: attestationSelection,
+      onChange: setAttestationSelection,
+      missing: attestationMissing,
+    },
   };
 }
