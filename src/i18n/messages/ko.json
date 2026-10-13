@@ -4369,17 +4369,21 @@
     }
   },
   "Navigation": {
+    "acceptableUse": "Acceptable use",
     "analytics": "분석",
     "article": "아티클",
     "articles": "아티클",
     "breadcrumbLabel": "탐색 경로",
+    "childSafety": "Child safety",
     "cookiePolicy": "쿠키 정책",
+    "dataProcessing": "Data processing",
     "designSystem": "디자인 시스템",
     "eald": "EAL/D",
     "edit": "편집",
     "forgotPassword": "비밀번호 찾기",
     "gdpr": "GDPR 준수",
     "home": "홈",
+    "howWeUseAi": "How we use AI",
     "invite": "초대",
     "newChild": "학생 추가",
     "newStudent": "새 학생",
@@ -4394,10 +4398,12 @@
     "schoolOnboarding": "학교 온보딩",
     "searchAgents": "에이전트",
     "searchSchools": "학교",
+    "security": "Security",
     "signIn": "로그인",
     "signUp": "회원가입",
     "termsOfService": "서비스 이용약관",
-    "testDay": "시험일"
+    "testDay": "시험일",
+    "trust": "Trust centre"
   },
   "Landing": {
     "nav": {
@@ -4473,6 +4479,7 @@
     "llmsNotes": "참고",
     "llmsPages": "페이지",
     "llmsSitemapLabel": "XML 사이트맵",
+    "llmsTrust": "Trust centre",
     "llmsUpdatedLabel": "최종 업데이트",
     "llmsUrlLabel": "URL",
     "pages": {

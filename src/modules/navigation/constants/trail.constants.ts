@@ -31,6 +31,13 @@ export const TRAIL_LABELS: Readonly<Record<string, string>> = {
   '/terms-of-service': 'Navigation.termsOfService',
   '/cookie-policy': 'Navigation.cookiePolicy',
   '/gdpr': 'Navigation.gdpr',
+  // --- trust centre (st-trust-pages) ----------------------------------------
+  '/trust': 'Navigation.trust',
+  '/security': 'Navigation.security',
+  '/data-processing': 'Navigation.dataProcessing',
+  '/child-safety': 'Navigation.childSafety',
+  '/how-we-use-ai': 'Navigation.howWeUseAi',
+  '/acceptable-use': 'Navigation.acceptableUse',
   // --- auth / guest surfaces ------------------------------------------------
   '/sign-in': 'Navigation.signIn',
   '/sign-up': 'Navigation.signUp',

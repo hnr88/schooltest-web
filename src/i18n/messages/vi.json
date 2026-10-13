@@ -4378,17 +4378,21 @@
     }
   },
   "Navigation": {
+    "acceptableUse": "Acceptable use",
     "analytics": "Phân tích",
     "article": "Bài viết",
     "articles": "Bài viết",
     "breadcrumbLabel": "Đường dẫn",
+    "childSafety": "Child safety",
     "cookiePolicy": "Chính sách cookie",
+    "dataProcessing": "Data processing",
     "designSystem": "Hệ thống thiết kế",
     "eald": "EAL/D",
     "edit": "Chỉnh sửa",
     "forgotPassword": "Quên mật khẩu",
     "gdpr": "Tuân thủ GDPR",
     "home": "Trang chủ",
+    "howWeUseAi": "How we use AI",
     "invite": "Lời mời",
     "newChild": "Học sinh mới",
     "newStudent": "Học sinh mới",
@@ -4403,10 +4407,12 @@
     "schoolOnboarding": "Thiết lập trường",
     "searchAgents": "Đại diện",
     "searchSchools": "Trường học",
+    "security": "Security",
     "signIn": "Đăng nhập",
     "signUp": "Đăng ký",
     "termsOfService": "Điều khoản dịch vụ",
-    "testDay": "Ngày kiểm tra"
+    "testDay": "Ngày kiểm tra",
+    "trust": "Trust centre"
   },
   "Landing": {
     "nav": {
@@ -4482,6 +4488,7 @@
     "llmsNotes": "Ghi chú",
     "llmsPages": "Trang",
     "llmsSitemapLabel": "Sơ đồ trang XML",
+    "llmsTrust": "Trust centre",
     "llmsUpdatedLabel": "Cập nhật lần cuối",
     "llmsUrlLabel": "URL",
     "pages": {

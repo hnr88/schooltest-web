@@ -4369,17 +4369,21 @@
     }
   },
   "Navigation": {
+    "acceptableUse": "Acceptable use",
     "analytics": "Analitik",
     "article": "Artikel",
     "articles": "Artikel",
     "breadcrumbLabel": "Jejak navigasi",
+    "childSafety": "Child safety",
     "cookiePolicy": "Dasar Kuki",
+    "dataProcessing": "Data processing",
     "designSystem": "Sistem reka bentuk",
     "eald": "EAL/D",
     "edit": "Sunting",
     "forgotPassword": "Lupa kata laluan",
     "gdpr": "Pematuhan GDPR",
     "home": "Laman utama",
+    "howWeUseAi": "How we use AI",
     "invite": "Jemputan",
     "newChild": "Pelajar baharu",
     "newStudent": "Pelajar baharu",
@@ -4394,10 +4398,12 @@
     "schoolOnboarding": "Permulaan sekolah",
     "searchAgents": "Ejen",
     "searchSchools": "Sekolah",
+    "security": "Security",
     "signIn": "Log masuk",
     "signUp": "Daftar",
     "termsOfService": "Terma Perkhidmatan",
-    "testDay": "Hari ujian"
+    "testDay": "Hari ujian",
+    "trust": "Trust centre"
   },
   "Landing": {
     "nav": {
@@ -4473,6 +4479,7 @@
     "llmsNotes": "Nota",
     "llmsPages": "Halaman",
     "llmsSitemapLabel": "Peta laman XML",
+    "llmsTrust": "Trust centre",
     "llmsUpdatedLabel": "Kemas kini terakhir",
     "llmsUrlLabel": "URL",
     "pages": {

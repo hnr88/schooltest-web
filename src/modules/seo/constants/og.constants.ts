@@ -26,6 +26,12 @@ export const OG_CARD_PATHNAMES: readonly string[] = [
   '/terms-of-service',
   '/cookie-policy',
   '/gdpr',
+  '/trust',
+  '/security',
+  '/data-processing',
+  '/child-safety',
+  '/how-we-use-ai',
+  '/acceptable-use',
 ];
 
 export const OG_ARTICLE_PREFIX = '/articles/';
@@ -49,6 +55,12 @@ export const OG_CARD_COPY: Readonly<
   '/terms-of-service': { eyebrowKey: 'Seo.llmsLegal', titleKey: 'Navigation.termsOfService' },
   '/cookie-policy': { eyebrowKey: 'Seo.llmsLegal', titleKey: 'Navigation.cookiePolicy' },
   '/gdpr': { eyebrowKey: 'Seo.llmsLegal', titleKey: 'Navigation.gdpr' },
+  '/trust': { eyebrowKey: 'Seo.llmsTrust', titleKey: 'Navigation.trust' },
+  '/security': { eyebrowKey: 'Seo.llmsTrust', titleKey: 'Navigation.security' },
+  '/data-processing': { eyebrowKey: 'Seo.llmsTrust', titleKey: 'Navigation.dataProcessing' },
+  '/child-safety': { eyebrowKey: 'Seo.llmsTrust', titleKey: 'Navigation.childSafety' },
+  '/how-we-use-ai': { eyebrowKey: 'Seo.llmsTrust', titleKey: 'Navigation.howWeUseAi' },
+  '/acceptable-use': { eyebrowKey: 'Seo.llmsTrust', titleKey: 'Navigation.acceptableUse' },
 };
 
 export const OG_TAGLINE_KEY = 'Landing.footer.tagline';

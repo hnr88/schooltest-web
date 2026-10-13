@@ -4359,17 +4359,21 @@
     }
   },
   "Navigation": {
+    "acceptableUse": "Acceptable use",
     "analytics": "Analytics",
     "article": "Article",
     "articles": "Articles",
     "breadcrumbLabel": "Breadcrumb",
+    "childSafety": "Child safety",
     "cookiePolicy": "Cookie Policy",
+    "dataProcessing": "Data processing",
     "designSystem": "Design system",
     "eald": "EAL/D",
     "edit": "Edit",
     "forgotPassword": "Forgot password",
     "gdpr": "GDPR Compliance",
     "home": "Home",
+    "howWeUseAi": "How we use AI",
     "invite": "Invitation",
     "newChild": "New student",
     "newStudent": "New student",
@@ -4384,10 +4388,12 @@
     "schoolOnboarding": "School onboarding",
     "searchAgents": "Agents",
     "searchSchools": "Schools",
+    "security": "Security",
     "signIn": "Sign in",
     "signUp": "Sign up",
     "termsOfService": "Terms of Service",
-    "testDay": "Test day"
+    "testDay": "Test day",
+    "trust": "Trust centre"
   },
   "Landing": {
     "nav": {
@@ -4463,6 +4469,7 @@
     "llmsNotes": "Notes",
     "llmsPages": "Pages",
     "llmsSitemapLabel": "XML sitemap",
+    "llmsTrust": "Trust centre",
     "llmsUpdatedLabel": "Last updated",
     "llmsUrlLabel": "URL",
     "pages": {

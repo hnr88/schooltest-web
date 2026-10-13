@@ -4369,17 +4369,21 @@
     }
   },
   "Navigation": {
+    "acceptableUse": "การใช้งานที่เหมาะสม",
     "analytics": "การวิเคราะห์",
     "article": "บทความ",
     "articles": "บทความ",
     "breadcrumbLabel": "เส้นทางนำทาง",
+    "childSafety": "ความปลอดภัยของนักเรียน",
     "cookiePolicy": "นโยบายคุกกี้",
+    "dataProcessing": "การประมวลผลข้อมูล",
     "designSystem": "ระบบการออกแบบ",
     "eald": "EAL/D",
     "edit": "แก้ไข",
     "forgotPassword": "ลืมรหัสผ่าน",
     "gdpr": "การปฏิบัติตาม GDPR",
     "home": "หน้าแรก",
+    "howWeUseAi": "วิธีที่เราใช้ AI",
     "invite": "คำเชิญ",
     "newChild": "นักเรียนใหม่",
     "newStudent": "นักเรียนใหม่",
@@ -4394,10 +4398,12 @@
     "schoolOnboarding": "ตั้งค่าโรงเรียน",
     "searchAgents": "ตัวแทน",
     "searchSchools": "โรงเรียน",
+    "security": "ความปลอดภัย",
     "signIn": "เข้าสู่ระบบ",
     "signUp": "สมัครใช้งาน",
     "termsOfService": "ข้อกำหนดการให้บริการ",
-    "testDay": "วันสอบ"
+    "testDay": "วันสอบ",
+    "trust": "ศูนย์ความน่าเชื่อถือ"
   },
   "Landing": {
     "nav": {
@@ -4473,6 +4479,7 @@
     "llmsNotes": "หมายเหตุ",
     "llmsPages": "หน้า",
     "llmsSitemapLabel": "แผนผังเว็บไซต์ XML",
+    "llmsTrust": "ศูนย์ความน่าเชื่อถือ",
     "llmsUpdatedLabel": "อัปเดตล่าสุด",
     "llmsUrlLabel": "URL",
     "pages": {

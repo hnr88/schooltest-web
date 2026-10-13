@@ -4359,17 +4359,21 @@
     }
   },
   "Navigation": {
+    "acceptableUse": "可接受使用",
     "analytics": "分析",
     "article": "文章",
     "articles": "文章",
     "breadcrumbLabel": "面包屑导航",
+    "childSafety": "儿童安全",
     "cookiePolicy": "Cookie 政策",
+    "dataProcessing": "数据处理",
     "designSystem": "设计系统",
     "eald": "EAL/D",
     "edit": "编辑",
     "forgotPassword": "忘记密码",
     "gdpr": "GDPR 合规",
     "home": "首页",
+    "howWeUseAi": "我们如何使用 AI",
     "invite": "邀请",
     "newChild": "新增学生",
     "newStudent": "新增学生",
@@ -4384,10 +4388,12 @@
     "schoolOnboarding": "学校入驻",
     "searchAgents": "顾问",
     "searchSchools": "学校",
+    "security": "安全",
     "signIn": "登录",
     "signUp": "注册",
     "termsOfService": "服务条款",
-    "testDay": "测试日"
+    "testDay": "测试日",
+    "trust": "信任中心"
   },
   "Landing": {
     "nav": {
@@ -4463,6 +4469,7 @@
     "llmsNotes": "说明",
     "llmsPages": "页面",
     "llmsSitemapLabel": "XML 站点地图",
+    "llmsTrust": "信任中心",
     "llmsUpdatedLabel": "最后更新",
     "llmsUrlLabel": "网址",
     "pages": {
