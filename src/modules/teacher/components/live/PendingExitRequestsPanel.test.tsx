@@ -175,6 +175,11 @@ describe('the live tab pending-exit-requests panel', () => {
     await act(async () => {
       approve?.click();
     });
+    // The decision is a react-query mutation: the POST lands a tick after the
+    // click's act scope drains, so flush until it does before asserting.
+    await flushUntil(() =>
+      strapi.post.mock.calls.some((call) => call[0] === '/api/exit-requests/req-1/approve'),
+    );
 
     expect(strapi.post).toHaveBeenCalledWith('/api/exit-requests/req-1/approve');
   });
@@ -193,6 +198,9 @@ describe('the live tab pending-exit-requests panel', () => {
     await act(async () => {
       deny?.click();
     });
+    await flushUntil(() =>
+      strapi.post.mock.calls.some((call) => call[0] === '/api/exit-requests/req-1/deny'),
+    );
 
     expect(strapi.post).toHaveBeenCalledWith('/api/exit-requests/req-1/deny');
   });
