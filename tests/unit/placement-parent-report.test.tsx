@@ -11,6 +11,7 @@ import { NextIntlClientProvider } from 'next-intl';
 vi.mock('@/lib/axios/strapi', () => ({
   strapi: { get: vi.fn() },
   onAuthInvalid: vi.fn(),
+  onMfaRequired: vi.fn(),
 }));
 
 import { strapi } from '@/lib/axios/strapi';
