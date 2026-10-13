@@ -44,7 +44,7 @@ const originalAdapter = strapi.defaults.adapter;
 const STUDENT = 'student-doc-1';
 let seen: Seen[] = [];
 
-function useAdapter(handler: Handler) {
+function installAdapter(handler: Handler) {
   strapi.defaults.adapter = async (requestConfig: InternalAxiosRequestConfig): Promise<AxiosResponse> => {
     const body =
       typeof requestConfig.data === 'string' ? JSON.parse(requestConfig.data) : requestConfig.data;
@@ -261,7 +261,7 @@ const ON = { consent_records_enabled: true, student_erasure_enabled: true };
 
 describe('erase entry on the school student page', () => {
   test('is offered for an archived student only while student_erasure_enabled is ON', async () => {
-    useAdapter(server({ config: config(ON) }));
+    installAdapter(server({ config: config(ON) }));
     const el = mount(panel());
     await settle();
     expect(el.querySelector('[data-slot="erase-student"]')).not.toBeNull();
@@ -274,7 +274,7 @@ describe('erase entry on the school student page', () => {
     ['a student with no given name', { ...ARCHIVED, studentGivenName: null }, ON],
     ['a page that passes no student', {}, ON],
   ])('is not offered for %s', async (_label, props, flags) => {
-    useAdapter(server({ config: config(flags) }));
+    installAdapter(server({ config: config(flags) }));
     const el = mount(panel('school_admin', props));
     await settle();
     expect(buttonByText(E.entry)).toBeUndefined();
@@ -282,21 +282,21 @@ describe('erase entry on the school student page', () => {
   });
 
   test('is never offered to a parent, even with the flag ON and an archived student', async () => {
-    useAdapter(server({ config: config(ON) }));
+    installAdapter(server({ config: config(ON) }));
     mount(panel('parent'));
     await settle();
     expect(buttonByText(E.entry)).toBeUndefined();
   });
 
   test('with every switch OFF the panel renders nothing at all', async () => {
-    useAdapter(server({ config: config() }));
+    installAdapter(server({ config: config() }));
     const el = mount(panel());
     await settle();
     expect(el.textContent).toBe('');
   });
 
   test('stands alone when consent records are OFF but erasure is ON (the panel itself stays hidden)', async () => {
-    useAdapter(server({ config: config({ student_erasure_enabled: true }) }));
+    installAdapter(server({ config: config({ student_erasure_enabled: true }) }));
     const el = mount(panel());
     await settle();
     expect(el.querySelector('[data-slot="privacy-consent-panel"]')).toBeNull();
@@ -307,7 +307,7 @@ describe('erase entry on the school student page', () => {
   });
 
   test('shows the tombstoned record as done and offers nothing more', async () => {
-    useAdapter(server({ config: config(ON) }));
+    installAdapter(server({ config: config(ON) }));
     const el = mount(panel('school_admin', { ...ARCHIVED, studentGivenName: 'Erased', studentFamilyName: null }));
     await settle();
     expect(el.querySelector('[data-slot="erase-done"]')?.textContent).toBe(E.erasedNote);
@@ -315,7 +315,7 @@ describe('erase entry on the school student page', () => {
   });
 
   test('a real student called Erased with a family name is not treated as erased', async () => {
-    useAdapter(server({ config: config(ON) }));
+    installAdapter(server({ config: config(ON) }));
     const el = mount(panel('school_admin', { ...ARCHIVED, studentGivenName: 'Erased', studentFamilyName: 'Smith' }));
     await settle();
     expect(el.querySelector('[data-slot="erase-done"]')).toBeNull();
@@ -325,7 +325,7 @@ describe('erase entry on the school student page', () => {
 
 describe('erase dialog', () => {
   async function openDialog() {
-    useAdapter(server({ config: config(ON) }));
+    installAdapter(server({ config: config(ON) }));
     mount(panel());
     await settle();
     await click(buttonByText(E.entry)!);
@@ -411,7 +411,7 @@ describe('erase dialog', () => {
     ['LEGAL_HOLD', 409, E.error.legalHold],
     ['CONFIRMATION_MISMATCH', 400, E.error.confirmation],
   ])('shows the %s refusal in its own words and stays open', async (code, status, message) => {
-    useAdapter(
+    installAdapter(
       server({ config: config(ON), erase: { status, body: errorBody(status, { code }) } }),
     );
     mount(panel());
@@ -480,7 +480,7 @@ async function fillAndSubmit() {
 
 describe('guardian-consent attestation on the add-student form', () => {
   test('with every switch OFF the form shows no attestation and sends exactly today\'s body', async () => {
-    useAdapter(server({ config: config() }));
+    installAdapter(server({ config: config() }));
     const el = mount(addForm());
     await settle();
     expect(el.querySelector('[data-slot="consent-attestation"]')).toBeNull();
@@ -493,7 +493,7 @@ describe('guardian-consent attestation on the add-student form', () => {
   });
 
   test('with records ON it shows two separate unticked boxes carrying the API wording', async () => {
-    useAdapter(server({ config: config({ consent_records_enabled: true }) }));
+    installAdapter(server({ config: config({ consent_records_enabled: true }) }));
     const el = mount(addForm());
     await settle();
     expect(el.querySelector('[data-slot="consent-attestation"]')).not.toBeNull();
@@ -505,7 +505,7 @@ describe('guardian-consent attestation on the add-student form', () => {
   });
 
   test('with records ON and nothing ticked the body still carries no attestation key', async () => {
-    useAdapter(server({ config: config({ consent_records_enabled: true }) }));
+    installAdapter(server({ config: config({ consent_records_enabled: true }) }));
     mount(addForm());
     await settle();
     await fillAndSubmit();
@@ -514,7 +514,7 @@ describe('guardian-consent attestation on the add-student form', () => {
   });
 
   test('sends only the ticked purposes as consent_attestation', async () => {
-    useAdapter(server({ config: config({ consent_records_enabled: true }) }));
+    installAdapter(server({ config: config({ consent_records_enabled: true }) }));
     mount(addForm());
     await settle();
     await click(boxLabel('ai_processing')!);
@@ -527,7 +527,7 @@ describe('guardian-consent attestation on the add-student form', () => {
   });
 
   test('guardian consent required: nothing is sent until data collection is ticked', async () => {
-    useAdapter(
+    installAdapter(
       server({ config: config({ consent_records_enabled: true, guardian_consent_required: true }) }),
     );
     const el = mount(addForm());
@@ -548,7 +548,7 @@ describe('guardian-consent attestation on the add-student form', () => {
   });
 
   test('a ticked AI box alone does not satisfy the guardian rule', async () => {
-    useAdapter(
+    installAdapter(
       server({ config: config({ consent_records_enabled: true, guardian_consent_required: true }) }),
     );
     mount(addForm());
@@ -559,7 +559,7 @@ describe('guardian-consent attestation on the add-student form', () => {
   });
 
   test('a 409 GUARDIAN_CONSENT_REQUIRED from the server is shown next to the boxes', async () => {
-    useAdapter(
+    installAdapter(
       server({
         config: config({ consent_records_enabled: true }),
         create: { status: 409, body: errorBody(409, { code: 'GUARDIAN_CONSENT_REQUIRED' }) },
@@ -574,7 +574,7 @@ describe('guardian-consent attestation on the add-student form', () => {
   });
 
   test('the edit form never shows the attestation', async () => {
-    useAdapter(server({ config: config({ consent_records_enabled: true }) }));
+    installAdapter(server({ config: config({ consent_records_enabled: true }) }));
     const student: SchoolStudent = {
       documentId: STUDENT,
       given_name: 'Mia',
@@ -614,7 +614,7 @@ describe('guardian-consent attestation in the import dialog', () => {
   const submitLabel = enMessages.Classes.detail.import.submit;
 
   test('with every switch OFF there is no attestation and the commit body is unchanged', async () => {
-    useAdapter(server({ config: config() }));
+    installAdapter(server({ config: config() }));
     mount(importDialog());
     await settle();
     expect(document.body.querySelector('[data-slot="consent-attestation"]')).toBeNull();
@@ -627,7 +627,7 @@ describe('guardian-consent attestation in the import dialog', () => {
   });
 
   test('with records ON the boxes start unticked and the ticked purposes go with the commit only', async () => {
-    useAdapter(server({ config: config({ consent_records_enabled: true }) }));
+    installAdapter(server({ config: config({ consent_records_enabled: true }) }));
     mount(importDialog());
     await settle();
     expect(box('data_collection')?.getAttribute('aria-checked')).toBe('false');
@@ -648,7 +648,7 @@ describe('guardian-consent attestation in the import dialog', () => {
   });
 
   test('guardian consent required: the import is held until data collection is ticked', async () => {
-    useAdapter(
+    installAdapter(
       server({ config: config({ consent_records_enabled: true, guardian_consent_required: true }) }),
     );
     mount(importDialog());
@@ -662,7 +662,7 @@ describe('guardian-consent attestation in the import dialog', () => {
   });
 
   test('a 409 GUARDIAN_CONSENT_REQUIRED on the commit gets the school-friendly message', async () => {
-    useAdapter(
+    installAdapter(
       server({
         config: config({ consent_records_enabled: true }),
         commit: { status: 409, body: errorBody(409, { code: 'GUARDIAN_CONSENT_REQUIRED' }) },
