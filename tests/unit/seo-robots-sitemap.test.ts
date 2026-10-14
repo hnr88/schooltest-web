@@ -3,7 +3,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import { readFileSync } from 'node:fs';
 
-import { describe, expect, test } from 'vitest';
+import { afterEach, describe, expect, test, vi } from 'vitest';
 
 import {
   AI_CRAWLERS,
@@ -11,11 +11,13 @@ import {
   PUBLIC_ROUTES,
   SEARCH_ENGINE_CRAWLERS,
 } from '@/modules/seo/constants/public-routes';
+import { isStagingAppUrl } from '@/modules/seo/lib/deployment';
 import { buildRobots } from '@/modules/seo/lib/build-robots';
 import { buildSitemapEntries } from '@/modules/seo/lib/build-sitemap';
 import type { PublicEntry } from '@/modules/seo/types/metadata.types';
 
 const BASE = 'http://localhost:3000';
+const STAGING_BASE = 'https://staging.schooltest.com.au';
 const ROOT = path.resolve(__dirname, '../..');
 
 describe('robots', () => {
@@ -52,6 +54,38 @@ describe('robots', () => {
   test('keeps sitemap and host', () => {
     expect(robots.sitemap).toBe(`${BASE}/sitemap.xml`);
     expect(robots.host).toBe(BASE);
+  });
+});
+
+describe('robots on staging', () => {
+  const robots = buildRobots(STAGING_BASE);
+  const rules = Array.isArray(robots.rules) ? robots.rules : [robots.rules];
+
+  test('the staging host label is the signal, and only a staging label matches', () => {
+    expect(isStagingAppUrl(STAGING_BASE)).toBe(true);
+    expect(isStagingAppUrl('https://www.staging.schooltest.com.au')).toBe(true);
+    expect(isStagingAppUrl('https://schooltest.com.au')).toBe(false);
+    expect(isStagingAppUrl(BASE)).toBe(false);
+    expect(isStagingAppUrl('https://staging-api.schooltest.com.au')).toBe(false);
+  });
+
+  test('staging closes the whole site: every group disallows everything', () => {
+    for (const rule of rules) {
+      expect(rule.disallow).toBe('/');
+      expect(rule.allow).toBeUndefined();
+    }
+    // Same three groups as production (named crawlers ignore `*`, so they
+    // must each be told Disallow: / themselves).
+    const agents = rules.flatMap((rule) => [rule.userAgent ?? []].flat());
+    expect(agents).toHaveLength(SEARCH_ENGINE_CRAWLERS.length + AI_CRAWLERS.length + 1);
+    expect(agents).toContain('*');
+    expect(agents).toContain('Googlebot');
+    expect(agents).toContain('GPTBot');
+  });
+
+  test('staging drops the sitemap and host hints', () => {
+    expect(robots.sitemap).toBeUndefined();
+    expect(robots.host).toBeUndefined();
   });
 });
 
@@ -100,7 +134,13 @@ describe('sitemap', () => {
 });
 
 describe('X-Robots-Tag headers (next.config.ts)', () => {
-  test('cover every disallowed path, bare and locale-prefixed, as Next loads the config', async () => {
+  // headers() reads NEXT_PUBLIC_APP_URL when the config is loaded, so each
+  // test pins the env the way its CI matrix leg bakes it.
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  async function loadNextConfig() {
     const require = createRequire(import.meta.url);
     const { transpileConfig } = require(
       path.join(ROOT, 'node_modules/next/dist/build/next-config-ts/transpile-config.js'),
@@ -108,9 +148,14 @@ describe('X-Robots-Tag headers (next.config.ts)', () => {
     const loaded = (await transpileConfig({ nextConfigPath: path.join(ROOT, 'next.config.ts'), dir: ROOT })) as {
       default?: unknown;
     };
-    const config = (loaded.default ?? loaded) as {
+    return (loaded.default ?? loaded) as {
       headers: () => Promise<{ source: string; headers: { key: string; value: string }[] }[]>;
     };
+  }
+
+  test('non-staging builds cover every disallowed path, bare and locale-prefixed', async () => {
+    vi.stubEnv('NEXT_PUBLIC_APP_URL', BASE);
+    const config = await loadNextConfig();
     const noindex = (await config.headers())
       .filter((h) => h.headers.some((x) => x.key === 'X-Robots-Tag' && x.value.includes('noindex')))
       .map((h) => h.source);
@@ -120,6 +165,18 @@ describe('X-Robots-Tag headers (next.config.ts)', () => {
       );
     }
     expect(noindex).toHaveLength(DISALLOWED_PATHS.length * 4);
+    expect(noindex).not.toContain('/:path*');
+  });
+
+  test('a staging build swaps them for ONE catch-all noindex on every route', async () => {
+    vi.stubEnv('NEXT_PUBLIC_APP_URL', STAGING_BASE);
+    const config = await loadNextConfig();
+    const noindex = (await config.headers()).filter((h) =>
+      h.headers.some((x) => x.key === 'X-Robots-Tag' && x.value.includes('noindex')),
+    );
+    expect(noindex).toEqual([
+      { source: '/:path*', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] },
+    ]);
   });
 });
 

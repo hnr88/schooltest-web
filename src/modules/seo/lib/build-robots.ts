@@ -6,6 +6,7 @@ import {
   SEARCH_ENGINE_CRAWLERS,
   localizedDisallowedPaths,
 } from '@/modules/seo/constants/public-routes';
+import { isStagingAppUrl } from '@/modules/seo/lib/deployment';
 
 /**
  * robots.txt: one group for the named search engines, one for the named AI
@@ -16,8 +17,23 @@ import {
  *
  * Bare paths, NOT `${path}/`: robots matching is a prefix match, so
  * `Disallow: /sign-in` blocks the page AND everything beneath it.
+ *
+ * Staging (the app URL host carries a `staging` label) closes the WHOLE site:
+ * every group gets `Disallow: /` and the sitemap/host hints are dropped —
+ * nothing on staging may be crawled, and robots.txt is prerendered per variant
+ * image from the baked app URL, so production never sees this branch.
  */
 export function buildRobots(baseUrl: string): MetadataRoute.Robots {
+  if (isStagingAppUrl(baseUrl)) {
+    return {
+      rules: [
+        { userAgent: [...SEARCH_ENGINE_CRAWLERS], disallow: '/' },
+        { userAgent: [...AI_CRAWLERS], disallow: '/' },
+        { userAgent: '*', disallow: '/' },
+      ],
+    };
+  }
+
   const disallow = localizedDisallowedPaths(
     routing.locales.filter((locale) => locale !== routing.defaultLocale),
   );

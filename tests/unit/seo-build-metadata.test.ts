@@ -1,10 +1,13 @@
 // @vitest-environment node
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
+import { NOINDEX_ROBOTS } from '@/modules/seo/constants/seo.constants';
 import { buildMetadata, buildRootMetadata } from '@/modules/seo/lib/build-metadata';
 import { clampText, composeDocumentTitle } from '@/modules/seo/lib/seo-text';
 
 const BASE = 'http://localhost:3000';
+const STAGING_BASE = 'https://staging.schooltest.com.au';
+const PRODUCTION_BASE = 'https://schooltest.com.au';
 
 afterEach(() => {
   vi.unstubAllEnvs();
@@ -164,5 +167,47 @@ describe('buildRootMetadata', () => {
     });
     expect(metadata.alternates?.canonical).toBe(`${BASE}/zh/privacy-policy`);
     expect((metadata.openGraph as { alternateLocale?: string[] }).alternateLocale).toEqual(['en_AU']);
+  });
+});
+
+describe('staging deployments are never indexed (baked staging.* app URL)', () => {
+  // env is snapshotted into the t3-env module at import time, so every test
+  // stubs the env BEFORE re-importing the builder (same pattern as the
+  // verification test above).
+  async function importWithAppUrl(appUrl: string) {
+    vi.stubEnv('NEXT_PUBLIC_APP_URL', appUrl);
+    vi.resetModules();
+    return import('@/modules/seo/lib/build-metadata');
+  }
+
+  test('buildMetadata forces NOINDEX_ROBOTS even for a page that asks to be indexed', async () => {
+    const fresh = await importWithAppUrl(STAGING_BASE);
+    const meta = fresh.buildMetadata({
+      title: 'Teach',
+      description: 'D',
+      pathname: '/teach',
+      locale: 'en',
+    });
+    expect(meta.robots).toEqual(NOINDEX_ROBOTS);
+  });
+
+  test('buildRootMetadata noindexes the layout defaults inherited by pages without their own metadata', async () => {
+    const fresh = await importWithAppUrl(STAGING_BASE);
+    const root = fresh.buildRootMetadata({ locale: 'zh', description: 'Desc' });
+    expect(root.robots).toEqual(NOINDEX_ROBOTS);
+    expect(root.metadataBase?.toString()).toBe(`${STAGING_BASE}/`);
+  });
+
+  test('production keeps the indexable directives and no inherited robots key', async () => {
+    const fresh = await importWithAppUrl(PRODUCTION_BASE);
+    const meta = fresh.buildMetadata({
+      title: 'Teach',
+      description: 'D',
+      pathname: '/teach',
+      locale: 'en',
+    });
+    expect(meta.robots).toMatchObject({ index: true, follow: true });
+    const root = fresh.buildRootMetadata({ locale: 'en', description: 'Desc' });
+    expect(root.robots).toBeUndefined();
   });
 });
