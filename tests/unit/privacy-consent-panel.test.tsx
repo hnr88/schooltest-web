@@ -146,7 +146,21 @@ function renderPanel(audience: ConsentAudience = 'parent'): HTMLElement {
 
 async function settle() {
   await act(async () => {
-    await new Promise((resolve) => setTimeout(resolve, 25));
+    // Wait for the query client to go idle instead of sleeping a fixed 25ms:
+    // under full-suite load that sleep once expired while the list request was
+    // still in flight, and the 409-disabled test then read the panel's
+    // 'loading' frame (title + description, no rows). Idle is only trusted
+    // once it holds across a macrotask — a settling mutation immediately kicks
+    // an invalidated refetch.
+    for (let waited = 0; waited < 5_000; waited += 5) {
+      const idle = () =>
+        queryClient?.isFetching() === 0 && queryClient?.isMutating() === 0;
+      if (idle()) {
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        if (idle()) break;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 5));
+    }
   });
 }
 
